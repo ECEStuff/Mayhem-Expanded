@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Monitor.Galaxy</name>
-	<version>157</version>
+	<version>159</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -1749,12 +1749,12 @@
 			<text> </text>
 			<var>$khaakBlueprints</var>
 		</line>
-		<line linenr="178" indent="&#160;&#160;&#160;">
+		<line linenr="178" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
 		</line>
-		<line linenr="179" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="179" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
@@ -1769,7 +1769,7 @@
 			<var>$XS.Iterator4</var>
 			<text>]</text>
 		</line>
-		<line linenr="181" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="181" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1797,15 +1797,14 @@
 			<text>end</text>
 		</line>
 		<line linenr="185" indent="&#160;&#160;&#160;" />
-		<line linenr="186" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="187" indent="&#160;&#160;&#160;">
-			<comment>* Herobetty 5.4: There is now a 4/3/2/1 +/- 0.5 hour timer on easy/normal/hard/insane difficulty for black market ships.</comment>
+		<line linenr="186" indent="&#160;&#160;&#160;">
+			<comment>* Expanded 2.2: Temporarily protected abandoned ships become claimable by NPCs/tugs after their grace period expires.</comment>
 		</line>
-		<line linenr="188" indent="&#160;&#160;">
+		<line linenr="187" indent="&#160;&#160;&#160;">
 			<comment>* Note: Global array pointer; removals apply in place.</comment>
 		</line>
-		<line linenr="189" indent="&#160;">
-			<var>$blackMarketShips</var>
+		<line linenr="188" indent="&#160;&#160;&#160;&#160;">
+			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -1818,10 +1817,10 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<text>'blackMarketShips'</text>
+			<text>'mayhem_claimProtectedShips'</text>
 		</line>
-		<line linenr="190" indent="&#160;">
-			<var>$blackMarketShips.size</var>
+		<line linenr="189" indent="&#160;&#160;&#160;">
+			<var>$claimProtectedShips.size</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -1831,18 +1830,20 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 		</line>
+		<line linenr="190" indent="&#160;&#160;" />
 		<line linenr="191" indent="&#160;">
 			<text>if</text>
 			<text> </text>
-			<var>$blackMarketShips.size</var>
+			<var>$claimProtectedShips.size</var>
 			<text> </text>
 			<text>&gt;</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="192" indent="&#160;">
+		<line linenr="192" indent="&#160;" />
+		<line linenr="193" indent="&#160;">
 			<var>$i</var>
 			<text> </text>
 			<text>=</text>
@@ -1853,39 +1854,39 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 		</line>
-		<line linenr="193" indent="&#160;">
+		<line linenr="194" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="194" indent="&#160;&#160;">
+		<line linenr="195" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="195" indent="&#160;&#160;">
-			<var>$blackMarketShip</var>
+		<line linenr="196" indent="&#160;&#160;">
+			<var>$claimProtectedShip</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 			<text>[</text>
 			<var>$i</var>
 			<text>]</text>
 		</line>
-		<line linenr="196" indent="&#160;&#160;">
+		<line linenr="197" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
-			<var>$blackMarketShip</var>
+			<var>$claimProtectedShip</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="197" indent="&#160;&#160;">
+		<line linenr="198" indent="&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -1894,7 +1895,7 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>at</text>
 			<text> </text>
@@ -1902,19 +1903,19 @@
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="198" indent="&#160;&#160;&#160;">
+		<line linenr="199" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="199" indent="&#160;&#160;&#160;">
+		<line linenr="200" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="200" indent="&#160;&#160;&#160;" />
-		<line linenr="201" indent="&#160;&#160;&#160;&#160;">
-			<var>$blackMarketShip.deadline</var>
+		<line linenr="201" indent="&#160;&#160;&#160;" />
+		<line linenr="202" indent="&#160;&#160;&#160;">
+			<var>$deadline</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$blackMarketShip</var>
+			<var>$claimProtectedShip</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -1926,14 +1927,14 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<text>'mayhem_blackMarketMissionDeadline'</text>
+			<text>'mayhem_claimProtectionDeadline'</text>
 		</line>
-		<line linenr="202" indent="&#160;&#160;&#160;">
-			<var>$blackMarketShip.isProtected</var>
+		<line linenr="203" indent="&#160;&#160;&#160;&#160;">
+			<var>$isProtected</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$blackMarketShip</var>
+			<var>$claimProtectedShip</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -1947,10 +1948,11 @@
 			<text>=</text>
 			<text>'mayhem_notCaptureableByTugs'</text>
 		</line>
-		<line linenr="203" indent="&#160;&#160;&#160;">
+		<line linenr="204" indent="&#160;&#160;&#160;" />
+		<line linenr="205" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
-			<var>$blackMarketShip.deadline</var>
+			<var>$deadline</var>
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
@@ -1958,18 +1960,18 @@
 			<text> </text>
 			<text>&gt;=</text>
 			<text> </text>
-			<var>$blackMarketShip.deadline</var>
+			<var>$deadline</var>
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
-			<var>$blackMarketShip.isProtected</var>
+			<var>$isProtected</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="204" indent="&#160;&#160;">
-			<var>$blackMarketShip</var>
+		<line linenr="206" indent="&#160;&#160;">
+			<var>$claimProtectedShip</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>set</text>
@@ -1987,23 +1989,23 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="205" indent="&#160;&#160;">
+		<line linenr="207" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="206" indent="&#160;&#160;">
+		<line linenr="208" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="207" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="208" indent="&#160;&#160;&#160;" />
 		<line linenr="209" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="210" indent="&#160;&#160;&#160;" />
+		<line linenr="211" indent="&#160;&#160;&#160;">
 			<comment>* Handle Xenon invasions.</comment>
 		</line>
-		<line linenr="210" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="212" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH: disabled for a while after the Xenon Crisis (2 8-hour cycles)</comment>
 		</line>
-		<line linenr="211" indent="&#160;&#160;&#160;">
+		<line linenr="213" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -2019,10 +2021,10 @@
 			<text>=</text>
 			<text>'ZH_postCrisisAIcycles'</text>
 		</line>
-		<line linenr="212" indent="&#160;&#160;&#160;">
+		<line linenr="214" indent="&#160;&#160;&#160;">
 			<comment>* Look for beacons first. If there are no beacons, choose Xenon Stations and the portal.</comment>
 		</line>
-		<line linenr="213" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="215" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonStations</var>
 			<text> </text>
 			<text>=</text>
@@ -2046,7 +2048,7 @@
 			<text>=</text>
 			<var>{Neutral Race Jump Beacon}</var>
 		</line>
-		<line linenr="214" indent="&#160;&#160;&#160;">
+		<line linenr="216" indent="&#160;&#160;&#160;">
 			<var>$xenonStations.s</var>
 			<text> </text>
 			<text>=</text>
@@ -2059,14 +2061,14 @@
 			<text> </text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="215" indent="&#160;&#160;&#160;">
+		<line linenr="217" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
 			<text> </text>
 			<var>$xenonStations.s</var>
 		</line>
-		<line linenr="216" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="218" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonStations</var>
 			<text> </text>
 			<text>=</text>
@@ -2090,7 +2092,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="217" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="219" indent="&#160;&#160;&#160;&#160;">
 			<var>$portal</var>
 			<text> </text>
 			<text>=</text>
@@ -2106,7 +2108,7 @@
 			<text>=</text>
 			<text>'mayhem_ocvMainPortal'</text>
 		</line>
-		<line linenr="218" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="220" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2116,7 +2118,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="219" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="221" indent="&#160;&#160;&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$portal</var>
@@ -2127,8 +2129,8 @@
 			<text> </text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="220" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="221" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="222" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="223" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonStations.s</var>
 			<text> </text>
 			<text>=</text>
@@ -2141,19 +2143,19 @@
 			<text> </text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="222" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="224" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="223" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="224" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="225" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="226" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$xenonStations.s</var>
 		</line>
-		<line linenr="225" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="227" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH 2.0</comment>
 		</line>
-		<line linenr="226" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="228" indent="&#160;&#160;&#160;&#160;">
 			<var>$smallXenonTimeout</var>
 			<text> </text>
 			<text>=</text>
@@ -2169,20 +2171,20 @@
 			<text>=</text>
 			<text>'ZH_smallXenonTimeout'</text>
 		</line>
-		<line linenr="227" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="229" indent="&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$smallXenonTimeout</var>
 		</line>
-		<line linenr="228" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="230" indent="&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetSmallXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="229" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="231" indent="&#160;&#160;&#160;&#160;">
 			<var>$bigXenonTimeout</var>
 			<text> </text>
 			<text>=</text>
@@ -2198,21 +2200,21 @@
 			<text>=</text>
 			<text>'ZH_bigXenonTimeout'</text>
 		</line>
-		<line linenr="230" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="232" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$bigXenonTimeout</var>
 		</line>
-		<line linenr="231" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="233" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetBigXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="232" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="233" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -2229,16 +2231,16 @@
 			<text> </text>
 			<var>$bigXenonTimeout</var>
 		</line>
-		<line linenr="234" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Check previous invasion group's leaders to see if they are alive, and assess the number of groups.</comment>
 		</line>
-		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="237" indent="&#160;&#160;&#160;&#160;">
 			<comment>* The invasion limit is 3.</comment>
 		</line>
-		<line linenr="236" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="238" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: Xenon have been overhauled to focus more on defense. OCV focus more on offense.</comment>
 		</line>
-		<line linenr="237" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionLimit</var>
 			<text> </text>
 			<text>=</text>
@@ -2254,16 +2256,16 @@
 			<text>=</text>
 			<text>'mayhem_xenonInvasionLimit'</text>
 		</line>
-		<line linenr="238" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="239" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="240" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="241" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: Grace period is now 24 hours (was 48).</comment>
 		</line>
-		<line linenr="240" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="242" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isOriginGalaxy</var>
 		</line>
-		<line linenr="241" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="243" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2274,7 +2276,7 @@
 			<text> </text>
 			<var>$originGracePeriod</var>
 		</line>
-		<line linenr="242" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="244" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionLimit</var>
 			<text> </text>
 			<text>=</text>
@@ -2285,14 +2287,14 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="243" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="245" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="244" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="245" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="246" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="247" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Check if any small groups have been eliminated.</comment>
 		</line>
-		<line linenr="246" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="248" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionGroups.small</var>
 			<text> </text>
 			<text>=</text>
@@ -2308,7 +2310,7 @@
 			<text>=</text>
 			<text>'mayhem_xenonInvasionGroups.small'</text>
 		</line>
-		<line linenr="247" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="249" indent="&#160;&#160;&#160;&#160;">
 			<var>$i</var>
 			<text> </text>
 			<text>=</text>
@@ -2321,17 +2323,17 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.small</var>
 		</line>
-		<line linenr="248" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="250" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="249" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="251" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="250" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="252" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionGroup.small</var>
 			<text> </text>
 			<text>=</text>
@@ -2341,10 +2343,10 @@
 			<var>$i</var>
 			<text>]</text>
 		</line>
-		<line linenr="251" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="253" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Not very accurate because we only check the leader, but it's enough.</comment>
 		</line>
-		<line linenr="252" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="254" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2354,7 +2356,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="253" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="255" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -2371,10 +2373,10 @@
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="254" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="256" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="255" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="257" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -2390,7 +2392,7 @@
 			<text>=</text>
 			<var>$xenonInvasionGroups.small</var>
 		</line>
-		<line linenr="256" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$smallXenonInvasionGroups.s</var>
 			<text> </text>
 			<text>=</text>
@@ -2403,11 +2405,11 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.small</var>
 		</line>
-		<line linenr="257" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="258" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="259" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="260" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Check if any large groups have been eliminated.</comment>
 		</line>
-		<line linenr="259" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionGroups.big</var>
 			<text> </text>
 			<text>=</text>
@@ -2423,7 +2425,7 @@
 			<text>=</text>
 			<text>'mayhem_xenonInvasionGroups.big'</text>
 		</line>
-		<line linenr="260" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$i</var>
 			<text> </text>
 			<text>=</text>
@@ -2436,17 +2438,17 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.big</var>
 		</line>
-		<line linenr="261" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="262" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="263" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="265" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$xenonInvasionGroup.big</var>
 			<text> </text>
 			<text>=</text>
@@ -2456,10 +2458,10 @@
 			<var>$i</var>
 			<text>]</text>
 		</line>
-		<line linenr="264" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="266" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Not very accurate because we only check the leader, but it's enough.</comment>
 		</line>
-		<line linenr="265" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="267" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2469,7 +2471,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="266" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="268" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -2486,10 +2488,10 @@
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="267" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="269" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="268" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="270" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -2505,7 +2507,7 @@
 			<text>=</text>
 			<var>$xenonInvasionGroups.big</var>
 		</line>
-		<line linenr="269" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$bigXenonInvasionGroups.s</var>
 			<text> </text>
 			<text>=</text>
@@ -2518,11 +2520,11 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.big</var>
 		</line>
-		<line linenr="270" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="271" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="272" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="273" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* 2 hour grace period from gamestart before spawning.</comment>
 		</line>
-		<line linenr="272" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="274" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -2531,10 +2533,10 @@
 			<text> </text>
 			<var>$xenonGracePeriod</var>
 		</line>
-		<line linenr="273" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.0.2: Now check sector if station exists. Also moved big Xenon timeout refresher to just before committing to the spawn.</comment>
 		</line>
-		<line linenr="274" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="276" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -2554,7 +2556,7 @@
 			<text>=</text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="275" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="277" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$station.exists</var>
 			<text> </text>
 			<text>=</text>
@@ -2564,18 +2566,18 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="276" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="278" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$xenonLeader</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="277" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="278" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="279" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="280" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Small invasions prefer Jump Beacons, then Xenon Stations and the portal.</comment>
 		</line>
-		<line linenr="279" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="281" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -2596,7 +2598,7 @@
 			<text> </text>
 			<var>$station.exists</var>
 		</line>
-		<line linenr="280" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="282" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -2608,20 +2610,20 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="281" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="283" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetSmallXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="282" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="284" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CreateXenonInvadersSmall</var>
 			<text>:</text>
 		</line>
-		<line linenr="283" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="284" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="285" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="286" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$xenonLeader</var>
@@ -2629,7 +2631,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="285" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="287" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$xenonLeader</var>
@@ -2640,7 +2642,7 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.small</var>
 		</line>
-		<line linenr="286" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="288" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -2656,17 +2658,17 @@
 			<text>=</text>
 			<var>$xenonInvasionGroups.small</var>
 		</line>
-		<line linenr="287" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="289" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="288" indent="&#160;&#160;&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="289" indent="&#160;&#160;&#160;&#160;&#160;" />
 		<line linenr="290" indent="&#160;&#160;&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="291" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="292" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Big invasions</comment>
 		</line>
-		<line linenr="291" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="293" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -2683,10 +2685,10 @@
 			<text> </text>
 			<var>$xenonInvasionLimit</var>
 		</line>
-		<line linenr="292" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="294" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH 1.6: big invasion is no longer guaranteed to spawn at a Jump Beacon. Can spawn from either Jump Beacons or Xenon Stations.</comment>
 		</line>
-		<line linenr="293" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="295" indent="&#160;&#160;&#160;&#160;">
 			<var>$xenonJumpBeacons</var>
 			<text> </text>
 			<text>=</text>
@@ -2710,7 +2712,7 @@
 			<text>=</text>
 			<var>{Neutral Race Jump Beacon}</var>
 		</line>
-		<line linenr="294" indent="&#160;&#160;&#160;">
+		<line linenr="296" indent="&#160;&#160;&#160;">
 			<var>$xenonStations</var>
 			<text> </text>
 			<text>=</text>
@@ -2734,7 +2736,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="295" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="297" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$xenonStations</var>
 			<text> </text>
 			<text>=</text>
@@ -2758,7 +2760,7 @@
 			<text>=</text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="296" indent="&#160;&#160;&#160;">
+		<line linenr="298" indent="&#160;&#160;&#160;">
 			<var>$portal</var>
 			<text> </text>
 			<text>=</text>
@@ -2774,7 +2776,7 @@
 			<text>=</text>
 			<text>'mayhem_ocvMainPortal'</text>
 		</line>
-		<line linenr="297" indent="&#160;&#160;">
+		<line linenr="299" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2784,7 +2786,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="298" indent="&#160;&#160;">
+		<line linenr="300" indent="&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$portal</var>
@@ -2795,8 +2797,8 @@
 			<text> </text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="299" indent="&#160;&#160;" />
-		<line linenr="300" indent="&#160;" interruptable="@">
+		<line linenr="301" indent="&#160;&#160;" />
+		<line linenr="302" indent="&#160;" interruptable="@">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -2816,8 +2818,8 @@
 			<text>=</text>
 			<var>$xenonStations</var>
 		</line>
-		<line linenr="301" indent="&#160;" />
-		<line linenr="302" indent="&#160;">
+		<line linenr="303" indent="&#160;" />
+		<line linenr="304" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$station</var>
@@ -2825,7 +2827,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="303" indent="&#160;">
+		<line linenr="305" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -2837,20 +2839,20 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="304" indent="&#160;&#160;">
+		<line linenr="306" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetBigXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="305" indent="&#160;&#160;">
+		<line linenr="307" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CreateXenonInvadersBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="306" indent="&#160;&#160;&#160;" />
-		<line linenr="307" indent="&#160;&#160;&#160;">
+		<line linenr="308" indent="&#160;&#160;&#160;" />
+		<line linenr="309" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$xenonLeader</var>
@@ -2858,7 +2860,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="308" indent="&#160;&#160;&#160;">
+		<line linenr="310" indent="&#160;&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$xenonLeader</var>
@@ -2869,7 +2871,7 @@
 			<text> </text>
 			<var>$xenonInvasionGroups.big</var>
 		</line>
-		<line linenr="309" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="311" indent="&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -2885,48 +2887,48 @@
 			<text>=</text>
 			<var>$xenonInvasionGroups.big</var>
 		</line>
-		<line linenr="310" indent="&#160;&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="311" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="313" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="312" indent="&#160;&#160;">
+		<line linenr="314" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="313" indent="&#160;" />
-		<line linenr="314" indent="&#160;">
+		<line linenr="315" indent="&#160;" />
+		<line linenr="316" indent="&#160;">
 			<comment>* End 2 hour check</comment>
 		</line>
-		<line linenr="315" indent="&#160;">
+		<line linenr="317" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="316" indent="&#160;" />
-		<line linenr="317" indent="&#160;">
+		<line linenr="318" indent="&#160;" />
+		<line linenr="319" indent="&#160;">
 			<comment>* End Xenon timeout check</comment>
 		</line>
-		<line linenr="318" indent="&#160;&#160;">
+		<line linenr="320" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="319" indent="&#160;&#160;" />
-		<line linenr="320" indent="&#160;&#160;">
+		<line linenr="321" indent="&#160;&#160;" />
+		<line linenr="322" indent="&#160;&#160;">
 			<comment>* End Xenon Station check</comment>
 		</line>
-		<line linenr="321" indent="&#160;&#160;&#160;">
+		<line linenr="323" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="322" indent="&#160;&#160;" />
-		<line linenr="323" indent="&#160;&#160;">
+		<line linenr="324" indent="&#160;&#160;" />
+		<line linenr="325" indent="&#160;&#160;">
 			<comment>* End post-Crisis grace period</comment>
 		</line>
-		<line linenr="324" indent="&#160;&#160;">
+		<line linenr="326" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="325" indent="&#160;&#160;" />
-		<line linenr="326" indent="&#160;&#160;">
+		<line linenr="327" indent="&#160;&#160;" />
+		<line linenr="328" indent="&#160;&#160;">
 			<comment>* Favor timeouts.</comment>
 		</line>
-		<line linenr="327" indent="&#160;&#160;">
+		<line linenr="329" indent="&#160;&#160;">
 			<var>$XS.Iterator5</var>
 			<text> </text>
 			<text>=</text>
@@ -2939,17 +2941,17 @@
 			<text> </text>
 			<var>$races</var>
 		</line>
-		<line linenr="328" indent="&#160;&#160;&#160;">
+		<line linenr="330" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="329" indent="&#160;&#160;&#160;">
+		<line linenr="331" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="330" indent="&#160;&#160;&#160;">
+		<line linenr="332" indent="&#160;&#160;&#160;">
 			<var>$race</var>
 			<text> </text>
 			<text>=</text>
@@ -2959,7 +2961,7 @@
 			<var>$XS.Iterator5</var>
 			<text>]</text>
 		</line>
-		<line linenr="331" indent="&#160;&#160;&#160;">
+		<line linenr="333" indent="&#160;&#160;&#160;">
 			<var>$favorsRace</var>
 			<text> </text>
 			<text>=</text>
@@ -2976,7 +2978,7 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="332" indent="&#160;&#160;&#160;">
+		<line linenr="334" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator6</var>
 			<text> </text>
 			<text>=</text>
@@ -2989,17 +2991,17 @@
 			<text> </text>
 			<var>$favorNames</var>
 		</line>
-		<line linenr="333" indent="&#160;&#160;&#160;">
+		<line linenr="335" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator6</var>
 		</line>
-		<line linenr="334" indent="&#160;&#160;&#160;">
+		<line linenr="336" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator6</var>
 		</line>
-		<line linenr="335" indent="&#160;&#160;&#160;">
+		<line linenr="337" indent="&#160;&#160;&#160;">
 			<var>$favorName</var>
 			<text> </text>
 			<text>=</text>
@@ -3009,7 +3011,7 @@
 			<var>$XS.Iterator6</var>
 			<text>]</text>
 		</line>
-		<line linenr="336" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="338" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -3018,7 +3020,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="337" indent="&#160;&#160;&#160;">
+		<line linenr="339" indent="&#160;&#160;&#160;">
 			<var>$timeout</var>
 			<text> </text>
 			<text>=</text>
@@ -3035,17 +3037,17 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="338" indent="&#160;&#160;&#160;">
+		<line linenr="340" indent="&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$timeout</var>
 		</line>
-		<line linenr="339" indent="&#160;&#160;&#160;">
+		<line linenr="341" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="340" indent="&#160;&#160;">
+		<line linenr="342" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3056,7 +3058,7 @@
 			<text> </text>
 			<var>$timeout</var>
 		</line>
-		<line linenr="341" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="343" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3078,20 +3080,20 @@
 			<text>=</text>
 			<var>$favorName</var>
 		</line>
-		<line linenr="342" indent="&#160;&#160;&#160;">
+		<line linenr="344" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="343" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="344" indent="&#160;&#160;" />
 		<line linenr="345" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="346" indent="&#160;&#160;" />
+		<line linenr="347" indent="&#160;&#160;">
 			<comment>* Priority targets (diplomacy).</comment>
 		</line>
-		<line linenr="346" indent="&#160;&#160;">
+		<line linenr="348" indent="&#160;&#160;">
 			<comment>* Add-Ons 2.2: Cannot be Phanon. Asterisk is now colored to denote whose priority target.</comment>
 		</line>
-		<line linenr="347" indent="&#160;&#160;">
+		<line linenr="349" indent="&#160;&#160;">
 			<var>$XS.Iterator7</var>
 			<text> </text>
 			<text>=</text>
@@ -3104,17 +3106,17 @@
 			<text> </text>
 			<var>$races</var>
 		</line>
-		<line linenr="348" indent="&#160;&#160;&#160;">
+		<line linenr="350" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator7</var>
 		</line>
-		<line linenr="349" indent="&#160;&#160;">
+		<line linenr="351" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator7</var>
 		</line>
-		<line linenr="350" indent="&#160;&#160;">
+		<line linenr="352" indent="&#160;&#160;">
 			<var>$race1</var>
 			<text> </text>
 			<text>=</text>
@@ -3124,11 +3126,11 @@
 			<var>$XS.Iterator7</var>
 			<text>]</text>
 		</line>
-		<line linenr="351" indent="&#160;&#160;" />
-		<line linenr="352" indent="&#160;&#160;">
+		<line linenr="353" indent="&#160;&#160;" />
+		<line linenr="354" indent="&#160;&#160;">
 			<comment>* Cannot be a priority target assigned by the player or Phanon (Phanon does not require Favor Points).</comment>
 		</line>
-		<line linenr="353" indent="&#160;&#160;">
+		<line linenr="355" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3147,10 +3149,10 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="354" indent="&#160;&#160;">
+		<line linenr="356" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="355" indent="&#160;&#160;" interruptable="@">
+		<line linenr="357" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -3159,7 +3161,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="356" indent="&#160;&#160;&#160;">
+		<line linenr="358" indent="&#160;&#160;&#160;">
 			<var>$var</var>
 			<text> </text>
 			<text>=</text>
@@ -3170,7 +3172,7 @@
 			<text> </text>
 			<var>$race1</var>
 		</line>
-		<line linenr="357" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="359" indent="&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
@@ -3186,11 +3188,11 @@
 			<text>=</text>
 			<var>$var</var>
 		</line>
-		<line linenr="358" indent="&#160;&#160;&#160;" />
-		<line linenr="359" indent="&#160;&#160;&#160;">
+		<line linenr="360" indent="&#160;&#160;&#160;" />
+		<line linenr="361" indent="&#160;&#160;&#160;">
 			<comment>* Keep the current target while it remains valid.</comment>
 		</line>
-		<line linenr="360" indent="&#160;&#160;&#160;">
+		<line linenr="362" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -3198,7 +3200,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="361" indent="&#160;&#160;&#160;">
+		<line linenr="363" indent="&#160;&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -3212,7 +3214,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="362" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="364" indent="&#160;&#160;&#160;&#160;">
 			<var>$target.originalOwner</var>
 			<text> </text>
 			<text>=</text>
@@ -3231,11 +3233,11 @@
 			<text>=</text>
 			<text>'mayhem_priorityTargetOwner'</text>
 		</line>
-		<line linenr="363" indent="&#160;&#160;&#160;" />
-		<line linenr="364" indent="&#160;&#160;&#160;">
+		<line linenr="365" indent="&#160;&#160;&#160;" />
+		<line linenr="366" indent="&#160;&#160;&#160;">
 			<comment>* Keep the target only while ownership and hostilities (with the original owner) remain unchanged.</comment>
 		</line>
-		<line linenr="365" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="367" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$hasTotalWar</var>
 			<text> </text>
 			<text>=</text>
@@ -3259,7 +3261,7 @@
 			<text>=</text>
 			<var>$target.originalOwner</var>
 		</line>
-		<line linenr="366" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="368" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$isHostile</var>
 			<text> </text>
 			<text>=</text>
@@ -3283,8 +3285,8 @@
 			<text>=</text>
 			<var>$target.originalOwner</var>
 		</line>
-		<line linenr="367" indent="&#160;&#160;&#160;" />
-		<line linenr="368" indent="&#160;&#160;&#160;">
+		<line linenr="369" indent="&#160;&#160;&#160;" />
+		<line linenr="370" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3305,39 +3307,39 @@
 			<var>$isHostile</var>
 			<text>)</text>
 		</line>
-		<line linenr="369" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="371" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="370" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="371" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="372" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="373" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Target is no longer valid. Restore its original name and clear the mark.</comment>
 		</line>
-		<line linenr="372" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="374" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>ClearPriorityTarget</var>
 			<text>:</text>
-		</line>
-		<line linenr="373" indent="&#160;&#160;&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="374" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Target is dead. Clear the priority target and select a new one.</comment>
 		</line>
 		<line linenr="375" indent="&#160;&#160;&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="376" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Target is dead. Clear the priority target and select a new one.</comment>
+		</line>
+		<line linenr="377" indent="&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>ClearPriorityTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="376" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="378" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="377" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="378" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="379" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="380" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Faction needs an Outpost before it can assign a priority target.</comment>
 		</line>
-		<line linenr="379" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="381" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$race1.Outposts</var>
 			<text> </text>
 			<text>=</text>
@@ -3357,21 +3359,21 @@
 			<text>=</text>
 			<var>$race1</var>
 		</line>
-		<line linenr="380" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="382" indent="&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$race1.Outposts</var>
 		</line>
-		<line linenr="381" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="383" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="382" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="383" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="384" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="385" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Randomize enemy search order. Only Commonwealth factions can be selected.</comment>
 		</line>
-		<line linenr="384" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="386" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$commonwealth</var>
 			<text> </text>
 			<text>=</text>
@@ -3391,22 +3393,22 @@
 			<text>=</text>
 			<var>$commonwealth</var>
 		</line>
-		<line linenr="385" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="387" indent="&#160;&#160;&#160;&#160;">
 			<var>$enemy</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="386" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="388" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="387" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="388" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="389" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="390" indent="&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator8</var>
 			<text> </text>
 			<text>=</text>
@@ -3419,17 +3421,17 @@
 			<text> </text>
 			<var>$commonwealth</var>
 		</line>
-		<line linenr="389" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="391" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator8</var>
 		</line>
-		<line linenr="390" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="392" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator8</var>
 		</line>
-		<line linenr="391" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="393" indent="&#160;&#160;&#160;&#160;">
 			<var>$race2</var>
 			<text> </text>
 			<text>=</text>
@@ -3439,7 +3441,7 @@
 			<var>$XS.Iterator8</var>
 			<text>]</text>
 		</line>
-		<line linenr="392" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="394" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3450,11 +3452,11 @@
 			<text> </text>
 			<var>$race1</var>
 		</line>
-		<line linenr="393" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="395" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="394" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="395" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="396" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="397" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$hasTotalWar</var>
 			<text> </text>
 			<text>=</text>
@@ -3478,7 +3480,7 @@
 			<text>=</text>
 			<var>$race2</var>
 		</line>
-		<line linenr="396" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="398" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$isHostile</var>
 			<text> </text>
 			<text>=</text>
@@ -3502,7 +3504,7 @@
 			<text>=</text>
 			<var>$race2</var>
 		</line>
-		<line linenr="397" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="399" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3515,14 +3517,14 @@
 			<text>!</text>
 			<var>$isHostile</var>
 		</line>
-		<line linenr="398" indent="&#160;&#160;&#160;">
+		<line linenr="400" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="399" indent="&#160;&#160;&#160;" />
-		<line linenr="400" indent="&#160;&#160;&#160;">
+		<line linenr="401" indent="&#160;&#160;&#160;" />
+		<line linenr="402" indent="&#160;&#160;&#160;">
 			<comment>* Priority targets are M7s assigned to major military operations.</comment>
 		</line>
-		<line linenr="401" indent="&#160;&#160;&#160;">
+		<line linenr="403" indent="&#160;&#160;&#160;">
 			<var>$targets</var>
 			<text> </text>
 			<text>=</text>
@@ -3546,7 +3548,7 @@
 			<text>=</text>
 			<var>[M7]</var>
 		</line>
-		<line linenr="402" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="404" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$targets</var>
 			<text> </text>
 			<text>=</text>
@@ -3566,8 +3568,8 @@
 			<text>=</text>
 			<var>$targets</var>
 		</line>
-		<line linenr="403" indent="&#160;&#160;" />
-		<line linenr="404" indent="&#160;&#160;">
+		<line linenr="405" indent="&#160;&#160;" />
+		<line linenr="406" indent="&#160;&#160;">
 			<var>$XS.Iterator9</var>
 			<text> </text>
 			<text>=</text>
@@ -3580,17 +3582,17 @@
 			<text> </text>
 			<var>$targets</var>
 		</line>
-		<line linenr="405" indent="&#160;&#160;">
+		<line linenr="407" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator9</var>
 		</line>
-		<line linenr="406" indent="&#160;&#160;">
+		<line linenr="408" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator9</var>
 		</line>
-		<line linenr="407" indent="&#160;&#160;&#160;">
+		<line linenr="409" indent="&#160;&#160;&#160;">
 			<var>$candidate</var>
 			<text> </text>
 			<text>=</text>
@@ -3600,11 +3602,11 @@
 			<var>$XS.Iterator9</var>
 			<text>]</text>
 		</line>
-		<line linenr="408" indent="&#160;&#160;" />
-		<line linenr="409" indent="&#160;&#160;">
+		<line linenr="410" indent="&#160;&#160;" />
+		<line linenr="411" indent="&#160;&#160;">
 			<comment>* Must still be alive.</comment>
 		</line>
-		<line linenr="410" indent="&#160;&#160;">
+		<line linenr="412" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -3614,14 +3616,14 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="411" indent="&#160;&#160;">
+		<line linenr="413" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="412" indent="&#160;&#160;" />
-		<line linenr="413" indent="&#160;&#160;">
+		<line linenr="414" indent="&#160;&#160;" />
+		<line linenr="415" indent="&#160;&#160;">
 			<comment>* Candidate must still be under current ownership.</comment>
 		</line>
-		<line linenr="414" indent="&#160;&#160;">
+		<line linenr="416" indent="&#160;&#160;">
 			<var>$candidate.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -3635,7 +3637,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="415" indent="&#160;&#160;">
+		<line linenr="417" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3646,14 +3648,14 @@
 			<text> </text>
 			<var>$race2</var>
 		</line>
-		<line linenr="416" indent="&#160;&#160;">
+		<line linenr="418" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="417" indent="&#160;&#160;" />
-		<line linenr="418" indent="&#160;&#160;">
+		<line linenr="419" indent="&#160;&#160;" />
+		<line linenr="420" indent="&#160;&#160;">
 			<comment>* Must be in a battle group, border patrol, rearguard, or task force squadron. Does not have to be the leader.</comment>
 		</line>
-		<line linenr="419" indent="&#160;&#160;&#160;">
+		<line linenr="421" indent="&#160;&#160;&#160;">
 			<var>$isBattleGroup</var>
 			<text> </text>
 			<text>=</text>
@@ -3677,7 +3679,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="420" indent="&#160;&#160;">
+		<line linenr="422" indent="&#160;&#160;">
 			<var>$isBorderPatrol</var>
 			<text> </text>
 			<text>=</text>
@@ -3701,7 +3703,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="421" indent="&#160;&#160;&#160;">
+		<line linenr="423" indent="&#160;&#160;&#160;">
 			<var>$isRearguard</var>
 			<text> </text>
 			<text>=</text>
@@ -3725,7 +3727,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="422" indent="&#160;&#160;">
+		<line linenr="424" indent="&#160;&#160;">
 			<var>$isTaskForce</var>
 			<text> </text>
 			<text>=</text>
@@ -3749,8 +3751,8 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="423" indent="&#160;&#160;&#160;" />
-		<line linenr="424" indent="&#160;&#160;">
+		<line linenr="425" indent="&#160;&#160;&#160;" />
+		<line linenr="426" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3773,14 +3775,14 @@
 			<text>!</text>
 			<var>$isTaskForce</var>
 		</line>
-		<line linenr="425" indent="&#160;&#160;&#160;">
+		<line linenr="427" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="426" indent="&#160;&#160;" />
-		<line linenr="427" indent="&#160;&#160;&#160;">
+		<line linenr="428" indent="&#160;&#160;" />
+		<line linenr="429" indent="&#160;&#160;&#160;">
 			<comment>* A ship can only be one faction's priority target.</comment>
 		</line>
-		<line linenr="428" indent="&#160;&#160;">
+		<line linenr="430" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3799,14 +3801,14 @@
 			<text>=</text>
 			<text>'mayhem_priorityTarget'</text>
 		</line>
-		<line linenr="429" indent="&#160;&#160;&#160;">
+		<line linenr="431" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="430" indent="&#160;&#160;" />
-		<line linenr="431" indent="&#160;&#160;&#160;">
+		<line linenr="432" indent="&#160;&#160;" />
+		<line linenr="433" indent="&#160;&#160;&#160;">
 			<comment>* Found a target within all M7s.</comment>
 		</line>
-		<line linenr="432" indent="&#160;&#160;">
+		<line linenr="434" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$candidate</var>
@@ -3814,51 +3816,51 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="433" indent="&#160;&#160;&#160;">
+		<line linenr="435" indent="&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$candidate</var>
 		</line>
-		<line linenr="434" indent="&#160;&#160;&#160;">
+		<line linenr="436" indent="&#160;&#160;&#160;">
 			<var>$enemy</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$race2</var>
 		</line>
-		<line linenr="435" indent="&#160;&#160;">
+		<line linenr="437" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="436" indent="&#160;&#160;">
+		<line linenr="438" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="437" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="438" indent="&#160;&#160;" />
 		<line linenr="439" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="440" indent="&#160;&#160;" />
+		<line linenr="441" indent="&#160;&#160;">
 			<comment>* Found a target within this enemy faction.</comment>
 		</line>
-		<line linenr="440" indent="&#160;&#160;">
+		<line linenr="442" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
 		</line>
-		<line linenr="441" indent="&#160;&#160;">
+		<line linenr="443" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="442" indent="&#160;">
+		<line linenr="444" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="443" indent="&#160;" />
-		<line linenr="444" indent="&#160;">
+		<line linenr="445" indent="&#160;" />
+		<line linenr="446" indent="&#160;">
 			<comment>* No eligible priority target was found.</comment>
 		</line>
-		<line linenr="445" indent="&#160;">
+		<line linenr="447" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -3868,14 +3870,14 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="446" indent="&#160;&#160;">
+		<line linenr="448" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="447" indent="&#160;&#160;" />
-		<line linenr="448" indent="&#160;&#160;&#160;">
+		<line linenr="449" indent="&#160;&#160;" />
+		<line linenr="450" indent="&#160;&#160;&#160;">
 			<comment>* Found a valid target.</comment>
 		</line>
-		<line linenr="449" indent="&#160;&#160;">
+		<line linenr="451" indent="&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -3891,7 +3893,7 @@
 			<text>=</text>
 			<var>$target</var>
 		</line>
-		<line linenr="450" indent="&#160;">
+		<line linenr="452" indent="&#160;">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3910,7 +3912,7 @@
 			<text>=</text>
 			<var>$race1</var>
 		</line>
-		<line linenr="451" indent="&#160;">
+		<line linenr="453" indent="&#160;">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3929,8 +3931,8 @@
 			<text>=</text>
 			<var>$enemy</var>
 		</line>
-		<line linenr="452" indent="&#160;" />
-		<line linenr="453" indent="&#160;">
+		<line linenr="454" indent="&#160;" />
+		<line linenr="455" indent="&#160;">
 			<var>$target.name</var>
 			<text> </text>
 			<text>=</text>
@@ -3942,7 +3944,7 @@
 			<text> </text>
 			<text>name</text>
 		</line>
-		<line linenr="454" indent="&#160;">
+		<line linenr="456" indent="&#160;">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3961,11 +3963,11 @@
 			<text>=</text>
 			<var>$target.name</var>
 		</line>
-		<line linenr="455" indent="&#160;" />
-		<line linenr="456" indent="&#160;">
+		<line linenr="457" indent="&#160;" />
+		<line linenr="458" indent="&#160;">
 			<comment>* Add-Ons 2.2: Color denotes which faction assigned the priority target.</comment>
 		</line>
-		<line linenr="457" indent="&#160;">
+		<line linenr="459" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$race1</var>
@@ -3974,30 +3976,12 @@
 			<text> </text>
 			<var>[Argon]</var>
 		</line>
-		<line linenr="458" indent="&#160;">
-			<var>$color</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'b'</text>
-		</line>
-		<line linenr="459" indent="&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$race1</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Boron]</var>
-		</line>
 		<line linenr="460" indent="&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'g'</text>
+			<text>'b'</text>
 		</line>
 		<line linenr="461" indent="&#160;&#160;">
 			<text>else</text>
@@ -4008,16 +3992,34 @@
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<var>[Split]</var>
+			<var>[Boron]</var>
 		</line>
 		<line linenr="462" indent="&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
+			<text>'g'</text>
+		</line>
+		<line linenr="463" indent="&#160;&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$race1</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Split]</var>
+		</line>
+		<line linenr="464" indent="&#160;">
+			<var>$color</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
 			<text>'m'</text>
 		</line>
-		<line linenr="463" indent="&#160;">
+		<line linenr="465" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -4028,14 +4030,14 @@
 			<text> </text>
 			<var>[Paranid]</var>
 		</line>
-		<line linenr="464" indent="&#160;&#160;">
+		<line linenr="466" indent="&#160;&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'o'</text>
 		</line>
-		<line linenr="465" indent="&#160;&#160;">
+		<line linenr="467" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -4046,30 +4048,12 @@
 			<text> </text>
 			<var>[Teladi]</var>
 		</line>
-		<line linenr="466" indent="&#160;&#160;">
-			<var>$color</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>'y'</text>
-		</line>
-		<line linenr="467" indent="&#160;&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$race1</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Terran]</var>
-		</line>
 		<line linenr="468" indent="&#160;&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'c'</text>
+			<text>'y'</text>
 		</line>
 		<line linenr="469" indent="&#160;&#160;&#160;">
 			<text>else</text>
@@ -4080,33 +4064,51 @@
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<var>[Yaki]</var>
+			<var>[Terran]</var>
 		</line>
 		<line linenr="470" indent="&#160;&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
+			<text>'c'</text>
+		</line>
+		<line linenr="471" indent="&#160;&#160;&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$race1</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Yaki]</var>
+		</line>
+		<line linenr="472" indent="&#160;&#160;">
+			<var>$color</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
 			<text>'r'</text>
 		</line>
-		<line linenr="471" indent="&#160;">
+		<line linenr="473" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="472" indent="&#160;">
+		<line linenr="474" indent="&#160;">
 			<comment>* Should never happen.</comment>
 		</line>
-		<line linenr="473" indent="&#160;">
+		<line linenr="475" indent="&#160;">
 			<var>$color</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'d'</text>
 		</line>
-		<line linenr="474" indent="&#160;">
+		<line linenr="476" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="475" indent="&#160;" />
-		<line linenr="476" indent="&#160;&#160;" interruptable="@">
+		<line linenr="477" indent="&#160;" />
+		<line linenr="478" indent="&#160;&#160;" interruptable="@">
 			<var>$asterisk</var>
 			<text> </text>
 			<text>=</text>
@@ -4130,7 +4132,7 @@
 			<text>=</text>
 			<var>$color</var>
 		</line>
-		<line linenr="477" indent="&#160;&#160;">
+		<line linenr="479" indent="&#160;&#160;">
 			<var>$target.name</var>
 			<text> </text>
 			<text>=</text>
@@ -4141,7 +4143,7 @@
 			<text> </text>
 			<var>$target.name</var>
 		</line>
-		<line linenr="478" indent="&#160;&#160;&#160;">
+		<line linenr="480" indent="&#160;&#160;&#160;">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4153,18 +4155,18 @@
 			<text> </text>
 			<var>$target.name</var>
 		</line>
-		<line linenr="479" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="480" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="481" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="482" indent="&#160;&#160;&#160;&#160;">
 			<comment>* End priority target selection.</comment>
 		</line>
-		<line linenr="481" indent="&#160;&#160;&#160;">
+		<line linenr="483" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="482" indent="&#160;&#160;" />
-		<line linenr="483" indent="&#160;">
+		<line linenr="484" indent="&#160;&#160;" />
+		<line linenr="485" indent="&#160;">
 			<comment>* Safety: remove coalitions when needed. Even though coalitions are updated at each conquer, sometimes a coalition cannot be properly removed.</comment>
 		</line>
-		<line linenr="484" indent="&#160;">
+		<line linenr="486" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -4177,14 +4179,14 @@
 			<text> </text>
 			<var>3600</var>
 		</line>
-		<line linenr="485" indent="&#160;">
+		<line linenr="487" indent="&#160;">
 			<var>$coalitionRemovalCheck</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="486" indent="&#160;">
+		<line linenr="488" indent="&#160;">
 			<var>$XS.Iterator10</var>
 			<text> </text>
 			<text>=</text>
@@ -4197,17 +4199,17 @@
 			<text> </text>
 			<var>$commonwealth</var>
 		</line>
-		<line linenr="487" indent="&#160;">
+		<line linenr="489" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator10</var>
 		</line>
-		<line linenr="488" indent="&#160;">
+		<line linenr="490" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator10</var>
 		</line>
-		<line linenr="489" indent="&#160;">
+		<line linenr="491" indent="&#160;">
 			<var>$race</var>
 			<text> </text>
 			<text>=</text>
@@ -4217,7 +4219,7 @@
 			<var>$XS.Iterator10</var>
 			<text>]</text>
 		</line>
-		<line linenr="490" indent="&#160;" interruptable="@">
+		<line linenr="492" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4235,27 +4237,27 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="491" indent="&#160;">
+		<line linenr="493" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="492" indent="&#160;">
+		<line linenr="494" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="493" indent="&#160;" />
-		<line linenr="494" indent="&#160;&#160;" />
-		<line linenr="495" indent="&#160;&#160;&#160;">
+		<line linenr="495" indent="&#160;" />
+		<line linenr="496" indent="&#160;&#160;" />
+		<line linenr="497" indent="&#160;&#160;&#160;">
 			<comment>* Mordan8</comment>
 		</line>
-		<line linenr="496" indent="&#160;&#160;&#160;">
+		<line linenr="498" indent="&#160;&#160;&#160;">
 			<comment>* Unlock, or lock the Teladi Stock exchange depending on player notoriety with them.</comment>
 		</line>
-		<line linenr="497" indent="&#160;&#160;&#160;">
+		<line linenr="499" indent="&#160;&#160;&#160;">
 			<comment>* 3333 notoriety is reputation level 6 (close ally on easy, normal, hard).</comment>
 		</line>
-		<line linenr="498" indent="&#160;&#160;&#160;">
+		<line linenr="500" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.9.3: Must be a close friend, i.e. rank 7 on insane. Also cleaned up code by getting the station's owner (futureproofing).</comment>
 		</line>
-		<line linenr="499" indent="&#160;&#160;&#160;">
+		<line linenr="501" indent="&#160;&#160;&#160;">
 			<var>$stockExchange</var>
 			<text> </text>
 			<text>=</text>
@@ -4271,7 +4273,7 @@
 			<text>=</text>
 			<text>'mayhem_StockExchangeStation'</text>
 		</line>
-		<line linenr="500" indent="&#160;&#160;&#160;">
+		<line linenr="502" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -4280,27 +4282,27 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="501" indent="&#160;&#160;&#160;">
+		<line linenr="503" indent="&#160;&#160;&#160;">
 			<var>$noto.threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="502" indent="&#160;&#160;&#160;">
+		<line linenr="504" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="503" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="505" indent="&#160;&#160;&#160;&#160;">
 			<var>$noto.threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3333</var>
 		</line>
-		<line linenr="504" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="506" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="505" indent="&#160;&#160;&#160;">
+		<line linenr="507" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$stockExchange</var>
@@ -4308,7 +4310,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="506" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="508" indent="&#160;&#160;&#160;&#160;">
 			<var>$stockExchange.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -4322,7 +4324,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="507" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="509" indent="&#160;&#160;&#160;&#160;">
 			<var>$noto</var>
 			<text> </text>
 			<text>=</text>
@@ -4343,7 +4345,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="508" indent="&#160;&#160;&#160;">
+		<line linenr="510" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$noto</var>
@@ -4352,7 +4354,7 @@
 			<text> </text>
 			<var>$noto.threshold</var>
 		</line>
-		<line linenr="509" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="511" indent="&#160;&#160;&#160;&#160;">
 			<var>$stockExchange</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4369,10 +4371,10 @@
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="510" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="512" indent="&#160;&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="511" indent="&#160;&#160;&#160;">
+		<line linenr="513" indent="&#160;&#160;&#160;">
 			<var>$stockExchange</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4389,18 +4391,18 @@
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="512" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="514" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="513" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="515" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="514" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="515" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="516" indent="&#160;&#160;&#160;">
+		<line linenr="516" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="517" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="518" indent="&#160;&#160;&#160;">
 			<comment>* To make the game more dynamic, we check if possible coalitions are possible every 12 hours.</comment>
 		</line>
-		<line linenr="517" indent="&#160;&#160;&#160;">
+		<line linenr="519" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -4413,14 +4415,14 @@
 			<text> </text>
 			<var>43200</var>
 		</line>
-		<line linenr="518" indent="&#160;&#160;&#160;">
+		<line linenr="520" indent="&#160;&#160;&#160;">
 			<var>$coalitionCreationCheck</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="519" indent="&#160;&#160;&#160;">
+		<line linenr="521" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator11</var>
 			<text> </text>
 			<text>=</text>
@@ -4433,17 +4435,17 @@
 			<text> </text>
 			<var>$races</var>
 		</line>
-		<line linenr="520" indent="&#160;&#160;&#160;">
+		<line linenr="522" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator11</var>
 		</line>
-		<line linenr="521" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="523" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator11</var>
 		</line>
-		<line linenr="522" indent="&#160;&#160;&#160;">
+		<line linenr="524" indent="&#160;&#160;&#160;">
 			<var>$race1</var>
 			<text> </text>
 			<text>=</text>
@@ -4453,7 +4455,7 @@
 			<var>$XS.Iterator11</var>
 			<text>]</text>
 		</line>
-		<line linenr="523" indent="&#160;&#160;&#160;">
+		<line linenr="525" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator12</var>
 			<text> </text>
 			<text>=</text>
@@ -4466,17 +4468,17 @@
 			<text> </text>
 			<var>$races</var>
 		</line>
-		<line linenr="524" indent="&#160;&#160;&#160;">
+		<line linenr="526" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator12</var>
 		</line>
-		<line linenr="525" indent="&#160;&#160;&#160;">
+		<line linenr="527" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator12</var>
 		</line>
-		<line linenr="526" indent="&#160;&#160;&#160;">
+		<line linenr="528" indent="&#160;&#160;&#160;">
 			<var>$race2</var>
 			<text> </text>
 			<text>=</text>
@@ -4486,7 +4488,7 @@
 			<var>$XS.Iterator12</var>
 			<text>]</text>
 		</line>
-		<line linenr="527" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="529" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -4495,7 +4497,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="528" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="530" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -4517,36 +4519,36 @@
 			<text>=</text>
 			<var>$race2</var>
 		</line>
-		<line linenr="529" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="531" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="530" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="532" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="531" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="533" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="532" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="533" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="534" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="534" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="535" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="536" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Mordan9</comment>
 		</line>
-		<line linenr="535" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="537" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Every 20 minutes, there's a chance the A.I. races will remove your satellites.</comment>
 		</line>
-		<line linenr="536" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="538" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Chance improves with harder difficulty level.  Enabled in 9973.</comment>
 		</line>
-		<line linenr="537" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="539" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.3: Chance is 50% on insane. (1.13.1: Threshold now determined before iterating through both AI-to-player and player-to-AI loops.)</comment>
 		</line>
-		<line linenr="538" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="540" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.13.1: Fixed off-by-1 error (now random from zero to 99 rather than to 100).</comment>
 		</line>
-		<line linenr="539" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="541" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.14: Now a required modifier on insane.</comment>
 		</line>
-		<line linenr="540" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="542" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$satCleanupEnabled</var>
 			<text> </text>
 			<text>=</text>
@@ -4562,7 +4564,7 @@
 			<text>=</text>
 			<text>'EnableAIDestructionOfPlayerSats'</text>
 		</line>
-		<line linenr="541" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="543" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$satCleanupEnabled</var>
@@ -4575,7 +4577,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="542" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="544" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -4588,14 +4590,14 @@
 			<text> </text>
 			<var>1200</var>
 		</line>
-		<line linenr="543" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="545" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$spySatCleanupCheck</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="544" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="546" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$playerInfamy</var>
 			<text> </text>
 			<text>=</text>
@@ -4611,32 +4613,32 @@
 			<text>=</text>
 			<text>'playerInfamy'</text>
 		</line>
-		<line linenr="545" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="546" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="547" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="548" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Defaults: 3333 rep and 20% chance.  Modifed by difficulty.</comment>
 		</line>
-		<line linenr="547" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="549" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>20</var>
 		</line>
-		<line linenr="548" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="550" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3333</var>
 		</line>
-		<line linenr="549" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="551" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$reqRank</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="550" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="552" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -4645,17 +4647,17 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="551" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="553" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* easy</comment>
 		</line>
-		<line linenr="552" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="554" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="553" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="555" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -4666,17 +4668,17 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="554" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="556" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* medium</comment>
 		</line>
-		<line linenr="555" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="557" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>20</var>
 		</line>
-		<line linenr="556" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="558" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -4687,17 +4689,17 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="557" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="559" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* hard</comment>
 		</line>
-		<line linenr="558" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="560" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>35</var>
 		</line>
-		<line linenr="559" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="561" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -4708,46 +4710,46 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="560" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="562" indent="&#160;&#160;&#160;&#160;">
 			<comment>* insane</comment>
 		</line>
-		<line linenr="561" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="563" indent="&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>50</var>
 		</line>
-		<line linenr="562" indent="&#160;&#160;&#160;">
+		<line linenr="564" indent="&#160;&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="563" indent="&#160;&#160;&#160;">
+		<line linenr="565" indent="&#160;&#160;&#160;">
 			<var>$reqRank</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>7</var>
 		</line>
-		<line linenr="564" indent="&#160;&#160;&#160;">
+		<line linenr="566" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="565" indent="&#160;&#160;&#160;" />
-		<line linenr="566" indent="&#160;&#160;&#160;">
+		<line linenr="567" indent="&#160;&#160;&#160;" />
+		<line linenr="568" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.0.2: Apply global chance modifiers once; per-sector notoriety modifiers use $satChance.</comment>
 		</line>
-		<line linenr="567" indent="&#160;&#160;&#160;">
+		<line linenr="569" indent="&#160;&#160;&#160;">
 			<comment>* Player Infamy adds another 10%</comment>
 		</line>
-		<line linenr="568" indent="&#160;&#160;&#160;">
+		<line linenr="570" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$playerInfamy</var>
 		</line>
-		<line linenr="569" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="571" indent="&#160;&#160;&#160;&#160;">
 			<var>$chance</var>
 			<text> </text>
 			<text>=</text>
@@ -4758,14 +4760,14 @@
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="570" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="572" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="571" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="572" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="573" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="574" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Get array of all player satellites</comment>
 		</line>
-		<line linenr="573" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="575" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$sats</var>
 			<text> </text>
 			<text>=</text>
@@ -4789,7 +4791,7 @@
 			<text>=</text>
 			<var>{Neutral Race Advanced Satellite}</var>
 		</line>
-		<line linenr="574" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="576" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$satiterator</var>
 			<text> </text>
 			<text>=</text>
@@ -4802,17 +4804,17 @@
 			<text> </text>
 			<var>$sats</var>
 		</line>
-		<line linenr="575" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="577" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="576" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="578" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$satiterator</var>
 		</line>
-		<line linenr="577" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="579" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$sat</var>
 			<text> </text>
 			<text>=</text>
@@ -4822,7 +4824,7 @@
 			<var>$satiterator</var>
 			<text>]</text>
 		</line>
-		<line linenr="578" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="580" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$system</var>
 			<text> </text>
 			<text>=</text>
@@ -4834,7 +4836,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="579" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="581" indent="&#160;&#160;&#160;&#160;&#160;&#160;&#160;">
 			<var>$owner.race</var>
 			<text> </text>
 			<text>=</text>
@@ -4848,7 +4850,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="580" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="582" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -4867,16 +4869,16 @@
 			<var>[Unknown]</var>
 			<text>)</text>
 		</line>
-		<line linenr="581" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="583" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Notoriety level 6 (7 on insane) will allow your satellites to be untouched.</comment>
 		</line>
-		<line linenr="582" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="584" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.3: Reputation rank 7 is required on insane.</comment>
 		</line>
-		<line linenr="583" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="585" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.13: A permanent war ensures satellites are never safe.</comment>
 		</line>
-		<line linenr="584" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="586" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$hasPermaWar</var>
 			<text> </text>
 			<text>=</text>
@@ -4896,7 +4898,7 @@
 			<text>=</text>
 			<var>$owner.race</var>
 		</line>
-		<line linenr="585" indent="&#160;&#160;&#160;">
+		<line linenr="587" indent="&#160;&#160;&#160;">
 			<var>$not</var>
 			<text> </text>
 			<text>=</text>
@@ -4917,7 +4919,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="586" indent="&#160;&#160;&#160;">
+		<line linenr="588" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$not</var>
@@ -4930,17 +4932,17 @@
 			<text> </text>
 			<var>$hasPermaWar</var>
 		</line>
-		<line linenr="587" indent="&#160;&#160;">
+		<line linenr="589" indent="&#160;&#160;">
 			<comment>* negative notoriety adds 10% additional chance for your satellite to be taken down.</comment>
 		</line>
-		<line linenr="588" indent="&#160;">
+		<line linenr="590" indent="&#160;">
 			<var>$satChance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$chance</var>
 		</line>
-		<line linenr="589" indent="&#160;">
+		<line linenr="591" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$not</var>
@@ -4949,7 +4951,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="590" indent="">
+		<line linenr="592" indent="">
 			<var>$satChance</var>
 			<text> </text>
 			<text>=</text>
@@ -4960,11 +4962,11 @@
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="591" indent="">
+		<line linenr="593" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="592" indent="" />
-		<line linenr="593" indent="">
+		<line linenr="594" indent="" />
+		<line linenr="595" indent="">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
@@ -4981,7 +4983,7 @@
 			<text> </text>
 			<var>99</var>
 		</line>
-		<line linenr="594" indent="">
+		<line linenr="596" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$rand</var>
@@ -4990,7 +4992,7 @@
 			<text> </text>
 			<var>$satChance</var>
 		</line>
-		<line linenr="595" indent="&#160;">
+		<line linenr="597" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$sat</var>
@@ -4998,13 +5000,13 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="596" indent="&#160;">
+		<line linenr="598" indent="&#160;">
 			<comment>* Add-Ons 1.13.1: Show a tutorial when the first player satellite is removed. Many people had asked why they were being removed.</comment>
 		</line>
-		<line linenr="597" indent="&#160;">
+		<line linenr="599" indent="&#160;">
 			<comment>* No tutorial on insane - it doesn't explain plot progression or galaxy changes.</comment>
 		</line>
-		<line linenr="598" indent="&#160;&#160;">
+		<line linenr="600" indent="&#160;&#160;">
 			<var>$sat</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5019,7 +5021,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="599" indent="&#160;&#160;">
+		<line linenr="601" indent="&#160;&#160;">
 			<var>$satRemovalTutorial</var>
 			<text> </text>
 			<text>=</text>
@@ -5035,7 +5037,7 @@
 			<text>=</text>
 			<text>'ZH_satRemovalTutorial'</text>
 		</line>
-		<line linenr="600" indent="&#160;&#160;">
+		<line linenr="602" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -5049,10 +5051,10 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="601" indent="&#160;">
+		<line linenr="603" indent="&#160;">
 			<comment>* Display the player's current rank in the message.</comment>
 		</line>
-		<line linenr="602" indent="&#160;&#160;">
+		<line linenr="604" indent="&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -5068,7 +5070,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="603" indent="&#160;&#160;">
+		<line linenr="605" indent="&#160;&#160;">
 			<var>$rank</var>
 			<text> </text>
 			<text>=</text>
@@ -5093,7 +5095,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="604" indent="&#160;&#160;">
+		<line linenr="606" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -5124,7 +5126,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="605" indent="&#160;" interruptable="@">
+		<line linenr="607" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5158,19 +5160,19 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="606" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="607" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="608" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="609" indent="&#160;">
+		<line linenr="609" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="610" indent="&#160;&#160;" interruptable="@">
+		<line linenr="610" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="611" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="612" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -5179,24 +5181,24 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="611" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="612" indent="&#160;&#160;&#160;">
-			<comment>* end while $satiterator</comment>
-		</line>
 		<line linenr="613" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="614" indent="&#160;&#160;" />
-		<line linenr="615" indent="&#160;&#160;&#160;" />
-		<line linenr="616" indent="&#160;&#160;&#160;">
+		<line linenr="614" indent="&#160;&#160;&#160;">
+			<comment>* end while $satiterator</comment>
+		</line>
+		<line linenr="615" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="616" indent="&#160;&#160;" />
+		<line linenr="617" indent="&#160;&#160;&#160;" />
+		<line linenr="618" indent="&#160;&#160;&#160;">
 			<comment>* Now remove any A.I. satellites from player space, assuming relations are not great.  Fixed 35% chance per sector.</comment>
 		</line>
-		<line linenr="617" indent="&#160;&#160;&#160;">
+		<line linenr="619" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.13.1: Don't use a magic number for rep. The threshold is based on difficulty.</comment>
 		</line>
-		<line linenr="618" indent="&#160;&#160;" interruptable="@">
+		<line linenr="620" indent="&#160;&#160;" interruptable="@">
 			<var>$playerSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -5220,7 +5222,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="619" indent="&#160;">
+		<line linenr="621" indent="&#160;">
 			<var>$itty</var>
 			<text> </text>
 			<text>=</text>
@@ -5233,17 +5235,17 @@
 			<text> </text>
 			<var>$playerSectors</var>
 		</line>
-		<line linenr="620" indent="&#160;">
+		<line linenr="622" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$itty</var>
 		</line>
-		<line linenr="621" indent="">
+		<line linenr="623" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$itty</var>
 		</line>
-		<line linenr="622" indent="">
+		<line linenr="624" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -5253,7 +5255,7 @@
 			<var>$itty</var>
 			<text>]</text>
 		</line>
-		<line linenr="623" indent="">
+		<line linenr="625" indent="">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
@@ -5270,7 +5272,7 @@
 			<text> </text>
 			<var>99</var>
 		</line>
-		<line linenr="624" indent="&#160;">
+		<line linenr="626" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rand</var>
@@ -5279,7 +5281,7 @@
 			<text> </text>
 			<var>35</var>
 		</line>
-		<line linenr="625" indent="&#160;">
+		<line linenr="627" indent="&#160;">
 			<var>$sats</var>
 			<text> </text>
 			<text>=</text>
@@ -5325,7 +5327,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="626" indent="&#160;">
+		<line linenr="628" indent="&#160;">
 			<var>$satitty</var>
 			<text> </text>
 			<text>=</text>
@@ -5338,17 +5340,17 @@
 			<text> </text>
 			<var>$sats</var>
 		</line>
-		<line linenr="627" indent="&#160;">
+		<line linenr="629" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$satitty</var>
 		</line>
-		<line linenr="628" indent="&#160;">
+		<line linenr="630" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$satitty</var>
 		</line>
-		<line linenr="629" indent="&#160;&#160;">
+		<line linenr="631" indent="&#160;&#160;">
 			<var>$sat</var>
 			<text> </text>
 			<text>=</text>
@@ -5358,7 +5360,7 @@
 			<var>$satitty</var>
 			<text>]</text>
 		</line>
-		<line linenr="630" indent="&#160;">
+		<line linenr="632" indent="&#160;">
 			<var>$satowner</var>
 			<text> </text>
 			<text>=</text>
@@ -5372,7 +5374,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="631" indent="&#160;&#160;">
+		<line linenr="633" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$satowner</var>
@@ -5381,7 +5383,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="632" indent="&#160;">
+		<line linenr="634" indent="&#160;">
 			<var>$not</var>
 			<text> </text>
 			<text>=</text>
@@ -5402,7 +5404,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="633" indent="&#160;">
+		<line linenr="635" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$not</var>
@@ -5411,7 +5413,7 @@
 			<text> </text>
 			<var>$threshold</var>
 		</line>
-		<line linenr="634" indent="&#160;">
+		<line linenr="636" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5421,7 +5423,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="635" indent="&#160;&#160;">
+		<line linenr="637" indent="&#160;&#160;">
 			<var>$sat</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5436,13 +5438,13 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="636" indent="&#160;&#160;">
+		<line linenr="638" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="637" indent="&#160;&#160;">
+		<line linenr="639" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="638" indent="&#160;" interruptable="@">
+		<line linenr="640" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -5451,47 +5453,47 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="639" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="640" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="641" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="642" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="643" indent="&#160;&#160;">
 			<comment>* end while $itty</comment>
 		</line>
-		<line linenr="642" indent="&#160;">
+		<line linenr="644" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="643" indent="&#160;&#160;" />
-		<line linenr="644" indent="&#160;&#160;">
+		<line linenr="645" indent="&#160;&#160;" />
+		<line linenr="646" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="645" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="646" indent="&#160;&#160;" />
-		<line linenr="647" indent="&#160;&#160;&#160;">
+		<line linenr="647" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="648" indent="&#160;&#160;" />
 		<line linenr="649" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="650" indent="&#160;&#160;" />
+		<line linenr="651" indent="&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="650" indent="&#160;&#160;" />
-		<line linenr="651" indent="&#160;&#160;">
+		<line linenr="652" indent="&#160;&#160;" />
+		<line linenr="653" indent="&#160;&#160;">
 			<var>CreateXenonInvadersSmall</var>
 			<text>:</text>
 		</line>
-		<line linenr="652" indent="&#160;&#160;">
+		<line linenr="654" indent="&#160;&#160;">
 			<comment>* Must not be Huge ships.</comment>
 		</line>
-		<line linenr="653" indent="&#160;&#160;">
+		<line linenr="655" indent="&#160;&#160;">
 			<comment>* Add-Ons 2.0.2: Consolidated xenonDifficulty into difficulty.</comment>
 		</line>
-		<line linenr="654" indent="&#160;">
+		<line linenr="656" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -5500,10 +5502,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="655" indent="&#160;&#160;">
+		<line linenr="657" indent="&#160;&#160;">
 			<comment>* Easy: Downgrade all LX to L. -2 M3 and -1 M6 from Normal.</comment>
 		</line>
-		<line linenr="656" indent="&#160;&#160;&#160;">
+		<line linenr="658" indent="&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -5517,7 +5519,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="657" indent="&#160;&#160;&#160;">
+		<line linenr="659" indent="&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -5527,7 +5529,7 @@
 			<text> </text>
 			<var>{Xenon L}</var>
 		</line>
-		<line linenr="658" indent="&#160;&#160;&#160;">
+		<line linenr="660" indent="&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -5537,7 +5539,7 @@
 			<text> </text>
 			<var>{Xenon P}</var>
 		</line>
-		<line linenr="659" indent="&#160;&#160;">
+		<line linenr="661" indent="&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -5551,7 +5553,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="660" indent="&#160;&#160;&#160;">
+		<line linenr="662" indent="&#160;&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -5561,7 +5563,7 @@
 			<text> </text>
 			<var>7</var>
 		</line>
-		<line linenr="661" indent="&#160;&#160;&#160;">
+		<line linenr="663" indent="&#160;&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -5571,7 +5573,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="662" indent="&#160;&#160;&#160;">
+		<line linenr="664" indent="&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5582,10 +5584,10 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="663" indent="&#160;&#160;">
+		<line linenr="665" indent="&#160;&#160;">
 			<comment>* Normal: Baseline.</comment>
 		</line>
-		<line linenr="664" indent="&#160;">
+		<line linenr="666" indent="&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -5599,7 +5601,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="665" indent="&#160;">
+		<line linenr="667" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -5609,7 +5611,7 @@
 			<text> </text>
 			<var>{Xenon L}</var>
 		</line>
-		<line linenr="666" indent="">
+		<line linenr="668" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -5619,7 +5621,7 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="667" indent="">
+		<line linenr="669" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -5629,7 +5631,7 @@
 			<text> </text>
 			<var>{Xenon P}</var>
 		</line>
-		<line linenr="668" indent="">
+		<line linenr="670" indent="">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -5643,7 +5645,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="669" indent="&#160;">
+		<line linenr="671" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -5653,7 +5655,7 @@
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="670" indent="&#160;">
+		<line linenr="672" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -5663,7 +5665,7 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="671" indent="&#160;&#160;">
+		<line linenr="673" indent="&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>2</var>
@@ -5673,7 +5675,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="672" indent="&#160;">
+		<line linenr="674" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5684,10 +5686,10 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="673" indent="&#160;&#160;">
+		<line linenr="675" indent="&#160;&#160;">
 			<comment>* Hard: Upgrade all L to LX. +2 M3 and +1 M6 from Normal.</comment>
 		</line>
-		<line linenr="674" indent="&#160;">
+		<line linenr="676" indent="&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -5701,7 +5703,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="675" indent="&#160;">
+		<line linenr="677" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -5711,7 +5713,7 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="676" indent="&#160;">
+		<line linenr="678" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -5721,7 +5723,7 @@
 			<text> </text>
 			<var>{Xenon P}</var>
 		</line>
-		<line linenr="677" indent="&#160;">
+		<line linenr="679" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -5735,7 +5737,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="678" indent="&#160;">
+		<line linenr="680" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -5745,7 +5747,7 @@
 			<text> </text>
 			<var>11</var>
 		</line>
-		<line linenr="679" indent="&#160;&#160;">
+		<line linenr="681" indent="&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -5755,7 +5757,7 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="680" indent="&#160;&#160;">
+		<line linenr="682" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -5766,7 +5768,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="681" indent="&#160;&#160;&#160;">
+		<line linenr="683" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -5775,10 +5777,10 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="682" indent="&#160;&#160;&#160;">
+		<line linenr="684" indent="&#160;&#160;&#160;">
 			<comment>* Insane: Upgrade all P to PX. +4 M3 from Hard.</comment>
 		</line>
-		<line linenr="683" indent="&#160;&#160;&#160;">
+		<line linenr="685" indent="&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -5792,7 +5794,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="684" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="686" indent="&#160;&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -5802,7 +5804,7 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="685" indent="&#160;&#160;&#160;">
+		<line linenr="687" indent="&#160;&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -5812,7 +5814,7 @@
 			<text> </text>
 			<var>{OCV PX}</var>
 		</line>
-		<line linenr="686" indent="&#160;&#160;&#160;">
+		<line linenr="688" indent="&#160;&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -5826,7 +5828,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="687" indent="&#160;&#160;&#160;">
+		<line linenr="689" indent="&#160;&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -5836,7 +5838,7 @@
 			<text> </text>
 			<var>15</var>
 		</line>
-		<line linenr="688" indent="&#160;&#160;&#160;">
+		<line linenr="690" indent="&#160;&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -5846,13 +5848,13 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="689" indent="&#160;&#160;&#160;">
+		<line linenr="691" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="690" indent="&#160;&#160;&#160;">
+		<line linenr="692" indent="&#160;&#160;&#160;">
 			<comment>* OCV-aligned Insane: Normal strength.</comment>
 		</line>
-		<line linenr="691" indent="&#160;&#160;">
+		<line linenr="693" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -5866,7 +5868,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="692" indent="&#160;">
+		<line linenr="694" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -5876,7 +5878,7 @@
 			<text> </text>
 			<var>{Xenon L}</var>
 		</line>
-		<line linenr="693" indent="&#160;">
+		<line linenr="695" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -5886,7 +5888,7 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="694" indent="&#160;">
+		<line linenr="696" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -5896,7 +5898,7 @@
 			<text> </text>
 			<var>{Xenon P}</var>
 		</line>
-		<line linenr="695" indent="&#160;">
+		<line linenr="697" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -5910,7 +5912,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="696" indent="">
+		<line linenr="698" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -5920,7 +5922,7 @@
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="697" indent="">
+		<line linenr="699" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -5930,7 +5932,7 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="698" indent="">
+		<line linenr="700" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>2</var>
@@ -5940,37 +5942,37 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="699" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="700" indent="&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="701" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="702" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="703" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CreateXenonInvaders</var>
 			<text>:</text>
 		</line>
-		<line linenr="702" indent="&#160;">
+		<line linenr="704" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="703" indent="&#160;" />
-		<line linenr="704" indent="">
+		<line linenr="705" indent="&#160;" />
+		<line linenr="706" indent="">
 			<var>CreateXenonInvadersBig</var>
 			<text>:</text>
 		</line>
-		<line linenr="705" indent="">
+		<line linenr="707" indent="">
 			<comment>* Add-Ons 2.2: All big fleets now include a carrier, replacing one of the M2+.</comment>
 		</line>
-		<line linenr="706" indent="">
+		<line linenr="708" indent="">
 			<comment>* Reduced M7 quantity by 1 to emphasize Xenon's invasion fleets as secondary role.</comment>
 		</line>
-		<line linenr="707" indent="&#160;">
+		<line linenr="709" indent="&#160;">
 			<comment>* Difficulty now affects fleet quantity and quality.</comment>
 		</line>
-		<line linenr="708" indent="&#160;" />
-		<line linenr="709" indent="&#160;">
+		<line linenr="710" indent="&#160;" />
+		<line linenr="711" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>random</text>
@@ -5985,28 +5987,28 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="710" indent="&#160;">
+		<line linenr="712" indent="&#160;">
 			<var>$M2</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>{Xenon I}</var>
 		</line>
-		<line linenr="711" indent="">
+		<line linenr="713" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="712" indent="">
+		<line linenr="714" indent="">
 			<var>$M2</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>{Xenon Z}</var>
 		</line>
-		<line linenr="713" indent="">
+		<line linenr="715" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="714" indent="&#160;" />
-		<line linenr="715" indent="&#160;">
+		<line linenr="716" indent="&#160;" />
+		<line linenr="717" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -6015,10 +6017,10 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="716" indent="&#160;">
+		<line linenr="718" indent="&#160;">
 			<comment>* Easy: Downgrades the M2+ to K. -1 Q from Normal.</comment>
 		</line>
-		<line linenr="717" indent="&#160;">
+		<line linenr="719" indent="&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6032,7 +6034,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="718" indent="">
+		<line linenr="720" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6042,7 +6044,7 @@
 			<text> </text>
 			<var>{Xenon J}</var>
 		</line>
-		<line linenr="719" indent="">
+		<line linenr="721" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6052,7 +6054,7 @@
 			<text> </text>
 			<var>{Xenon K}</var>
 		</line>
-		<line linenr="720" indent="">
+		<line linenr="722" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -6062,7 +6064,7 @@
 			<text> </text>
 			<var>{Xenon C}</var>
 		</line>
-		<line linenr="721" indent="&#160;">
+		<line linenr="723" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -6076,7 +6078,7 @@
 			<text>=</text>
 			<var>3</var>
 		</line>
-		<line linenr="722" indent="&#160;">
+		<line linenr="724" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -6086,7 +6088,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="723" indent="&#160;">
+		<line linenr="725" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -6096,7 +6098,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="724" indent="&#160;">
+		<line linenr="726" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>2</var>
@@ -6106,7 +6108,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="725" indent="&#160;">
+		<line linenr="727" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -6117,10 +6119,10 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="726" indent="&#160;">
+		<line linenr="728" indent="&#160;">
 			<comment>* Normal: Baseline. Chooses a random M2+.</comment>
 		</line>
-		<line linenr="727" indent="&#160;&#160;">
+		<line linenr="729" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6134,7 +6136,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="728" indent="&#160;&#160;">
+		<line linenr="730" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6144,7 +6146,7 @@
 			<text> </text>
 			<var>{Xenon J}</var>
 		</line>
-		<line linenr="729" indent="&#160;">
+		<line linenr="731" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6154,7 +6156,7 @@
 			<text> </text>
 			<var>$M2</var>
 		</line>
-		<line linenr="730" indent="&#160;&#160;">
+		<line linenr="732" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -6164,7 +6166,7 @@
 			<text> </text>
 			<var>{Xenon C}</var>
 		</line>
-		<line linenr="731" indent="&#160;&#160;">
+		<line linenr="733" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>3</var>
@@ -6174,7 +6176,7 @@
 			<text> </text>
 			<var>{Xenon Q}</var>
 		</line>
-		<line linenr="732" indent="&#160;">
+		<line linenr="734" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -6188,7 +6190,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="733" indent="&#160;">
+		<line linenr="735" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -6198,7 +6200,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="734" indent="&#160;">
+		<line linenr="736" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>1</var>
@@ -6208,7 +6210,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="735" indent="&#160;">
+		<line linenr="737" indent="&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>2</var>
@@ -6218,7 +6220,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="736" indent="&#160;&#160;">
+		<line linenr="738" indent="&#160;&#160;">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>3</var>
@@ -6228,7 +6230,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="737" indent="">
+		<line linenr="739" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -6239,14 +6241,14 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="738" indent="">
+		<line linenr="740" indent="">
 			<comment>* Hard: Upgrades the Q to a C or an H. +1 C from Normal.</comment>
 		</line>
-		<line linenr="739" indent="">
+		<line linenr="741" indent="">
 			<comment>* The bonus M7 is either another C or an H.</comment>
 		</line>
-		<line linenr="740" indent="&#160;" />
-		<line linenr="741" indent="&#160;&#160;">
+		<line linenr="742" indent="&#160;" />
+		<line linenr="743" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>random</text>
@@ -6261,28 +6263,28 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="742" indent="&#160;&#160;">
+		<line linenr="744" indent="&#160;&#160;">
 			<var>$bonusM7</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>{Xenon C}</var>
 		</line>
-		<line linenr="743" indent="&#160;&#160;&#160;">
+		<line linenr="745" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="744" indent="&#160;&#160;">
+		<line linenr="746" indent="&#160;&#160;">
 			<var>$bonusM7</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>{Xenon H}</var>
 		</line>
-		<line linenr="745" indent="&#160;&#160;">
+		<line linenr="747" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="746" indent="&#160;&#160;" />
-		<line linenr="747" indent="&#160;&#160;">
+		<line linenr="748" indent="&#160;&#160;" />
+		<line linenr="749" indent="&#160;&#160;">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6296,7 +6298,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="748" indent="&#160;">
+		<line linenr="750" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6306,7 +6308,7 @@
 			<text> </text>
 			<var>{Xenon J}</var>
 		</line>
-		<line linenr="749" indent="&#160;">
+		<line linenr="751" indent="&#160;">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6316,7 +6318,7 @@
 			<text> </text>
 			<var>$M2</var>
 		</line>
-		<line linenr="750" indent="">
+		<line linenr="752" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -6326,7 +6328,7 @@
 			<text> </text>
 			<var>{Xenon C}</var>
 		</line>
-		<line linenr="751" indent="">
+		<line linenr="753" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>3</var>
@@ -6336,7 +6338,7 @@
 			<text> </text>
 			<var>$bonusM7</var>
 		</line>
-		<line linenr="752" indent="">
+		<line linenr="754" indent="">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -6350,7 +6352,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="753" indent="">
+		<line linenr="755" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -6360,27 +6362,27 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="754" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>1</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="755" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>2</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>2</var>
-		</line>
 		<line linenr="756" indent="">
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="757" indent="">
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="758" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>3</var>
@@ -6390,7 +6392,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="757" indent="">
+		<line linenr="759" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -6401,7 +6403,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="758" indent="">
+		<line linenr="760" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -6410,10 +6412,10 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="759" indent="">
+		<line linenr="761" indent="">
 			<comment>* Insane: Upgrades all C to G (significantly tougher than C). The H is guaranteed.</comment>
 		</line>
-		<line linenr="760" indent="">
+		<line linenr="762" indent="">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6427,7 +6429,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="761" indent="">
+		<line linenr="763" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6437,7 +6439,7 @@
 			<text> </text>
 			<var>{Xenon J}</var>
 		</line>
-		<line linenr="762" indent="">
+		<line linenr="764" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6447,7 +6449,7 @@
 			<text> </text>
 			<var>$M2</var>
 		</line>
-		<line linenr="763" indent="">
+		<line linenr="765" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -6457,7 +6459,7 @@
 			<text> </text>
 			<var>{OCV G}</var>
 		</line>
-		<line linenr="764" indent="">
+		<line linenr="766" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>3</var>
@@ -6467,7 +6469,7 @@
 			<text> </text>
 			<var>{Xenon H}</var>
 		</line>
-		<line linenr="765" indent="">
+		<line linenr="767" indent="">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -6481,7 +6483,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="766" indent="">
+		<line linenr="768" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>0</var>
@@ -6491,27 +6493,27 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="767" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>1</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="768" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>2</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>2</var>
-		</line>
 		<line linenr="769" indent="">
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="770" indent="">
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="771" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
 			<var>3</var>
@@ -6521,13 +6523,13 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="770" indent="">
+		<line linenr="772" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="771" indent="">
+		<line linenr="773" indent="">
 			<comment>* OCV-aligned Insane: Normal strength.</comment>
 		</line>
-		<line linenr="772" indent="">
+		<line linenr="774" indent="">
 			<var>$shipTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6541,7 +6543,7 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="773" indent="">
+		<line linenr="775" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6551,7 +6553,7 @@
 			<text> </text>
 			<var>{Xenon J}</var>
 		</line>
-		<line linenr="774" indent="">
+		<line linenr="776" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6561,7 +6563,7 @@
 			<text> </text>
 			<var>$M2</var>
 		</line>
-		<line linenr="775" indent="">
+		<line linenr="777" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>2</var>
@@ -6571,7 +6573,7 @@
 			<text> </text>
 			<var>{Xenon C}</var>
 		</line>
-		<line linenr="776" indent="">
+		<line linenr="778" indent="">
 			<var>$shipTypes</var>
 			<text>[</text>
 			<var>3</var>
@@ -6581,7 +6583,7 @@
 			<text> </text>
 			<var>{Xenon Q}</var>
 		</line>
-		<line linenr="777" indent="">
+		<line linenr="779" indent="">
 			<var>$shipAmounts</var>
 			<text> </text>
 			<text>=</text>
@@ -6595,30 +6597,10 @@
 			<text>=</text>
 			<var>4</var>
 		</line>
-		<line linenr="778" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>0</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="779" indent="">
-			<var>$shipAmounts</var>
-			<text>[</text>
-			<var>1</var>
-			<text>]</text>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1</var>
-		</line>
 		<line linenr="780" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
-			<var>2</var>
+			<var>0</var>
 			<text>]</text>
 			<text> </text>
 			<text>=</text>
@@ -6628,7 +6610,7 @@
 		<line linenr="781" indent="">
 			<var>$shipAmounts</var>
 			<text>[</text>
-			<var>3</var>
+			<var>1</var>
 			<text>]</text>
 			<text> </text>
 			<text>=</text>
@@ -6636,29 +6618,49 @@
 			<var>1</var>
 		</line>
 		<line linenr="782" indent="">
-			<text>end</text>
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
 		</line>
 		<line linenr="783" indent="">
-			<text>end</text>
+			<var>$shipAmounts</var>
+			<text>[</text>
+			<var>3</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
 		</line>
 		<line linenr="784" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="785" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="786" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>CreateXenonInvaders</var>
 			<text>:</text>
 		</line>
-		<line linenr="785" indent="">
+		<line linenr="787" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="786" indent="" />
-		<line linenr="787" indent="">
+		<line linenr="788" indent="" />
+		<line linenr="789" indent="">
 			<var>CreateXenonInvaders</var>
 			<text>:</text>
 		</line>
-		<line linenr="788" indent="">
+		<line linenr="790" indent="">
 			<comment>* On Hard and Insane, support types are upgraded to LX.</comment>
 		</line>
-		<line linenr="789" indent="">
+		<line linenr="791" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -6667,7 +6669,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="790" indent="">
+		<line linenr="792" indent="">
 			<var>$supportTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6681,7 +6683,7 @@
 			<text>=</text>
 			<var>1</var>
 		</line>
-		<line linenr="791" indent="">
+		<line linenr="793" indent="">
 			<var>$supportTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6691,10 +6693,10 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="792" indent="">
+		<line linenr="794" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="793" indent="">
+		<line linenr="795" indent="">
 			<var>$supportTypes</var>
 			<text> </text>
 			<text>=</text>
@@ -6708,7 +6710,7 @@
 			<text>=</text>
 			<var>2</var>
 		</line>
-		<line linenr="794" indent="">
+		<line linenr="796" indent="">
 			<var>$supportTypes</var>
 			<text>[</text>
 			<var>0</var>
@@ -6718,7 +6720,7 @@
 			<text> </text>
 			<var>{Xenon L}</var>
 		</line>
-		<line linenr="795" indent="">
+		<line linenr="797" indent="">
 			<var>$supportTypes</var>
 			<text>[</text>
 			<var>1</var>
@@ -6728,10 +6730,10 @@
 			<text> </text>
 			<var>{Xenon LX}</var>
 		</line>
-		<line linenr="796" indent="">
+		<line linenr="798" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="797" indent="">
+		<line linenr="799" indent="">
 			<var>$xenons</var>
 			<text> </text>
 			<text>=</text>
@@ -6745,7 +6747,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="798" indent="">
+		<line linenr="800" indent="">
 			<var>$posArray</var>
 			<text> </text>
 			<text>=</text>
@@ -6761,7 +6763,7 @@
 			<text> </text>
 			<text>array</text>
 		</line>
-		<line linenr="799" indent="">
+		<line linenr="801" indent="">
 			<text>append</text>
 			<text> </text>
 			<var>$sector</var>
@@ -6772,7 +6774,7 @@
 			<text> </text>
 			<var>$posArray</var>
 		</line>
-		<line linenr="800" indent="">
+		<line linenr="802" indent="">
 			<var>$index</var>
 			<text> </text>
 			<text>=</text>
@@ -6785,17 +6787,17 @@
 			<text> </text>
 			<var>$shipTypes</var>
 		</line>
-		<line linenr="801" indent="">
+		<line linenr="803" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="802" indent="">
+		<line linenr="804" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="803" indent="">
+		<line linenr="805" indent="">
 			<var>$shipType</var>
 			<text> </text>
 			<text>=</text>
@@ -6805,7 +6807,7 @@
 			<var>$index</var>
 			<text>]</text>
 		</line>
-		<line linenr="804" indent="">
+		<line linenr="806" indent="">
 			<var>$shipAmount</var>
 			<text> </text>
 			<text>=</text>
@@ -6815,7 +6817,7 @@
 			<var>$index</var>
 			<text>]</text>
 		</line>
-		<line linenr="805" indent="">
+		<line linenr="807" indent="">
 			<var>$j</var>
 			<text> </text>
 			<text>=</text>
@@ -6826,7 +6828,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="806" indent="">
+		<line linenr="808" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$j</var>
@@ -6835,7 +6837,7 @@
 			<text> </text>
 			<var>$shipAmount</var>
 		</line>
-		<line linenr="807" indent="">
+		<line linenr="809" indent="">
 			<var>$j</var>
 			<text> </text>
 			<text>=</text>
@@ -6846,7 +6848,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="808" indent="">
+		<line linenr="810" indent="">
 			<var>$quality</var>
 			<text> </text>
 			<text>=</text>
@@ -6863,7 +6865,7 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="809" indent="" interruptable="@">
+		<line linenr="811" indent="" interruptable="@">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -6899,7 +6901,7 @@
 			<text>=</text>
 			<var>$quality</var>
 		</line>
-		<line linenr="810" indent="">
+		<line linenr="812" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -6909,10 +6911,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="811" indent="">
+		<line linenr="813" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="812" indent="">
+		<line linenr="814" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -6926,11 +6928,11 @@
 			<text> </text>
 			<var>46</var>
 		</line>
-		<line linenr="813" indent="" />
-		<line linenr="814" indent="">
+		<line linenr="815" indent="" />
+		<line linenr="816" indent="">
 			<comment>* Add-Ons 2.2: All ships gain missiles. Xenon use underpowered M6/M7 and desperately need the damage.</comment>
 		</line>
-		<line linenr="815" indent="" interruptable="@">
+		<line linenr="817" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -6952,7 +6954,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="816" indent="" interruptable="@">
+		<line linenr="818" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -6974,7 +6976,7 @@
 			<text>=</text>
 			<var>$supportTypes</var>
 		</line>
-		<line linenr="817" indent="">
+		<line linenr="819" indent="">
 			<text>append</text>
 			<text> </text>
 			<var>$ship</var>
@@ -6985,17 +6987,17 @@
 			<text> </text>
 			<var>$xenons</var>
 		</line>
-		<line linenr="818" indent="">
+		<line linenr="820" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="819" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="820" indent="" />
 		<line linenr="821" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="822" indent="" />
+		<line linenr="823" indent="">
 			<comment>* Add-Ons 2.2: This script sets the invader flag.</comment>
 		</line>
-		<line linenr="822" indent="" interruptable="@">
+		<line linenr="824" indent="" interruptable="@">
 			<var>$xenonLeader</var>
 			<text> </text>
 			<text>=</text>
@@ -7015,15 +7017,15 @@
 			<text>=</text>
 			<var>$xenons</var>
 		</line>
-		<line linenr="823" indent="">
+		<line linenr="825" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="824" indent="" />
-		<line linenr="825" indent="">
+		<line linenr="826" indent="" />
+		<line linenr="827" indent="">
 			<var>SetHiveQueenTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="826" indent="">
+		<line linenr="828" indent="">
 			<var>$hiveQueenMinDelay</var>
 			<text> </text>
 			<text>=</text>
@@ -7039,7 +7041,7 @@
 			<text>=</text>
 			<text>'mayhem_hiveQueenMinDelay'</text>
 		</line>
-		<line linenr="827" indent="">
+		<line linenr="829" indent="">
 			<var>$hiveQueenMaxDelay</var>
 			<text> </text>
 			<text>=</text>
@@ -7055,7 +7057,7 @@
 			<text>=</text>
 			<text>'mayhem_hiveQueenMaxDelay'</text>
 		</line>
-		<line linenr="828" indent="">
+		<line linenr="830" indent="">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -7072,7 +7074,7 @@
 			<text> </text>
 			<var>$hiveQueenMaxDelay</var>
 		</line>
-		<line linenr="829" indent="">
+		<line linenr="831" indent="">
 			<var>$hiveQueenTimeout</var>
 			<text> </text>
 			<text>=</text>
@@ -7083,7 +7085,7 @@
 			<text> </text>
 			<var>$rng</var>
 		</line>
-		<line linenr="830" indent="">
+		<line linenr="832" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -7099,15 +7101,15 @@
 			<text>=</text>
 			<var>$hiveQueenTimeout</var>
 		</line>
-		<line linenr="831" indent="">
+		<line linenr="833" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="832" indent="" />
-		<line linenr="833" indent="">
+		<line linenr="834" indent="" />
+		<line linenr="835" indent="">
 			<var>SetSmallXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="834" indent="">
+		<line linenr="836" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
@@ -7123,13 +7125,13 @@
 			<text>=</text>
 			<text>'mayhem_xenonCycleSmall'</text>
 		</line>
-		<line linenr="835" indent="">
+		<line linenr="837" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>ScaleXenonCycle</var>
 			<text>:</text>
 		</line>
-		<line linenr="836" indent="">
+		<line linenr="838" indent="">
 			<var>$smallXenonTimeout</var>
 			<text> </text>
 			<text>=</text>
@@ -7140,7 +7142,7 @@
 			<text> </text>
 			<var>$xenonCycle</var>
 		</line>
-		<line linenr="837" indent="">
+		<line linenr="839" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -7156,15 +7158,15 @@
 			<text>=</text>
 			<var>$smallXenonTimeout</var>
 		</line>
-		<line linenr="838" indent="">
+		<line linenr="840" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="839" indent="" />
-		<line linenr="840" indent="">
+		<line linenr="841" indent="" />
+		<line linenr="842" indent="">
 			<var>SetBigXenonTimeout</var>
 			<text>:</text>
 		</line>
-		<line linenr="841" indent="">
+		<line linenr="843" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
@@ -7180,13 +7182,13 @@
 			<text>=</text>
 			<text>'mayhem_xenonCycleBig'</text>
 		</line>
-		<line linenr="842" indent="">
+		<line linenr="844" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>ScaleXenonCycle</var>
 			<text>:</text>
 		</line>
-		<line linenr="843" indent="">
+		<line linenr="845" indent="">
 			<var>$bigXenonTimeout</var>
 			<text> </text>
 			<text>=</text>
@@ -7197,7 +7199,7 @@
 			<text> </text>
 			<var>$xenonCycle</var>
 		</line>
-		<line linenr="844" indent="">
+		<line linenr="846" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -7213,18 +7215,18 @@
 			<text>=</text>
 			<var>$bigXenonTimeout</var>
 		</line>
-		<line linenr="845" indent="">
+		<line linenr="847" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="846" indent="" />
-		<line linenr="847" indent="">
+		<line linenr="848" indent="" />
+		<line linenr="849" indent="">
 			<var>ScaleXenonCycle</var>
 			<text>:</text>
 		</line>
-		<line linenr="848" indent="">
+		<line linenr="850" indent="">
 			<comment>* For Xenon invasions, the baseline is a 150 size galaxy.</comment>
 		</line>
-		<line linenr="849" indent="">
+		<line linenr="851" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
@@ -7241,14 +7243,14 @@
 			<text> </text>
 			<var>$galaxy.s</var>
 		</line>
-		<line linenr="850" indent="" />
-		<line linenr="851" indent="">
+		<line linenr="852" indent="" />
+		<line linenr="853" indent="">
 			<comment>* Xenon remain more aggressive on higher difficulties,</comment>
 		</line>
-		<line linenr="852" indent="">
+		<line linenr="854" indent="">
 			<comment>* Add-Ons 2.2: territorial growth primarily strengthens their garrisons rather than accelerating invasions.</comment>
 		</line>
-		<line linenr="853" indent="">
+		<line linenr="855" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -7257,10 +7259,10 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="854" indent="">
+		<line linenr="856" indent="">
 			<comment>* Hard: -20% duration (25% faster).</comment>
 		</line>
-		<line linenr="855" indent="">
+		<line linenr="857" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
@@ -7277,7 +7279,7 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="856" indent="">
+		<line linenr="858" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -7288,10 +7290,10 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="857" indent="">
+		<line linenr="859" indent="">
 			<comment>* Insane: -33% duration (50% faster).</comment>
 		</line>
-		<line linenr="858" indent="">
+		<line linenr="860" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
@@ -7308,14 +7310,14 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="859" indent="">
+		<line linenr="861" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="860" indent="" />
-		<line linenr="861" indent="">
+		<line linenr="862" indent="" />
+		<line linenr="863" indent="">
 			<comment>* Safety. Never go below 10 min</comment>
 		</line>
-		<line linenr="862" indent="">
+		<line linenr="864" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -7326,22 +7328,22 @@
 			<text> </text>
 			<var>600</var>
 		</line>
-		<line linenr="863" indent="">
+		<line linenr="865" indent="">
 			<var>$xenonCycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>600</var>
 		</line>
-		<line linenr="864" indent="">
+		<line linenr="866" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="865" indent="" />
-		<line linenr="866" indent="">
+		<line linenr="867" indent="" />
+		<line linenr="868" indent="">
 			<var>ClearPriorityTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="867" indent="">
+		<line linenr="869" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -7349,7 +7351,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="868" indent="">
+		<line linenr="870" indent="">
 			<var>$target.originalName</var>
 			<text> </text>
 			<text>=</text>
@@ -7368,14 +7370,14 @@
 			<text>=</text>
 			<text>'mayhem_priorityTargetOriginalName'</text>
 		</line>
-		<line linenr="869" indent="">
+		<line linenr="871" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$target.originalName</var>
 		</line>
-		<line linenr="870" indent="">
+		<line linenr="872" indent="">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -7387,8 +7389,8 @@
 			<text> </text>
 			<var>$target.originalName</var>
 		</line>
-		<line linenr="871" indent="" />
-		<line linenr="872" indent="">
+		<line linenr="873" indent="" />
+		<line linenr="874" indent="">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -7407,7 +7409,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="873" indent="">
+		<line linenr="875" indent="">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -7426,7 +7428,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="874" indent="">
+		<line linenr="876" indent="">
 			<var>$target</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -7445,10 +7447,10 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="875" indent="">
+		<line linenr="877" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="876" indent="">
+		<line linenr="878" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -7464,7 +7466,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="877" indent="">
+		<line linenr="879" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -7473,7 +7475,7 @@
 			<sval type="string" val="Mayhem.Monitor.Galaxy" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="157" />
+			<sval type="int" val="159" />
 			<sval type="int" val="0" />
 			<sval type="array" size="142">
 				<sval type="string" val="galaxy" />
@@ -7524,12 +7526,12 @@
 				<sval type="string" val="khaakBlueprints" />
 				<sval type="string" val="khaakBlueprint" />
 				<sval type="string" val="XS.Iterator4" />
-				<sval type="string" val="blackMarketShips" />
-				<sval type="string" val="blackMarketShips.size" />
-				<sval type="string" val="blackMarketShip" />
+				<sval type="string" val="claimProtectedShips" />
+				<sval type="string" val="claimProtectedShips.size" />
+				<sval type="string" val="claimProtectedShip" />
 				<sval type="string" val="i" />
-				<sval type="string" val="blackMarketShip.deadline" />
-				<sval type="string" val="blackMarketShip.isProtected" />
+				<sval type="string" val="deadline" />
+				<sval type="string" val="isProtected" />
 				<sval type="string" val="xenonStations" />
 				<sval type="string" val="xenonStations.s" />
 				<sval type="string" val="portal" />
@@ -8732,7 +8734,7 @@
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
-					<sval type="string" val="blackMarketShips" />
+					<sval type="string" val="mayhem_claimProtectedShips" />
 					<sval type="int" val="48" />
 				</sval>
 				<sval type="array" size="4">
@@ -8805,7 +8807,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="50" />
 					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_blackMarketMissionDeadline" />
+					<sval type="string" val="mayhem_claimProtectionDeadline" />
 					<sval type="int" val="52" />
 				</sval>
 				<sval type="array" size="6">
@@ -12868,7 +12870,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="336">
+			<sval type="array" size="338">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -13173,19 +13175,23 @@
 					<sval type="int" val="124" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="124" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="124" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Herobetty 5.4: There is now a 4/3/2/1 +/- 0.5 hour timer on easy/normal/hard/insane difficulty for black market ships." />
+					<sval type="string" val="Expanded 2.2: Temporarily protected abandoned ships become claimable by NPCs/tugs after their grace period expires." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="124" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Note: Global array pointer; removals apply in place." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="126" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="127" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="134" />
@@ -13197,6 +13203,10 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="134" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="136" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">

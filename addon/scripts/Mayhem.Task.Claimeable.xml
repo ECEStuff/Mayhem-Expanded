@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.Claimeable</name>
-	<version>50</version>
+	<version>53</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -1202,26 +1202,18 @@
 			<text>=</text>
 			<var>$blackmarketMission</var>
 		</line>
-		<line linenr="136" indent="&#160;">
+		<line linenr="136" indent="">
 			<text>end</text>
 		</line>
 		<line linenr="137" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="138" indent="&#160;" />
-		<line linenr="139" indent="&#160;">
-			<comment>* Herobetty 5.4: remove the ship from the black market ship array, if it's present.</comment>
+		<line linenr="138" indent="" />
+		<line linenr="139" indent="">
+			<comment>* Expanded 2.2: Remove temporarily protected abandoned ships from the shared claim-protection registry once claimed.</comment>
 		</line>
-		<line linenr="140" indent="&#160;&#160;">
-			<comment>* This array is used in the monitor script to determine when to allow the ship to be capturable by tugs.</comment>
-		</line>
-		<line linenr="141" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$blackmarketMission</var>
-		</line>
-		<line linenr="142" indent="">
-			<var>$blackMarketShips</var>
+		<line linenr="140" indent="">
+			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -1234,10 +1226,10 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
-			<text>'blackMarketShips'</text>
+			<text>'mayhem_claimProtectedShips'</text>
 		</line>
-		<line linenr="143" indent="">
-			<var>$BMIndex</var>
+		<line linenr="141" indent="">
+			<var>$claimIndex</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -1253,25 +1245,24 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>offset</text>
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="144" indent="" />
-		<line linenr="145" indent="">
+		<line linenr="142" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$BMIndex</var>
+			<var>$claimIndex</var>
 			<text> </text>
-			<text>&gt;</text>
+			<text>&gt;=</text>
 			<text> </text>
-			<var>-1</var>
+			<var>0</var>
 		</line>
-		<line linenr="146" indent="">
+		<line linenr="143" indent="">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -1280,19 +1271,16 @@
 			<text> </text>
 			<text>array</text>
 			<text> </text>
-			<var>$blackMarketShips</var>
+			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>at</text>
 			<text> </text>
 			<text>index</text>
 			<text> </text>
-			<var>$BMIndex</var>
+			<var>$claimIndex</var>
 		</line>
-		<line linenr="147" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="148" indent="" />
-		<line linenr="149" indent="" interruptable="@">
+		<line linenr="144" indent="" />
+		<line linenr="145" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1301,8 +1289,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="150" indent="" />
-		<line linenr="151" indent="">
+		<line linenr="146" indent="" />
+		<line linenr="147" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1316,7 +1304,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="152" indent="">
+		<line linenr="148" indent="">
 			<var>$pilotName</var>
 			<text> </text>
 			<text>=</text>
@@ -1332,8 +1320,8 @@
 			<text>=</text>
 			<var>$owner</var>
 		</line>
-		<line linenr="153" indent="&#160;" />
-		<line linenr="154" indent="" interruptable="@">
+		<line linenr="149" indent="&#160;" />
+		<line linenr="150" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1355,12 +1343,12 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="155" indent="" />
-		<line linenr="156" indent="" />
-		<line linenr="157" indent="">
+		<line linenr="151" indent="" />
+		<line linenr="152" indent="" />
+		<line linenr="153" indent="">
 			<comment>* Mordan2 - we name our own captured ships elsewhere.</comment>
 		</line>
-		<line linenr="158" indent="">
+		<line linenr="154" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -1369,7 +1357,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="159" indent="" interruptable="@">
+		<line linenr="155" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1395,11 +1383,11 @@
 			<text>=</text>
 			<var>$pilotName</var>
 		</line>
-		<line linenr="160" indent="">
+		<line linenr="156" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="161" indent="" />
-		<line linenr="162" indent="">
+		<line linenr="157" indent="" />
+		<line linenr="158" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -1410,7 +1398,7 @@
 			<sval type="string" val="Mayhem.Task.Claimeable" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="50" />
+			<sval type="int" val="53" />
 			<sval type="int" val="0" />
 			<sval type="array" size="28">
 				<sval type="string" val="ScriptName" />
@@ -1437,12 +1425,12 @@
 				<sval type="string" val="ships" />
 				<sval type="string" val="ship" />
 				<sval type="string" val="XS.Iterator1" />
-				<sval type="string" val="blackMarketShips" />
-				<sval type="string" val="BMIndex" />
+				<sval type="string" val="claimProtectedShips" />
+				<sval type="string" val="claimIndex" />
 				<sval type="string" val="owner" />
 				<sval type="string" val="pilotName" />
 			</sval>
-			<sval type="array" size="95">
+			<sval type="array" size="94">
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
@@ -2284,19 +2272,10 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610590205" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
-					<sval type="string" val="blackMarketShips" />
+					<sval type="string" val="mayhem_claimProtectedShips" />
 					<sval type="int" val="24" />
 				</sval>
 				<sval type="array" size="8">
@@ -2311,17 +2290,17 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610590200" />
+					<sval type="int" val="-1610590456" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="25" />
 					<sval type="int" val="4" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
 					<sval type="int" val="15" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="5">
@@ -2363,7 +2342,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610588669" />
+					<sval type="int" val="-1610588925" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -2397,7 +2376,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="76">
+			<sval type="array" size="73">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -2687,27 +2666,18 @@
 				<sval type="array" size="3">
 					<sval type="int" val="83" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Herobetty 5.4: remove the ship from the black market ship array, if it's present." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="83" />
-					<sval type="int" val="1" />
-					<sval type="string" val="This array is used in the monitor script to determine when to allow the ship to be capturable by tugs." />
+					<sval type="string" val="Expanded 2.2: Remove temporarily protected abandoned ships from the shared claim-protection registry once claimed." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="86" />
+					<sval type="int" val="87" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="88" />
-					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="88" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="89" />
+					<sval type="int" val="90" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
@@ -2715,24 +2685,20 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="92" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="92" />
+					<sval type="int" val="91" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="92" />
+					<sval type="int" val="91" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan2 - we name our own captured ships elsewhere." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="94" />
+					<sval type="int" val="93" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="94" />
+					<sval type="int" val="93" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

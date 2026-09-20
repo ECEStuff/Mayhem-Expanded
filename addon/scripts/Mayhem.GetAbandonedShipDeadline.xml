@@ -1,0 +1,570 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.GetAbandonedShipDeadline</name>
+	<version>5</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments />
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: Mayhem.GetAbandonedShipDeadline.xml</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Calculates the deadline for temporary NPC claim protection on an abandoned ship.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* Used by black market and O2-hacked ships.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* AUTHOR:           DATE: 19 September 2026</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="" interruptable="@">
+			<var>$difficulty</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetDifficulty</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="010" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="011" indent="&#160;">
+			<comment>* Easy: 4 hours</comment>
+		</line>
+		<line linenr="012" indent="&#160;">
+			<var>$time.baseGracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>14400</var>
+		</line>
+		<line linenr="013" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="014" indent="&#160;">
+			<comment>* Normal: 3 hours</comment>
+		</line>
+		<line linenr="015" indent="&#160;">
+			<var>$time.baseGracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>10800</var>
+		</line>
+		<line linenr="016" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<comment>* Hard: 2 hours</comment>
+		</line>
+		<line linenr="018" indent="&#160;">
+			<var>$time.baseGracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>7200</var>
+		</line>
+		<line linenr="019" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$difficulty</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="020" indent="&#160;">
+			<comment>* Insane: 1 hour</comment>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<var>$time.baseGracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>3600</var>
+		</line>
+		<line linenr="022" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
+			<var>$time.offset</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>between</text>
+			<text> </text>
+			<var>-1800</var>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<var>1800</var>
+		</line>
+		<line linenr="025" indent="">
+			<var>$time.gracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$time.baseGracePeriod</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$time.offset</var>
+		</line>
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* Add-Ons 1.2: the timer is now scaled based on the number of sectors in the galaxy, with 100 sectors as baseline.</comment>
+		</line>
+		<line linenr="028" indent="">
+			<comment>* Expanded 2.2: Refactored the deadline variable for temporary tug protection.</comment>
+		</line>
+		<line linenr="029" indent="" interruptable="@">
+			<var>$galaxy</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetGalaxy</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>known</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+			<text>randomize</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="030" indent="">
+			<var>$galaxy.size</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$galaxy</var>
+		</line>
+		<line linenr="031" indent="">
+			<var>$time.gracePeriod</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$time.gracePeriod</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$galaxy.size</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="032" indent="" />
+		<line linenr="033" indent="">
+			<var>$playtime</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>playing</text>
+			<text> </text>
+			<text>time</text>
+		</line>
+		<line linenr="034" indent="">
+			<var>$time.deadline</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$playtime</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$time.gracePeriod</var>
+		</line>
+		<line linenr="035" indent="" />
+		<line linenr="036" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$time.deadline</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.GetAbandonedShipDeadline" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="5" />
+			<sval type="int" val="0" />
+			<sval type="array" size="8">
+				<sval type="string" val="difficulty" />
+				<sval type="string" val="time.baseGracePeriod" />
+				<sval type="string" val="time.offset" />
+				<sval type="string" val="time.gracePeriod" />
+				<sval type="string" val="galaxy" />
+				<sval type="string" val="galaxy.size" />
+				<sval type="string" val="playtime" />
+				<sval type="string" val="time.deadline" />
+			</sval>
+			<sval type="array" size="20">
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDifficulty" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611709" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="14400" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610939" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10800" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610171" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="7200" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609659" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3600" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="110" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1800" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1801" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetGalaxy" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="141" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+			<sval type="array" size="19">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Mayhem.GetAbandonedShipDeadline.xml" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Calculates the deadline for temporary NPC claim protection on an abandoned ship." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Used by black market and O2-hacked ships." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:           DATE: 19 September 2026" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Easy: 4 hours" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Normal: 3 hours" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Hard: 2 hours" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Insane: 1 hour" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: the timer is now scaled based on the number of sectors in the galaxy, with 100 sectors as baseline." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Refactored the deadline variable for temporary tug protection." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="19" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
