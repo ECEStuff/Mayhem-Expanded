@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Truce.Sign</name>
-	<version>13</version>
+	<version>15</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -378,46 +378,65 @@
 		</line>
 		<line linenr="040" indent="" />
 		<line linenr="041" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$race1</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
+			<comment>* Expanded 2.2: Use display variables so the actual races remains intact.</comment>
 		</line>
-		<line linenr="042" indent="&#160;">
-			<var>$race1</var>
+		<line linenr="042" indent="">
+			<var>$race1.display</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Independent'</text>
+			<var>$race1</var>
 		</line>
 		<line linenr="043" indent="">
-			<text>do</text>
+			<var>$race2.display</var>
 			<text> </text>
-			<text>if</text>
+			<text>=</text>
 			<text> </text>
 			<var>$race2</var>
+		</line>
+		<line linenr="044" indent="" />
+		<line linenr="045" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$race1.display</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="044" indent="&#160;">
-			<var>$race2</var>
+		<line linenr="046" indent="&#160;">
+			<var>$race1.display</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'Independent'</text>
 		</line>
-		<line linenr="045" indent="" />
-		<line linenr="046" indent="">
+		<line linenr="047" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$race2.display</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="048" indent="&#160;">
+			<var>$race2.display</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Independent'</text>
+		</line>
+		<line linenr="049" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<comment>* Zero Hour. Add-Ons 2.1: Updated writing.</comment>
 		</line>
-		<line linenr="047" indent="">
+		<line linenr="052" indent="">
 			<var>$GlobalAlliance</var>
 			<text> </text>
 			<text>=</text>
@@ -433,7 +452,7 @@
 			<text>=</text>
 			<text>'ZH_globalAlliance'</text>
 		</line>
-		<line linenr="048" indent="">
+		<line linenr="053" indent="">
 			<var>$postCrisisAIcycles</var>
 			<text> </text>
 			<text>=</text>
@@ -449,11 +468,11 @@
 			<text>=</text>
 			<text>'ZH_postCrisisAIcycles'</text>
 		</line>
-		<line linenr="049" indent="" />
-		<line linenr="050" indent="">
-			<comment>* don't spam these messages at the beginning and end of the Xenon Crisis</comment>
+		<line linenr="054" indent="" />
+		<line linenr="055" indent="">
+			<comment>* Don't spam these messages at the beginning and end of the Xenon Crisis.</comment>
 		</line>
-		<line linenr="051" indent="">
+		<line linenr="056" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -467,7 +486,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="052" indent="&#160;">
+		<line linenr="057" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -476,7 +495,7 @@
 			<text> </text>
 			<text>+</text>
 			<text> </text>
-			<var>$race1</var>
+			<var>$race1.display</var>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
@@ -484,13 +503,13 @@
 			<text> </text>
 			<text>+</text>
 			<text> </text>
-			<var>$race2</var>
+			<var>$race2.display</var>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
 			<text>' empire.'</text>
 		</line>
-		<line linenr="053" indent="&#160;" interruptable="@">
+		<line linenr="058" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -516,19 +535,21 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="054" indent="">
+		<line linenr="059" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="055" indent="" />
-		<line linenr="056" indent="">
+		<line linenr="060" indent="" />
+		<line linenr="061" indent="">
+			<comment>* Restore neutral relations when the player signs a truce.</comment>
+		</line>
+		<line linenr="062" indent="">
 			<text>if</text>
 			<text> </text>
-			<text>(</text>
 			<var>$race1</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<text>'Independent'</text>
+			<var>[Player]</var>
 			<text> </text>
 			<text>OR</text>
 			<text> </text>
@@ -536,61 +557,39 @@
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<text>'Independent'</text>
-			<text>)</text>
-		</line>
-		<line linenr="057" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$race1</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Independent'</text>
-		</line>
-		<line linenr="058" indent="&#160;&#160;">
-			<var>$race</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$race2</var>
-		</line>
-		<line linenr="059" indent="&#160;&#160;">
-			<var>$race1</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[Player]</var>
-		</line>
-		<line linenr="060" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$race2</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'Independent'</text>
-		</line>
-		<line linenr="061" indent="&#160;&#160;">
-			<var>$race</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$race1</var>
-		</line>
-		<line linenr="062" indent="&#160;&#160;">
-			<var>$race2</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
 			<var>[Player]</var>
 		</line>
 		<line linenr="063" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$race1</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="064" indent="&#160;&#160;">
+			<var>$race</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$race2</var>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="066" indent="&#160;&#160;">
+			<var>$race</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$race1</var>
+		</line>
+		<line linenr="067" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="064" indent="&#160;" interruptable="@">
+		<line linenr="068" indent="&#160;" />
+		<line linenr="069" indent="&#160;" interruptable="@">
 			<var>$relation</var>
 			<text> </text>
 			<text>=</text>
@@ -614,7 +613,7 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="065" indent="&#160;">
+		<line linenr="070" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -625,7 +624,7 @@
 			<text> </text>
 			<var>[Friend]</var>
 		</line>
-		<line linenr="066" indent="&#160;&#160;" interruptable="@">
+		<line linenr="071" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -651,7 +650,8 @@
 			<text>=</text>
 			<var>[Neutral]</var>
 		</line>
-		<line linenr="067" indent="&#160;" interruptable="@">
+		<line linenr="072" indent="&#160;" />
+		<line linenr="073" indent="&#160;" interruptable="@">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -675,7 +675,7 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="068" indent="&#160;&#160;" interruptable="@">
+		<line linenr="074" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -697,13 +697,13 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="069" indent="">
+		<line linenr="075" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="070" indent="&#160;">
+		<line linenr="076" indent="&#160;">
 			<comment>* Add-Ons 1.5.3: Fix coalitions in case a truce is signed when factions are supposed to still be allies.</comment>
 		</line>
-		<line linenr="071" indent="&#160;" interruptable="@">
+		<line linenr="077" indent="&#160;" interruptable="@">
 			<var>$hasCoalition</var>
 			<text> </text>
 			<text>=</text>
@@ -727,7 +727,7 @@
 			<text>=</text>
 			<var>$race2</var>
 		</line>
-		<line linenr="072" indent="&#160;">
+		<line linenr="078" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -756,7 +756,7 @@
 			<text> </text>
 			<var>$hasCoalition</var>
 		</line>
-		<line linenr="073" indent="&#160;&#160;" interruptable="@">
+		<line linenr="079" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -782,10 +782,10 @@
 			<text>=</text>
 			<var>[Friend]</var>
 		</line>
-		<line linenr="074" indent="&#160;">
+		<line linenr="080" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="075" indent="&#160;&#160;" interruptable="@">
+		<line linenr="081" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -811,17 +811,17 @@
 			<text>=</text>
 			<var>[Neutral]</var>
 		</line>
-		<line linenr="076" indent="&#160;">
+		<line linenr="082" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="083" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="078" indent="" />
-		<line linenr="079" indent="">
+		<line linenr="084" indent="" />
+		<line linenr="085" indent="">
 			<comment>* Reset reprisals.</comment>
 		</line>
-		<line linenr="080" indent="" interruptable="@">
+		<line linenr="086" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -843,7 +843,7 @@
 			<text>=</text>
 			<var>$race2</var>
 		</line>
-		<line linenr="081" indent="" interruptable="@">
+		<line linenr="087" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -865,12 +865,12 @@
 			<text>=</text>
 			<var>$race1</var>
 		</line>
-		<line linenr="082" indent="" />
-		<line linenr="083" indent="" />
-		<line linenr="084" indent="">
+		<line linenr="088" indent="" />
+		<line linenr="089" indent="" />
+		<line linenr="090" indent="">
 			<comment>* ZH 2.0</comment>
 		</line>
-		<line linenr="085" indent="">
+		<line linenr="091" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$race1</var>
@@ -879,7 +879,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="086" indent="&#160;" interruptable="@">
+		<line linenr="092" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -901,7 +901,7 @@
 			<text>=</text>
 			<var>[Friend]</var>
 		</line>
-		<line linenr="087" indent="">
+		<line linenr="093" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -912,7 +912,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="088" indent="&#160;" interruptable="@">
+		<line linenr="094" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -934,17 +934,11 @@
 			<text>=</text>
 			<var>[Friend]</var>
 		</line>
-		<line linenr="089" indent="&#160;">
-			<comment>* $t = 'All ships set friendly to ' + $race1 + 's. But please still update your Global Friend-Foe settings.'</comment>
-		</line>
-		<line linenr="090" indent="&#160;">
-			<comment>* START [NULL]-&gt; call script 'Mayhem.StackNews' : text=$t addToHistory=[TRUE] breakingNews=[FALSE]</comment>
-		</line>
-		<line linenr="091" indent="">
+		<line linenr="095" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="092" indent="" />
-		<line linenr="093" indent="">
+		<line linenr="096" indent="" />
+		<line linenr="097" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>[TRUE]</var>
@@ -955,9 +949,9 @@
 			<sval type="string" val="Mayhem.Truce.Sign" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="13" />
+			<sval type="int" val="15" />
 			<sval type="int" val="0" />
-			<sval type="array" size="13">
+			<sval type="array" size="15">
 				<sval type="string" val="race1" />
 				<sval type="string" val="race2" />
 				<sval type="string" val="OCVplotstage" />
@@ -965,6 +959,8 @@
 				<sval type="string" val="truces" />
 				<sval type="string" val="truce1" />
 				<sval type="string" val="truce2" />
+				<sval type="string" val="race1.display" />
+				<sval type="string" val="race2.display" />
 				<sval type="string" val="GlobalAlliance" />
 				<sval type="string" val="postCrisisAIcycles" />
 				<sval type="string" val="t" />
@@ -1210,12 +1206,30 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605560" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604797" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
@@ -1227,19 +1241,23 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="0" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Independent" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605048" />
+					<sval type="int" val="-1610604283" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="8" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
@@ -1251,7 +1269,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Independent" />
@@ -1262,24 +1280,24 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_globalAlliance" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_postCrisisAIcycles" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603773" />
+					<sval type="int" val="-1610603005" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="65556" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -1296,12 +1314,12 @@
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="9" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
+					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -1309,7 +1327,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -1335,32 +1353,31 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 				</sval>
-				<sval type="array" size="27">
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610600189" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Independent" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Independent" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
-					<sval type="int" val="9" />
-					<sval type="int" val="16" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
@@ -1368,16 +1385,15 @@
 					<sval type="int" val="-4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-5" />
-					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602493" />
+					<sval type="int" val="-1610601981" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Independent" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -1387,19 +1403,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -1407,48 +1414,24 @@
 					<sval type="int" val="112" />
 					<sval type="int" val="43" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610601723" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Independent" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetRelation" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
@@ -1457,7 +1440,7 @@
 					<sval type="int" val="-536859129" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -1475,7 +1458,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="14" />
@@ -1489,7 +1472,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
@@ -1501,7 +1484,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
@@ -1512,7 +1495,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.HasCoalitionWith" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -1526,7 +1509,7 @@
 					<sval type="int" val="-1610599165" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="10" />
@@ -1544,7 +1527,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
@@ -1694,7 +1677,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="35">
+			<sval type="array" size="40">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1755,35 +1738,65 @@
 					<sval type="int" val="26" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Use display variables so the actual races remains intact." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="30" />
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="30" />
+					<sval type="int" val="33" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Zero Hour. Add-Ons 2.1: Updated writing." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="35" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="32" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
-					<sval type="string" val="don't spam these messages at the beginning and end of the Xenon Crisis" />
+					<sval type="string" val="Don't spam these messages at the beginning and end of the Xenon Crisis." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="35" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Restore neutral relations when the player signs a truce." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="43" />
 					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="46" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="49" />
@@ -1827,16 +1840,6 @@
 					<sval type="int" val="56" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="61" />
-					<sval type="int" val="1" />
-					<sval type="string" val="$t = 'All ships set friendly to ' + $race1 + 's. But please still update your Global Friend-Foe settings.'" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="61" />
-					<sval type="int" val="1" />
-					<sval type="string" val="START [NULL]-&gt; call script 'Mayhem.StackNews' : text=$t addToHistory=[TRUE] breakingNews=[FALSE]" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="61" />
