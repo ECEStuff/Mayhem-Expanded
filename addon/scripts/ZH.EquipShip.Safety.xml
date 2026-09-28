@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.EquipShip.Safety</name>
-	<version>32</version>
+	<version>33</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -16,11 +16,14 @@
 		<line linenr="002" indent="">
 			<comment>* Rule: only the final claim/ownership-resolution path may call ZH.EquipShip.Safety. </comment>
 		</line>
-		<line linenr="003" indent="" />
-		<line linenr="004" indent="">
+		<line linenr="003" indent="">
+			<comment>* Expanded 2.2: Only shields are safe on Easy and Normal.</comment>
+		</line>
+		<line linenr="004" indent="" />
+		<line linenr="005" indent="">
 			<comment>* This additional wait is because the vanilla bail cmd sometimes runs with a delay while it removes equipment.</comment>
 		</line>
-		<line linenr="005" indent="" interruptable="@">
+		<line linenr="006" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -29,7 +32,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="006" indent="">
+		<line linenr="007" indent="">
 			<var>$debug</var>
 			<text> </text>
 			<text>=</text>
@@ -45,14 +48,14 @@
 			<text>=</text>
 			<text>'ZH_showDebug'</text>
 		</line>
-		<line linenr="007" indent="" />
-		<line linenr="008" indent="">
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
 			<comment>* Add-Ons 1.14: Replaced with shield getter (DRY - Don't Repeat Yourself). </comment>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="010" indent="">
 			<comment>* No shield safety except on easy and normal (ships retain 100% of shields). On hard and insane, the ship retains up to 75% and 50% of shields respectively.</comment>
 		</line>
-		<line linenr="010" indent="" interruptable="@">
+		<line linenr="011" indent="" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -68,7 +71,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="012" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -77,7 +80,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="012" indent="&#160;" interruptable="@">
+		<line linenr="013" indent="&#160;" interruptable="@">
 			<var>$installed</var>
 			<text> </text>
 			<text>=</text>
@@ -97,12 +100,12 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="014" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="014" indent="&#160;&#160;">
+		<line linenr="015" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -121,7 +124,7 @@
 			<text> </text>
 			<var>$installed</var>
 		</line>
-		<line linenr="015" indent="&#160;&#160;">
+		<line linenr="016" indent="&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -132,59 +135,17 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="017" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="018" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="018" indent="" />
-		<line linenr="019" indent="">
-			<comment>* Add-Ons 1.2: No laser safety except on easy (ships retain 100% of lasers). Bailing now reduces the number of retained lasers. </comment>
-		</line>
+		<line linenr="019" indent="" />
 		<line linenr="020" indent="">
-			<comment>* On normal, hard, and insane, vanilla bailing rarely removes lasers but will retain up to 75%/50%/25% of lasers.</comment>
-		</line>
-		<line linenr="021" indent="">
-			<comment>* This is to encourage the player to salvage or craft lasers. See Mayhem.CopyShip. </comment>
-		</line>
-		<line linenr="022" indent="">
-			<comment>* Add-Ons 1.14: Cleanup! DRY.</comment>
-		</line>
-		<line linenr="023" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="024" indent="&#160;" interruptable="@">
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.EquipShip.Lasers</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>$ship</var>
-		</line>
-		<line linenr="025" indent="" />
-		<line linenr="026" indent="">
 			<comment>* Add-Ons 1.14: Removed shield container deletion. Shields are back as wares.</comment>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="021" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -195,7 +156,7 @@
 			<sval type="string" val="ZH.EquipShip.Safety" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="32" />
+			<sval type="int" val="33" />
 			<sval type="int" val="0" />
 			<sval type="array" size="5">
 				<sval type="string" val="ship" />
@@ -204,7 +165,7 @@
 				<sval type="string" val="installed" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="11">
+			<sval type="array" size="9">
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
@@ -291,31 +252,6 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610610168" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.EquipShip.Lasers" />
-					<sval type="int" val="-2147483647" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="0" />
@@ -328,7 +264,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="16">
+			<sval type="array" size="12">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -338,6 +274,11 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Rule: only the final claim/ownership-resolution path may call ZH.EquipShip.Safety. " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Only shields are safe on Easy and Normal." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -376,30 +317,6 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.2: No laser safety except on easy (ships retain 100% of lasers). Bailing now reduces the number of retained lasers. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="On normal, hard, and insane, vanilla bailing rarely removes lasers but will retain up to 75%/50%/25% of lasers." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="This is to encourage the player to salvage or craft lasers. See Mayhem.CopyShip. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.14: Cleanup! DRY." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="10" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.14: Removed shield container deletion. Shields are back as wares." />
 				</sval>
