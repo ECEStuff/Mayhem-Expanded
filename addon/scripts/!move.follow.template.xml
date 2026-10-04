@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>!move.follow.template</name>
-	<version>214</version>
+	<version>215</version>
 	<engineversion>50</engineversion>
 	<description>Low level follow code</description>
 	<arguments>
@@ -1718,22 +1718,33 @@
 			<text>if</text>
 			<text> </text>
 			<var>$leader.target.isStation</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$attackMaxDistance</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>30000</var>
 		</line>
 		<line linenr="218" indent="&#160;&#160;&#160;">
-			<comment>* ZH 2.0 capships never get close to stations anymore due to generally increased laser ranges</comment>
+			<comment>* ZH 2.0: Capships may not approach stations closely due to increased laser ranges.</comment>
 		</line>
 		<line linenr="219" indent="&#160;&#160;&#160;">
+			<comment>* Widen only the engagement range; preserve larger existing ranges.</comment>
+		</line>
+		<line linenr="220" indent="&#160;&#160;&#160;">
 			<var>$attackMaxDistance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>30000</var>
 		</line>
-		<line linenr="220" indent="&#160;&#160;" />
-		<line linenr="221" indent="&#160;&#160;">
+		<line linenr="221" indent="&#160;&#160;" />
+		<line linenr="222" indent="&#160;&#160;">
 			<comment>* Target attrributes</comment>
 		</line>
-		<line linenr="222" indent="&#160;&#160;">
+		<line linenr="223" indent="&#160;&#160;">
 			<var>$target.exists</var>
 			<text> </text>
 			<text>=</text>
@@ -1743,7 +1754,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="223" indent="&#160;&#160;">
+		<line linenr="224" indent="&#160;&#160;">
 			<var>$target.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -1755,7 +1766,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="224" indent="&#160;&#160;">
+		<line linenr="225" indent="&#160;&#160;">
 			<var>$target.distance</var>
 			<text> </text>
 			<text>=</text>
@@ -1772,11 +1783,11 @@
 			<text> </text>
 			<var>$leader.target</var>
 		</line>
-		<line linenr="225" indent="&#160;&#160;" />
-		<line linenr="226" indent="&#160;&#160;">
+		<line linenr="226" indent="&#160;&#160;" />
+		<line linenr="227" indent="&#160;&#160;">
 			<comment>* Ownership</comment>
 		</line>
-		<line linenr="227" indent="&#160;&#160;">
+		<line linenr="228" indent="&#160;&#160;">
 			<var>$this.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1790,7 +1801,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="228" indent="&#160;&#160;">
+		<line linenr="229" indent="&#160;&#160;">
 			<var>$leader.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1804,7 +1815,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="229" indent="&#160;&#160;">
+		<line linenr="230" indent="&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1818,11 +1829,11 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="230" indent="&#160;&#160;" />
-		<line linenr="231" indent="&#160;&#160;">
+		<line linenr="231" indent="&#160;&#160;" />
+		<line linenr="232" indent="&#160;&#160;">
 			<comment>* Mercenaries are a special case. If I am a merc and my leader is my client, then I am allowed to attack with my client - I am friendly to my client.</comment>
 		</line>
-		<line linenr="232" indent="&#160;&#160;" interruptable="@">
+		<line linenr="233" indent="&#160;&#160;" interruptable="@">
 			<var>$amIHired</var>
 			<text> </text>
 			<text>=</text>
@@ -1846,25 +1857,25 @@
 			<text>=</text>
 			<var>$leader.owner</var>
 		</line>
-		<line linenr="233" indent="&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$amIHired</var>
 		</line>
-		<line linenr="234" indent="&#160;&#160;&#160;">
+		<line linenr="235" indent="&#160;&#160;&#160;">
 			<var>$isLeaderFriendly</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="235" indent="&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="236" indent="&#160;&#160;&#160;">
+		<line linenr="237" indent="&#160;&#160;&#160;">
 			<comment>* I'm not a merc and I'm just a normal follower. I must check if my leader and I are friends.</comment>
 		</line>
-		<line linenr="237" indent="&#160;&#160;&#160;">
+		<line linenr="238" indent="&#160;&#160;&#160;">
 			<var>$isLeaderFriendly</var>
 			<text> </text>
 			<text>=</text>
@@ -1880,19 +1891,19 @@
 			<text> </text>
 			<text>friend</text>
 		</line>
-		<line linenr="238" indent="&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="239" indent="&#160;&#160;" />
-		<line linenr="240" indent="&#160;&#160;">
+		<line linenr="240" indent="&#160;&#160;" />
+		<line linenr="241" indent="&#160;&#160;">
 			<comment>* ** DEBUG **</comment>
 		</line>
-		<line linenr="241" indent="&#160;&#160;">
+		<line linenr="242" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="242" indent="&#160;&#160;&#160;">
+		<line linenr="243" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1901,7 +1912,7 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="243" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="244" indent="&#160;&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -1924,7 +1935,7 @@
 			<text> </text>
 			<var>$isLeaderFriendly</var>
 		</line>
-		<line linenr="244" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="245" indent="&#160;&#160;&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -1935,16 +1946,16 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="245" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="246" indent="&#160;&#160;">
+		<line linenr="246" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="247" indent="&#160;&#160;">
-			<comment>* ** END DEBUG **</comment>
+			<text>end</text>
 		</line>
 		<line linenr="248" indent="&#160;&#160;">
+			<comment>* ** END DEBUG **</comment>
+		</line>
+		<line linenr="249" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target.exists</var>
@@ -1977,7 +1988,7 @@
 			<text> </text>
 			<var>$this.owner</var>
 		</line>
-		<line linenr="249" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="250" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2007,22 +2018,22 @@
 			<text>=</text>
 			<var>$attackTimeout</var>
 		</line>
-		<line linenr="250" indent="&#160;&#160;">
+		<line linenr="251" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="251" indent="&#160;">
+		<line linenr="252" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="252" indent="&#160;" />
-		<line linenr="253" indent="&#160;">
+		<line linenr="253" indent="&#160;" />
+		<line linenr="254" indent="&#160;">
 			<comment>* Add-Ons 2.2: Respects SSD.</comment>
 		</line>
-		<line linenr="254" indent="&#160;">
+		<line linenr="255" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$attacknearest</var>
 		</line>
-		<line linenr="255" indent="&#160;&#160;">
+		<line linenr="256" indent="&#160;&#160;">
 			<var>$maxDistance</var>
 			<text> </text>
 			<text>=</text>
@@ -2036,7 +2047,7 @@
 			<text> </text>
 			<text>range</text>
 		</line>
-		<line linenr="256" indent="&#160;&#160;">
+		<line linenr="257" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2047,20 +2058,20 @@
 			<text> </text>
 			<var>$attackMaxDistance</var>
 		</line>
-		<line linenr="257" indent="&#160;&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;&#160;">
 			<var>$maxDistance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$attackMaxDistance</var>
 		</line>
-		<line linenr="258" indent="&#160;&#160;">
+		<line linenr="259" indent="&#160;&#160;">
 			<comment>* $target = $leader-&gt; find nearest enemy ship: max.dist=$maxDistance</comment>
 		</line>
-		<line linenr="259" indent="&#160;&#160;">
+		<line linenr="260" indent="&#160;&#160;">
 			<comment>* 3.18:</comment>
 		</line>
-		<line linenr="260" indent="&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;">
 			<var>$flags</var>
 			<text> </text>
 			<text>=</text>
@@ -2071,7 +2082,7 @@
 			<text> </text>
 			<var>[Find.Random]</var>
 		</line>
-		<line linenr="261" indent="&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2085,7 +2096,7 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="262" indent="&#160;&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;&#160;">
 			<var>$intendedTarget</var>
 			<text> </text>
 			<text>=</text>
@@ -2131,7 +2142,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="263" indent="&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -2147,7 +2158,7 @@
 			<text> </text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="264" indent="&#160;&#160;&#160;">
+		<line linenr="265" indent="&#160;&#160;&#160;">
 			<var>$intendedTarget</var>
 			<text> </text>
 			<text>=</text>
@@ -2193,7 +2204,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="265" indent="&#160;&#160;">
+		<line linenr="266" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -2209,7 +2220,7 @@
 			<text> </text>
 			<var>[Huge Ship]</var>
 		</line>
-		<line linenr="266" indent="&#160;&#160;&#160;">
+		<line linenr="267" indent="&#160;&#160;&#160;">
 			<var>$intendedTarget</var>
 			<text> </text>
 			<text>=</text>
@@ -2254,11 +2265,11 @@
 			<text>refpos</text>
 			<text>=</text>
 			<var>null</var>
-		</line>
-		<line linenr="267" indent="&#160;&#160;">
-			<text>end</text>
 		</line>
 		<line linenr="268" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="269" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2268,7 +2279,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="269" indent="&#160;&#160;&#160;">
+		<line linenr="270" indent="&#160;&#160;&#160;">
 			<var>$intendedTarget</var>
 			<text> </text>
 			<text>=</text>
@@ -2314,14 +2325,14 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="270" indent="&#160;&#160;" />
-		<line linenr="271" indent="&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;" />
+		<line linenr="272" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.13: Teleporter may be the attack target, so need to guard against TOCTOU here.</comment>
 		</line>
-		<line linenr="272" indent="&#160;&#160;">
+		<line linenr="273" indent="&#160;&#160;">
 			<comment>* If teleportation is in progress, check the destination ship rather than the temporary teleporter.</comment>
 		</line>
-		<line linenr="273" indent="&#160;&#160;" interruptable="@">
+		<line linenr="274" indent="&#160;&#160;" interruptable="@">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
@@ -2341,11 +2352,11 @@
 			<text>=</text>
 			<var>$intendedTarget</var>
 		</line>
-		<line linenr="274" indent="&#160;&#160;" />
-		<line linenr="275" indent="&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;" />
+		<line linenr="276" indent="&#160;&#160;">
 			<comment>* nobody attacks Terraformers in a sector which is protected by Phanon</comment>
 		</line>
-		<line linenr="276" indent="&#160;&#160;">
+		<line linenr="277" indent="&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2359,7 +2370,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="277" indent="&#160;&#160;">
+		<line linenr="278" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[SECTOR]</var>
@@ -2376,7 +2387,7 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="278" indent="&#160;&#160;&#160;">
+		<line linenr="279" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2395,23 +2406,23 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="279" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="280" indent="&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="280" indent="&#160;&#160;">
+		<line linenr="281" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="281" indent="&#160;&#160;">
+		<line linenr="282" indent="&#160;&#160;">
 			<comment>* ** ZH 2.0 - fixing Xenon followers who still attack unintended targets</comment>
 		</line>
-		<line linenr="282" indent="&#160;&#160;">
+		<line linenr="283" indent="&#160;&#160;">
 			<comment>* Terraformer owned ships do not attack Terraformer made ships</comment>
 		</line>
-		<line linenr="283" indent="&#160;&#160;">
+		<line linenr="284" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -2428,10 +2439,10 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="284" indent="&#160;&#160;&#160;">
+		<line linenr="285" indent="&#160;&#160;&#160;">
 			<comment>* Terraformers dont attack anything if sector is protected by Phanon</comment>
 		</line>
-		<line linenr="285" indent="&#160;&#160;&#160;">
+		<line linenr="286" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[SECTOR]</var>
@@ -2448,17 +2459,17 @@
 			<text>=</text>
 			<text>'xenonProtection'</text>
 		</line>
-		<line linenr="286" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="287" indent="&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="287" indent="&#160;&#160;&#160;">
+		<line linenr="288" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="288" indent="&#160;&#160;&#160;">
+		<line linenr="289" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -2466,7 +2477,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="289" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="290" indent="&#160;&#160;&#160;&#160;">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -2480,7 +2491,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="290" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="291" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2507,17 +2518,17 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="291" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="292" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="292" indent="&#160;&#160;&#160;">
+		<line linenr="293" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="293" indent="&#160;&#160;">
+		<line linenr="294" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -2528,10 +2539,10 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="294" indent="&#160;&#160;&#160;">
+		<line linenr="295" indent="&#160;&#160;&#160;">
 			<comment>* Player owned OCV ships do not attack Terraformer made ships because their virus would turn them</comment>
 		</line>
-		<line linenr="295" indent="&#160;&#160;&#160;">
+		<line linenr="296" indent="&#160;&#160;&#160;">
 			<var>$maker.this</var>
 			<text> </text>
 			<text>=</text>
@@ -2545,7 +2556,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="296" indent="&#160;&#160;&#160;">
+		<line linenr="297" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$maker.this</var>
@@ -2554,7 +2565,7 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="297" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="298" indent="&#160;&#160;&#160;&#160;">
 			<var>$maker</var>
 			<text> </text>
 			<text>=</text>
@@ -2568,7 +2579,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="298" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="299" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2587,30 +2598,30 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="299" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="300" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="300" indent="&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="301" indent="&#160;&#160;">
+		<line linenr="301" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="302" indent="&#160;&#160;">
-			<comment>* should there be no target at this point this follower would need to loop through all ships in his sector in order to maybe get a valid target which is further away than the nearest enemy. But for performance reasons we only do this on the lead ship. He would notice and close the distance for the entire fleet. This compromise seems acceptable.</comment>
+			<text>end</text>
 		</line>
 		<line linenr="303" indent="&#160;&#160;">
+			<comment>* should there be no target at this point this follower would need to loop through all ships in his sector in order to maybe get a valid target which is further away than the nearest enemy. But for performance reasons we only do this on the lead ship. He would notice and close the distance for the entire fleet. This compromise seems acceptable.</comment>
+		</line>
+		<line linenr="304" indent="&#160;&#160;">
 			<comment>* **</comment>
 		</line>
-		<line linenr="304" indent="&#160;&#160;" />
-		<line linenr="305" indent="&#160;&#160;">
+		<line linenr="305" indent="&#160;&#160;" />
+		<line linenr="306" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.7.4: Fix a nasty bug regarding attacking our own ships.</comment>
 		</line>
-		<line linenr="306" indent="&#160;&#160;">
+		<line linenr="307" indent="&#160;&#160;">
 			<var>$this.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2624,7 +2635,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="307" indent="&#160;&#160;">
+		<line linenr="308" indent="&#160;&#160;">
 			<var>$target.exists</var>
 			<text> </text>
 			<text>=</text>
@@ -2634,13 +2645,13 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="308" indent="&#160;&#160;" />
-		<line linenr="309" indent="&#160;&#160;">
+		<line linenr="309" indent="&#160;&#160;" />
+		<line linenr="310" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target.exists</var>
 		</line>
-		<line linenr="310" indent="&#160;&#160;&#160;">
+		<line linenr="311" indent="&#160;&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2654,13 +2665,13 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="311" indent="&#160;&#160;&#160;" />
-		<line linenr="312" indent="&#160;&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;&#160;" />
+		<line linenr="313" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="313" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="314" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2677,7 +2688,7 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="314" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="315" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -2700,7 +2711,7 @@
 			<text> </text>
 			<var>$target</var>
 		</line>
-		<line linenr="315" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="316" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -2711,14 +2722,14 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="316" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="317" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="317" indent="&#160;&#160;&#160;">
+		<line linenr="318" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="318" indent="&#160;&#160;&#160;" />
-		<line linenr="319" indent="&#160;&#160;&#160;">
+		<line linenr="319" indent="&#160;&#160;&#160;" />
+		<line linenr="320" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2729,25 +2740,25 @@
 			<text> </text>
 			<var>$this.owner</var>
 		</line>
-		<line linenr="320" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="321" indent="&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckSSD</var>
 			<text>:</text>
 		</line>
-		<line linenr="321" indent="&#160;&#160;">
+		<line linenr="322" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="322" indent="&#160;">
+		<line linenr="323" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="323" indent="&#160;" />
-		<line linenr="324" indent="&#160;">
+		<line linenr="324" indent="&#160;" />
+		<line linenr="325" indent="&#160;">
 			<var>Follow</var>
 			<text>:</text>
 		</line>
-		<line linenr="325" indent="&#160;" />
-		<line linenr="326" indent="&#160;">
+		<line linenr="326" indent="&#160;" />
+		<line linenr="327" indent="&#160;">
 			<var>$leader.env</var>
 			<text> </text>
 			<text>=</text>
@@ -2759,7 +2770,7 @@
 			<text> </text>
 			<text>environment</text>
 		</line>
-		<line linenr="327" indent="&#160;">
+		<line linenr="328" indent="&#160;">
 			<var>$isDocked</var>
 			<text> </text>
 			<text>=</text>
@@ -2771,7 +2782,7 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="328" indent="&#160;">
+		<line linenr="329" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[ENVIRONMENT]</var>
@@ -2794,7 +2805,7 @@
 			<var>$leader.env</var>
 			<text>)</text>
 		</line>
-		<line linenr="329" indent="&#160;&#160;">
+		<line linenr="330" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2808,7 +2819,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="330" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="331" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2825,10 +2836,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="331" indent="&#160;&#160;">
+		<line linenr="332" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="332" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="333" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2845,10 +2856,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="333" indent="&#160;&#160;">
+		<line linenr="334" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="334" indent="&#160;&#160;">
+		<line linenr="335" indent="&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2856,24 +2867,24 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="335" indent="&#160;">
+		<line linenr="336" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="336" indent="&#160;" />
-		<line linenr="337" indent="&#160;">
+		<line linenr="337" indent="&#160;" />
+		<line linenr="338" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckLeader</var>
 			<text>:</text>
 		</line>
-		<line linenr="338" indent="&#160;">
+		<line linenr="339" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$restart</var>
 		</line>
-		<line linenr="339" indent="&#160;&#160;">
+		<line linenr="340" indent="&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2881,14 +2892,14 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="340" indent="&#160;">
+		<line linenr="341" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckDock</var>
 			<text>:</text>
 		</line>
-		<line linenr="341" indent="&#160;" />
-		<line linenr="342" indent="&#160;">
+		<line linenr="342" indent="&#160;" />
+		<line linenr="343" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2898,7 +2909,7 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="343" indent="&#160;&#160;">
+		<line linenr="344" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2909,7 +2920,7 @@
 			<text> </text>
 			<var>$leader</var>
 		</line>
-		<line linenr="344" indent="&#160;&#160;&#160;">
+		<line linenr="345" indent="&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2917,14 +2928,14 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="345" indent="&#160;">
+		<line linenr="346" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="346" indent="&#160;" />
-		<line linenr="347" indent="&#160;">
+		<line linenr="347" indent="&#160;" />
+		<line linenr="348" indent="&#160;">
 			<comment>* We don't call !move.movetoobject because we need the follow command to return after $timeout.</comment>
 		</line>
-		<line linenr="348" indent="&#160;">
+		<line linenr="349" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$leader</var>
@@ -2934,7 +2945,7 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="349" indent="&#160;&#160;">
+		<line linenr="350" indent="&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
@@ -2946,7 +2957,7 @@
 			<text> </text>
 			<text>environment</text>
 		</line>
-		<line linenr="350" indent="&#160;&#160;">
+		<line linenr="351" indent="&#160;&#160;">
 			<var>$target.race</var>
 			<text> </text>
 			<text>=</text>
@@ -2960,7 +2971,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="351" indent="&#160;&#160;">
+		<line linenr="352" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -2977,7 +2988,7 @@
 			<text> </text>
 			<var>[OWNER]</var>
 		</line>
-		<line linenr="352" indent="&#160;&#160;&#160;">
+		<line linenr="353" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2995,7 +3006,7 @@
 			<text> </text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="353" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="354" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3013,7 +3024,7 @@
 			<text>=</text>
 			<var>$target</var>
 		</line>
-		<line linenr="354" indent="&#160;&#160;&#160;">
+		<line linenr="355" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3024,7 +3035,7 @@
 			<text> </text>
 			<var>$target</var>
 		</line>
-		<line linenr="355" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="356" indent="&#160;&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -3032,10 +3043,10 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="356" indent="&#160;&#160;">
+		<line linenr="357" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="357" indent="&#160;&#160;" interruptable="@">
+		<line linenr="358" indent="&#160;&#160;" interruptable="@">
 			<var>$precision</var>
 			<text> </text>
 			<text>=</text>
@@ -3059,28 +3070,28 @@
 			<text>=</text>
 			<var>$target</var>
 		</line>
-		<line linenr="358" indent="&#160;">
+		<line linenr="359" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="359" indent="&#160;&#160;">
+		<line linenr="360" indent="&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$leader</var>
 		</line>
-		<line linenr="360" indent="&#160;&#160;">
+		<line linenr="361" indent="&#160;&#160;">
 			<var>$precision</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$followingPrecision</var>
 		</line>
-		<line linenr="361" indent="&#160;">
+		<line linenr="362" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="362" indent="&#160;" />
-		<line linenr="363" indent="&#160;">
+		<line linenr="363" indent="&#160;" />
+		<line linenr="364" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3089,21 +3100,21 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="364" indent="&#160;&#160;">
+		<line linenr="365" indent="&#160;&#160;">
 			<comment>* formations</comment>
 		</line>
-		<line linenr="365" indent="&#160;&#160;">
+		<line linenr="366" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$useFormations</var>
 		</line>
-		<line linenr="366" indent="&#160;&#160;&#160;">
+		<line linenr="367" indent="&#160;&#160;&#160;">
 			<comment>* Mordan3 - Most annoying thing is commanding my ship to follow someone and they get so freekin close to the target that I'm constantly swerving.  stupid.  Extend this.</comment>
 		</line>
-		<line linenr="367" indent="&#160;&#160;&#160;">
+		<line linenr="368" indent="&#160;&#160;&#160;">
 			<comment>* = [THIS]-&gt; escort ship $target</comment>
 		</line>
-		<line linenr="368" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="369" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3123,10 +3134,10 @@
 			<text> </text>
 			<text>m</text>
 		</line>
-		<line linenr="369" indent="&#160;&#160;">
+		<line linenr="370" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="370" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="371" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3146,13 +3157,13 @@
 			<text> </text>
 			<text>m</text>
 		</line>
-		<line linenr="371" indent="&#160;&#160;">
+		<line linenr="372" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="372" indent="&#160;">
+		<line linenr="373" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="373" indent="&#160;&#160;">
+		<line linenr="374" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3166,7 +3177,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="374" indent="&#160;&#160;&#160;">
+		<line linenr="375" indent="&#160;&#160;&#160;">
 			<var>$timeout</var>
 			<text> </text>
 			<text>=</text>
@@ -3183,10 +3194,10 @@
 			<text> </text>
 			<var>34000</var>
 		</line>
-		<line linenr="375" indent="&#160;&#160;">
+		<line linenr="376" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="376" indent="&#160;&#160;&#160;">
+		<line linenr="377" indent="&#160;&#160;&#160;">
 			<var>$timeout</var>
 			<text> </text>
 			<text>=</text>
@@ -3203,18 +3214,18 @@
 			<text> </text>
 			<var>55000</var>
 		</line>
-		<line linenr="377" indent="&#160;&#160;">
+		<line linenr="378" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="378" indent="&#160;&#160;">
+		<line linenr="379" indent="&#160;&#160;">
 			<comment>* temetvince</comment>
 		</line>
-		<line linenr="379" indent="&#160;&#160;">
+		<line linenr="380" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$useFormations</var>
 		</line>
-		<line linenr="380" indent="&#160;&#160;&#160;">
+		<line linenr="381" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -3228,13 +3239,13 @@
 			<text> </text>
 			<var>[Moveable Ship]</var>
 		</line>
-		<line linenr="381" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="382" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH 1.3: don't escort stations with formation!</comment>
 		</line>
-		<line linenr="382" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="383" indent="&#160;&#160;&#160;&#160;">
 			<comment>* ZH 1.3: adding a timeout!!!</comment>
 		</line>
-		<line linenr="383" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="384" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3253,10 +3264,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="384" indent="&#160;&#160;&#160;">
+		<line linenr="385" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="385" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="386" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3284,13 +3295,13 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="386" indent="&#160;&#160;&#160;">
+		<line linenr="387" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="387" indent="&#160;&#160;">
+		<line linenr="388" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="388" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="389" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3318,19 +3329,19 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="389" indent="&#160;&#160;">
+		<line linenr="390" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="390" indent="&#160;">
+		<line linenr="391" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="391" indent="&#160;" />
-		<line linenr="392" indent="&#160;">
+		<line linenr="392" indent="&#160;" />
+		<line linenr="393" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isInSquadron</var>
 		</line>
-		<line linenr="393" indent="&#160;&#160;">
+		<line linenr="394" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -3346,10 +3357,10 @@
 			<text> </text>
 			<var>[Huge Ship]</var>
 		</line>
-		<line linenr="394" indent="&#160;&#160;&#160;">
+		<line linenr="395" indent="&#160;&#160;&#160;">
 			<comment>* The AI will recycle damaged ships.</comment>
 		</line>
-		<line linenr="395" indent="&#160;&#160;&#160;">
+		<line linenr="396" indent="&#160;&#160;&#160;">
 			<var>$hull</var>
 			<text> </text>
 			<text>=</text>
@@ -3363,7 +3374,7 @@
 			<text> </text>
 			<text>percent</text>
 		</line>
-		<line linenr="396" indent="&#160;&#160;&#160;">
+		<line linenr="397" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hull</var>
@@ -3372,7 +3383,7 @@
 			<text> </text>
 			<var>50</var>
 		</line>
-		<line linenr="397" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="398" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -3392,7 +3403,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="398" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="399" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3402,7 +3413,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="399" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="400" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3420,34 +3431,34 @@
 			<text>=</text>
 			<var>$outpost</var>
 		</line>
-		<line linenr="400" indent="&#160;&#160;&#160;">
+		<line linenr="401" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="401" indent="&#160;&#160;">
+		<line linenr="402" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="402" indent="&#160;">
+		<line linenr="403" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="403" indent="&#160;" />
-		<line linenr="404" indent="">
+		<line linenr="404" indent="&#160;" />
+		<line linenr="405" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="405" indent="" />
-		<line linenr="406" indent="">
+		<line linenr="406" indent="" />
+		<line linenr="407" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="407" indent="" />
-		<line linenr="408" indent="">
+		<line linenr="408" indent="" />
+		<line linenr="409" indent="">
 			<var>CheckLeader</var>
 			<text>:</text>
 		</line>
-		<line linenr="409" indent="&#160;">
+		<line linenr="410" indent="&#160;">
 			<comment>* Preliminary checks.</comment>
 		</line>
-		<line linenr="410" indent="&#160;">
+		<line linenr="411" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -3457,18 +3468,18 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="411" indent="&#160;&#160;">
+		<line linenr="412" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="412" indent="&#160;">
+		<line linenr="413" indent="&#160;">
 			<comment>* skip if $leader-&gt; is of class [Moveable Ship]</comment>
 		</line>
-		<line linenr="413" indent="&#160;">
+		<line linenr="414" indent="&#160;">
 			<comment>* return null</comment>
 		</line>
-		<line linenr="414" indent="&#160;">
+		<line linenr="415" indent="&#160;">
 			<var>$leaderOwner</var>
 			<text> </text>
 			<text>=</text>
@@ -3482,7 +3493,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="415" indent="&#160;">
+		<line linenr="416" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -3493,17 +3504,17 @@
 			<text> </text>
 			<var>$leaderOriginalOwner</var>
 		</line>
-		<line linenr="416" indent="&#160;&#160;">
+		<line linenr="417" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="417" indent="&#160;">
+		<line linenr="418" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isInSquadron</var>
 		</line>
-		<line linenr="418" indent="&#160;&#160;">
+		<line linenr="419" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3525,7 +3536,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="419" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="420" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -3545,21 +3556,21 @@
 			<text>=</text>
 			<var>$leader</var>
 		</line>
-		<line linenr="420" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="421" indent="&#160;&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="421" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="422" indent="&#160;">
+		<line linenr="422" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
 		<line linenr="423" indent="&#160;">
-			<comment>* Is leader docked or out of sector?</comment>
+			<text>end</text>
 		</line>
 		<line linenr="424" indent="&#160;">
+			<comment>* Is leader docked or out of sector?</comment>
+		</line>
+		<line linenr="425" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$leader</var>
@@ -3569,22 +3580,22 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="425" indent="&#160;&#160;">
+		<line linenr="426" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$stopwhendocked</var>
 		</line>
-		<line linenr="426" indent="&#160;&#160;&#160;">
+		<line linenr="427" indent="&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="427" indent="&#160;">
+		<line linenr="428" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="428" indent="&#160;">
+		<line linenr="429" indent="&#160;">
 			<var>$leader.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -3596,7 +3607,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="429" indent="&#160;">
+		<line linenr="430" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[SECTOR]</var>
@@ -3605,26 +3616,26 @@
 			<text> </text>
 			<var>$leader.sector</var>
 		</line>
-		<line linenr="430" indent="&#160;&#160;">
+		<line linenr="431" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$stopwhenOOS</var>
 		</line>
-		<line linenr="431" indent="&#160;&#160;&#160;">
+		<line linenr="432" indent="&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="432" indent="&#160;&#160;">
+		<line linenr="433" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="433" indent="&#160;&#160;&#160;">
+		<line linenr="434" indent="&#160;&#160;&#160;">
 			<comment>* $nextSector = [NULL]-&gt; call script 'Mayhem.GetNextSectorOnRoute' : ship=[THIS] destination=$leader.sector</comment>
 		</line>
-		<line linenr="434" indent="&#160;&#160;&#160;">
+		<line linenr="435" indent="&#160;&#160;&#160;">
 			<comment>* = [THIS]-&gt; call script '!move.movetosector' : targetsector=$nextSector</comment>
 		</line>
-		<line linenr="435" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="436" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3646,7 +3657,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="436" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="437" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -3663,31 +3674,31 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="437" indent="&#160;&#160;&#160;">
+		<line linenr="438" indent="&#160;&#160;&#160;">
 			<var>$restart</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="438" indent="&#160;&#160;&#160;">
+		<line linenr="439" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="439" indent="&#160;&#160;">
+		<line linenr="440" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="440" indent="&#160;">
+		<line linenr="441" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="441" indent="">
+		<line linenr="442" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="442" indent="" />
-		<line linenr="443" indent="">
+		<line linenr="443" indent="" />
+		<line linenr="444" indent="">
 			<var>CheckDock</var>
 			<text>:</text>
 		</line>
-		<line linenr="444" indent="&#160;">
+		<line linenr="445" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3698,15 +3709,15 @@
 			<text> </text>
 			<var>$leader</var>
 		</line>
-		<line linenr="445" indent="&#160;&#160;">
+		<line linenr="446" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="446" indent="&#160;">
+		<line linenr="447" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isInSquadron</var>
 		</line>
-		<line linenr="447" indent="&#160;&#160;">
+		<line linenr="448" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -3720,7 +3731,7 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="448" indent="&#160;&#160;&#160;">
+		<line linenr="449" indent="&#160;&#160;&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -3729,7 +3740,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="449" indent="&#160;&#160;&#160;">
+		<line linenr="450" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
@@ -3747,7 +3758,7 @@
 			<text> </text>
 			<var>$carrierSearchUpdate</var>
 		</line>
-		<line linenr="450" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="451" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3763,14 +3774,14 @@
 			<text>=</text>
 			<text>'mayhem_galaxy.generated'</text>
 		</line>
-		<line linenr="451" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="452" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$carrierSearchTimer</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="452" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="453" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$carrier</var>
 			<text> </text>
 			<text>=</text>
@@ -3790,7 +3801,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="453" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="454" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$carrier</var>
@@ -3798,7 +3809,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="454" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="455" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$followers</var>
 			<text> </text>
 			<text>=</text>
@@ -3818,7 +3829,7 @@
 			<text>=</text>
 			<var>$leader</var>
 		</line>
-		<line linenr="455" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="456" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$index</var>
 			<text> </text>
 			<text>=</text>
@@ -3841,7 +3852,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="456" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="457" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3852,7 +3863,7 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="457" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="458" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -3869,7 +3880,7 @@
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="458" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="459" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3881,7 +3892,7 @@
 			<text> </text>
 			<var>$carrier</var>
 		</line>
-		<line linenr="459" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="460" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3935,24 +3946,24 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="460" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="461" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="461" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="462" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="462" indent="&#160;&#160;&#160;">
+		<line linenr="463" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="463" indent="&#160;&#160;">
+		<line linenr="464" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="464" indent="&#160;">
+		<line linenr="465" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="465" indent="&#160;" interruptable="@">
+		<line linenr="466" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3974,15 +3985,15 @@
 			<text>=</text>
 			<var>$leader</var>
 		</line>
-		<line linenr="466" indent="&#160;&#160;" />
 		<line linenr="467" indent="&#160;&#160;" />
-		<line linenr="468" indent="&#160;&#160;">
+		<line linenr="468" indent="&#160;&#160;" />
+		<line linenr="469" indent="&#160;&#160;">
 			<comment>* Mordan2</comment>
 		</line>
-		<line linenr="469" indent="&#160;&#160;">
+		<line linenr="470" indent="&#160;&#160;">
 			<comment>* Prevent ships from automatically docking at any lead carrier other than their own home base.  We want to avoid having non-support fighters and M6's from taking up docking slots on a ship that they don't belong to.</comment>
 		</line>
-		<line linenr="470" indent="&#160;&#160;">
+		<line linenr="471" indent="&#160;&#160;">
 			<var>$isM6</var>
 			<text> </text>
 			<text>=</text>
@@ -3998,7 +4009,7 @@
 			<text> </text>
 			<var>[M6]</var>
 		</line>
-		<line linenr="471" indent="&#160;&#160;">
+		<line linenr="472" indent="&#160;&#160;">
 			<var>$isFighter</var>
 			<text> </text>
 			<text>=</text>
@@ -4014,7 +4025,7 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="472" indent="&#160;&#160;">
+		<line linenr="473" indent="&#160;&#160;">
 			<var>$home</var>
 			<text> </text>
 			<text>=</text>
@@ -4026,7 +4037,7 @@
 			<text> </text>
 			<text>homebase</text>
 		</line>
-		<line linenr="473" indent="&#160;&#160;">
+		<line linenr="474" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4047,17 +4058,17 @@
 			<text> </text>
 			<var>$leader</var>
 		</line>
-		<line linenr="474" indent="&#160;&#160;&#160;">
+		<line linenr="475" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="475" indent="&#160;&#160;">
+		<line linenr="476" indent="&#160;&#160;">
 			<comment>* End Mordan2</comment>
 		</line>
-		<line linenr="476" indent="&#160;&#160;" />
-		<line linenr="477" indent="&#160;&#160;">
+		<line linenr="477" indent="&#160;&#160;" />
+		<line linenr="478" indent="&#160;&#160;">
 			<comment>* Only dock at lead carrier IF it's their home-base.</comment>
 		</line>
-		<line linenr="478" indent="&#160;&#160;" interruptable="@">
+		<line linenr="479" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -4075,30 +4086,30 @@
 			<text>=</text>
 			<var>$leader</var>
 		</line>
-		<line linenr="479" indent="&#160;">
+		<line linenr="480" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="480" indent="">
+		<line linenr="481" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="481" indent="" />
-		<line linenr="482" indent="">
+		<line linenr="482" indent="" />
+		<line linenr="483" indent="">
 			<var>CheckSSD</var>
 			<text>:</text>
 		</line>
-		<line linenr="483" indent="&#160;">
+		<line linenr="484" indent="&#160;">
 			<comment>* Add-Ons 2.2: Fix followers not respecting SSD.</comment>
 		</line>
-		<line linenr="484" indent="&#160;">
+		<line linenr="485" indent="&#160;">
 			<comment>* Mordan8</comment>
 		</line>
-		<line linenr="485" indent="&#160;">
+		<line linenr="486" indent="&#160;">
 			<comment>* Ships equipped with an SSD have a 10% chance to be attacked. Chance is halved if in active sector.</comment>
 		</line>
-		<line linenr="486" indent="&#160;">
+		<line linenr="487" indent="&#160;">
 			<comment>* Add-Ons 2.2: Now checks for any ship with SSD, not just player ones. Does not use the deprecated pirate cover state variable. This preserves parity.</comment>
 		</line>
-		<line linenr="487" indent="&#160;">
+		<line linenr="488" indent="&#160;">
 			<var>$hasSSD</var>
 			<text> </text>
 			<text>=</text>
@@ -4122,12 +4133,12 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="488" indent="&#160;">
+		<line linenr="489" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hasSSD</var>
 		</line>
-		<line linenr="489" indent="&#160;&#160;">
+		<line linenr="490" indent="&#160;&#160;">
 			<var>$chanceToAttack</var>
 			<text> </text>
 			<text>=</text>
@@ -4144,14 +4155,14 @@
 			<text> </text>
 			<var>99</var>
 		</line>
-		<line linenr="490" indent="&#160;&#160;">
+		<line linenr="491" indent="&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="491" indent="&#160;&#160;">
+		<line linenr="492" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4167,7 +4178,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="492" indent="&#160;&#160;&#160;">
+		<line linenr="493" indent="&#160;&#160;&#160;">
 			<var>$threshold</var>
 			<text> </text>
 			<text>=</text>
@@ -4178,13 +4189,13 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="493" indent="&#160;&#160;" />
-		<line linenr="494" indent="&#160;&#160;">
+		<line linenr="494" indent="&#160;&#160;" />
+		<line linenr="495" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$debug</var>
 		</line>
-		<line linenr="495" indent="&#160;&#160;&#160;">
+		<line linenr="496" indent="&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -4219,7 +4230,7 @@
 			<text> </text>
 			<var>$chanceToAttack</var>
 		</line>
-		<line linenr="496" indent="&#160;&#160;&#160;">
+		<line linenr="497" indent="&#160;&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -4230,11 +4241,11 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="497" indent="&#160;&#160;">
+		<line linenr="498" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="498" indent="&#160;&#160;" />
-		<line linenr="499" indent="&#160;&#160;">
+		<line linenr="499" indent="&#160;&#160;" />
+		<line linenr="500" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$chanceToAttack</var>
@@ -4243,7 +4254,7 @@
 			<text> </text>
 			<var>$threshold</var>
 		</line>
-		<line linenr="500" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="501" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -4273,16 +4284,16 @@
 			<text>=</text>
 			<var>$attackTimeout</var>
 		</line>
-		<line linenr="501" indent="&#160;&#160;">
+		<line linenr="502" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="502" indent="&#160;">
+		<line linenr="503" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="503" indent="&#160;&#160;">
+		<line linenr="504" indent="&#160;&#160;">
 			<comment>* Attack normally.</comment>
 		</line>
-		<line linenr="504" indent="&#160;&#160;" interruptable="@">
+		<line linenr="505" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -4312,10 +4323,10 @@
 			<text>=</text>
 			<var>$attackTimeout</var>
 		</line>
-		<line linenr="505" indent="&#160;">
+		<line linenr="506" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="506" indent="">
+		<line linenr="507" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -4324,7 +4335,7 @@
 			<sval type="string" val="!move.follow.template" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Low level follow code" />
-			<sval type="int" val="214" />
+			<sval type="int" val="215" />
 			<sval type="int" val="0" />
 			<sval type="array" size="69">
 				<sval type="string" val="leader" />
@@ -5510,14 +5521,26 @@
 					<sval type="int" val="10" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="19">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610582520" />
-					<sval type="int" val="1" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="44" />
-					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="30000" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -7364,7 +7387,7 @@
 					<sval type="string" val="stop if leader is out of sector" />
 				</sval>
 			</sval>
-			<sval type="array" size="230">
+			<sval type="array" size="231">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -7843,7 +7866,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="117" />
 					<sval type="int" val="1" />
-					<sval type="string" val="ZH 2.0 capships never get close to stations anymore due to generally increased laser ranges" />
+					<sval type="string" val="ZH 2.0: Capships may not approach stations closely due to increased laser ranges." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="117" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Widen only the engagement range; preserve larger existing ranges." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="118" />

@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Set.OutpostSpec</name>
-	<version>5</version>
+	<version>6</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -28,7 +28,21 @@
 			<var>null</var>
 		</line>
 		<line linenr="003" indent="" />
-		<line linenr="004" indent="" interruptable="@">
+		<line linenr="004" indent="">
+			<comment>* Expanded 2.2: Save the specialization before setting at each Outpost. This fixes an unintended accumulation bug.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* $spec is the dynamic specialization from ZH.Core. Phanon uses abnormal signals instead.</comment>
+		</line>
+		<line linenr="006" indent="">
+			<var>$specBonus</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$spec</var>
+		</line>
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="" interruptable="@">
 			<var>$Outposts</var>
 			<text> </text>
 			<text>=</text>
@@ -48,7 +62,7 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="005" indent="">
+		<line linenr="009" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -61,17 +75,17 @@
 			<text> </text>
 			<var>$Outposts</var>
 		</line>
-		<line linenr="006" indent="&#160;">
+		<line linenr="010" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="007" indent="&#160;">
+		<line linenr="011" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="008" indent="&#160;">
+		<line linenr="012" indent="&#160;">
 			<var>$Outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -81,7 +95,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="009" indent="&#160;" interruptable="@">
+		<line linenr="013" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -90,11 +104,19 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="010" indent="&#160;&#160;" />
-		<line linenr="011" indent="&#160;&#160;">
+		<line linenr="014" indent="&#160;" />
+		<line linenr="015" indent="&#160;">
+			<var>$thisSpec</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$specBonus</var>
+		</line>
+		<line linenr="016" indent="&#160;&#160;" />
+		<line linenr="017" indent="&#160;&#160;">
 			<comment>* Phanon Outpost crafting specialization is equal to local strength of abnormal signals (Add-Ons 1.1: Phanon specialization includes base max specialization level as well due to specialization diminishing returns)</comment>
 		</line>
-		<line linenr="012" indent="&#160;&#160;">
+		<line linenr="018" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$race</var>
@@ -103,7 +125,7 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="013" indent="&#160;&#160;&#160;">
+		<line linenr="019" indent="&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -115,7 +137,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="014" indent="&#160;">
+		<line linenr="020" indent="&#160;">
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>=</text>
@@ -134,28 +156,28 @@
 			<text>=</text>
 			<text>'mayhem_sector.ocvSignals'</text>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="021" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ocvSignals</var>
 		</line>
-		<line linenr="016" indent="&#160;">
-			<var>$spec</var>
+		<line linenr="022" indent="&#160;">
+			<var>$thisSpec</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$ocvSignals</var>
 		</line>
-		<line linenr="017" indent="&#160;">
+		<line linenr="023" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="018" indent="&#160;" />
-		<line linenr="019" indent="&#160;">
+		<line linenr="024" indent="&#160;" />
+		<line linenr="025" indent="&#160;">
 			<comment>* Add-Ons 1.1: base max spec now handled here (was previously in ZH.Core)</comment>
 		</line>
-		<line linenr="020" indent="&#160;" interruptable="@">
+		<line linenr="026" indent="&#160;" interruptable="@">
 			<var>$baselineSpec</var>
 			<text> </text>
 			<text>=</text>
@@ -175,37 +197,37 @@
 			<text>=</text>
 			<var>$Outpost</var>
 		</line>
-		<line linenr="021" indent="&#160;&#160;">
-			<var>$spec</var>
+		<line linenr="027" indent="&#160;&#160;">
+			<var>$thisSpec</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
 			<var>$baselineSpec</var>
 		</line>
-		<line linenr="022" indent="&#160;" />
-		<line linenr="023" indent="&#160;">
+		<line linenr="028" indent="&#160;" />
+		<line linenr="029" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 			<text> </text>
 			<text>&lt;</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="024" indent="&#160;">
-			<var>$spec</var>
+		<line linenr="030" indent="&#160;">
+			<var>$thisSpec</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="031" indent="&#160;">
 			<var>$Outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -222,9 +244,9 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="032" indent="&#160;">
 			<var>$Outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -241,9 +263,9 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="033" indent="">
 			<var>$Outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -260,9 +282,9 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="034" indent="">
 			<var>$Outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -279,9 +301,9 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="035" indent="">
 			<var>$Outpost</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -298,13 +320,13 @@
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
-			<var>$spec</var>
+			<var>$thisSpec</var>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="036" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -315,19 +337,21 @@
 			<sval type="string" val="ZH.Set.OutpostSpec" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="5" />
+			<sval type="int" val="6" />
 			<sval type="int" val="0" />
-			<sval type="array" size="8">
+			<sval type="array" size="10">
 				<sval type="string" val="race" />
 				<sval type="string" val="spec" />
+				<sval type="string" val="specBonus" />
 				<sval type="string" val="Outposts" />
 				<sval type="string" val="Outpost" />
 				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="thisSpec" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="ocvSignals" />
 				<sval type="string" val="baselineSpec" />
 			</sval>
-			<sval type="array" size="24">
+			<sval type="array" size="26">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610612216" />
@@ -348,10 +372,19 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOutposts" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -360,30 +393,30 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606839" />
+					<sval type="int" val="-1610606327" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -391,9 +424,18 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609405" />
+					<sval type="int" val="-1610608893" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -409,53 +451,53 @@
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_sector.ocvSignals" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610608888" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetMaxSpecializationLevel" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -465,10 +507,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608376" />
+					<sval type="int" val="-1610607864" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -480,7 +522,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -490,51 +532,51 @@
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_specializationLaser" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_specializationMissile" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_specializationShield" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_specializationShip" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_specializationStation" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -552,43 +594,61 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="9">
+			<sval type="array" size="13">
 				<sval type="array" size="2">
 					<sval type="int" val="2" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="8" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Save the specialization before setting at each Outpost. This fixes an unintended accumulation bug." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$spec is the dynamic specialization from ZH.Core. Phanon uses abnormal signals instead." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Phanon Outpost crafting specialization is equal to local strength of abnormal signals (Add-Ons 1.1: Phanon specialization includes base max specialization level as well due to specialization diminishing returns)" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="13" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.1: base max spec now handled here (was previously in ZH.Core)" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.1: base max spec now handled here (was previously in ZH.Core)" />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="17" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="25" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
