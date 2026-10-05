@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Cargo.Callbacks</name>
-	<version>2</version>
+	<version>12</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -12,42 +12,9 @@
 	<sourcetext>
 		<line linenr="001" indent="" />
 		<line linenr="002" indent="">
-			<comment>* 'No'.</comment>
+			<comment>* Expanded 2.2: Reworked to prevent savescumming.</comment>
 		</line>
 		<line linenr="003" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$input</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="004" indent="&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="005" indent="" />
-		<line linenr="006" indent="">
-			<var>$cargoJobs</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_cargoHaulerJobs'</text>
-		</line>
-		<line linenr="007" indent="">
 			<var>$cargoJob</var>
 			<text> </text>
 			<text>=</text>
@@ -63,7 +30,78 @@
 			<text>=</text>
 			<text>'mayhem_currentCargoHaulerOffer'</text>
 		</line>
-		<line linenr="008" indent="">
+		<line linenr="004" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$cargoJob</var>
+		</line>
+		<line linenr="005" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="006" indent="" />
+		<line linenr="007" indent="">
+			<var>$origin</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$cargoJob</var>
+			<text>[</text>
+			<var>5</var>
+			<text>]</text>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<comment>* No: player rejected offer.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$input</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="011" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="012" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="013" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
+			<comment>* Yes: player took offer.</comment>
+		</line>
+		<line linenr="016" indent="" />
+		<line linenr="017" indent="">
+			<var>$cargoJobs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_cargoHaulerJobs'</text>
+		</line>
+		<line linenr="018" indent="">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -73,22 +111,122 @@
 			<var>3</var>
 			<text>]</text>
 		</line>
-		<line linenr="009" indent="">
-			<text>skip</text>
-			<text> </text>
+		<line linenr="019" indent="">
 			<text>if</text>
+			<text> </text>
+			<text>not</text>
 			<text> </text>
 			<var>$station</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="010" indent="&#160;">
+		<line linenr="020" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="021" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="022" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
+			<comment>* Revalidate ship before adding cargo.</comment>
+		</line>
+		<line linenr="025" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>class</text>
+			<text> </text>
+			<var>[TS]</var>
+		</line>
+		<line linenr="026" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="027" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="028" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_isCargoHauler'</text>
+		</line>
+		<line linenr="031" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="032" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="033" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
+			<comment>* Active job layout:</comment>
+		</line>
+		<line linenr="036" indent="">
+			<comment>* [0] {Ware} </comment>
+		</line>
+		<line linenr="037" indent="">
+			<comment>* [1] $qty </comment>
+		</line>
+		<line linenr="038" indent="">
+			<comment>* [2] $pay </comment>
+		</line>
+		<line linenr="039" indent="">
+			<comment>* [3] $destination</comment>
+		</line>
+		<line linenr="040" indent="">
+			<comment>* [4] $illegal</comment>
+		</line>
+		<line linenr="041" indent="">
+			<comment>* [5] $ship</comment>
+		</line>
+		<line linenr="042" indent="" />
+		<line linenr="043" indent="">
 			<var>$ware</var>
 			<text> </text>
 			<text>=</text>
@@ -98,7 +236,7 @@
 			<var>0</var>
 			<text>]</text>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="044" indent="">
 			<var>$qty</var>
 			<text> </text>
 			<text>=</text>
@@ -108,7 +246,28 @@
 			<var>1</var>
 			<text>]</text>
 		</line>
-		<line linenr="013" indent="">
+		<line linenr="045" indent="">
+			<var>$pay</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$cargoJob</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+		</line>
+		<line linenr="046" indent="">
+			<var>$isIllegal</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$cargoJob</var>
+			<text>[</text>
+			<var>4</var>
+			<text>]</text>
+		</line>
+		<line linenr="047" indent="" />
+		<line linenr="048" indent="">
 			<var>$added</var>
 			<text> </text>
 			<text>=</text>
@@ -126,7 +285,7 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="014" indent="">
+		<line linenr="049" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$added</var>
@@ -135,7 +294,84 @@
 			<text> </text>
 			<var>$qty</var>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="050" indent="&#160;">
+			<comment>* Expanded 2.2: Bind the accepted job to the Cargo Hauler that accepted it.</comment>
+		</line>
+		<line linenr="051" indent="&#160;">
+			<var>$activeJob</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<text>alloc</text>
+			<text>:</text>
+			<text> </text>
+			<text>size</text>
+			<text>=</text>
+			<var>6</var>
+		</line>
+		<line linenr="052" indent="&#160;">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware</var>
+		</line>
+		<line linenr="053" indent="&#160;">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$qty</var>
+		</line>
+		<line linenr="054" indent="">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>2</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$pay</var>
+		</line>
+		<line linenr="055" indent="&#160;">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>3</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$station</var>
+		</line>
+		<line linenr="056" indent="&#160;">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>4</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$isIllegal</var>
+		</line>
+		<line linenr="057" indent="&#160;">
+			<var>$activeJob</var>
+			<text>[</text>
+			<var>5</var>
+			<text>]</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[PLAYERSHIP]</var>
+		</line>
+		<line linenr="058" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -150,9 +386,9 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$cargoJob</var>
+			<var>$activeJob</var>
 		</line>
-		<line linenr="016" indent="&#160;" interruptable="@">
+		<line linenr="059" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -182,13 +418,13 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="060" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="018" indent="&#160;">
+		<line linenr="061" indent="">
 			<comment>* Expanded 2.2 (ported from FoF): refund cargo.</comment>
 		</line>
-		<line linenr="019" indent="&#160;">
+		<line linenr="062" indent="">
 			<var>$refund</var>
 			<text> </text>
 			<text>=</text>
@@ -199,7 +435,7 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="063" indent="">
 			<text>=</text>
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
@@ -215,7 +451,7 @@
 			<text> </text>
 			<var>$ware</var>
 		</line>
-		<line linenr="021" indent="&#160;" interruptable="@">
+		<line linenr="064" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -245,11 +481,62 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="065" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="023" indent="" />
-		<line linenr="024" indent="">
+		<line linenr="066" indent="&#160;" />
+		<line linenr="067" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="068" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="069" indent="" />
+		<line linenr="070" indent="">
+			<var>ConsumeOffer</var>
+			<text>:</text>
+		</line>
+		<line linenr="071" indent="">
+			<comment>* Predetermine the origin station's next offer before clearing the current one.</comment>
+		</line>
+		<line linenr="072" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$origin</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="073" indent="" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.CargoTaxi.GenerateOffer</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>station</text>
+			<text>=</text>
+			<var>$origin</var>
+			<text> </text>
+			<text>jobType</text>
+			<text>=</text>
+			<text>'Cargo'</text>
+		</line>
+		<line linenr="074" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -265,11 +552,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="025" indent="" />
-		<line linenr="026" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
+		<line linenr="075" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -277,22 +561,54 @@
 			<sval type="string" val="Mayhem.Cargo.Callbacks" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="2" />
+			<sval type="int" val="12" />
 			<sval type="int" val="0" />
-			<sval type="array" size="8">
+			<sval type="array" size="12">
 				<sval type="string" val="input" />
-				<sval type="string" val="cargoJobs" />
 				<sval type="string" val="cargoJob" />
+				<sval type="string" val="origin" />
+				<sval type="string" val="cargoJobs" />
 				<sval type="string" val="station" />
 				<sval type="string" val="ware" />
 				<sval type="string" val="qty" />
+				<sval type="string" val="pay" />
+				<sval type="string" val="isIllegal" />
 				<sval type="string" val="added" />
+				<sval type="string" val="activeJob" />
 				<sval type="string" val="refund" />
 			</sval>
-			<sval type="array" size="19">
+			<sval type="array" size="44">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_currentCargoHaulerOffer" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536870137" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610612216" />
+					<sval type="int" val="-1610610941" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -304,6 +620,10 @@
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -314,27 +634,59 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_cargoHaulerJobs" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_currentCargoHaulerOffer" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-536867836" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="705" />
+					<sval type="int" val="131075" />
 					<sval type="int" val="3" />
-					<sval type="int" val="-536869113" />
+					<sval type="int" val="-536867068" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2031" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_isCargoHauler" />
+					<sval type="int" val="-536866300" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -343,38 +695,54 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="646" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="3" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609149" />
+					<sval type="int" val="-1610604029" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="3" />
@@ -382,14 +750,74 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="128" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="130" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="3" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -409,14 +837,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="17" />
+					<sval type="int" val="37" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="15" />
@@ -432,9 +860,9 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="14">
 					<sval type="int" val="102" />
@@ -452,6 +880,37 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="ConsumeOffer" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-1610601976" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.CargoTaxi.GenerateOffer" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Cargo" />
+				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="157" />
 					<sval type="int" val="5" />
@@ -459,10 +918,8 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 			</sval>
 			<sval type="array" size="1">
@@ -471,7 +928,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="8">
+			<sval type="array" size="32">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -479,32 +936,140 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="'No'." />
+					<sval type="string" val="Expanded 2.2: Reworked to prevent savescumming." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="14" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="14" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2 (ported from FoF): refund cargo." />
+					<sval type="string" val="No: player rejected offer." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="7" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="7" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Yes: player took offer." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="7" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Revalidate ship before adding cargo." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="18" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Active job layout:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[0] {Ware} " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[1] $qty " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[2] $pay " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[3] $destination" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[4] $illegal" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[5] $ship" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Bind the accepted job to the Cargo Hauler that accepted it." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2 (ported from FoF): refund cargo." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="40" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Predetermine the origin station's next offer before clearing the current one." />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
