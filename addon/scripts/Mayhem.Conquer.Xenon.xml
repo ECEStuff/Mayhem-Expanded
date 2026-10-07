@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Conquer.Xenon</name>
-	<version>16</version>
+	<version>18</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -53,7 +53,7 @@
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="007" indent="&#160;&#160;">
+		<line linenr="007" indent="&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -74,22 +74,13 @@
 			<text>exists</text>
 		</line>
 		<line linenr="009" indent="&#160;">
-			<comment>* Should never happen; this is only if it so happens that, during computation, another station is destroyed while this script is executing.</comment>
-		</line>
-		<line linenr="010" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="011" indent="&#160;" />
-		<line linenr="012" indent="&#160;">
-			<comment>* ZH 2.1 added safety after a bug report of Xenons who conquered a sector with a player mining station</comment>
+		<line linenr="010" indent="&#160;" />
+		<line linenr="011" indent="&#160;&#160;">
+			<comment>* Expanded 2.2: Any surviving player station prevents Xenon conquest.</comment>
 		</line>
-		<line linenr="013" indent="&#160;">
-			<comment>* The only stations at this point are any surviving stations owned by the sector's owner, pirate base (if any), or trading station (if any)</comment>
-		</line>
-		<line linenr="014" indent="&#160;&#160;">
-			<comment>* Add-Ons 1.4.21: Don't return null simply because the station owner isn't a company. </comment>
-		</line>
-		<line linenr="015" indent="&#160;&#160;">
+		<line linenr="012" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -103,7 +94,9 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="016" indent="&#160;&#160;&#160;">
+		<line linenr="013" indent="">
+			<text>do</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -112,64 +105,22 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="017" indent="&#160;">
-			<var>$station.type</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>ware</text>
-			<text> </text>
-			<text>type</text>
-			<text> </text>
-			<text>code</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>object</text>
-		</line>
-		<line linenr="018" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$station.type</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>{Silicon Mine}</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.type</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>{Ore Mine}</var>
-		</line>
-		<line linenr="019" indent="">
+		<line linenr="014" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="020" indent="">
+		<line linenr="015" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="021" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="022" indent="" />
-		<line linenr="023" indent="">
+		<line linenr="016" indent="" />
+		<line linenr="017" indent="">
 			<comment>* Add-Ons 1.7.4: Populate Xenon station with defenders, scaled by difficulty.</comment>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="018" indent="">
 			<comment>* Add-Ons 2.2: Moved setup to new script.</comment>
 		</line>
-		<line linenr="025" indent="" interruptable="@">
+		<line linenr="019" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -191,7 +142,7 @@
 			<text>=</text>
 			<var>[Xenon]</var>
 		</line>
-		<line linenr="026" indent="" interruptable="@">
+		<line linenr="020" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -209,11 +160,11 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="027" indent="" />
-		<line linenr="028" indent="&#160;">
-			<comment>* Zero Hour: clear any trading station</comment>
+		<line linenr="021" indent="" />
+		<line linenr="022" indent="&#160;">
+			<comment>* Zero Hour: clear any trading stations. Company stations are always owned by Private Corp.</comment>
 		</line>
-		<line linenr="029" indent="&#160;">
+		<line linenr="023" indent="&#160;">
 			<var>$stations</var>
 			<text> </text>
 			<text>=</text>
@@ -231,7 +182,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="030" indent="&#160;&#160;">
+		<line linenr="024" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -244,17 +195,17 @@
 			<text> </text>
 			<var>$stations</var>
 		</line>
-		<line linenr="031" indent="&#160;&#160;">
+		<line linenr="025" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="032" indent="&#160;&#160;&#160;">
+		<line linenr="026" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="033" indent="&#160;&#160;&#160;">
+		<line linenr="027" indent="&#160;&#160;&#160;">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -264,7 +215,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="034" indent="&#160;&#160;">
+		<line linenr="028" indent="&#160;&#160;">
 			<var>$station.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -278,56 +229,16 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="035" indent="&#160;&#160;">
+		<line linenr="029" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$station.owner</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<var>[Markus Corp.]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Oceania Inc.]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Pontifex Corp.]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Salecrest Corp.]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Thuruk's Inc.]</var>
-			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$station.owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Industritech]</var>
+			<var>[Private Corp.]</var>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="030" indent="">
 			<var>$station</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -342,7 +253,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="031" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>get</text>
@@ -356,7 +267,7 @@
 			<text>=</text>
 			<text>'ZH_showDebug'</text>
 		</line>
-		<line linenr="038" indent="">
+		<line linenr="032" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -379,7 +290,7 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="039" indent="">
+		<line linenr="033" indent="">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -390,22 +301,17 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="040" indent="">
+		<line linenr="034" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="041" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="042" indent="">
+		<line linenr="035" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="043" indent="">
+		<line linenr="036" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="044" indent="" />
-		<line linenr="045" indent="">
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -416,20 +322,19 @@
 			<sval type="string" val="Mayhem.Conquer.Xenon" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="16" />
+			<sval type="int" val="18" />
 			<sval type="int" val="0" />
-			<sval type="array" size="9">
+			<sval type="array" size="8">
 				<sval type="string" val="sector" />
 				<sval type="string" val="stations" />
 				<sval type="string" val="station" />
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="owner" />
-				<sval type="string" val="station.type" />
 				<sval type="string" val="XS.Iterator2" />
 				<sval type="string" val="station.owner" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="29">
+			<sval type="array" size="26">
 				<sval type="array" size="4">
 					<sval type="int" val="1009" />
 					<sval type="int" val="131074" />
@@ -444,7 +349,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609399" />
+					<sval type="int" val="-1610609911" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -481,7 +386,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609661" />
+					<sval type="int" val="-1610610168" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -493,39 +398,6 @@
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="707" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="25">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610609656" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="9" />
-					<sval type="int" val="393431" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="9" />
-					<sval type="int" val="393421" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -566,22 +438,22 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605559" />
+					<sval type="int" val="-1610606327" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
@@ -589,88 +461,28 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 				</sval>
-				<sval type="array" size="73">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605821" />
-					<sval type="int" val="23" />
+					<sval type="int" val="-1610606589" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 					<sval type="int" val="10" />
-					<sval type="int" val="24" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="22" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="27" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="29" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="26" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="20" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="23" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-9" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-12" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-13" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-16" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-17" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-20" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-21" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="765" />
@@ -683,16 +495,16 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_showDebug" />
-					<sval type="int" val="-1610606077" />
+					<sval type="int" val="-1610606589" />
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="9" />
 					<sval type="int" val="5" />
 					<sval type="string" val="(Debug) destroyed a " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -721,16 +533,11 @@
 				<sval type="array" size="3">
 					<sval type="int" val="400" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="17" />
+					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -744,7 +551,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="19">
+			<sval type="array" size="15">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -752,11 +559,6 @@
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Should never happen; this is only if it so happens that, during computation, another station is destroyed while this script is executing." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="7" />
@@ -769,63 +571,49 @@
 				<sval type="array" size="3">
 					<sval type="int" val="7" />
 					<sval type="int" val="1" />
-					<sval type="string" val="ZH 2.1 added safety after a bug report of Xenons who conquered a sector with a player mining station" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="The only stations at this point are any surviving stations owned by the sector's owner, pirate base (if any), or trading station (if any)" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.21: Don't return null simply because the station owner isn't a company. " />
+					<sval type="string" val="Expanded 2.2: Any surviving player station prevents Xenon conquest." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="12" />
+					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="11" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.7.4: Populate Xenon station with defenders, scaled by difficulty." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.2: Moved setup to new script." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="13" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="15" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Zero Hour: clear any trading station" />
+					<sval type="string" val="Zero Hour: clear any trading stations. Company stations are always owned by Private Corp." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="25" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="25" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
