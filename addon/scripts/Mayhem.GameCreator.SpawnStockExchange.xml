@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GameCreator.SpawnStockExchange</name>
-	<version>17</version>
+	<version>19</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -245,13 +245,11 @@
 		<line linenr="042" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="043" indent="&#160;" />
-		<line linenr="044" indent="&#160;&#160;">
-			<comment>* Add-Ons 1.9.3: Stock the stock exchange with wares. Only a partial stock however - 10% as much as a company station.</comment>
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
+			<comment>* Expanded 2.2: Moved to new helper.</comment>
 		</line>
-		<line linenr="045" indent="&#160;&#160;" interruptable="@">
-			<var>$wares</var>
-			<text> </text>
+		<line linenr="045" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -261,276 +259,22 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Joubarbe.Lib.GetTradeableWares</call>
+			<call>Mayhem.StockTradingStation</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>shipOrStation</text>
+			<text>station</text>
 			<text>=</text>
 			<var>$station</var>
 		</line>
-		<line linenr="046" indent="&#160;&#160;">
-			<var>$XS.Iterator2</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>size</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<var>$wares</var>
-		</line>
-		<line linenr="047" indent="&#160;&#160;">
-			<text>while</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="048" indent="&#160;&#160;">
-			<text>dec</text>
-			<text> </text>
-			<var>$XS.Iterator2</var>
-		</line>
-		<line linenr="049" indent="&#160;&#160;">
-			<var>$ware</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$wares</var>
-			<text>[</text>
-			<var>$XS.Iterator2</var>
-			<text>]</text>
-		</line>
-		<line linenr="050" indent="&#160;&#160;">
-			<var>$max</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>max.</text>
-			<text> </text>
-			<text>store</text>
-			<text> </text>
-			<text>amount</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>ware</text>
-			<text> </text>
-			<var>$ware</var>
-		</line>
-		<line linenr="051" indent="&#160;&#160;">
-			<var>$max</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$max</var>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>1000</var>
-		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;" />
-		<line linenr="053" indent="&#160;&#160;&#160;">
-			<comment>* Mordan</comment>
-		</line>
-		<line linenr="054" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Add-Ons 2.1.2: Only on lower difficulties.</comment>
-		</line>
-		<line linenr="055" indent="&#160;&#160;&#160;" interruptable="@">
-			<var>$difficulty</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.GetDifficulty</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="056" indent="&#160;&#160;">
-			<var>$opt</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'ZH_TradeQuantumTubes'</text>
-		</line>
-		<line linenr="057" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$opt</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>1</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&lt;=</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="058" indent="&#160;&#160;">
-			<comment>* increase initial load of QT's so there's not a shortage so quickly in early game.</comment>
-		</line>
-		<line linenr="059" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ware</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>{Quantum Tubes}</var>
-		</line>
-		<line linenr="060" indent="&#160;&#160;">
-			<var>$max</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$max</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>3</var>
-		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;">
+		<line linenr="046" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="062" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="063" indent="&#160;&#160;&#160;">
-			<comment>* end Mordan</comment>
-		</line>
-		<line linenr="064" indent="&#160;&#160;&#160;" />
-		<line linenr="065" indent="&#160;&#160;&#160;">
-			<var>$i</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>from</text>
-			<text> </text>
-			<text>zero</text>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<var>$max</var>
-		</line>
-		<line linenr="066" indent="&#160;&#160;" interruptable="@">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.IsGalaxyExpansionNone</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="067" indent="&#160;">
-			<var>$i</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$i</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="068" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$galaxyStart</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>null</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$galaxyStart</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<text>'0'</text>
-		</line>
-		<line linenr="069" indent="">
-			<comment>* peaceful start, galaxy low on resources.</comment>
-		</line>
-		<line linenr="070" indent="">
-			<comment>* Add-Ons 1.9.3: Don't do $galaxyStart or it will evaluate to FALSE. Must check null instead.</comment>
-		</line>
-		<line linenr="071" indent="">
-			<var>$i</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$i</var>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>10</var>
-		</line>
-		<line linenr="072" indent="">
-			<text>=</text>
-			<text> </text>
-			<var>$station</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>add</text>
-			<text> </text>
-			<var>$i</var>
-			<text> </text>
-			<text>units</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<var>$ware</var>
-		</line>
-		<line linenr="073" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="074" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="075" indent="" />
-		<line linenr="076" indent="">
+		<line linenr="047" indent="" />
+		<line linenr="048" indent="">
 			<comment>* Initialize the stock exchange.</comment>
 		</line>
-		<line linenr="077" indent="" interruptable="@">
+		<line linenr="049" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -544,8 +288,8 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="078" indent="" />
-		<line linenr="079" indent="">
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -556,9 +300,9 @@
 			<sval type="string" val="Mayhem.GameCreator.SpawnStockExchange" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="17" />
+			<sval type="int" val="19" />
 			<sval type="int" val="0" />
-			<sval type="array" size="15">
+			<sval type="array" size="7">
 				<sval type="string" val="races" />
 				<sval type="string" val="race" />
 				<sval type="string" val="XS.Iterator1" />
@@ -566,16 +310,8 @@
 				<sval type="string" val="stocksector" />
 				<sval type="string" val="type" />
 				<sval type="string" val="station" />
-				<sval type="string" val="wares" />
-				<sval type="string" val="ware" />
-				<sval type="string" val="XS.Iterator2" />
-				<sval type="string" val="max" />
-				<sval type="string" val="difficulty" />
-				<sval type="string" val="opt" />
-				<sval type="string" val="i" />
-				<sval type="string" val="galaxyStart" />
 			</sval>
-			<sval type="array" size="37">
+			<sval type="array" size="19">
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetCommonwealth" />
@@ -592,7 +328,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603767" />
+					<sval type="int" val="-1610608375" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -694,219 +430,13 @@
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetTradeableWares" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="131" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610604023" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="143" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="8" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="623" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="10" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1000" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="11" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="ZH_TradeQuantumTubes" />
-					<sval type="int" val="12" />
-				</sval>
-				<sval type="array" size="25">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605821" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-5" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605821" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="9" />
-					<sval type="int" val="983065" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="10" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="106" />
-					<sval type="int" val="13" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.IsGalaxyExpansionNone" />
-					<sval type="int" val="-1610605048" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="0" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="13" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="25">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610604536" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="5" />
-					<sval type="string" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="13" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="646" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="string" val="Mayhem.StockTradingStation" />
 					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="17" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -927,7 +457,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="47">
+			<sval type="array" size="36">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1071,73 +601,23 @@
 				<sval type="array" size="3">
 					<sval type="int" val="15" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.9.3: Stock the stock exchange with wares. Only a partial stock however - 10% as much as a company station." />
+					<sval type="string" val="Expanded 2.2: Moved to new helper." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="22" />
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="22" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Mordan" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="22" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.1.2: Only on lower difficulties." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="25" />
-					<sval type="int" val="1" />
-					<sval type="string" val="increase initial load of QT's so there's not a shortage so quickly in early game." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="27" />
-					<sval type="int" val="1" />
-					<sval type="string" val="end Mordan" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="31" />
-					<sval type="int" val="1" />
-					<sval type="string" val="peaceful start, galaxy low on resources." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="31" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.9.3: Don't do $galaxyStart or it will evaluate to FALSE. Must check null instead." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="34" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="17" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Initialize the stock exchange." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
