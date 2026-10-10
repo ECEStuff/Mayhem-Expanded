@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Mission.Dock</name>
-	<version>8</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -12,7 +12,7 @@
 	<sourcetext>
 		<line linenr="001" indent="" />
 		<line linenr="002" indent="">
-			<comment>* Called from !ship.signal.docked.</comment>
+			<comment>* Called from !ship.signal.docked. Only the player can enter this script.</comment>
 		</line>
 		<line linenr="003" indent="" />
 		<line linenr="004" indent="">
@@ -598,7 +598,134 @@
 			<text> </text>
 			<var>$shipToDeliver</var>
 		</line>
-		<line linenr="063" indent="&#160;" interruptable="@">
+		<line linenr="063" indent="&#160;">
+			<var>$passengers</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$goals</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'passengers'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="064" indent="&#160;">
+			<var>$allCrewOnboard</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="065" indent="&#160;" />
+		<line linenr="066" indent="&#160;">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$passengers</var>
+		</line>
+		<line linenr="067" indent="&#160;&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="068" indent="&#160;&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="069" indent="&#160;&#160;&#160;">
+			<var>$passenger</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$passengers</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="070" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>$passenger</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="071" indent="&#160;&#160;">
+			<var>$allCrewOnboard</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="072" indent="&#160;&#160;">
+			<text>break</text>
+		</line>
+		<line linenr="073" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="074" indent="&#160;&#160;&#160;" />
+		<line linenr="075" indent="&#160;&#160;&#160;">
+			<var>$passenger.env</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$passenger</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>environment</text>
+		</line>
+		<line linenr="076" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$passenger.env</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>$ship</var>
+		</line>
+		<line linenr="077" indent="&#160;">
+			<var>$allCrewOnboard</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="078" indent="&#160;">
+			<text>break</text>
+		</line>
+		<line linenr="079" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="080" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="081" indent="&#160;" />
+		<line linenr="082" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$allCrewOnboard</var>
+		</line>
+		<line linenr="083" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -616,7 +743,8 @@
 			<text>=</text>
 			<var>$mission</var>
 		</line>
-		<line linenr="064" indent="">
+		<line linenr="084" indent="&#160;" />
+		<line linenr="085" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -643,7 +771,7 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="065" indent="&#160;" interruptable="@">
+		<line linenr="086" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -661,7 +789,8 @@
 			<text>=</text>
 			<var>$mission</var>
 		</line>
-		<line linenr="066" indent="">
+		<line linenr="087" indent="&#160;&#160;" />
+		<line linenr="088" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -672,7 +801,7 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="067" indent="&#160;">
+		<line linenr="089" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -688,7 +817,7 @@
 			<text>=</text>
 			<text>'mayhem_incomingQuestionPending'</text>
 		</line>
-		<line linenr="068" indent="&#160;&#160;" interruptable="@">
+		<line linenr="090" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -710,17 +839,18 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="069" indent="">
+		<line linenr="091" indent="&#160;" />
+		<line linenr="092" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$accepted</var>
 		</line>
-		<line linenr="070" indent="&#160;">
+		<line linenr="093" indent="">
 			<comment>* Delivery from one of Player ships.</comment>
 		</line>
-		<line linenr="071" indent="&#160;" interruptable="@">
+		<line linenr="094" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -742,11 +872,11 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="072" indent="">
+		<line linenr="095" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="073" indent="" />
-		<line linenr="074" indent="">
+		<line linenr="096" indent="" />
+		<line linenr="097" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -757,9 +887,9 @@
 			<sval type="string" val="Mayhem.Mission.Dock" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="8" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
-			<sval type="array" size="16">
+			<sval type="array" size="19">
 				<sval type="string" val="ship" />
 				<sval type="string" val="station" />
 				<sval type="string" val="fedexId" />
@@ -776,8 +906,11 @@
 				<sval type="string" val="stolenShip" />
 				<sval type="string" val="passenger" />
 				<sval type="string" val="passenger.env" />
+				<sval type="string" val="passengers" />
+				<sval type="string" val="allCrewOnboard" />
+				<sval type="string" val="XS.Iterator1" />
 			</sval>
-			<sval type="array" size="48">
+			<sval type="array" size="63">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
 					<sval type="int" val="-1610611197" />
@@ -1094,7 +1227,7 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603005" />
+					<sval type="int" val="-1610599165" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -1119,6 +1252,116 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-5" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="passengers" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599927" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-536859388" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="50" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="702" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610600189" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="50" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599416" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Mission.Complete" />
@@ -1131,11 +1374,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="47" />
+					<sval type="int" val="62" />
 				</sval>
 				<sval type="array" size="37">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602235" />
+					<sval type="int" val="-1610598395" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
@@ -1184,11 +1427,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="47" />
+					<sval type="int" val="62" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601211" />
+					<sval type="int" val="-1610597371" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -1205,7 +1448,7 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_incomingQuestionPending" />
-					<sval type="int" val="-536859641" />
+					<sval type="int" val="-536855801" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1221,11 +1464,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="47" />
+					<sval type="int" val="62" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600699" />
+					<sval type="int" val="-1610596859" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
@@ -1256,7 +1499,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="30">
+			<sval type="array" size="41">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1264,7 +1507,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Called from !ship.signal.docked." />
+					<sval type="string" val="Called from !ship.signal.docked. Only the player can enter this script." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
@@ -1376,17 +1619,61 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.2: Passenger cleanup is now handled in Mission.Remove." />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="38" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="52" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="55" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="59" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="46" />
+					<sval type="int" val="61" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Delivery from one of Player ships." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
+					<sval type="int" val="62" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
+					<sval type="int" val="62" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

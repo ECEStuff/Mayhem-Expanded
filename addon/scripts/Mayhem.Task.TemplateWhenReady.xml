@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.TemplateWhenReady</name>
-	<version>63</version>
+	<version>64</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -2232,10 +2232,17 @@
 		<line linenr="255" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="256" indent="&#160;" interruptable="@">
-			<var>$m7m</var>
+		<line linenr="256" indent="&#160;" />
+		<line linenr="257" indent="&#160;">
+			<comment>* Mordan8 - Limit missiles for ships. Similar logic is found in Mayhem.GameCreator.Populate.AddSquadrons for initial squadrons.</comment>
+		</line>
+		<line linenr="258" indent="&#160;">
+			<comment>* Expanded 2.2: Only if ship is not a missile boat.</comment>
+		</line>
+		<line linenr="259" indent="&#160;" interruptable="@">
+			<text>if</text>
 			<text> </text>
-			<text>=</text>
+			<text>not</text>
 			<text> </text>
 			<var>[NULL]</var>
 			<text>-&gt;</text>
@@ -2244,70 +2251,15 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Joubarbe.Lib.GetM7M</call>
+			<call>Joubarbe.Lib.IsMissileBoat</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>race</text>
+			<text>shipOrType</text>
 			<text>=</text>
-			<var>[OWNER]</var>
-		</line>
-		<line linenr="257" indent="&#160;">
-			<var>$shipType</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
 			<var>[THIS]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>ware</text>
-			<text> </text>
-			<text>type</text>
-			<text> </text>
-			<text>code</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>object</text>
 		</line>
-		<line linenr="258" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<text>find</text>
-			<text> </text>
-			<var>$shipType</var>
-			<text> </text>
-			<text>in</text>
-			<text> </text>
-			<text>array</text>
-			<text>:</text>
-			<text> </text>
-			<var>$m7m</var>
-		</line>
-		<line linenr="259" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<var>[THIS]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>is</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>class</text>
-			<text> </text>
-			<var>[M8]</var>
-		</line>
-		<line linenr="260" indent="&#160;&#160;&#160;">
-			<comment>* Mordan8 - Limit missiles for ships.  similar logic is found in Mayhem.GameCreator.Populate.xml for initial squadrons.</comment>
-		</line>
-		<line linenr="261" indent="&#160;&#160;&#160;">
+		<line linenr="260" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>get</text>
@@ -2321,7 +2273,7 @@
 			<text>=</text>
 			<text>'Limit_AI_MissileSpam'</text>
 		</line>
-		<line linenr="262" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>random</text>
@@ -2336,7 +2288,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="263" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2355,25 +2307,22 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="264" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="265" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="266" indent="&#160;&#160;&#160;">
+		<line linenr="265" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="267" indent="&#160;&#160;">
+		<line linenr="266" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="268" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="269" indent="&#160;">
+		<line linenr="267" indent="&#160;">
 			<comment>* Add missiles if we can pay for them. Instant process.</comment>
 		</line>
-		<line linenr="270" indent="&#160;">
+		<line linenr="268" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -2382,7 +2331,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="271" indent="&#160;&#160;" interruptable="@">
+		<line linenr="269" indent="&#160;&#160;" interruptable="@">
 			<var>$missilesAdded</var>
 			<text> </text>
 			<text>=</text>
@@ -2402,7 +2351,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="272" indent="&#160;&#160;">
+		<line linenr="270" indent="&#160;&#160;">
 			<var>$missiles</var>
 			<text> </text>
 			<text>=</text>
@@ -2419,7 +2368,7 @@
 			<text> </text>
 			<var>$missilesAdded</var>
 		</line>
-		<line linenr="273" indent="&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -2432,17 +2381,17 @@
 			<text> </text>
 			<var>$missiles</var>
 		</line>
-		<line linenr="274" indent="&#160;&#160;&#160;">
+		<line linenr="272" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="275" indent="&#160;&#160;&#160;">
+		<line linenr="273" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="276" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="274" indent="&#160;&#160;&#160;&#160;">
 			<var>$missile</var>
 			<text> </text>
 			<text>=</text>
@@ -2452,7 +2401,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="277" indent="&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;">
 			<var>$qty</var>
 			<text> </text>
 			<text>=</text>
@@ -2469,7 +2418,7 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="278" indent="&#160;" interruptable="@">
+		<line linenr="276" indent="&#160;" interruptable="@">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2497,7 +2446,7 @@
 			<text>=</text>
 			<var>$qty</var>
 		</line>
-		<line linenr="279" indent="" interruptable="@">
+		<line linenr="277" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2523,33 +2472,33 @@
 			<text>=</text>
 			<var>$qty</var>
 		</line>
+		<line linenr="278" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="279" indent="">
+			<text>end</text>
+		</line>
 		<line linenr="280" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="281" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="282" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="283" indent="" />
-		<line linenr="284" indent="">
+		<line linenr="281" indent="" />
+		<line linenr="282" indent="">
 			<comment>* Mordan2 add</comment>
 		</line>
-		<line linenr="285" indent="">
+		<line linenr="283" indent="">
 			<comment>* For big and huge ships, we equip them all with missiles if they can handle it.  Guns and Shields are free, so your initial round of Missiles should be also.</comment>
 		</line>
-		<line linenr="286" indent="&#160;">
+		<line linenr="284" indent="&#160;">
 			<comment>* Just as importantly, we set the resupply amount of those missiles to whatever is loaded here, so you won't have to manually do it for every ship by hand.  It's just a convenience.</comment>
 		</line>
-		<line linenr="287" indent="&#160;">
+		<line linenr="285" indent="&#160;">
 			<comment>* Note, that the Equipping of missiles here is a random allocation chosen by Mayhem.EquipShip.Missiles.</comment>
 		</line>
-		<line linenr="288" indent="&#160;">
+		<line linenr="286" indent="&#160;">
 			<var>SetMissileResupply</var>
 			<text>:</text>
 		</line>
-		<line linenr="289" indent="&#160;&#160;">
+		<line linenr="287" indent="&#160;&#160;">
 			<var>$isBig</var>
 			<text> </text>
 			<text>=</text>
@@ -2565,7 +2514,7 @@
 			<text> </text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="290" indent="&#160;&#160;">
+		<line linenr="288" indent="&#160;&#160;">
 			<var>$isHuge</var>
 			<text> </text>
 			<text>=</text>
@@ -2581,7 +2530,7 @@
 			<text> </text>
 			<var>[Huge Ship]</var>
 		</line>
-		<line linenr="291" indent="&#160;&#160;">
+		<line linenr="289" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isBig</var>
@@ -2590,11 +2539,11 @@
 			<text> </text>
 			<var>$isHuge</var>
 		</line>
-		<line linenr="292" indent="&#160;&#160;" />
-		<line linenr="293" indent="&#160;&#160;">
+		<line linenr="290" indent="&#160;&#160;" />
+		<line linenr="291" indent="&#160;&#160;">
 			<comment>* Adds 1 or more random types and quantities of compatible missiles.  </comment>
 		</line>
-		<line linenr="294" indent="&#160;&#160;" interruptable="@">
+		<line linenr="292" indent="&#160;&#160;" interruptable="@">
 			<var>$missilesAdded</var>
 			<text> </text>
 			<text>=</text>
@@ -2614,11 +2563,11 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="295" indent="&#160;&#160;&#160;" />
-		<line linenr="296" indent="&#160;&#160;">
+		<line linenr="293" indent="&#160;&#160;&#160;" />
+		<line linenr="294" indent="&#160;&#160;">
 			<comment>* Mordan6</comment>
 		</line>
-		<line linenr="297" indent="&#160;&#160;">
+		<line linenr="295" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -2629,17 +2578,17 @@
 			<var>[Player]</var>
 			<text>)</text>
 		</line>
-		<line linenr="298" indent="&#160;&#160;">
+		<line linenr="296" indent="&#160;&#160;">
 			<comment>* write to log file 1 append=[TRUE] printf: fmt='Mayhem.Task.TemplateWhenReady.xml - SetMissileResupply Missiles: %s', $missilesAdded, null, null, null, null</comment>
 		</line>
-		<line linenr="299" indent="&#160;&#160;">
+		<line linenr="297" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="300" indent="&#160;&#160;" />
-		<line linenr="301" indent="&#160;&#160;&#160;">
+		<line linenr="298" indent="&#160;&#160;" />
+		<line linenr="299" indent="&#160;&#160;&#160;">
 			<comment>* Use the quantity actually added by Mayhem.EquipShip.Missiles.</comment>
 		</line>
-		<line linenr="302" indent="&#160;&#160;&#160;">
+		<line linenr="300" indent="&#160;&#160;&#160;">
 			<var>$missiles</var>
 			<text> </text>
 			<text>=</text>
@@ -2656,7 +2605,7 @@
 			<text> </text>
 			<var>$missilesAdded</var>
 		</line>
-		<line linenr="303" indent="&#160;&#160;">
+		<line linenr="301" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -2669,17 +2618,17 @@
 			<text> </text>
 			<var>$missiles</var>
 		</line>
-		<line linenr="304" indent="&#160;">
+		<line linenr="302" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="305" indent="">
+		<line linenr="303" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="306" indent="">
+		<line linenr="304" indent="">
 			<var>$missile</var>
 			<text> </text>
 			<text>=</text>
@@ -2689,7 +2638,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="307" indent="">
+		<line linenr="305" indent="">
 			<var>$amount.actual</var>
 			<text> </text>
 			<text>=</text>
@@ -2706,30 +2655,30 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="308" indent="&#160;">
+		<line linenr="306" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetResupplyThreshold</var>
 			<text>:</text>
 		</line>
-		<line linenr="309" indent="&#160;">
+		<line linenr="307" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="310" indent="&#160;">
+		<line linenr="308" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="311" indent="&#160;&#160;">
+		<line linenr="309" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="312" indent="&#160;&#160;" />
-		<line linenr="313" indent="&#160;&#160;&#160;">
+		<line linenr="310" indent="&#160;&#160;" />
+		<line linenr="311" indent="&#160;&#160;&#160;">
 			<var>ResupplyMissiles</var>
 			<text>:</text>
 		</line>
-		<line linenr="314" indent="&#160;&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;&#160;">
 			<comment>* Equip auto-resupply missiles before anything else.</comment>
 		</line>
-		<line linenr="315" indent="&#160;&#160;&#160;">
+		<line linenr="313" indent="&#160;&#160;&#160;">
 			<var>$missiles</var>
 			<text> </text>
 			<text>=</text>
@@ -2745,7 +2694,7 @@
 			<text> </text>
 			<text>array</text>
 		</line>
-		<line linenr="316" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="314" indent="&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator3</var>
 			<text> </text>
 			<text>=</text>
@@ -2758,17 +2707,17 @@
 			<text> </text>
 			<var>$missiles</var>
 		</line>
-		<line linenr="317" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="315" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="318" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="316" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="319" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="317" indent="&#160;&#160;&#160;&#160;">
 			<var>$missile</var>
 			<text> </text>
 			<text>=</text>
@@ -2778,7 +2727,7 @@
 			<var>$XS.Iterator3</var>
 			<text>]</text>
 		</line>
-		<line linenr="320" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="318" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$n</var>
 			<text> </text>
 			<text>=</text>
@@ -2797,12 +2746,12 @@
 			<text>=</text>
 			<var>$missile</var>
 		</line>
-		<line linenr="321" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="319" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$n</var>
 		</line>
-		<line linenr="322" indent="&#160;&#160;&#160;">
+		<line linenr="320" indent="&#160;&#160;&#160;">
 			<var>$i</var>
 			<text> </text>
 			<text>=</text>
@@ -2826,7 +2775,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="323" indent="&#160;&#160;&#160;">
+		<line linenr="321" indent="&#160;&#160;&#160;">
 			<var>$n</var>
 			<text> </text>
 			<text>=</text>
@@ -2837,7 +2786,7 @@
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="324" indent="&#160;&#160;&#160;">
+		<line linenr="322" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$n</var>
@@ -2846,7 +2795,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="325" indent="&#160;&#160;&#160;">
+		<line linenr="323" indent="&#160;&#160;&#160;">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -2862,11 +2811,11 @@
 			<text> </text>
 			<var>$missile</var>
 		</line>
-		<line linenr="326" indent="&#160;&#160;&#160;" />
-		<line linenr="327" indent="&#160;&#160;">
+		<line linenr="324" indent="&#160;&#160;&#160;" />
+		<line linenr="325" indent="&#160;&#160;">
 			<comment>* Mordan6</comment>
 		</line>
-		<line linenr="328" indent="&#160;">
+		<line linenr="326" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -2877,20 +2826,20 @@
 			<var>[Player]</var>
 			<text>)</text>
 		</line>
-		<line linenr="329" indent="">
+		<line linenr="327" indent="">
 			<comment>* write to log file 1 append=[TRUE] printf: fmt='Mayhem.Task.TemplateWhenReady.xml - ResupplyMissiles loading %s', $missile, null, null, null, null</comment>
 		</line>
-		<line linenr="330" indent="">
+		<line linenr="328" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="331" indent="">
+		<line linenr="329" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="332" indent="&#160;" />
-		<line linenr="333" indent="&#160;">
+		<line linenr="330" indent="&#160;" />
+		<line linenr="331" indent="&#160;">
 			<comment>* Add-Ons 1.7.4: Must ensure that the quantity we have matches what we got when we set the quantity.</comment>
 		</line>
-		<line linenr="334" indent="&#160;">
+		<line linenr="332" indent="&#160;">
 			<var>$amount.actual</var>
 			<text> </text>
 			<text>=</text>
@@ -2914,41 +2863,41 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="335" indent="&#160;">
+		<line linenr="333" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>SetResupplyThreshold</var>
 			<text>:</text>
 		</line>
+		<line linenr="334" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="335" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
 		<line linenr="336" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="337" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="338" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="339" indent="&#160;" />
-		<line linenr="340" indent="&#160;">
+		<line linenr="337" indent="&#160;" />
+		<line linenr="338" indent="&#160;">
 			<var>SetResupplyThreshold</var>
 			<text>:</text>
 		</line>
-		<line linenr="341" indent="&#160;&#160;">
+		<line linenr="339" indent="&#160;&#160;">
 			<comment>* Need missile and actual amount.</comment>
 		</line>
-		<line linenr="342" indent="&#160;">
+		<line linenr="340" indent="&#160;">
 			<var>$amount.toSet</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$amount.actual</var>
 		</line>
-		<line linenr="343" indent="&#160;" />
-		<line linenr="344" indent="">
+		<line linenr="341" indent="&#160;" />
+		<line linenr="342" indent="">
 			<comment>* Resupply quantities above 25 use increments of 5. Round down so the threshold never exceeds the supplied quantity.</comment>
 		</line>
-		<line linenr="345" indent="">
+		<line linenr="343" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2959,7 +2908,7 @@
 			<text> </text>
 			<var>25</var>
 		</line>
-		<line linenr="346" indent="">
+		<line linenr="344" indent="">
 			<var>$amount.toSet</var>
 			<text> </text>
 			<text>=</text>
@@ -2976,11 +2925,11 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="347" indent="" />
-		<line linenr="348" indent="">
+		<line linenr="345" indent="" />
+		<line linenr="346" indent="">
 			<comment>* Ceiling: resupply setting cannot exceed 1150 due to a UI limitation.</comment>
 		</line>
-		<line linenr="349" indent="">
+		<line linenr="347" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2991,15 +2940,15 @@
 			<text> </text>
 			<var>1150</var>
 		</line>
-		<line linenr="350" indent="">
+		<line linenr="348" indent="">
 			<var>$amount.toSet</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1150</var>
 		</line>
-		<line linenr="351" indent="" />
-		<line linenr="352" indent="">
+		<line linenr="349" indent="" />
+		<line linenr="350" indent="">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3018,7 +2967,7 @@
 			<text>=</text>
 			<var>$amount.toSet</var>
 		</line>
-		<line linenr="353" indent="">
+		<line linenr="351" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -3027,9 +2976,9 @@
 			<sval type="string" val="Mayhem.Task.TemplateWhenReady" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="63" />
+			<sval type="int" val="64" />
 			<sval type="int" val="0" />
-			<sval type="array" size="46">
+			<sval type="array" size="45">
 				<sval type="string" val="initTime" />
 				<sval type="string" val="ScriptName" />
 				<sval type="string" val="TaskID" />
@@ -3062,7 +3011,6 @@
 				<sval type="string" val="fleetSettings" />
 				<sval type="string" val="check" />
 				<sval type="string" val="leader" />
-				<sval type="string" val="m7m" />
 				<sval type="string" val="missilesAdded" />
 				<sval type="string" val="missiles" />
 				<sval type="string" val="missile" />
@@ -3077,7 +3025,7 @@
 				<sval type="string" val="i" />
 				<sval type="string" val="amount.toSet" />
 			</sval>
-			<sval type="array" size="211">
+			<sval type="array" size="208">
 				<sval type="array" size="2">
 					<sval type="int" val="141" />
 					<sval type="int" val="0" />
@@ -3587,11 +3535,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="186" />
+					<sval type="int" val="183" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -4475,45 +4423,23 @@
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.GetM7M" />
-					<sval type="int" val="32" />
+					<sval type="string" val="Joubarbe.Lib.IsMissileBoat" />
+					<sval type="int" val="-536830972" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="707" />
-					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="25" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1406" />
-					<sval type="int" val="-536830204" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="25" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="705" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-536830204" />
-					<sval type="int" val="12" />
-					<sval type="int" val="2142" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Limit_AI_MissileSpam" />
-					<sval type="int" val="-1610572029" />
+					<sval type="int" val="-1610572797" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="106" />
-					<sval type="int" val="-1610572029" />
+					<sval type="int" val="-1610572797" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 				</sval>
@@ -4531,7 +4457,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610569213" />
+					<sval type="int" val="-1610569981" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -4547,7 +4473,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.EquipShip.Missiles" />
-					<sval type="int" val="33" />
+					<sval type="int" val="32" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -4556,58 +4482,58 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1710" />
-					<sval type="int" val="34" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="32" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="36" />
+					<sval type="int" val="35" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610569207" />
+					<sval type="int" val="-1610569975" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="36" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="35" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="34" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="37" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="35" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="36" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="32" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="34" />
+				</sval>
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.CanAffordMissile" />
-					<sval type="int" val="-1610569464" />
+					<sval type="int" val="-1610570232" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="37" />
+					<sval type="int" val="36" />
 				</sval>
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
@@ -4619,13 +4545,13 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="37" />
+					<sval type="int" val="36" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="163" />
+					<sval type="int" val="160" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -4638,7 +4564,7 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="38" />
+					<sval type="int" val="37" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2073" />
 				</sval>
@@ -4646,18 +4572,18 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="39" />
+					<sval type="int" val="38" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2019" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610565373" />
+					<sval type="int" val="-1610566141" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="38" />
+					<sval type="int" val="37" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="39" />
+					<sval type="int" val="38" />
 					<sval type="int" val="15" />
 					<sval type="int" val="10" />
 					<sval type="int" val="3" />
@@ -4668,7 +4594,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.EquipShip.Missiles" />
-					<sval type="int" val="33" />
+					<sval type="int" val="32" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -4677,7 +4603,7 @@
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610567421" />
+					<sval type="int" val="-1610568189" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -4694,52 +4620,52 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1710" />
-					<sval type="int" val="34" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="32" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="40" />
+					<sval type="int" val="39" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610565367" />
+					<sval type="int" val="-1610566135" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="40" />
+					<sval type="int" val="39" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="40" />
+					<sval type="int" val="39" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="35" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="34" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="40" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1709" />
-					<sval type="int" val="41" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="40" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="32" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="203" />
+					<sval type="int" val="200" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="179" />
+					<sval type="int" val="176" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -4752,49 +4678,49 @@
 					<sval type="int" val="1499" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="34" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="42" />
+					<sval type="int" val="41" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561015" />
+					<sval type="int" val="-1610561783" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="42" />
+					<sval type="int" val="41" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="42" />
+					<sval type="int" val="41" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="35" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="34" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="42" />
+					<sval type="int" val="33" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="41" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1373" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561277" />
+					<sval type="int" val="-1610562045" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -4802,18 +4728,18 @@
 					<sval type="int" val="618" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="44" />
+					<sval type="int" val="43" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="44" />
+					<sval type="int" val="43" />
 					<sval type="int" val="15" />
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
@@ -4823,10 +4749,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561789" />
+					<sval type="int" val="-1610562557" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -4842,13 +4768,13 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="43" />
+					<sval type="int" val="42" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561789" />
+					<sval type="int" val="-1610562557" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -4867,17 +4793,17 @@
 					<sval type="int" val="618" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="41" />
+					<sval type="int" val="40" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="203" />
+					<sval type="int" val="200" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="189" />
+					<sval type="int" val="186" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -4888,19 +4814,19 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="45" />
+					<sval type="int" val="44" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="41" />
+					<sval type="int" val="40" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610559736" />
+					<sval type="int" val="-1610560504" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="41" />
+					<sval type="int" val="40" />
 					<sval type="int" val="4" />
 					<sval type="int" val="25" />
 					<sval type="int" val="15" />
@@ -4912,10 +4838,10 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="45" />
+					<sval type="int" val="44" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="41" />
+					<sval type="int" val="40" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="15" />
@@ -4935,10 +4861,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610559224" />
+					<sval type="int" val="-1610559992" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="45" />
+					<sval type="int" val="44" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1150" />
 					<sval type="int" val="15" />
@@ -4950,7 +4876,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="45" />
+					<sval type="int" val="44" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1150" />
@@ -4962,16 +4888,16 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="34" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="45" />
+					<sval type="int" val="44" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="162">
+			<sval type="array" size="163">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -5501,185 +5427,190 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0 - reduce NPC missle spam" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="151" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="155" />
+					<sval type="int" val="151" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Mordan8 - Limit missiles for ships.  similar logic is found in Mayhem.GameCreator.Populate.xml for initial squadrons." />
+					<sval type="string" val="Mordan8 - Limit missiles for ships. Similar logic is found in Mayhem.GameCreator.Populate.AddSquadrons for initial squadrons." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="151" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Only if ship is not a missile boat." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="159" />
+					<sval type="int" val="156" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="159" />
+					<sval type="int" val="156" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="159" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="159" />
+					<sval type="int" val="156" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="159" />
+					<sval type="int" val="156" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add missiles if we can pay for them. Instant process." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="170" />
+					<sval type="int" val="167" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="170" />
+					<sval type="int" val="167" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan2 add" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 					<sval type="int" val="1" />
 					<sval type="string" val="For big and huge ships, we equip them all with missiles if they can handle it.  Guns and Shields are free, so your initial round of Missiles should be also." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Just as importantly, we set the resupply amount of those missiles to whatever is loaded here, so you won't have to manually do it for every ship by hand.  It's just a convenience." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="171" />
+					<sval type="int" val="168" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Note, that the Equipping of missiles here is a random allocation chosen by Mayhem.EquipShip.Missiles." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="175" />
+					<sval type="int" val="172" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="175" />
+					<sval type="int" val="172" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Adds 1 or more random types and quantities of compatible missiles.  " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="176" />
+					<sval type="int" val="173" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="176" />
+					<sval type="int" val="173" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan6" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="177" />
+					<sval type="int" val="174" />
 					<sval type="int" val="1" />
 					<sval type="string" val="write to log file 1 append=[TRUE] printf: fmt='Mayhem.Task.TemplateWhenReady.xml - SetMissileResupply Missiles: %s', $missilesAdded, null, null, null, null" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="177" />
+					<sval type="int" val="174" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="177" />
+					<sval type="int" val="174" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="177" />
+					<sval type="int" val="174" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Use the quantity actually added by Mayhem.EquipShip.Missiles." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="185" />
+					<sval type="int" val="182" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="185" />
+					<sval type="int" val="182" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="186" />
+					<sval type="int" val="183" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="187" />
+					<sval type="int" val="184" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Equip auto-resupply missiles before anything else." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="198" />
+					<sval type="int" val="195" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="198" />
+					<sval type="int" val="195" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan6" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="199" />
+					<sval type="int" val="196" />
 					<sval type="int" val="1" />
 					<sval type="string" val="write to log file 1 append=[TRUE] printf: fmt='Mayhem.Task.TemplateWhenReady.xml - ResupplyMissiles loading %s', $missile, null, null, null, null" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="199" />
+					<sval type="int" val="196" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="199" />
+					<sval type="int" val="196" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="199" />
+					<sval type="int" val="196" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="199" />
+					<sval type="int" val="196" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.7.4: Must ensure that the quantity we have matches what we got when we set the quantity." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="201" />
+					<sval type="int" val="198" />
 					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="199" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="200" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="201" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Need missile and actual amount." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="202" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="202" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Resupply quantities above 25 use increments of 5. Round down so the threshold never exceeds the supplied quantity." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="203" />
+					<sval type="int" val="204" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="204" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Need missile and actual amount." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="205" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="205" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Resupply quantities above 25 use increments of 5. Round down so the threshold never exceeds the supplied quantity." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="207" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="207" />
-					<sval type="int" val="1" />
 					<sval type="string" val="Ceiling: resupply setting cannot exceed 1150 due to a UI limitation." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="209" />
+					<sval type="int" val="206" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
