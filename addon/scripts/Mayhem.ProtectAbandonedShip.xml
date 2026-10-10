@@ -3,16 +3,17 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.ProtectAbandonedShip</name>
-	<version>2</version>
+	<version>3</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="ship" type="Var/Ship" desc="" />
 		<argument index="2" name="multiplier" type="Var/Number" desc="" />
+		<argument index="3" name="offset" type="Var/Number" desc="" />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="002" indent="">
 			<comment>* SCRIPT NAME: Mayhem.ProtectAbandonedShip</comment>
@@ -42,21 +43,24 @@
 			<comment>* 8 = initial abandoned ships</comment>
 		</line>
 		<line linenr="011" indent="">
-			<comment>* </comment>
+			<comment>* $offset: can be null. If null, will generate a new offset.</comment>
 		</line>
 		<line linenr="012" indent="">
-			<comment>* Returns: absolute protection deadline, or null on failure.</comment>
-		</line>
-		<line linenr="013" indent="">
 			<comment>* </comment>
 		</line>
+		<line linenr="013" indent="">
+			<comment>* Returns: absolute protection deadline, or null on failure.</comment>
+		</line>
 		<line linenr="014" indent="">
-			<comment>* AUTHOR:           DATE: 9 October 2026</comment>
+			<comment>* </comment>
 		</line>
 		<line linenr="015" indent="">
-			<comment>*************************************************</comment>
+			<comment>* AUTHOR:           DATE: 9 October 2026</comment>
 		</line>
 		<line linenr="016" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="017" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -66,13 +70,13 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="017" indent="&#160;">
+		<line linenr="018" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="018" indent="" />
-		<line linenr="019" indent="">
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -80,18 +84,18 @@
 			<text>!</text>
 			<var>$multiplier</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="021" indent="&#160;">
 			<var>$multiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="021" indent="" />
-		<line linenr="022" indent="">
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
 			<comment>* Prevent NPC tugs from claiming the ship during protection.</comment>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="024" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -110,11 +114,11 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="">
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
 			<comment>* Calculate deadline.</comment>
 		</line>
-		<line linenr="026" indent="" interruptable="@">
+		<line linenr="027" indent="" interruptable="@">
 			<var>$time.deadline</var>
 			<text> </text>
 			<text>=</text>
@@ -137,8 +141,17 @@
 			<text>multiplier</text>
 			<text>=</text>
 			<var>$multiplier</var>
+			<text> </text>
+			<text>offset</text>
+			<text>=</text>
+			<var>$offset</var>
+			<text> </text>
+			<text>offsetOnly</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="028" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -157,11 +170,11 @@
 			<text>=</text>
 			<var>$time.deadline</var>
 		</line>
-		<line linenr="028" indent="" />
-		<line linenr="029" indent="">
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
 			<comment>* Register for deadline monitoring.</comment>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="031" indent="">
 			<var>$claimProtectedShips</var>
 			<text> </text>
 			<text>=</text>
@@ -177,7 +190,7 @@
 			<text>=</text>
 			<text>'mayhem_claimProtectedShips'</text>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="032" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -193,7 +206,7 @@
 			<text> </text>
 			<var>$claimProtectedShips</var>
 		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="033" indent="&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$ship</var>
@@ -204,8 +217,8 @@
 			<text> </text>
 			<var>$claimProtectedShips</var>
 		</line>
-		<line linenr="033" indent="" />
-		<line linenr="034" indent="">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$time.deadline</var>
@@ -216,11 +229,12 @@
 			<sval type="string" val="Mayhem.ProtectAbandonedShip" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="2" />
+			<sval type="int" val="3" />
 			<sval type="int" val="0" />
-			<sval type="array" size="4">
+			<sval type="array" size="5">
 				<sval type="string" val="ship" />
 				<sval type="string" val="multiplier" />
+				<sval type="string" val="offset" />
 				<sval type="string" val="time.deadline" />
 				<sval type="string" val="claimProtectedShips" />
 			</sval>
@@ -266,17 +280,21 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 				</sval>
-				<sval type="array" size="10">
+				<sval type="array" size="14">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetAbandonedShipDeadline" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
@@ -285,13 +303,13 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_claimProtectionDeadline" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_claimProtectedShips" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1406" />
@@ -299,22 +317,22 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="135" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 				</sval>
 			</sval>
-			<sval type="array" size="2">
+			<sval type="array" size="3">
 				<sval type="array" size="2">
 					<sval type="int" val="21" />
 					<sval type="string" val="" />
@@ -323,8 +341,12 @@
 					<sval type="int" val="10" />
 					<sval type="string" val="" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
 			</sval>
-			<sval type="array" size="23">
+			<sval type="array" size="24">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -374,6 +396,11 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="string" val="8 = initial abandoned ships" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$offset: can be null. If null, will generate a new offset." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />

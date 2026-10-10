@@ -3,12 +3,14 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetAbandonedShipDeadline</name>
-	<version>11</version>
+	<version>16</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="randomize" type="Var/Boolean" desc="" />
 		<argument index="2" name="multiplier" type="Var/Number" desc="" />
+		<argument index="3" name="offset" type="Var/Number" desc="" />
+		<argument index="4" name="offsetOnly" type="Var/Boolean" desc="" />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
@@ -24,52 +26,73 @@
 			<comment>* Returns an absolute deadline when randomized, or the average duration for display.</comment>
 		</line>
 		<line linenr="005" indent="">
-			<comment>* </comment>
-		</line>
-		<line linenr="006" indent="">
-			<comment>* $randomize:</comment>
-		</line>
-		<line linenr="007" indent="">
-			<comment>* [TRUE] = actual deadline with +/- 30 minute random offset, scaled proportionally with galaxy size.</comment>
-		</line>
-		<line linenr="008" indent="">
-			<comment>* [FALSE] = average duration for display.</comment>
-		</line>
-		<line linenr="009" indent="">
-			<comment>* </comment>
-		</line>
-		<line linenr="010" indent="">
-			<comment>* $multiplier: scales the base duration.</comment>
-		</line>
-		<line linenr="011" indent="">
-			<comment>* 1 = Black Market and O2-hacked ships (standard).</comment>
-		</line>
-		<line linenr="012" indent="">
-			<comment>* 2 = Mission abandoned ships.</comment>
-		</line>
-		<line linenr="013" indent="">
-			<comment>* 8 = Initial abandoned ships.</comment>
-		</line>
-		<line linenr="014" indent="">
-			<comment>* null = 1 (default).</comment>
-		</line>
-		<line linenr="015" indent="">
-			<comment>* </comment>
-		</line>
-		<line linenr="016" indent="">
 			<comment>* Regular bailed ships do not use this helper.</comment>
 		</line>
-		<line linenr="017" indent="">
+		<line linenr="006" indent="">
 			<comment>* </comment>
 		</line>
+		<line linenr="007" indent="">
+			<comment>* $randomize:</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>* [TRUE] = actual deadline with a +/- 25% random offset based on the unmultiplied difficulty duration.</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* [FALSE] = average duration for display.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="011" indent="">
+			<comment>* $multiplier: scales the base duration.</comment>
+		</line>
+		<line linenr="012" indent="">
+			<comment>* 1 = Black Market and O2-hacked ships (standard).</comment>
+		</line>
+		<line linenr="013" indent="">
+			<comment>* 2 = Mission abandoned ships.</comment>
+		</line>
+		<line linenr="014" indent="">
+			<comment>* 8 = Initial abandoned ships.</comment>
+		</line>
+		<line linenr="015" indent="">
+			<comment>* null = 1 (default).</comment>
+		</line>
+		<line linenr="016" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="017" indent="">
+			<comment>* $offset: Preselected random offset in seconds.</comment>
+		</line>
 		<line linenr="018" indent="">
-			<comment>* AUTHOR:           DATE: 19 September 2026</comment>
+			<comment>* null = generate a new offset when randomized.</comment>
 		</line>
 		<line linenr="019" indent="">
+			<comment>* 0 = valid offset; do not reroll.</comment>
+		</line>
+		<line linenr="020" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="021" indent="">
+			<comment>* $offsetOnly:</comment>
+		</line>
+		<line linenr="022" indent="">
+			<comment>* [TRUE] = generate and return a random offset without calculating a deadline or applying galaxy scaling.</comment>
+		</line>
+		<line linenr="023" indent="">
+			<comment>* [FALSE]/null = normal deadline or duration calculation.</comment>
+		</line>
+		<line linenr="024" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="025" indent="">
+			<comment>* AUTHOR:           DATE: 19 September 2026</comment>
+		</line>
+		<line linenr="026" indent="">
 			<comment>* ************************************************</comment>
 		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="" interruptable="@">
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -85,7 +108,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="029" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -94,17 +117,17 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="023" indent="&#160;">
-			<comment>* Easy: 4 hours</comment>
+		<line linenr="030" indent="&#160;">
+			<comment>* Easy: 2.5 hours</comment>
 		</line>
-		<line linenr="024" indent="&#160;">
+		<line linenr="031" indent="&#160;">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>14400</var>
+			<var>9000</var>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="032" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -115,17 +138,17 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="026" indent="&#160;">
-			<comment>* Normal: 3 hours</comment>
+		<line linenr="033" indent="&#160;">
+			<comment>* Normal: 2 hours</comment>
 		</line>
-		<line linenr="027" indent="&#160;">
+		<line linenr="034" indent="&#160;">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>10800</var>
+			<var>7200</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="035" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -136,17 +159,17 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="029" indent="&#160;">
-			<comment>* Hard: 2 hours</comment>
+		<line linenr="036" indent="&#160;">
+			<comment>* Hard: 1.5 hours</comment>
 		</line>
-		<line linenr="030" indent="&#160;">
+		<line linenr="037" indent="&#160;">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>7200</var>
+			<var>5400</var>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="038" indent="">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -157,24 +180,72 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="039" indent="&#160;">
 			<comment>* Insane: 1 hour</comment>
 		</line>
-		<line linenr="033" indent="&#160;">
+		<line linenr="040" indent="&#160;">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3600</var>
 		</line>
-		<line linenr="034" indent="">
+		<line linenr="041" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="035" indent="" />
-		<line linenr="036" indent="">
+		<line linenr="042" indent="" />
+		<line linenr="043" indent="">
+			<comment>* Random offset is +/- 25% of the difficulty's base duration, independent of multiplier.</comment>
+		</line>
+		<line linenr="044" indent="">
+			<var>$time.maxOffset</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$time.gracePeriod</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>4</var>
+		</line>
+		<line linenr="045" indent="">
+			<var>$time.offset</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="046" indent="" />
+		<line linenr="047" indent="">
+			<comment>* Allow mission generation to pre-roll an offset.</comment>
+		</line>
+		<line linenr="048" indent="">
+			<comment>* This mode does not calculate a deadline or apply galaxy scaling.</comment>
+		</line>
+		<line linenr="049" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$offsetOnly</var>
+		</line>
+		<line linenr="050" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>GenerateOffset</var>
+			<text>:</text>
+		</line>
+		<line linenr="051" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>$time.offset</var>
+		</line>
+		<line linenr="052" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="053" indent="" />
+		<line linenr="054" indent="">
 			<comment>* Apply source-specific protection duration.</comment>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="055" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -182,15 +253,15 @@
 			<text>!</text>
 			<var>$multiplier</var>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="056" indent="&#160;">
 			<var>$multiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="039" indent="" />
-		<line linenr="040" indent="">
+		<line linenr="057" indent="" />
+		<line linenr="058" indent="">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
@@ -201,33 +272,42 @@
 			<text> </text>
 			<var>$multiplier</var>
 		</line>
-		<line linenr="041" indent="" />
-		<line linenr="042" indent="">
-			<comment>* +/- 30 minute randomization.</comment>
+		<line linenr="059" indent="" />
+		<line linenr="060" indent="">
+			<comment>* Apply randomized offset.</comment>
 		</line>
-		<line linenr="043" indent="">
+		<line linenr="061" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$randomize</var>
 		</line>
-		<line linenr="044" indent="&#160;">
-			<var>$time.offset</var>
+		<line linenr="062" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$offset</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="063" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>GenerateOffset</var>
+			<text>:</text>
+		</line>
+		<line linenr="064" indent="&#160;&#160;">
+			<var>$offset</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>random</text>
-			<text> </text>
-			<text>value</text>
-			<text> </text>
-			<text>between</text>
-			<text> </text>
-			<var>-1800</var>
-			<text> </text>
-			<text>and</text>
-			<text> </text>
-			<var>1800</var>
+			<var>$time.offset</var>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="065" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="066" indent="&#160;" />
+		<line linenr="067" indent="&#160;">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
@@ -236,16 +316,16 @@
 			<text> </text>
 			<text>+</text>
 			<text> </text>
-			<var>$time.offset</var>
+			<var>$offset</var>
 		</line>
-		<line linenr="046" indent="">
+		<line linenr="068" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="047" indent="" />
-		<line linenr="048" indent="">
+		<line linenr="069" indent="" />
+		<line linenr="070" indent="">
 			<comment>* Scale based on the number of sectors in the galaxy, with 100 sectors as baseline.</comment>
 		</line>
-		<line linenr="049" indent="" interruptable="@">
+		<line linenr="071" indent="" interruptable="@">
 			<var>$galaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -269,7 +349,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="050" indent="">
+		<line linenr="072" indent="">
 			<var>$galaxy.size</var>
 			<text> </text>
 			<text>=</text>
@@ -282,7 +362,7 @@
 			<text> </text>
 			<var>$galaxy</var>
 		</line>
-		<line linenr="051" indent="">
+		<line linenr="073" indent="">
 			<var>$time.gracePeriod</var>
 			<text> </text>
 			<text>=</text>
@@ -299,19 +379,19 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="052" indent="" />
-		<line linenr="053" indent="">
+		<line linenr="074" indent="" />
+		<line linenr="075" indent="">
 			<comment>* Actual claim protection uses an absolute playtime deadline.</comment>
 		</line>
-		<line linenr="054" indent="">
+		<line linenr="076" indent="">
 			<comment>* Display needs only the average duration.</comment>
 		</line>
-		<line linenr="055" indent="">
+		<line linenr="077" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$randomize</var>
 		</line>
-		<line linenr="056" indent="&#160;">
+		<line linenr="078" indent="&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -320,7 +400,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="057" indent="&#160;">
+		<line linenr="079" indent="&#160;">
 			<var>$return</var>
 			<text> </text>
 			<text>=</text>
@@ -331,24 +411,70 @@
 			<text> </text>
 			<var>$time.gracePeriod</var>
 		</line>
-		<line linenr="058" indent="">
+		<line linenr="080" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="059" indent="&#160;">
+		<line linenr="081" indent="&#160;">
 			<var>$return</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$time.gracePeriod</var>
 		</line>
-		<line linenr="060" indent="">
+		<line linenr="082" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="061" indent="" />
-		<line linenr="062" indent="">
+		<line linenr="083" indent="" />
+		<line linenr="084" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$return</var>
+		</line>
+		<line linenr="085" indent="" />
+		<line linenr="086" indent="">
+			<var>GenerateOffset</var>
+			<text>:</text>
+		</line>
+		<line linenr="087" indent="&#160;">
+			<var>$time.minOffset</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$time.maxOffset</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="088" indent="&#160;" />
+		<line linenr="089" indent="&#160;">
+			<comment>* Must add 1 to upper bound to make upper bound inclusive with random function.</comment>
+		</line>
+		<line linenr="090" indent="&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$time.maxOffset</var>
+		</line>
+		<line linenr="091" indent="&#160;" />
+		<line linenr="092" indent="&#160;">
+			<var>$time.offset</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>random</text>
+			<text> </text>
+			<text>value</text>
+			<text> </text>
+			<text>between</text>
+			<text> </text>
+			<var>$time.minOffset</var>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<var>$time.maxOffset</var>
+		</line>
+		<line linenr="093" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -356,24 +482,28 @@
 			<sval type="string" val="Mayhem.GetAbandonedShipDeadline" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="11" />
+			<sval type="int" val="16" />
 			<sval type="int" val="0" />
-			<sval type="array" size="9">
+			<sval type="array" size="13">
 				<sval type="string" val="randomize" />
 				<sval type="string" val="multiplier" />
+				<sval type="string" val="offset" />
+				<sval type="string" val="offsetOnly" />
 				<sval type="string" val="difficulty" />
 				<sval type="string" val="time.gracePeriod" />
+				<sval type="string" val="time.maxOffset" />
 				<sval type="string" val="time.offset" />
 				<sval type="string" val="galaxy" />
 				<sval type="string" val="galaxy.size" />
 				<sval type="string" val="playtime" />
 				<sval type="string" val="return" />
+				<sval type="string" val="time.minOffset" />
 			</sval>
-			<sval type="array" size="27">
+			<sval type="array" size="39">
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
@@ -383,7 +513,7 @@
 					<sval type="int" val="-1610611709" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -395,10 +525,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="14400" />
+					<sval type="int" val="9000" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -411,7 +541,7 @@
 					<sval type="int" val="-1610610939" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -423,35 +553,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10800" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="12" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610610171" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="7200" />
@@ -464,10 +566,38 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
+					<sval type="int" val="-1610610171" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5400" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="12" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
 					<sval type="int" val="-1610609659" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -479,16 +609,58 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3600" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608381" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="34" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609144" />
+					<sval type="int" val="-1610607864" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -509,10 +681,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -524,29 +696,49 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608125" />
+					<sval type="int" val="-1610606333" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="110" />
-					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="-1800" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1801" />
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606589" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="34" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -557,7 +749,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetGalaxy" />
-					<sval type="int" val="5" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -568,18 +760,18 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="4" />
@@ -597,7 +789,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606333" />
+					<sval type="int" val="-1610604541" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -606,16 +798,16 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="141" />
-					<sval type="int" val="7" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -625,24 +817,58 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="26" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="GenerateOffset" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="110" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 			</sval>
-			<sval type="array" size="2">
+			<sval type="array" size="4">
 				<sval type="array" size="2">
 					<sval type="int" val="63" />
 					<sval type="string" val="" />
@@ -651,8 +877,16 @@
 					<sval type="int" val="10" />
 					<sval type="string" val="" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
 			</sval>
-			<sval type="array" size="39">
+			<sval type="array" size="58">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -676,6 +910,11 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
+					<sval type="string" val="Regular bailed ships do not use this helper." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
 					<sval type="string" val="" />
 				</sval>
 				<sval type="array" size="3">
@@ -686,7 +925,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="[TRUE] = actual deadline with +/- 30 minute random offset, scaled proportionally with galaxy size." />
+					<sval type="string" val="[TRUE] = actual deadline with a +/- 25% random offset based on the unmultiplied difficulty duration." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -731,7 +970,37 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Regular bailed ships do not use this helper." />
+					<sval type="string" val="$offset: Preselected random offset in seconds." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="null = generate a new offset when randomized." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="0 = valid offset; do not reroll." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$offsetOnly:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[TRUE] = generate and return a random offset without calculating a deadline or applying galaxy scaling." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="[FALSE]/null = normal deadline or duration calculation." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -755,17 +1024,17 @@
 				<sval type="array" size="3">
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Easy: 4 hours" />
+					<sval type="string" val="Easy: 2.5 hours" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="5" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Normal: 3 hours" />
+					<sval type="string" val="Normal: 2 hours" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="8" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Hard: 2 hours" />
+					<sval type="string" val="Hard: 1.5 hours" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="11" />
@@ -783,58 +1052,110 @@
 				<sval type="array" size="3">
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Apply source-specific protection duration." />
+					<sval type="string" val="Random offset is +/- 25% of the difficulty's base duration, independent of multiplier." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="14" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Allow mission generation to pre-roll an offset." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="15" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
-					<sval type="string" val="+/- 30 minute randomization." />
+					<sval type="string" val="This mode does not calculate a deadline or apply galaxy scaling." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="17" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Apply source-specific protection duration." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="19" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Apply randomized offset." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="25" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Scale based on the number of sectors in the galaxy, with 100 sectors as baseline." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="28" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="21" />
+					<sval type="int" val="28" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Actual claim protection uses an absolute playtime deadline." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="21" />
+					<sval type="int" val="28" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Display needs only the average duration." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="25" />
+					<sval type="int" val="32" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="33" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="36" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="36" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Must add 1 to upper bound to make upper bound inclusive with random function." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
