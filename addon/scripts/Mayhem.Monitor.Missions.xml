@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Monitor.Missions</name>
-	<version>81</version>
+	<version>87</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -3275,7 +3275,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="326" indent="&#160;">
+		<line linenr="326" indent="">
 			<var>$message</var>
 			<text> </text>
 			<text>=</text>
@@ -3286,7 +3286,7 @@
 			<text> </text>
 			<var>$buttons</var>
 		</line>
-		<line linenr="327" indent="&#160;">
+		<line linenr="327" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -3341,7 +3341,7 @@
 		<line linenr="331" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="332" indent="&#160;&#160;">
+		<line linenr="332" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3401,7 +3401,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="336" indent="&#160;">
+		<line linenr="336" indent="&#160;&#160;">
 			<var>$destination.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -3534,43 +3534,87 @@
 		<line linenr="348" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="349" indent="&#160;&#160;" />
-		<line linenr="350" indent="&#160;&#160;" />
-		<line linenr="351" indent="&#160;">
+		<line linenr="349" indent="&#160;" />
+		<line linenr="350" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="351" indent="&#160;" />
+		<line linenr="352" indent="&#160;&#160;" />
+		<line linenr="353" indent="&#160;">
 			<comment>* Mordan8</comment>
 		</line>
-		<line linenr="352" indent="&#160;&#160;">
+		<line linenr="354" indent="&#160;">
 			<comment>* Called every 20 seconds, this is used to create up to 2 random missions at a sector that is within a 12 jump radius of the player.</comment>
 		</line>
-		<line linenr="353" indent="&#160;">
+		<line linenr="355" indent="">
 			<comment>* Prior to this, missions would be created ONLY as a player entered a sector.</comment>
 		</line>
-		<line linenr="354" indent="&#160;">
+		<line linenr="356" indent="">
 			<comment>* Add-Ons 2.1.3: Generation chance increased (17% -&gt; 25%) to compensate for the reworked mission generator, which now targets 0-2 missions per sector.</comment>
 		</line>
-		<line linenr="355" indent="">
+		<line linenr="357" indent="">
 			<var>CreateNewMissions</var>
 			<text>:</text>
 		</line>
-		<line linenr="356" indent="">
+		<line linenr="358" indent="">
 			<var>$percentChanceToGenerate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>25</var>
 		</line>
-		<line linenr="357" indent="">
+		<line linenr="359" indent="">
 			<var>$maxMissionsInGalaxy</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>24</var>
 		</line>
-		<line linenr="358" indent="" />
-		<line linenr="359" indent="">
-			<comment>* do it randomly.</comment>
+		<line linenr="360" indent="" />
+		<line linenr="361" indent="&#160;">
+			<comment>* Remove all expired non-accepted missions.</comment>
 		</line>
-		<line linenr="360" indent="&#160;">
+		<line linenr="362" indent="&#160;" interruptable="@">
+			<var>$numMissionsRemaining</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Missions.Expire</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="363" indent="&#160;" />
+		<line linenr="364" indent="&#160;">
+			<comment>* Stop generating when the soft cap is reached.</comment>
+		</line>
+		<line linenr="365" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$numMissionsRemaining</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>$maxMissionsInGalaxy</var>
+		</line>
+		<line linenr="366" indent="&#160;">
+			<text>endsub</text>
+		</line>
+		<line linenr="367" indent="&#160;" />
+		<line linenr="368" indent="&#160;">
+			<comment>* Random chance to generate new missions.</comment>
+		</line>
+		<line linenr="369" indent="&#160;&#160;">
 			<var>$rand</var>
 			<text> </text>
 			<text>=</text>
@@ -3587,7 +3631,7 @@
 			<text> </text>
 			<var>99</var>
 		</line>
-		<line linenr="361" indent="&#160;">
+		<line linenr="370" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rand</var>
@@ -3596,77 +3640,39 @@
 			<text> </text>
 			<var>$percentChanceToGenerate</var>
 		</line>
-		<line linenr="362" indent="&#160;">
-			<text>endsub</text>
-		</line>
-		<line linenr="363" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="364" indent="&#160;" />
-		<line linenr="365" indent="&#160;&#160;">
-			<comment>* Remove all expired non-accepted missions.</comment>
-		</line>
-		<line linenr="366" indent="&#160;&#160;" interruptable="@">
-			<var>$numMissionsRemaining</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.Missions.Expire</call>
-			<text> </text>
-			<text>:</text>
-		</line>
-		<line linenr="367" indent="&#160;&#160;" />
-		<line linenr="368" indent="&#160;&#160;">
-			<comment>* Stop generating new missions once the galaxy has reached the soft cap. </comment>
-		</line>
-		<line linenr="369" indent="&#160;&#160;&#160;">
-			<comment>* A generation pass may exceed this by up to the per-sector generation limit.</comment>
-		</line>
-		<line linenr="370" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$numMissionsRemaining</var>
-			<text> </text>
-			<text>&gt;=</text>
-			<text> </text>
-			<var>$maxMissionsInGalaxy</var>
-		</line>
 		<line linenr="371" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="372" indent="&#160;&#160;&#160;" />
-		<line linenr="373" indent="&#160;" />
-		<line linenr="374" indent="">
+		<line linenr="372" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="373" indent="&#160;&#160;&#160;" />
+		<line linenr="374" indent="&#160;&#160;">
 			<comment>* Find an available random sector close to the player.</comment>
 		</line>
-		<line linenr="375" indent="">
+		<line linenr="375" indent="&#160;&#160;">
+			<var>$missionSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="376" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>GetSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="376" indent="" />
-		<line linenr="377" indent="">
-			<comment>* If a sector was found, generate missions there.</comment>
+		<line linenr="377" indent="&#160;&#160;" />
+		<line linenr="378" indent="&#160;&#160;&#160;">
+			<comment>* If a sector was found, generate up to 2 missions in that sector.</comment>
 		</line>
-		<line linenr="378" indent="">
+		<line linenr="379" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
-			<var>$MissionSector</var>
+			<var>$missionSector</var>
 		</line>
-		<line linenr="379" indent="">
-			<comment>* Generates up to 2 missions in this sector.</comment>
-		</line>
-		<line linenr="380" indent="" interruptable="@">
+		<line linenr="380" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3682,9 +3688,9 @@
 			<text> </text>
 			<text>sector</text>
 			<text>=</text>
-			<var>$MissionSector</var>
+			<var>$missionSector</var>
 		</line>
-		<line linenr="381" indent="">
+		<line linenr="381" indent="&#160;">
 			<text>else</text>
 		</line>
 		<line linenr="382" indent="">
@@ -3707,7 +3713,7 @@
 			<text> </text>
 			<text>fmt</text>
 			<text>=</text>
-			<text>'No Mission Sector available'</text>
+			<text>'No Mission Sector available.'</text>
 			<text>,</text>
 			<text> </text>
 			<var>null</var>
@@ -3734,20 +3740,23 @@
 		<line linenr="386" indent="" />
 		<line linenr="387" indent="" />
 		<line linenr="388" indent="">
-			<comment>* Find a random player-visible sector within x jumps of the player.</comment>
+			<comment>* Find a random player-visible sector within X jumps of the player.</comment>
 		</line>
 		<line linenr="389" indent="">
+			<comment>* Expanded 2.2: Only eligible mission-giving races may be selected.</comment>
+		</line>
+		<line linenr="390" indent="">
 			<var>GetSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="390" indent="">
+		<line linenr="391" indent="">
 			<var>$jumpRadiusToCreateMissions</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>12</var>
 		</line>
-		<line linenr="391" indent="">
+		<line linenr="392" indent="">
 			<var>$playership.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -3759,14 +3768,28 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="392" indent="">
-			<var>$MissionSector</var>
+		<line linenr="393" indent="" />
+		<line linenr="394" indent="">
+			<comment>* Retrieve eligible mission-giving races.</comment>
+		</line>
+		<line linenr="395" indent="" interruptable="@">
+			<var>$missionRaces</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>null</var>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Mission.GetRaces</call>
+			<text> </text>
+			<text>:</text>
 		</line>
-		<line linenr="393" indent="" interruptable="@">
+		<line linenr="396" indent="" />
+		<line linenr="397" indent="" interruptable="@">
 			<var>$galaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -3790,7 +3813,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="394" indent="">
+		<line linenr="398" indent="">
 			<var>$XS.Iterator8</var>
 			<text> </text>
 			<text>=</text>
@@ -3803,18 +3826,18 @@
 			<text> </text>
 			<var>$galaxy</var>
 		</line>
-		<line linenr="395" indent="">
+		<line linenr="399" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator8</var>
 		</line>
-		<line linenr="396" indent="">
+		<line linenr="400" indent="">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator8</var>
 		</line>
-		<line linenr="397" indent="">
-			<var>$MissionSector</var>
+		<line linenr="401" indent="">
+			<var>$candidate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -3823,15 +3846,12 @@
 			<var>$XS.Iterator8</var>
 			<text>]</text>
 		</line>
-		<line linenr="398" indent="">
-			<comment>* Ignore player sectors, sectors with no owner. (Add-Ons 1.4.3a: Skip sectors whose owner is in permanent war with the player.)</comment>
-		</line>
-		<line linenr="399" indent="">
+		<line linenr="402" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$MissionSector</var>
+			<var>$candidate</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -3840,55 +3860,34 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="400" indent="" interruptable="@">
-			<var>$hasPermanentWar</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.HasPermanentWar</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>raceOrObject</text>
-			<text>=</text>
-			<var>$owner</var>
+		<line linenr="403" indent="" />
+		<line linenr="404" indent="">
+			<comment>* Only eligible mission-giving races are allowed.</comment>
 		</line>
-		<line linenr="401" indent="">
-			<text>do</text>
+		<line linenr="405" indent="">
+			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<text>(</text>
-			<var>$owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
-			<text> </text>
-			<text>OR</text>
+			<text>find</text>
 			<text> </text>
 			<var>$owner</var>
 			<text> </text>
-			<text>==</text>
+			<text>in</text>
 			<text> </text>
-			<var>[Unknown]</var>
+			<text>array</text>
+			<text>:</text>
 			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$hasPermanentWar</var>
-			<text>)</text>
+			<var>$missionRaces</var>
 		</line>
-		<line linenr="402" indent="">
+		<line linenr="406" indent="">
 			<text>continue</text>
 		</line>
-		<line linenr="403" indent="">
+		<line linenr="407" indent="" />
+		<line linenr="408" indent="">
+			<comment>* Sector must be within the player's generation radius.</comment>
+		</line>
+		<line linenr="409" indent="">
 			<var>$distance</var>
 			<text> </text>
 			<text>=</text>
@@ -3901,7 +3900,7 @@
 			<text> </text>
 			<text>sector</text>
 			<text> </text>
-			<var>$MissionSector</var>
+			<var>$candidate</var>
 			<text> </text>
 			<text>to</text>
 			<text> </text>
@@ -3909,10 +3908,16 @@
 			<text> </text>
 			<var>$playership.sector</var>
 		</line>
-		<line linenr="404" indent="">
-			<text>do</text>
-			<text> </text>
+		<line linenr="410" indent="">
 			<text>if</text>
+			<text> </text>
+			<var>$distance</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>null</var>
+			<text> </text>
+			<text>AND</text>
 			<text> </text>
 			<var>$distance</var>
 			<text> </text>
@@ -3920,20 +3925,24 @@
 			<text> </text>
 			<var>$jumpRadiusToCreateMissions</var>
 		</line>
-		<line linenr="405" indent="">
+		<line linenr="411" indent="">
+			<var>$missionSector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$candidate</var>
+		</line>
+		<line linenr="412" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="406" indent="">
+		<line linenr="413" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="407" indent="">
-			<text>endsub</text>
+		<line linenr="414" indent="">
+			<text>end</text>
 		</line>
-		<line linenr="408" indent="" />
-		<line linenr="409" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
+		<line linenr="415" indent="">
+			<text>endsub</text>
 		</line>
 	</sourcetext>
 	<codearray>
@@ -3941,9 +3950,9 @@
 			<sval type="string" val="Mayhem.Monitor.Missions" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="81" />
+			<sval type="int" val="87" />
 			<sval type="int" val="2" />
-			<sval type="array" size="85">
+			<sval type="array" size="86">
 				<sval type="string" val="missions" />
 				<sval type="string" val="missionsAccepted" />
 				<sval type="string" val="OCVplotstage" />
@@ -4021,16 +4030,17 @@
 				<sval type="string" val="destination.sector.owner" />
 				<sval type="string" val="percentChanceToGenerate" />
 				<sval type="string" val="maxMissionsInGalaxy" />
-				<sval type="string" val="rand" />
 				<sval type="string" val="numMissionsRemaining" />
-				<sval type="string" val="MissionSector" />
+				<sval type="string" val="rand" />
+				<sval type="string" val="missionSector" />
 				<sval type="string" val="jumpRadiusToCreateMissions" />
+				<sval type="string" val="missionRaces" />
 				<sval type="string" val="galaxy" />
+				<sval type="string" val="candidate" />
 				<sval type="string" val="XS.Iterator8" />
 				<sval type="string" val="owner" />
-				<sval type="string" val="hasPermanentWar" />
 			</sval>
-			<sval type="array" size="313">
+			<sval type="array" size="314">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -4106,7 +4116,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
@@ -6490,6 +6500,11 @@
 					<sval type="int" val="112" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="101" />
 					<sval type="string" val="CreateNewMissions" />
@@ -6512,44 +6527,20 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="106" />
-					<sval type="int" val="77" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610539773" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="77" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="75" />
-					<sval type="int" val="15" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="1">
-					<sval type="int" val="1168" />
-				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Missions.Expire" />
-					<sval type="int" val="78" />
+					<sval type="int" val="77" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610539000" />
+					<sval type="int" val="-1610539512" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="78" />
+					<sval type="int" val="77" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="76" />
 					<sval type="int" val="15" />
@@ -6562,13 +6553,46 @@
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="1167" />
-					<sval type="int" val="294" />
+				<sval type="array" size="4">
+					<sval type="int" val="106" />
+					<sval type="int" val="78" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610538749" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="78" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="75" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610537981" />
+					<sval type="int" val="79" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="296" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610537469" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="79" />
@@ -6587,7 +6611,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="293" />
+					<sval type="int" val="295" />
 				</sval>
 				<sval type="array" size="17">
 					<sval type="int" val="405" />
@@ -6596,7 +6620,7 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="5" />
-					<sval type="string" val="No Mission Sector available" />
+					<sval type="string" val="No Mission Sector available." />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -6630,19 +6654,18 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="49" />
 				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="79" />
-					<sval type="int" val="1" />
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Mission.GetRaces" />
+					<sval type="int" val="81" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
 					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetGalaxy" />
-					<sval type="int" val="81" />
+					<sval type="int" val="82" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -6653,127 +6676,106 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="82" />
+					<sval type="int" val="84" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="81" />
+					<sval type="int" val="82" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610533111" />
+					<sval type="int" val="-1610532599" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="82" />
+					<sval type="int" val="84" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="82" />
+					<sval type="int" val="84" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="79" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="81" />
+					<sval type="int" val="83" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="82" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="84" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="79" />
 					<sval type="int" val="83" />
+					<sval type="int" val="85" />
 				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.HasPermanentWar" />
-					<sval type="int" val="84" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+				<sval type="array" size="6">
+					<sval type="int" val="1406" />
+					<sval type="int" val="-536792057" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="83" />
-				</sval>
-				<sval type="array" size="33">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610534136" />
-					<sval type="int" val="9" />
+					<sval type="int" val="85" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="83" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="83" />
-					<sval type="int" val="10" />
-					<sval type="int" val="14" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="84" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="11" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="17" />
+					<sval type="int" val="81" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="300" />
+					<sval type="int" val="302" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="711" />
 					<sval type="int" val="51" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="79" />
+					<sval type="int" val="83" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="49" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610533368" />
-					<sval type="int" val="3" />
+					<sval type="int" val="-1610532861" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="51" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="51" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="80" />
 					<sval type="int" val="15" />
 					<sval type="int" val="5" />
-					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="5" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="79" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="83" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="300" />
+					<sval type="int" val="302" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="141">
+			<sval type="array" size="146">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -7251,133 +7253,154 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="280" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan8" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Called every 20 seconds, this is used to create up to 2 random missions at a sector that is within a 12 jump radius of the player." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Prior to this, missions would be created ONLY as a player entered a sector." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="279" />
+					<sval type="int" val="280" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.1.3: Generation chance increased (17% -&gt; 25%) to compensate for the reworked mission generator, which now targets 0-2 missions per sector." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="282" />
+					<sval type="int" val="283" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="282" />
-					<sval type="int" val="1" />
-					<sval type="string" val="do it randomly." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="285" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="285" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="285" />
+					<sval type="int" val="283" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Remove all expired non-accepted missions." />
 				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="284" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="284" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Stop generating when the soft cap is reached." />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="286" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="286" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Stop generating new missions once the galaxy has reached the soft cap. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="286" />
-					<sval type="int" val="1" />
-					<sval type="string" val="A generation pass may exceed this by up to the per-sector generation limit." />
+					<sval type="string" val="Random chance to generate new missions." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="288" />
-					<sval type="int" val="2" />
+					<sval type="int" val="289" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="288" />
+					<sval type="int" val="289" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="288" />
+					<sval type="int" val="289" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Find an available random sector close to the player." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="289" />
+					<sval type="int" val="291" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="289" />
+					<sval type="int" val="291" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If a sector was found, generate missions there." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="290" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Generates up to 2 missions in this sector." />
+					<sval type="string" val="If a sector was found, generate up to 2 missions in that sector." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="292" />
+					<sval type="int" val="294" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="293" />
+					<sval type="int" val="295" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="293" />
+					<sval type="int" val="295" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="294" />
+					<sval type="int" val="296" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="294" />
+					<sval type="int" val="296" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="294" />
+					<sval type="int" val="296" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Find a random player-visible sector within x jumps of the player." />
+					<sval type="string" val="Find a random player-visible sector within X jumps of the player." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="303" />
+					<sval type="int" val="296" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Ignore player sectors, sectors with no owner. (Add-Ons 1.4.3a: Skip sectors whose owner is in permanent war with the player.)" />
+					<sval type="string" val="Expanded 2.2: Only eligible mission-giving races may be selected." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="307" />
+					<sval type="int" val="299" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="299" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Retrieve eligible mission-giving races." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="300" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="306" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="306" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only eligible mission-giving races are allowed." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="308" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="311" />
-					<sval type="int" val="4" />
+					<sval type="int" val="308" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="308" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Sector must be within the player's generation radius." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="312" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="313" />
+					<sval type="int" val="4" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
