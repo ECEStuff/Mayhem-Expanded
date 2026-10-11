@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Ultimatum</name>
-	<version>8</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -396,23 +396,12 @@
 		<line linenr="055" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="056" indent="&#160;" />
+		<line linenr="056" indent="" />
 		<line linenr="057" indent="&#160;">
-			<var>$values.sectors</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<text>alloc</text>
-			<text>:</text>
-			<text> </text>
-			<text>size</text>
-			<text>=</text>
-			<var>0</var>
+			<comment>* No eligible sectors outside the de jure candidates.</comment>
 		</line>
-		<line linenr="058" indent="&#160;">
-			<var>$XS.Iterator2</var>
+		<line linenr="058" indent="">
+			<var>$sectors.secondary.s</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -425,16 +414,67 @@
 			<var>$sectors.secondary</var>
 		</line>
 		<line linenr="059" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$sectors.secondary.s</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="060" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="061" indent="" />
+		<line linenr="062" indent="">
+			<comment>* Expanded 2.2: Select the lowest-value eligible sector.</comment>
+		</line>
+		<line linenr="063" indent="">
+			<comment>* No sorting required.</comment>
+		</line>
+		<line linenr="064" indent="">
+			<var>$sector.ultimatum</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<var>$value.best</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="066" indent="&#160;" />
+		<line linenr="067" indent="&#160;&#160;">
+			<var>$XS.Iterator2</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$sectors.secondary</var>
+		</line>
+		<line linenr="068" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="060" indent="">
+		<line linenr="069" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="061" indent="">
+		<line linenr="070" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -444,10 +484,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="062" indent="">
-			<comment>* we just use vanilla Mayhem's sector value concept to determine which one gets demanded by the aggressor</comment>
-		</line>
-		<line linenr="063" indent="" interruptable="@">
+		<line linenr="071" indent="" interruptable="@">
 			<var>$value.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -467,51 +504,45 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="064" indent="">
-			<text>append</text>
+		<line linenr="072" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$value.best</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+			<text> </text>
+			<text>OR</text>
 			<text> </text>
 			<var>$value.sector</var>
 			<text> </text>
-			<text>to</text>
+			<text>&gt;</text>
 			<text> </text>
-			<text>array</text>
+			<var>$value.best</var>
+		</line>
+		<line linenr="073" indent="">
+			<var>$value.best</var>
 			<text> </text>
-			<var>$values.sectors</var>
-		</line>
-		<line linenr="065" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="066" indent="" />
-		<line linenr="067" indent="">
 			<text>=</text>
 			<text> </text>
-			<text>sort</text>
-			<text> </text>
-			<text>array</text>
-			<text>:</text>
-			<text> </text>
-			<text>data</text>
-			<text>=</text>
-			<var>$sectors.secondary</var>
-			<text> </text>
-			<text>sort</text>
-			<text> </text>
-			<text>values</text>
-			<text>=</text>
-			<var>$values.sectors</var>
+			<var>$value.sector</var>
 		</line>
-		<line linenr="068" indent="">
+		<line linenr="074" indent="">
 			<var>$sector.ultimatum</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$sectors.secondary</var>
-			<text>[</text>
-			<var>0</var>
-			<text>]</text>
+			<var>$sector</var>
 		</line>
-		<line linenr="069" indent="" />
-		<line linenr="070" indent="">
+		<line linenr="075" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="076" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="077" indent="" />
+		<line linenr="078" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$sector.ultimatum</var>
@@ -522,9 +553,9 @@
 			<sval type="string" val="ZH.Ultimatum" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="8" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
-			<sval type="array" size="14">
+			<sval type="array" size="15">
 				<sval type="string" val="race" />
 				<sval type="string" val="sectors" />
 				<sval type="string" val="sectors.s" />
@@ -536,11 +567,12 @@
 				<sval type="string" val="dejure" />
 				<sval type="string" val="hasBorder" />
 				<sval type="string" val="sector.ultimatum" />
-				<sval type="string" val="values.sectors" />
+				<sval type="string" val="sectors.secondary.s" />
+				<sval type="string" val="value.best" />
 				<sval type="string" val="XS.Iterator2" />
 				<sval type="string" val="value.sector" />
 			</sval>
-			<sval type="array" size="39">
+			<sval type="array" size="43">
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOwnedSectors" />
@@ -769,29 +801,67 @@
 					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="4">
-					<sval type="int" val="128" />
+					<sval type="int" val="131" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604792" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603511" />
+					<sval type="int" val="-1610601975" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
@@ -799,44 +869,66 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetSectorValue" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 				</sval>
-				<sval type="array" size="5">
-					<sval type="int" val="135" />
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602237" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="1417" />
-					<sval type="int" val="-2147483647" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="129" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -850,7 +942,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="36">
+			<sval type="array" size="40">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1000,20 +1092,38 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 					<sval type="int" val="1" />
-					<sval type="string" val="we just use vanilla Mayhem's sector value concept to determine which one gets demanded by the aggressor" />
+					<sval type="string" val="No eligible sectors outside the de jure candidates." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
-					<sval type="int" val="4" />
+					<sval type="int" val="31" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="31" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Select the lowest-value eligible sector." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="31" />
+					<sval type="int" val="1" />
+					<sval type="string" val="No sorting required." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="38" />
+					<sval type="int" val="41" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

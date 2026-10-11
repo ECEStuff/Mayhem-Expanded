@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.OWP.GetMax</name>
-	<version>6</version>
+	<version>8</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -11,12 +11,25 @@
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>* returns the maximum buildable number of Orbital Weapon Platforms for race</comment>
+			<comment>* Returns the maximum number of buildable Orbital Weapon Platforms for $race.</comment>
 		</line>
 		<line linenr="002" indent="">
-			<comment>* Check if maxNumOWP is not positive.</comment>
+			<comment>* </comment>
 		</line>
 		<line linenr="003" indent="">
+			<comment>* Expanded 2.2: Base cap is defined in ZH.Setup.Variables.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* NPCs use the full cap. Player cap decreases by 1 per difficulty level.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* Minimum cap is 1 before perk bonuses.</comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Each Outpost with Fortress grants +1 OWP, including NPC Outposts.</comment>
+		</line>
+		<line linenr="007" indent="" />
+		<line linenr="008" indent="">
 			<var>$maxNumOWP</var>
 			<text> </text>
 			<text>=</text>
@@ -32,26 +45,8 @@
 			<text>=</text>
 			<text>'MaxOWPs'</text>
 		</line>
-		<line linenr="004" indent="">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$maxNumOWP</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="005" indent="&#160;">
-			<var>$maxNumOWP</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="006" indent="" />
-		<line linenr="007" indent="">
+		<line linenr="009" indent="" />
+		<line linenr="010" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$race</var>
@@ -60,7 +55,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="008" indent="&#160;" interruptable="@">
+		<line linenr="011" indent="&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -76,81 +71,47 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="009" indent="&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>0</var>
-		</line>
-		<line linenr="010" indent="&#160;&#160;">
+		<line linenr="012" indent="&#160;">
 			<var>$maxNumOWP</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$maxNumOWP</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="011" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
+			<text>-</text>
 			<text> </text>
 			<var>$difficulty</var>
-			<text> </text>
-			<text>&gt;=</text>
-			<text> </text>
-			<var>2</var>
 		</line>
-		<line linenr="012" indent="&#160;&#160;">
-			<var>$maxNumOWP</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$maxNumOWP</var>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="013" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="014" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="015" indent="" />
-		<line linenr="016" indent="">
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
 			<comment>* Ensure it is at least 1.</comment>
 		</line>
-		<line linenr="017" indent="">
-			<text>skip</text>
+		<line linenr="016" indent="">
+			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$maxNumOWP</var>
 			<text> </text>
-			<text>&gt;</text>
+			<text>&lt;=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="018" indent="&#160;">
+		<line linenr="017" indent="&#160;">
 			<var>$maxNumOWP</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="019" indent="" />
-		<line linenr="020" indent="">
-			<comment>* +1 OWP for every unlocked Ring of Fire perk (Add-Ons 1.8: Applies to NPCs!)</comment>
+		<line linenr="018" indent="" />
+		<line linenr="019" indent="">
+			<comment>* +1 OWP for every unlocked Fortress perk (Add-Ons 1.8: also applies to NPCs).</comment>
 		</line>
-		<line linenr="021" indent="" interruptable="@">
+		<line linenr="020" indent="" interruptable="@">
 			<var>$outposts</var>
 			<text> </text>
 			<text>=</text>
@@ -170,7 +131,7 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="021" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -183,17 +144,17 @@
 			<text> </text>
 			<var>$outposts</var>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="022" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="024" indent="&#160;&#160;">
+		<line linenr="023" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="024" indent="&#160;">
 			<var>$outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -203,7 +164,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="026" indent="" interruptable="@">
+		<line linenr="025" indent="" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -221,19 +182,19 @@
 			<text>=</text>
 			<text>'Fortress'</text>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="026" indent="">
 			<text>inc</text>
 			<text> </text>
 			<var>$maxNumOWP</var>
 		</line>
+		<line linenr="027" indent="">
+			<text>end</text>
+		</line>
 		<line linenr="028" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="030" indent="" />
-		<line linenr="031" indent="">
+		<line linenr="029" indent="" />
+		<line linenr="030" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$maxNumOWP</var>
@@ -244,7 +205,7 @@
 			<sval type="string" val="ZH.OWP.GetMax" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="6" />
+			<sval type="int" val="8" />
 			<sval type="int" val="0" />
 			<sval type="array" size="6">
 				<sval type="string" val="race" />
@@ -254,7 +215,7 @@
 				<sval type="string" val="outpost" />
 				<sval type="string" val="XS.Iterator1" />
 			</sval>
-			<sval type="array" size="21">
+			<sval type="array" size="15">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -263,31 +224,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536870137" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610610173" />
+					<sval type="int" val="-1610611709" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -310,81 +247,32 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610685" />
+					<sval type="int" val="1" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
 					<sval type="int" val="15" />
-					<sval type="int" val="0" />
+					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
+					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="10" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610610171" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-536867833" />
+					<sval type="int" val="-1610611192" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
-					<sval type="int" val="2" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
+					<sval type="int" val="5" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="7">
@@ -414,7 +302,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607607" />
+					<sval type="int" val="-1610609143" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -436,7 +324,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610607869" />
+					<sval type="int" val="-1610609405" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
@@ -449,7 +337,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="14" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -463,57 +351,77 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="12">
+			<sval type="array" size="16">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="returns the maximum buildable number of Orbital Weapon Platforms for race" />
+					<sval type="string" val="Returns the maximum number of buildable Orbital Weapon Platforms for $race." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Check if maxNumOWP is not positive." />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Base cap is defined in ZH.Setup.Variables." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="NPCs use the full cap. Player cap decreases by 1 per difficulty level." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Minimum cap is 1 before perk bonuses." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Each Outpost with Fortress grants +1 OWP, including NPC Outposts." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="3" />
+					<sval type="int" val="0" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="10" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Ensure it is at least 1." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="12" />
+					<sval type="int" val="6" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="12" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
-					<sval type="string" val="+1 OWP for every unlocked Ring of Fire perk (Add-Ons 1.8: Applies to NPCs!)" />
+					<sval type="string" val="+1 OWP for every unlocked Fortress perk (Add-Ons 1.8: also applies to NPCs)." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="14" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="14" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
