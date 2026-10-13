@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Perk.SetInfo</name>
-	<version>101</version>
+	<version>106</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -361,7 +361,170 @@
 			<text> </text>
 			<text>'Requires Solar panels. Converts food, Space Weed, Space Fuel, and leftover mission items into Energy Cells each cycle.'</text>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="036" indent="&#160;" />
+		<line linenr="037" indent="&#160;">
+			<comment>* Expanded 2.2: Now uses SSOT for cost.</comment>
+		</line>
+		<line linenr="038" indent="&#160;" interruptable="@">
+			<var>$costs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Costs.OutpostItem</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>item</text>
+			<text>=</text>
+			<text>'Crystal refinery'</text>
+			<text> </text>
+			<text>qty</text>
+			<text>=</text>
+			<var>1</var>
+		</line>
+		<line linenr="039" indent="&#160;">
+			<var>$redCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Red Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="040" indent="&#160;">
+			<var>$yellowCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Yellow Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="041" indent="&#160;">
+			<var>$blueCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Blue Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="042" indent="&#160;">
+			<var>$greenCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Green Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Converts Crystals to Red Crystals and colored minerals to colored crystals. Cost: '</text>
+		</line>
+		<line linenr="044" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$redCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Red, '</text>
+		</line>
+		<line linenr="045" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$yellowCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Yellow, '</text>
+		</line>
+		<line linenr="046" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$blueCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Blue, '</text>
+		</line>
+		<line linenr="047" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$greenCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Green Crystals.'</text>
+		</line>
+		<line linenr="048" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -376,12 +539,12 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Converts colored minerals to colored crystals and crystals to red crystals. One-time colored crystal cost: 100 Red, 10 Yellow, 4 Blue, 1 Green.'</text>
+			<var>$t</var>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="049" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="050" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -398,7 +561,7 @@
 			<text> </text>
 			<text>'Ships produced here have -50% upkeep but require 2x production time.'</text>
 		</line>
-		<line linenr="039" indent="&#160;">
+		<line linenr="051" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -415,7 +578,7 @@
 			<text> </text>
 			<text>'Prevents Pirate attacks and Yaki claims. New marines gain +20 fighting skill if a Pirate Base or Yaki Outpost is within 1 jump.'</text>
 		</line>
-		<line linenr="040" indent="&#160;">
+		<line linenr="052" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -432,7 +595,7 @@
 			<text> </text>
 			<text>'Incompatible with Population stability and Industrial overdrive.'</text>
 		</line>
-		<line linenr="041" indent="&#160;">
+		<line linenr="053" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -449,7 +612,7 @@
 			<text> </text>
 			<text>'Minimum Tax Efficiency: 300%. Population growth halved above 50% capacity.'</text>
 		</line>
-		<line linenr="042" indent="&#160;">
+		<line linenr="054" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -466,7 +629,7 @@
 			<text> </text>
 			<text>'No shipping costs in Logistics -&gt; Storage -&gt; Terracorp Interorbital Storage.'</text>
 		</line>
-		<line linenr="043" indent="&#160;">
+		<line linenr="055" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -483,7 +646,7 @@
 			<text> </text>
 			<text>'Docked capships: -75% upkeep / other ships: -25% upkeep. Incompatible with Supply depot.'</text>
 		</line>
-		<line linenr="044" indent="&#160;">
+		<line linenr="056" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -500,7 +663,7 @@
 			<text> </text>
 			<text>'Outpost gradually improves relations with all its immediate neighbors over time.'</text>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="057" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -517,7 +680,7 @@
 			<text> </text>
 			<text>'Population grows at its full rate, but food cost is doubled. Incompatible with No food consumption and Industrial overdrive.'</text>
 		</line>
-		<line linenr="046" indent="&#160;">
+		<line linenr="058" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -534,10 +697,10 @@
 			<text> </text>
 			<text>'Requires 3 terraformed planets completed. 1.2x terraforming manpower.'</text>
 		</line>
-		<line linenr="047" indent="&#160;">
+		<line linenr="059" indent="&#160;">
 			<comment>* Add-Ons 1.9.5: New Industrial overdrive perk.</comment>
 		</line>
-		<line linenr="048" indent="&#160;">
+		<line linenr="060" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -554,10 +717,10 @@
 			<text> </text>
 			<text>'+50% construction speed. No population growth or immigration. Incompatible with Population stability and No food consumption.'</text>
 		</line>
-		<line linenr="049" indent="&#160;">
+		<line linenr="061" indent="&#160;">
 			<comment>* Add-Ons 1.9.7: New Supply depot, Assimilator, and Droid factory perks.</comment>
 		</line>
-		<line linenr="050" indent="&#160;">
+		<line linenr="062" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -574,7 +737,7 @@
 			<text> </text>
 			<text>'Outpost provides +50% supply. Incompatible with Dry dock.'</text>
 		</line>
-		<line linenr="051" indent="&#160;">
+		<line linenr="063" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -591,7 +754,7 @@
 			<text> </text>
 			<var>$nonOCVtext</var>
 		</line>
-		<line linenr="052" indent="&#160;">
+		<line linenr="064" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -608,10 +771,10 @@
 			<text> </text>
 			<var>$nonOCVtext</var>
 		</line>
-		<line linenr="053" indent="&#160;">
+		<line linenr="065" indent="&#160;">
 			<comment>* Add-Ons 1.13: New OCV perks: Crystal refinery, Combustor</comment>
 		</line>
-		<line linenr="054" indent="&#160;">
+		<line linenr="066" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -628,7 +791,7 @@
 			<text> </text>
 			<var>$nonOCVtext</var>
 		</line>
-		<line linenr="055" indent="&#160;">
+		<line linenr="067" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -645,7 +808,7 @@
 			<text> </text>
 			<var>$nonOCVtext</var>
 		</line>
-		<line linenr="056" indent="&#160;">
+		<line linenr="068" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -654,10 +817,10 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="057" indent="&#160;&#160;">
+		<line linenr="069" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.9.3: Update insurance policy perk description.</comment>
 		</line>
-		<line linenr="058" indent="&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -666,7 +829,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="059" indent="&#160;&#160;&#160;">
+		<line linenr="071" indent="&#160;&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -683,10 +846,10 @@
 			<text> </text>
 			<text>'-85% unfortunate event severity.'</text>
 		</line>
-		<line linenr="060" indent="&#160;&#160;">
+		<line linenr="072" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;">
+		<line linenr="073" indent="&#160;&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -703,13 +866,13 @@
 			<text> </text>
 			<text>'-70% unfortunate event severity.'</text>
 		</line>
-		<line linenr="062" indent="&#160;&#160;">
+		<line linenr="074" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="063" indent="&#160;">
+		<line linenr="075" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="064" indent="&#160;&#160;">
+		<line linenr="076" indent="&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -726,17 +889,17 @@
 			<text> </text>
 			<text>'No unfortunate events.'</text>
 		</line>
-		<line linenr="065" indent="&#160;">
+		<line linenr="077" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="066" indent="">
+		<line linenr="078" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="067" indent="" />
-		<line linenr="068" indent="">
+		<line linenr="079" indent="" />
+		<line linenr="080" indent="">
 			<comment>* Expanded 2.2: Missile manufacture is now required for missile-capable ships.</comment>
 		</line>
-		<line linenr="069" indent="">
+		<line linenr="081" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -753,7 +916,7 @@
 			<text> </text>
 			<text>'Unlocks missile production and construction of missile-capable ships at this Outpost.'</text>
 		</line>
-		<line linenr="070" indent="">
+		<line linenr="082" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -770,7 +933,7 @@
 			<text> </text>
 			<text>'1.5x Research Rate. Also improves Hacking Stations and Cyberwar Centers.'</text>
 		</line>
-		<line linenr="071" indent="">
+		<line linenr="083" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -787,7 +950,7 @@
 			<text> </text>
 			<text>'+20% station specialization.'</text>
 		</line>
-		<line linenr="072" indent="">
+		<line linenr="084" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -804,11 +967,11 @@
 			<text> </text>
 			<text>'All ships produced here receive +1 Engine Tuning and +1 Rudder Optimisation.'</text>
 		</line>
-		<line linenr="073" indent="" />
-		<line linenr="074" indent="">
+		<line linenr="085" indent="" />
+		<line linenr="086" indent="">
 			<comment>* Add-Ons 2.1.3: Clarified adjacency perk bonus to exclude Jump Hole connections.</comment>
 		</line>
-		<line linenr="075" indent="">
+		<line linenr="087" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -825,7 +988,7 @@
 			<text> </text>
 			<text>'Extra perk slot for every player Outpost in adjacent sectors, excluding Jump Hole connections.'</text>
 		</line>
-		<line linenr="076" indent="">
+		<line linenr="088" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -842,7 +1005,7 @@
 			<text> </text>
 			<text>'Generates Energy Cells depending on sector sun efficiency.'</text>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="089" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -859,7 +1022,7 @@
 			<text> </text>
 			<text>'Converts local Research Station into Hacking Station.'</text>
 		</line>
-		<line linenr="078" indent="">
+		<line linenr="090" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -876,7 +1039,7 @@
 			<text> </text>
 			<text>'Unlocks the EMP command, adds a respawning Lasertower ring and local security fighters, and grants +1 global OWP limit.'</text>
 		</line>
-		<line linenr="079" indent="">
+		<line linenr="091" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -893,7 +1056,99 @@
 			<text> </text>
 			<text>'Automatically scans ports and installs backdoors within 5 jumps. Generates Hackerchips.'</text>
 		</line>
-		<line linenr="080" indent="">
+		<line linenr="092" indent="" />
+		<line linenr="093" indent="">
+			<comment>* Expanded 2.2: Now uses SSOT for cost.</comment>
+		</line>
+		<line linenr="094" indent="" interruptable="@">
+			<var>$costs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Costs.OutpostItem</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>item</text>
+			<text>=</text>
+			<text>'Jump station'</text>
+			<text> </text>
+			<text>qty</text>
+			<text>=</text>
+			<var>1</var>
+		</line>
+		<line linenr="095" indent="">
+			<var>$blackCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Black Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="096" indent="">
+			<var>$beaconCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Jump Beacon}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="097" indent="">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Outpost becomes a Jump Point with immunity to Xenon infection and no upkeep. Cost: '</text>
+		</line>
+		<line linenr="098" indent="">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$blackCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Black Crystal, '</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$beaconCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Jump Beacon.'</text>
+		</line>
+		<line linenr="099" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -908,13 +1163,13 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Outpost becomes a Jump Point with immunity to Xenon infection and no upkeep. One-time cost: 1 Black Crystal, 1 Jump Beacon.'</text>
+			<var>$t</var>
 		</line>
-		<line linenr="081" indent="" />
-		<line linenr="082" indent="">
+		<line linenr="100" indent="" />
+		<line linenr="101" indent="">
 			<comment>* Mordan2</comment>
 		</line>
-		<line linenr="083" indent="">
+		<line linenr="102" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -931,20 +1186,20 @@
 			<text> </text>
 			<text>'+2 station support. Separate from terraforming effects.'</text>
 		</line>
-		<line linenr="084" indent="" />
-		<line linenr="085" indent="">
+		<line linenr="103" indent="" />
+		<line linenr="104" indent="">
 			<comment>* Add-Ons 1.1: terraforming specialist perk (terraforming rework phase 2)</comment>
 		</line>
-		<line linenr="086" indent="">
+		<line linenr="105" indent="">
 			<comment>* Add-Ons 1.2: terraforming efficiency milestone perks (terraforming rework phase 3)</comment>
 		</line>
-		<line linenr="087" indent="">
+		<line linenr="106" indent="">
 			<comment>* Add-Ons 2.0: Reworked TE3. Also added new JHG perk.</comment>
 		</line>
-		<line linenr="088" indent="">
+		<line linenr="107" indent="">
 			<comment>* Add-Ons 2.1: Terraforming specialist has 2 descriptions: before starting Kha'ak quest and after starting.</comment>
 		</line>
-		<line linenr="089" indent="">
+		<line linenr="108" indent="">
 			<var>$khaakPlotStage</var>
 			<text> </text>
 			<text>=</text>
@@ -960,15 +1215,15 @@
 			<text>=</text>
 			<text>'khaakPlotStage'</text>
 		</line>
-		<line linenr="090" indent="">
+		<line linenr="109" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$khaakPlotStage</var>
 		</line>
-		<line linenr="091" indent="&#160;">
+		<line linenr="110" indent="&#160;">
 			<comment>* Updated description</comment>
 		</line>
-		<line linenr="092" indent="&#160;">
+		<line linenr="111" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -985,13 +1240,13 @@
 			<text> </text>
 			<text>'If this sector contains at least 3 planets or the Ancient Kha'ak Hive: 2x terraforming manpower and +2 simultaneous terraforming projects.'</text>
 		</line>
-		<line linenr="093" indent="">
+		<line linenr="112" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="094" indent="&#160;">
+		<line linenr="113" indent="&#160;">
 			<comment>* Default description</comment>
 		</line>
-		<line linenr="095" indent="&#160;">
+		<line linenr="114" indent="&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1008,11 +1263,11 @@
 			<text> </text>
 			<text>'If this sector contains at least 3 planets: 2x terraforming manpower and +2 simultaneous terraforming projects.'</text>
 		</line>
-		<line linenr="096" indent="">
+		<line linenr="115" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="097" indent="" />
-		<line linenr="098" indent="">
+		<line linenr="116" indent="" />
+		<line linenr="117" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1029,7 +1284,7 @@
 			<text> </text>
 			<text>'Requires 7 terraformed planets completed. Global terraforming penalty applied to this sector is reduced by 33%.'</text>
 		</line>
-		<line linenr="099" indent="">
+		<line linenr="118" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1046,7 +1301,7 @@
 			<text> </text>
 			<text>'Requires 12 terraformed planets completed. Outpost contributes 100% of its population to adjacent terraforming projects instead of 50%.'</text>
 		</line>
-		<line linenr="100" indent="">
+		<line linenr="119" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1063,8 +1318,74 @@
 			<text> </text>
 			<text>'Requires 18 terraformed planets completed, Capital Shipyard, and all other terraforming Outpost perks. Gain +10% base max specialization.'</text>
 		</line>
-		<line linenr="101" indent="" />
-		<line linenr="102" indent="">
+		<line linenr="120" indent="" />
+		<line linenr="121" indent="">
+			<comment>* Expanded 2.2: Now uses SSOT for cost.</comment>
+		</line>
+		<line linenr="122" indent="" interruptable="@">
+			<var>$costs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.Costs.OutpostItem</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>item</text>
+			<text>=</text>
+			<text>'Jump Hole Generator'</text>
+			<text> </text>
+			<text>qty</text>
+			<text>=</text>
+			<var>1</var>
+		</line>
+		<line linenr="123" indent="">
+			<var>$blackCost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>{Black Crystal}</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="124" indent="">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Requires Jump Station. Unlocks Open Jump Hole in the Factory -&gt; Infrastructure section. Cost: '</text>
+		</line>
+		<line linenr="125" indent="">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$t</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$blackCost</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' Black Crystals. Activation costs extra.'</text>
+		</line>
+		<line linenr="126" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1079,10 +1400,10 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Requires Jump Station. Adds Open Jump Hole to the Factory -&gt; Infrastructure section. One-time cost: 2 Black Crystals.'</text>
+			<var>$t</var>
 		</line>
-		<line linenr="103" indent="" />
-		<line linenr="104" indent="">
+		<line linenr="127" indent="" />
+		<line linenr="128" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1098,8 +1419,8 @@
 			<text>=</text>
 			<var>$table</var>
 		</line>
-		<line linenr="105" indent="" />
-		<line linenr="106" indent="">
+		<line linenr="129" indent="" />
+		<line linenr="130" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$table</var>
@@ -1110,17 +1431,25 @@
 			<sval type="string" val="Mayhem.Perk.SetInfo" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="101" />
+			<sval type="int" val="106" />
 			<sval type="int" val="0" />
-			<sval type="array" size="6">
+			<sval type="array" size="14">
 				<sval type="string" val="table" />
 				<sval type="string" val="difficulty" />
 				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="OCVtext" />
 				<sval type="string" val="nonOCVtext" />
+				<sval type="string" val="costs" />
+				<sval type="string" val="redCost" />
+				<sval type="string" val="yellowCost" />
+				<sval type="string" val="blueCost" />
+				<sval type="string" val="greenCost" />
+				<sval type="string" val="t" />
+				<sval type="string" val="blackCost" />
+				<sval type="string" val="beaconCost" />
 				<sval type="string" val="khaakPlotStage" />
 			</sval>
-			<sval type="array" size="67">
+			<sval type="array" size="86">
 				<sval type="array" size="2">
 					<sval type="int" val="1706" />
 					<sval type="int" val="0" />
@@ -1159,7 +1488,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606845" />
+					<sval type="int" val="-1610604285" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1307,18 +1636,155 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Requires Solar panels. Converts food, Space Weed, Space Fuel, and leftover mission items into Energy Cells each cycle." />
 				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Costs.OutpostItem" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Crystal refinery" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983052" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983053" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983054" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983055" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Converts Crystals to Red Crystals and colored minerals to colored crystals. Cost: " />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Red, " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Yellow, " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Blue, " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Green Crystals." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Crystal refinery" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Converts colored minerals to colored crystals and crystals to red crystals. One-time colored crystal cost: 100 Red, 10 Yellow, 4 Blue, 1 Green." />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
@@ -1457,7 +1923,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601469" />
+					<sval type="int" val="-1610598909" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1472,7 +1938,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601981" />
+					<sval type="int" val="-1610599421" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1496,7 +1962,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="43" />
+					<sval type="int" val="53" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
@@ -1509,7 +1975,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
@@ -1601,14 +2067,84 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Automatically scans ports and installs backdoors within 5 jumps. Generates Hackerchips." />
 				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Costs.OutpostItem" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Jump station" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983056" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1048690" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Outpost becomes a Jump Point with immunity to Xenon infection and no upkeep. Cost: " />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="31">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Black Crystal, " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Jump Beacon." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-8" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Jump station" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Outpost becomes a Jump Point with immunity to Xenon infection and no upkeep. One-time cost: 1 Black Crystal, 1 Jump Beacon." />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
@@ -1623,14 +2159,14 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="khaakPlotStage" />
-					<sval type="int" val="5" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610597373" />
+					<sval type="int" val="-1610593533" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -1645,7 +2181,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="61" />
+					<sval type="int" val="76" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
@@ -1683,14 +2219,64 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Requires 18 terraformed planets completed, Capital Shipyard, and all other terraforming Outpost perks. Gain +10% base max specialization." />
 				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.Costs.OutpostItem" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Jump Hole Generator" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="9" />
+					<sval type="int" val="983056" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Requires Jump Station. Unlocks Open Jump Hole in the Factory -&gt; Infrastructure section. Cost: " />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" Black Crystals. Activation costs extra." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1708" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Jump Hole Generator" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Requires Jump Station. Adds Open Jump Hole to the Factory -&gt; Infrastructure section. One-time cost: 2 Black Crystals." />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="157" />
@@ -1706,7 +2292,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="43">
+			<sval type="array" size="48">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1774,132 +2360,155 @@
 					<sval type="string" val="Add-Ons 1.13: New OCV perks: Crystal refinery, Combustor" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Now uses SSOT for cost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="32" />
+					<sval type="int" val="42" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.9.5: New Industrial overdrive perk." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="33" />
+					<sval type="int" val="43" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.9.7: New Supply depot, Assimilator, and Droid factory perks." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="36" />
+					<sval type="int" val="46" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.13: New OCV perks: Crystal refinery, Combustor" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="39" />
+					<sval type="int" val="49" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.9.3: Update insurance policy perk description." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="42" />
+					<sval type="int" val="52" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="53" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="44" />
+					<sval type="int" val="54" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="45" />
+					<sval type="int" val="55" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2: Missile manufacture is now required for missile-capable ships." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="49" />
+					<sval type="int" val="59" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="49" />
+					<sval type="int" val="59" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.1.3: Clarified adjacency perk bonus to exclude Jump Hole connections." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="55" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="55" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Mordan2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="56" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="56" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.1: terraforming specialist perk (terraforming rework phase 2)" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="56" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.2: terraforming efficiency milestone perks (terraforming rework phase 3)" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="56" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0: Reworked TE3. Also added new JHG perk." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="56" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.1: Terraforming specialist has 2 descriptions: before starting Kha'ak quest and after starting." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="58" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Updated description" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="60" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="60" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Default description" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="61" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="61" />
-					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="64" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="64" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Now uses SSOT for cost." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="65" />
+					<sval type="int" val="70" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="70" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Mordan2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="71" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="71" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.1: terraforming specialist perk (terraforming rework phase 2)" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="71" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: terraforming efficiency milestone perks (terraforming rework phase 3)" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="71" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.0: Reworked TE3. Also added new JHG perk." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="71" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.1: Terraforming specialist has 2 descriptions: before starting Kha'ak quest and after starting." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="73" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Updated description" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="75" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="75" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Default description" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="76" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="76" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="66" />
+					<sval type="int" val="79" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="79" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Now uses SSOT for cost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="84" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="85" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
