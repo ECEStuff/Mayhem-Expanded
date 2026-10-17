@@ -19,6 +19,7 @@ Notes:
 | Outpost (Waste)                  | 180 Waste                   | -                      | 10800 Waste                  | -                      |
 | Outpost (Solar Panels)           | 60 Energy Cells             | -                      | 3600 Energy Cells            | -                      |
 | Solar Power Plant                | 24 Energy Cells             | -                      | 1440 Energy Cells            | -                      |
+| Silicon Mine                     | 15 Silicon Wafers           | 15 Energy Cells        | 900 Silicon Wafers           | 900 Energy Cells       |
 | Chemical Lab                     | 30 Chemicals                | 60 Waste               | 1800 Chemicals               | 3600 Waste             |
 | Teladianium Foundry              | 20 Teladianium              | 40 Chemicals           | 1200 Teladianium             | 2400 Chemicals         |
 | Hull Plating Production Facility | 20 Hull Plating             | 20 Teladianium         | 1200 Hull Plating            | 1200 Teladianium       |
@@ -31,7 +32,6 @@ Notes:
 | Chip Plant                       | 12 Microchips               | 24 Energy Cells        | 720 Microchips               | 1440 Energy Cells      |
 | Computer Plant                   | 6 Computer Components       | 12 Microchips          | 360 Computer Chips           | 720 Microchips         |
 | Crystal Fab                      | 6 Crystals                  | 24 Energy Cells        | 360 Crystals                 | 1440 Energy Cells      |
-| Silicon Mine                     | 15 Silicon Wafers           | 15 Energy Cells        | 900 Silicon Wafers           | 900 Energy Cells       |
 | Jumpdrive Core Factory           | 0.1171875 Jumpdrive Cores   | 3.75 Crystals          | 7.03125 Jumpdrive Cores      | 225 Crystals           |
 | Advanced Satellite Factory       | 0.46875 Advanced Satellites | 15 Energy Cells        | 28.125 Advanced Satellites   | 900 Energy Cells       |
 
@@ -41,6 +41,7 @@ Notes:
 
 | Consuming Factory                | Consumed Resource | Rate Consumed | Supplying Factory               | Rate Produced | Ratio Needed (Consumer:Supplier) |
 | -------------------------------- | ----------------- | ------------- | ------------------------------- | ------------- | -------------------------------- |
+| Silicon Mine                     | Energy Cells      | 15/Min        | Solar Power Plant               | 24/Min        | 1 : 0.625 = 8 : 5                |
 | Chemical Lab                     | Waste             | 60/Min        | Outpost (Waste)                 | 180/Min       | 3 : 1                            |
 | Teladianium Foundry              | Chemicals         | 40/Min        | Chemical Lab                    | 30/Min        | 1 : 1.33 = 3 : 4                 |
 | Hull Plating Production Facility | Teladianium       | 20/Min        | Teladianium Foundry             | 20/Min        | 1 : 1                            |
@@ -53,6 +54,5 @@ Notes:
 | Chip Plant                       | Energy Cells      | 24/Min        | Solar Power Plant               | 24/Min        | 1 : 1                            |
 | Computer Plant                   | Microchips        | 12/Min        | Chip Plant                      | 12/Min        | 1 : 1                            |
 | Crystal Fab                      | Energy Cells      | 24/Min        | Solar Power Plant               | 24/Min        | 1 : 1                            |
-| Silicon Mine                     | Energy Cells      | 15/Min        | Solar Power Plant               | 24/Min        | 1 : 0.625 = 8 : 5                |
 | Jumpdrive Core Factory           | Crystals          | 3.75/Min      | Crystal Fab                     | 6/Min         | 1 : 0.625 = 8 : 5                |
 | Advanced Satellite Factory       | Energy Cells      | 15/Min        | Solar Power Plant               | 24/Min        | 1 : 0.625 = 8 : 5                |
