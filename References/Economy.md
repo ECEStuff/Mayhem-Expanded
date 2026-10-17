@@ -45,4 +45,4 @@ Note: Data based on 100% solar per sector and asteroid yields of 60/Ore and 30/S
 | Jumpdrive Core Factory           | Crystals          | 32/8:32       | Crystal Fab                     | 6/Min         | 1 : 0.62 ~ 5 : 3                 |
 | Advanced Satellite Factory       | Energy Cells      | 32/2:08       | Solar Power Plant               | 12/Min        | 1 : 1.25 = 4 : 5                 |
 
-Note: For Factories With Non-Integer Minute Cycles, Ratios Are Calculated Using Per-Minute Equivalents.
+Note: For factories with non-integer minute cycles, ratios are calculated using per-minute equivalents.
