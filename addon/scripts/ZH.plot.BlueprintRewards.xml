@@ -3,13 +3,13 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.plot.BlueprintRewards</name>
-	<version>3</version>
+	<version>5</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="002" indent="">
 			<comment>* SCRIPT NAME: ZH.plot.BlueprintRewards.xml</comment>
@@ -18,7 +18,7 @@
 			<comment>* DESCRIPTION: Rewards the player with Phanon blueprints.</comment>
 		</line>
 		<line linenr="004" indent="">
-			<comment>* For OCV playthroughs, private corp. ships that aren't otherwise filled in by Phanon ships are also rewarded. </comment>
+			<comment>* For OCV playthroughs, all private corp. ships are also rewarded. </comment>
 		</line>
 		<line linenr="005" indent="">
 			<comment>* On insane mode, the Solitas and Ganymede are rewarded.</comment>
@@ -30,7 +30,7 @@
 			<comment>* AUTHOR:           DATE: 9 May 2026</comment>
 		</line>
 		<line linenr="008" indent="">
-			<comment>*************************************************</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="009" indent="">
 			<comment>* Reward player by unlocking all phanon blueprints</comment>
@@ -114,28 +114,10 @@
 			<text>end</text>
 		</line>
 		<line linenr="017" indent="" />
-		<line linenr="018" indent="">
-			<comment>* Check for OCV playthroughs. Ship blueprint rewards here are only for ships that are completely unobtainable for either plot branch and fill capability gaps.</comment>
+		<line linenr="018" indent="&#160;">
+			<comment>* Check for OCV playthroughs.</comment>
 		</line>
-		<line linenr="019" indent="">
-			<comment>* Add-Ons 1.3.13: Give the player the Truelight Seeker blueprint. </comment>
-		</line>
-		<line linenr="020" indent="">
-			<comment>* Add-Ons 1.12.3: Added Spitfyre and Ranger. The Springblossom, Aran, and Ozias are not added for these reasons:</comment>
-		</line>
-		<line linenr="021" indent="">
-			<comment>* - The Springblossom (including Raider variant) is made redundant by Phanon M6s and freighters.</comment>
-		</line>
-		<line linenr="022" indent="">
-			<comment>* - The Aran is already obtainable by boarding the Nomad Flagship.</comment>
-		</line>
-		<line linenr="023" indent="">
-			<comment>* - The Ozias is boardable, and it's redundant by the Phanon TL.</comment>
-		</line>
-		<line linenr="024" indent="&#160;">
-			<comment>* Add-Ons 2.0: add the new solitas and ganymede. These ships fill in roles that Phanon ships don't provide.</comment>
-		</line>
-		<line linenr="025" indent="&#160;">
+		<line linenr="019" indent="&#160;">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -151,7 +133,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="020" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -160,7 +142,67 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="027" indent="&#160;" interruptable="@">
+		<line linenr="021" indent="&#160;&#160;">
+			<comment>* Expanded 2.2: Unlocks all Private Corp blueprints.</comment>
+		</line>
+		<line linenr="022" indent="&#160;">
+			<var>$privateTypes</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>ship</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<text>array</text>
+			<text>:</text>
+			<text> </text>
+			<text>maker</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Private Corp.]</var>
+			<text> </text>
+			<text>class</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="023" indent="">
+			<var>$XS.Iterator2</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$privateTypes</var>
+		</line>
+		<line linenr="024" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator2</var>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator2</var>
+		</line>
+		<line linenr="026" indent="&#160;">
+			<var>$type</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$privateTypes</var>
+			<text>[</text>
+			<var>$XS.Iterator2</var>
+			<text>]</text>
+		</line>
+		<line linenr="027" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -176,87 +218,18 @@
 			<text> </text>
 			<text>shipType</text>
 			<text>=</text>
-			<var>{Private Corp. Truelight Seeker}</var>
+			<var>$type</var>
 		</line>
-		<line linenr="028" indent="&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.AddBlueprint</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>shipType</text>
-			<text>=</text>
-			<var>{Private Corp. Spitfyre}</var>
+		<line linenr="028" indent="&#160;&#160;">
+			<text>end</text>
 		</line>
-		<line linenr="029" indent="" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.AddBlueprint</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>shipType</text>
-			<text>=</text>
-			<var>{Private Corp. Ranger}</var>
-		</line>
-		<line linenr="030" indent="&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.AddBlueprint</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>shipType</text>
-			<text>=</text>
-			<var>{Private Corp. Solitas}</var>
-		</line>
-		<line linenr="031" indent="&#160;" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.AddBlueprint</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>shipType</text>
-			<text>=</text>
-			<var>{Private Corp. Ganymede}</var>
-		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="029" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="033" indent="&#160;&#160;">
-			<comment>* If this script is called from Phanon plot branch, then check difficulty. The only things that can be unlocked are the solitas and ganymede since insane mode lacks TS/TP research.</comment>
+		<line linenr="030" indent="&#160;&#160;">
+			<comment>* If this script is called from Phanon plot branch, then check difficulty. The only things that can be unlocked are TS/TP since insane mode lacks TS/TP research. </comment>
 		</line>
-		<line linenr="034" indent="&#160;&#160;" interruptable="@">
+		<line linenr="031" indent="&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -272,7 +245,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="035" indent="&#160;">
+		<line linenr="032" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -281,7 +254,64 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="036" indent="" interruptable="@">
+		<line linenr="033" indent="">
+			<var>$privateTypes</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>ship</text>
+			<text> </text>
+			<text>type</text>
+			<text> </text>
+			<text>array</text>
+			<text>:</text>
+			<text> </text>
+			<text>maker</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[Private Corp.]</var>
+			<text> </text>
+			<text>class</text>
+			<text>=</text>
+			<var>[Freighter]</var>
+		</line>
+		<line linenr="034" indent="">
+			<var>$XS.Iterator3</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$privateTypes</var>
+		</line>
+		<line linenr="035" indent="">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator3</var>
+		</line>
+		<line linenr="036" indent="">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator3</var>
+		</line>
+		<line linenr="037" indent="">
+			<var>$type</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$privateTypes</var>
+			<text>[</text>
+			<var>$XS.Iterator3</var>
+			<text>]</text>
+		</line>
+		<line linenr="038" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -297,34 +327,19 @@
 			<text> </text>
 			<text>shipType</text>
 			<text>=</text>
-			<var>{Private Corp. Solitas}</var>
-		</line>
-		<line linenr="037" indent="" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.AddBlueprint</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>shipType</text>
-			<text>=</text>
-			<var>{Private Corp. Ganymede}</var>
-		</line>
-		<line linenr="038" indent="">
-			<text>end</text>
+			<var>$type</var>
 		</line>
 		<line linenr="039" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="040" indent="" />
+		<line linenr="040" indent="">
+			<text>end</text>
+		</line>
 		<line linenr="041" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="042" indent="" />
+		<line linenr="043" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -335,16 +350,19 @@
 			<sval type="string" val="ZH.plot.BlueprintRewards" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="3" />
+			<sval type="int" val="5" />
 			<sval type="int" val="0" />
-			<sval type="array" size="5">
+			<sval type="array" size="8">
 				<sval type="string" val="phanonTypes" />
 				<sval type="string" val="type" />
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="OCVplotstage" />
+				<sval type="string" val="privateTypes" />
+				<sval type="string" val="XS.Iterator2" />
 				<sval type="string" val="difficulty" />
+				<sval type="string" val="XS.Iterator3" />
 			</sval>
-			<sval type="array" size="20">
+			<sval type="array" size="27">
 				<sval type="array" size="6">
 					<sval type="int" val="1372" />
 					<sval type="int" val="0" />
@@ -402,7 +420,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608893" />
+					<sval type="int" val="-1610608381" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -415,15 +433,40 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.AddBlueprint" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+				<sval type="array" size="6">
+					<sval type="int" val="1372" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
 					<sval type="int" val="9" />
-					<sval type="int" val="459041" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608631" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -432,57 +475,31 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="458976" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.AddBlueprint" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459003" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.AddBlueprint" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459275" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.AddBlueprint" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459276" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="19" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="26" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607869" />
+					<sval type="int" val="-1610606077" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -492,15 +509,40 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.AddBlueprint" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+				<sval type="array" size="6">
+					<sval type="int" val="1372" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
 					<sval type="int" val="9" />
-					<sval type="int" val="459275" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2038" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606071" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -509,8 +551,12 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="459276" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="21" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -519,7 +565,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="23">
+			<sval type="array" size="20">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -538,7 +584,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="For OCV playthroughs, private corp. ships that aren't otherwise filled in by Phanon ships are also rewarded. " />
+					<sval type="string" val="For OCV playthroughs, all private corp. ships are also rewarded. " />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -576,57 +622,40 @@
 				<sval type="array" size="3">
 					<sval type="int" val="7" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Check for OCV playthroughs. Ship blueprint rewards here are only for ships that are completely unobtainable for either plot branch and fill capability gaps." />
+					<sval type="string" val="Check for OCV playthroughs." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.3.13: Give the player the Truelight Seeker blueprint. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.12.3: Added Spitfyre and Ranger. The Springblossom, Aran, and Ozias are not added for these reasons:" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="- The Springblossom (including Raider variant) is made redundant by Phanon M6s and freighters." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="- The Aran is already obtainable by boarding the Nomad Flagship." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="- The Ozias is boardable, and it's redundant by the Phanon TL." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0: add the new solitas and ganymede. These ships fill in roles that Phanon ships don't provide." />
+					<sval type="string" val="Expanded 2.2: Unlocks all Private Corp blueprints." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="16" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If this script is called from Phanon plot branch, then check difficulty. The only things that can be unlocked are the solitas and ganymede since insane mode lacks TS/TP research." />
+					<sval type="string" val="If this script is called from Phanon plot branch, then check difficulty. The only things that can be unlocked are TS/TP since insane mode lacks TS/TP research. " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="26" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="26" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="26" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
