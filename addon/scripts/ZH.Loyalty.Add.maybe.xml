@@ -3,13 +3,13 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Loyalty.Add.maybe</name>
-	<version>10</version>
+	<version>11</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="raceKilled" type="Var/Race" desc="owner of killed ship" />
 		<argument index="2" name="sector" type="Var/Sector" desc="must have a claimant" />
-		<argument index="3" name="captured" type="Var/Boolean" desc="" />
+		<argument index="3" name="action" type="Var/String" desc="" />
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
@@ -179,14 +179,36 @@
 		</line>
 		<line linenr="031" indent="" />
 		<line linenr="032" indent="">
-			<comment>* Boarding counts as an elimination only when it assists the Yaki.</comment>
+			<comment>* Expanded 2.2: Boarding and oxygen hacking are underhanded actions.</comment>
 		</line>
 		<line linenr="033" indent="">
+			<comment>* Only the Yaki award Loyalty for these methods.</comment>
+		</line>
+		<line linenr="034" indent="">
+			<var>$dirtyAction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$action</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'boarding'</text>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$action</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<text>'hacking'</text>
+		</line>
+		<line linenr="035" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>$captured</var>
+			<var>$dirtyAction</var>
 			<text> </text>
 			<text>AND</text>
 			<text> </text>
@@ -196,16 +218,16 @@
 			<text> </text>
 			<var>[Yaki]</var>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="036" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="035" indent="" />
-		<line linenr="036" indent="">
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
 			<comment>* Phanon never awards Loyalty.</comment>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="039" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -216,16 +238,16 @@
 			<text> </text>
 			<var>[Phanon]</var>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="040" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="039" indent="" />
-		<line linenr="040" indent="">
+		<line linenr="041" indent="" />
+		<line linenr="042" indent="">
 			<comment>* 2 Loyalty per Huge Ship destroyed or boarded. However, Loyalty from boarding is approved only by the Yaki.</comment>
 		</line>
-		<line linenr="041" indent="">
+		<line linenr="043" indent="">
 			<var>$reason</var>
 			<text> </text>
 			<text>=</text>
@@ -240,7 +262,7 @@
 			<text> </text>
 			<text>' empire in contested territory.'</text>
 		</line>
-		<line linenr="042" indent="" interruptable="@">
+		<line linenr="044" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -266,8 +288,8 @@
 			<text>=</text>
 			<var>$reason</var>
 		</line>
-		<line linenr="043" indent="" />
-		<line linenr="044" indent="">
+		<line linenr="045" indent="" />
+		<line linenr="046" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -278,18 +300,19 @@
 			<sval type="string" val="ZH.Loyalty.Add.maybe" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="10" />
+			<sval type="int" val="11" />
 			<sval type="int" val="0" />
-			<sval type="array" size="7">
+			<sval type="array" size="8">
 				<sval type="string" val="raceKilled" />
 				<sval type="string" val="sector" />
-				<sval type="string" val="captured" />
+				<sval type="string" val="action" />
 				<sval type="string" val="claimRace" />
 				<sval type="string" val="sectorOwner" />
 				<sval type="string" val="loyaltyRace" />
+				<sval type="string" val="dirtyAction" />
 				<sval type="string" val="reason" />
 			</sval>
-			<sval type="array" size="21">
+			<sval type="array" size="22">
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
@@ -437,12 +460,39 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="19">
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608632" />
-					<sval type="int" val="5" />
+					<sval type="int" val="6" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="boarding" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="hacking" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608376" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="10" />
@@ -465,7 +515,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608120" />
+					<sval type="int" val="-1610607864" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -485,7 +535,7 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="6" />
+					<sval type="int" val="7" />
 					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Assisted the " />
@@ -516,7 +566,7 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -534,11 +584,11 @@
 					<sval type="string" val="must have a claimant" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="63" />
+					<sval type="int" val="11" />
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="24">
+			<sval type="array" size="25">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -622,28 +672,33 @@
 				<sval type="array" size="3">
 					<sval type="int" val="14" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Boarding counts as an elimination only when it assists the Yaki." />
+					<sval type="string" val="Expanded 2.2: Boarding and oxygen hacking are underhanded actions." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only the Yaki award Loyalty for these methods." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="17" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Phanon never awards Loyalty." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
+					<sval type="int" val="19" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="string" val="2 Loyalty per Huge Ship destroyed or boarded. However, Loyalty from boarding is approved only by the Yaki." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="21" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
