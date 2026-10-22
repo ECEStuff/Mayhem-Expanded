@@ -3,48 +3,66 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Joubarbe.Lib.FormatDuration</name>
-	<version>7</version>
+	<version>10</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
 		<argument index="1" name="seconds" type="Var/Number" desc="in seconds" />
 		<argument index="2" name="approximate" type="Var/Boolean" desc="" />
+		<argument index="3" name="abbreviate" type="Var/Boolean" desc="" />
 	</arguments>
 	<sourcetext>
-		<line linenr="001" indent="">
-			<comment>*************************************************</comment>
-		</line>
+		<line linenr="001" indent="" />
 		<line linenr="002" indent="">
-			<comment>* SCRIPT NAME: Joubarbe.Lib.FormatDUration</comment>
+			<comment>* ************************************************</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* DESCRIPTION: Returns a string in formatted time.</comment>
+			<comment>* SCRIPT NAME: Joubarbe.Lib.FormatDuration</comment>
 		</line>
 		<line linenr="004" indent="">
-			<comment>* Examples: 2h 17m, 2 hours, 47 minutes</comment>
+			<comment>* DESCRIPTION: Returns a formatted duration.</comment>
 		</line>
 		<line linenr="005" indent="">
-			<comment>* </comment>
+			<comment>* Examples:</comment>
 		</line>
 		<line linenr="006" indent="">
-			<comment>* @param</comment>
+			<comment>* - Standard: 2h 17m, 2 hours, 47 minutes</comment>
 		</line>
 		<line linenr="007" indent="">
-			<comment>* $seconds: time in seconds.</comment>
+			<comment>* - Abbreviated: 2h17m, 2h, 47m, 30s</comment>
 		</line>
 		<line linenr="008" indent="">
-			<comment>* $approximate: a boolean. if true, append a '~' before the formatted time.</comment>
-		</line>
-		<line linenr="009" indent="">
 			<comment>* </comment>
 		</line>
+		<line linenr="009" indent="">
+			<comment>* @param</comment>
+		</line>
 		<line linenr="010" indent="">
-			<comment>* AUTHOR:           DATE: 23 August 2026</comment>
+			<comment>* $seconds: Duration in seconds.</comment>
 		</line>
 		<line linenr="011" indent="">
-			<comment>*************************************************</comment>
+			<comment>* $approximate: If true, prepend '~'.</comment>
 		</line>
 		<line linenr="012" indent="">
+			<comment>* $abbreviate: If true, use compact time units.</comment>
+		</line>
+		<line linenr="013" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="014" indent="">
+			<comment>* AUTHOR:           DATE: 23 August 2026</comment>
+		</line>
+		<line linenr="015" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="016" indent="">
+			<comment>* Expanded 2.2: Optional compact duration formatting.</comment>
+		</line>
+		<line linenr="017" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="018" indent="" />
+		<line linenr="019" indent="">
 			<var>$hours</var>
 			<text> </text>
 			<text>=</text>
@@ -55,31 +73,38 @@
 			<text> </text>
 			<var>3600</var>
 		</line>
-		<line linenr="013" indent="">
+		<line linenr="020" indent="">
 			<var>$minutes</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
 			<var>$seconds</var>
-			<text> </text>
-			<text>-</text>
-			<text> </text>
-			<text>(</text>
-			<var>$hours</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>3600</var>
-			<text>)</text>
-			<text>)</text>
 			<text> </text>
 			<text>/</text>
 			<text> </text>
 			<var>60</var>
 		</line>
-		<line linenr="014" indent="" />
-		<line linenr="015" indent="">
+		<line linenr="021" indent="">
+			<var>$minutes</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$minutes</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>60</var>
+		</line>
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$abbreviate</var>
+		</line>
+		<line linenr="024" indent="&#160;">
+			<comment>* Compact format for ship names and narrow UI elements.</comment>
+		</line>
+		<line linenr="025" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hours</var>
@@ -88,7 +113,20 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="026" indent="&#160;&#160;">
+			<var>$text</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$hours</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'h'</text>
+		</line>
+		<line linenr="027" indent="&#160;&#160;">
+			<text>do</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$minutes</var>
@@ -97,7 +135,86 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="017" indent="&#160;&#160;">
+		<line linenr="028" indent="&#160;&#160;&#160;">
+			<var>$text</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$text</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$minutes</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'m'</text>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$minutes</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="030" indent="&#160;&#160;">
+			<var>$text</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$minutes</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'m'</text>
+		</line>
+		<line linenr="031" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="032" indent="&#160;&#160;">
+			<var>$text</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$seconds</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'s'</text>
+		</line>
+		<line linenr="033" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="034" indent="&#160;" />
+		<line linenr="035" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="036" indent="&#160;">
+			<comment>* Original human-readable format.</comment>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$hours</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="038" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$minutes</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="039" indent="&#160;&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
@@ -116,7 +233,7 @@
 			<text> </text>
 			<text>'m'</text>
 		</line>
-		<line linenr="018" indent="&#160;">
+		<line linenr="040" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -127,17 +244,17 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="019" indent="&#160;&#160;">
+		<line linenr="041" indent="&#160;&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'1 hour'</text>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="042" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="021" indent="&#160;&#160;">
+		<line linenr="043" indent="&#160;&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
@@ -148,11 +265,10 @@
 			<text> </text>
 			<text>' hours'</text>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="044" indent="&#160;&#160;">
 			<text>end</text>
-			<text> </text>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="045" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -163,7 +279,7 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="024" indent="&#160;">
+		<line linenr="046" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$minutes</var>
@@ -172,17 +288,17 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="025" indent="&#160;&#160;">
+		<line linenr="047" indent="&#160;&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'1 minute'</text>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="048" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
+		<line linenr="049" indent="&#160;&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
@@ -193,10 +309,10 @@
 			<text> </text>
 			<text>' minutes'</text>
 		</line>
-		<line linenr="028" indent="&#160;">
+		<line linenr="050" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="">
+		<line linenr="051" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -207,17 +323,17 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="030" indent="&#160;">
+		<line linenr="052" indent="&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'1 second'</text>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="053" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="054" indent="&#160;&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
@@ -228,19 +344,21 @@
 			<text> </text>
 			<text>' seconds'</text>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="055" indent="&#160;">
 			<text>end</text>
-			<text> </text>
 		</line>
-		<line linenr="034" indent="" />
-		<line linenr="035" indent="">
+		<line linenr="056" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="057" indent="" />
+		<line linenr="058" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$approximate</var>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="059" indent="&#160;">
 			<var>$text</var>
 			<text> </text>
 			<text>=</text>
@@ -251,31 +369,33 @@
 			<text> </text>
 			<var>$text</var>
 		</line>
-		<line linenr="037" indent="" />
-		<line linenr="038" indent="">
+		<line linenr="060" indent="" />
+		<line linenr="061" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$text</var>
 		</line>
+		<line linenr="062" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="Joubarbe.Lib.FormatDuration" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="7" />
+			<sval type="int" val="10" />
 			<sval type="int" val="0" />
-			<sval type="array" size="5">
+			<sval type="array" size="6">
 				<sval type="string" val="seconds" />
 				<sval type="string" val="approximate" />
+				<sval type="string" val="abbreviate" />
 				<sval type="string" val="hours" />
 				<sval type="string" val="minutes" />
 				<sval type="string" val="text" />
 			</sval>
-			<sval type="array" size="24">
+			<sval type="array" size="36">
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -288,43 +408,51 @@
 					<sval type="int" val="14" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="29">
+				<sval type="array" size="13">
 					<sval type="int" val="104" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
-					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3600" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="15" />
-					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="60" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
-					<sval type="int" val="11" />
-					<sval type="int" val="16" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="12" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-3" />
-					<sval type="int" val="17" />
-					<sval type="int" val="17" />
 					<sval type="int" val="14" />
-					<sval type="int" val="-6" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609917" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="60" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609149" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610429" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -336,10 +464,133 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610611197" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="h" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610680" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="19">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="m" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609659" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="string" val="m" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="13" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="s" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="33" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606845" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608125" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -351,16 +602,16 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="5" />
 					<sval type="string" val="h " />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -378,14 +629,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="10" />
+					<sval type="int" val="22" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610427" />
+					<sval type="int" val="-1610607355" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -397,7 +648,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="1 hour" />
@@ -406,14 +657,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="10" />
+					<sval type="int" val="22" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="3" />
 					<sval type="int" val="5" />
 					<sval type="string" val=" hours" />
 					<sval type="int" val="15" />
@@ -425,14 +676,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608379" />
+					<sval type="int" val="-1610605307" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -444,10 +695,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608893" />
+					<sval type="int" val="-1610605821" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -459,7 +710,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="1 minute" />
@@ -468,14 +719,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="16" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="string" val=" minutes" />
 					<sval type="int" val="15" />
@@ -487,11 +738,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607611" />
+					<sval type="int" val="-1610604539" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -506,7 +757,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="1 second" />
@@ -515,11 +766,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -534,7 +785,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606840" />
+					<sval type="int" val="-1610603768" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -543,12 +794,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="3" />
 					<sval type="int" val="5" />
 					<sval type="string" val="~" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -559,10 +810,10 @@
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 			</sval>
-			<sval type="array" size="2">
+			<sval type="array" size="3">
 				<sval type="array" size="2">
 					<sval type="int" val="10" />
 					<sval type="string" val="in seconds" />
@@ -571,8 +822,16 @@
 					<sval type="int" val="63" />
 					<sval type="string" val="" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
 			</sval>
-			<sval type="array" size="20">
+			<sval type="array" size="35">
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -581,17 +840,27 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="SCRIPT NAME: Joubarbe.Lib.FormatDUration" />
+					<sval type="string" val="SCRIPT NAME: Joubarbe.Lib.FormatDuration" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="DESCRIPTION: Returns a string in formatted time." />
+					<sval type="string" val="DESCRIPTION: Returns a formatted duration." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Examples: 2h 17m, 2 hours, 47 minutes" />
+					<sval type="string" val="Examples:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- Standard: 2h 17m, 2 hours, 47 minutes" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- Abbreviated: 2h17m, 2h, 47m, 30s" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -606,12 +875,17 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$seconds: time in seconds." />
+					<sval type="string" val="$seconds: Duration in seconds." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$approximate: a boolean. if true, append a '~' before the formatted time." />
+					<sval type="string" val="$approximate: If true, prepend '~'." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="$abbreviate: If true, use compact time units." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -626,42 +900,90 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Optional compact duration formatting." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
 					<sval type="string" val="************************************************" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="2" />
+					<sval type="int" val="0" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="9" />
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Compact format for ship names and narrow UI elements." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
-					<sval type="int" val="5" />
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="14" />
 					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Original human-readable format." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="21" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="27" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="33" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="35" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="36" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
