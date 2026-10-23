@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Get.DejureSectors</name>
-	<version>3</version>
+	<version>5</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -35,8 +35,7 @@
 			<text>=</text>
 			<text>'ZH_showDebug'</text>
 		</line>
-		<line linenr="005" indent="" />
-		<line linenr="006" indent="">
+		<line linenr="005" indent="">
 			<var>$dejures</var>
 			<text> </text>
 			<text>=</text>
@@ -50,22 +49,8 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="007" indent="">
-			<var>$missingDejures</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>array</text>
-			<text> </text>
-			<text>alloc</text>
-			<text>:</text>
-			<text> </text>
-			<text>size</text>
-			<text>=</text>
-			<var>0</var>
-		</line>
-		<line linenr="008" indent="" />
-		<line linenr="009" indent="" interruptable="@">
+		<line linenr="006" indent="" />
+		<line linenr="007" indent="" interruptable="@">
 			<var>$galaxy</var>
 			<text> </text>
 			<text>=</text>
@@ -89,7 +74,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="008" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -102,17 +87,17 @@
 			<text> </text>
 			<var>$galaxy</var>
 		</line>
-		<line linenr="011" indent="&#160;">
+		<line linenr="009" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="012" indent="&#160;">
+		<line linenr="010" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="011" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -122,7 +107,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="014" indent="&#160;" interruptable="@">
+		<line linenr="012" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -131,18 +116,17 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="015" indent="&#160;" />
-		<line linenr="016" indent="&#160;">
+		<line linenr="013" indent="&#160;" />
+		<line linenr="014" indent="&#160;">
 			<comment>* Herobetty 5.4: Terran memory sectors count as dejure for Terrans. </comment>
 		</line>
-		<line linenr="017" indent="&#160;">
+		<line linenr="015" indent="&#160;">
 			<comment>* A non-Terran faction can steal these memory sectors, but the Terrans will want those back.</comment>
 		</line>
-		<line linenr="018" indent="&#160;" />
-		<line linenr="019" indent="&#160;&#160;">
-			<comment>* Determine effective dejure for this sector.</comment>
+		<line linenr="016" indent="&#160;">
+			<comment>* Determine whose de jure entitlement we are evaluating.</comment>
 		</line>
-		<line linenr="020" indent="&#160;&#160;">
+		<line linenr="017" indent="&#160;&#160;">
 			<var>$sector.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -156,19 +140,29 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="021" indent="&#160;">
-			<text>if</text>
+		<line linenr="018" indent="&#160;">
+			<var>$evaluatedRace</var>
+			<text> </text>
+			<text>=</text>
 			<text> </text>
 			<var>$race</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Terran]</var>
 		</line>
-		<line linenr="022" indent="&#160;&#160;">
-			<comment>* As Terran, any memories overrides official dejure.</comment>
+		<line linenr="019" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$steal</var>
 		</line>
-		<line linenr="023" indent="&#160;&#160;" interruptable="@">
+		<line linenr="020" indent="&#160;">
+			<var>$evaluatedRace</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$sector.owner</var>
+		</line>
+		<line linenr="021" indent="&#160;" />
+		<line linenr="022" indent="&#160;" interruptable="@">
 			<var>$dejure</var>
 			<text> </text>
 			<text>=</text>
@@ -187,97 +181,60 @@
 			<text>sector</text>
 			<text>=</text>
 			<var>$sector</var>
+			<text> </text>
+			<text>evaluatedRace</text>
+			<text>=</text>
+			<var>$evaluatedRace</var>
 		</line>
-		<line linenr="024" indent="&#160;&#160;&#160;">
-			<text>else</text>
+		<line linenr="023" indent="&#160;&#160;" />
+		<line linenr="024" indent="&#160;&#160;">
+			<comment>* Apply steal vs own/missing filters.</comment>
 		</line>
 		<line linenr="025" indent="&#160;&#160;&#160;">
-			<comment>* This condition passes only if we want to steal and this sector is owned by Terrans.</comment>
-		</line>
-		<line linenr="026" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$steal</var>
+		</line>
+		<line linenr="026" indent="&#160;&#160;">
+			<comment>* Never target our own territory.</comment>
+		</line>
+		<line linenr="027" indent="&#160;&#160;">
+			<text>do</text>
 			<text> </text>
-			<text>AND</text>
+			<text>if</text>
 			<text> </text>
 			<var>$sector.owner</var>
 			<text> </text>
 			<text>==</text>
 			<text> </text>
-			<var>[Terran]</var>
+			<var>$race</var>
 		</line>
-		<line linenr="027" indent="&#160;&#160;&#160;">
-			<comment>* Non-Terrans stealing from Terrans: honor Terran memory as well. </comment>
+		<line linenr="028" indent="&#160;&#160;">
+			<text>continue</text>
 		</line>
-		<line linenr="028" indent="&#160;&#160;&#160;" interruptable="@">
-			<var>$dejure</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Mayhem.GetDejureRace</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>sector</text>
-			<text>=</text>
-			<var>$sector</var>
-		</line>
-		<line linenr="029" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
+		<line linenr="029" indent="&#160;&#160;&#160;" />
 		<line linenr="030" indent="&#160;">
-			<comment>* All other cases: use the official dejure flag.</comment>
+			<comment>* The current owner must consider this its de jure territory.</comment>
 		</line>
-		<line linenr="031" indent="&#160;">
-			<var>$dejure</var>
+		<line linenr="031" indent="&#160;&#160;">
+			<text>do</text>
 			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$sector</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_sector.dejure'</text>
-		</line>
-		<line linenr="032" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="033" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="034" indent="&#160;&#160;" />
-		<line linenr="035" indent="&#160;&#160;">
-			<comment>* Apply steal vs own/missing filters.</comment>
-		</line>
-		<line linenr="036" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
-			<var>$steal</var>
+			<var>$dejure</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>$sector.owner</var>
 		</line>
-		<line linenr="037" indent="&#160;&#160;&#160;">
-			<comment>* Add this sector to the list of dejures if the dejure is not ours and the owner owns that dejure.</comment>
+		<line linenr="032" indent="&#160;&#160;&#160;">
+			<text>continue</text>
 		</line>
-		<line linenr="038" indent="&#160;">
-			<comment>* You can't steal from yourself.</comment>
+		<line linenr="033" indent="&#160;&#160;">
+			<text>else</text>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
-			<text>skip</text>
+		<line linenr="034" indent="&#160;&#160;">
+			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
@@ -286,70 +243,38 @@
 			<text>!=</text>
 			<text> </text>
 			<var>$race</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$dejure</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>$sector.owner</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="041" indent="&#160;&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="042" indent="&#160;&#160;">
-			<comment>* Check if we own or miss any dejures. If we own this dejure, do one more check for any missing dejures.</comment>
-		</line>
-		<line linenr="043" indent="&#160;&#160;">
-			<text>skip</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$dejure</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>$race</var>
-		</line>
-		<line linenr="044" indent="&#160;&#160;&#160;">
-			<text>continue</text>
-		</line>
-		<line linenr="045" indent="&#160;&#160;&#160;">
-			<comment>* Are we after our missing dejures?</comment>
-		</line>
-		<line linenr="046" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="036" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="037" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$onlyMissing</var>
 		</line>
-		<line linenr="047" indent="&#160;&#160;">
-			<comment>* If we do not own this dejure, add to the list.</comment>
-		</line>
-		<line linenr="048" indent="&#160;">
-			<text>skip</text>
+		<line linenr="038" indent="&#160;">
+			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$sector.owner</var>
 			<text> </text>
-			<text>!=</text>
+			<text>==</text>
 			<text> </text>
 			<var>$race</var>
 		</line>
-		<line linenr="049" indent="&#160;">
+		<line linenr="039" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="050" indent="">
+		<line linenr="040" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="051" indent="">
+		<line linenr="041" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="052" indent="">
+		<line linenr="042" indent="" />
+		<line linenr="043" indent="">
 			<text>append</text>
 			<text> </text>
 			<var>$sector</var>
@@ -360,11 +285,11 @@
 			<text> </text>
 			<var>$dejures</var>
 		</line>
-		<line linenr="053" indent="&#160;">
+		<line linenr="044" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="054" indent="&#160;" />
-		<line linenr="055" indent="&#160;&#160;">
+		<line linenr="045" indent="&#160;" />
+		<line linenr="046" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$steal</var>
@@ -373,7 +298,7 @@
 			<text> </text>
 			<var>$onlyMissing</var>
 		</line>
-		<line linenr="056" indent="&#160;&#160;">
+		<line linenr="047" indent="&#160;&#160;">
 			<var>$distances.dejures</var>
 			<text> </text>
 			<text>=</text>
@@ -387,7 +312,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="057" indent="&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -400,17 +325,17 @@
 			<text> </text>
 			<var>$dejures</var>
 		</line>
-		<line linenr="058" indent="&#160;">
+		<line linenr="049" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="059" indent="&#160;">
+		<line linenr="050" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="060" indent="&#160;">
+		<line linenr="051" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -420,7 +345,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="061" indent="" interruptable="@">
+		<line linenr="052" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -429,7 +354,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="062" indent="" interruptable="@">
+		<line linenr="053" indent="" interruptable="@">
 			<var>$averageDistance</var>
 			<text> </text>
 			<text>=</text>
@@ -453,7 +378,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="063" indent="">
+		<line linenr="054" indent="">
 			<text>append</text>
 			<text> </text>
 			<var>$averageDistance</var>
@@ -464,10 +389,10 @@
 			<text> </text>
 			<var>$distances.dejures</var>
 		</line>
-		<line linenr="064" indent="&#160;">
+		<line linenr="055" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="065" indent="&#160;">
+		<line linenr="056" indent="&#160;">
 			<var>$dejures</var>
 			<text> </text>
 			<text>=</text>
@@ -487,7 +412,7 @@
 			<text>=</text>
 			<var>$distances.dejures</var>
 		</line>
-		<line linenr="066" indent="&#160;&#160;">
+		<line linenr="057" indent="&#160;&#160;">
 			<var>$dejures</var>
 			<text> </text>
 			<text>=</text>
@@ -498,16 +423,26 @@
 			<text> </text>
 			<var>$dejures</var>
 		</line>
-		<line linenr="067" indent="&#160;">
+		<line linenr="058" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="068" indent="&#160;&#160;" />
-		<line linenr="069" indent="&#160;">
+		<line linenr="059" indent="&#160;&#160;" />
+		<line linenr="060" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$showDebugZH</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>(</text>
+			<var>$steal</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$onlyMissing</var>
+			<text>)</text>
 		</line>
-		<line linenr="070" indent="&#160;">
+		<line linenr="061" indent="&#160;">
 			<var>$dejures.s</var>
 			<text> </text>
 			<text>=</text>
@@ -520,38 +455,12 @@
 			<text> </text>
 			<var>$dejures</var>
 		</line>
-		<line linenr="071" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>$onlyMissing</var>
-		</line>
-		<line linenr="072" indent="">
-			<var>$t</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$race</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<text>' CI is looking for its own missing dejure sectors and found '</text>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>$dejures.s</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<text>' potential targets'</text>
-		</line>
-		<line linenr="073" indent="">
-			<text>else</text>
-			<text> </text>
+		<line linenr="062" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$steal</var>
 		</line>
-		<line linenr="074" indent="">
+		<line linenr="063" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -570,10 +479,32 @@
 			<text> </text>
 			<text>' potential targets'</text>
 		</line>
-		<line linenr="075" indent="">
+		<line linenr="064" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="065" indent="">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$race</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' CI is looking for its own missing dejure sectors and found '</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$dejures.s</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>' potential targets'</text>
+		</line>
+		<line linenr="066" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="076" indent="">
+		<line linenr="067" indent="">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -584,11 +515,11 @@
 			<text> </text>
 			<var>$t</var>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="068" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="078" indent="" />
-		<line linenr="079" indent="">
+		<line linenr="069" indent="" />
+		<line linenr="070" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$dejures</var>
@@ -599,7 +530,7 @@
 			<sval type="string" val="ZH.Get.DejureSectors" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="3" />
+			<sval type="int" val="5" />
 			<sval type="int" val="0" />
 			<sval type="array" size="16">
 				<sval type="string" val="race" />
@@ -607,11 +538,11 @@
 				<sval type="string" val="steal" />
 				<sval type="string" val="showDebugZH" />
 				<sval type="string" val="dejures" />
-				<sval type="string" val="missingDejures" />
 				<sval type="string" val="galaxy" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="XS.Iterator1" />
 				<sval type="string" val="sector.owner" />
+				<sval type="string" val="evaluatedRace" />
 				<sval type="string" val="dejure" />
 				<sval type="string" val="distances.dejures" />
 				<sval type="string" val="XS.Iterator2" />
@@ -619,7 +550,7 @@
 				<sval type="string" val="dejures.s" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="49">
+			<sval type="array" size="46">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -632,16 +563,10 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="128" />
-					<sval type="int" val="5" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetGalaxy" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -652,30 +577,30 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605559" />
+					<sval type="int" val="-1610606071" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -686,159 +611,105 @@
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610609405" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="10" />
-					<sval type="int" val="18" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetDejureRace" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="17" />
-				</sval>
-				<sval type="array" size="19">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610608637" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="10" />
-					<sval type="int" val="18" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-3" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetDejureRace" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="17" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="156" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_sector.dejure" />
-					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607357" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609656" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="25">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536865785" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="26" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-536865017" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="5" />
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetDejureRace" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610606077" />
+					<sval type="int" val="-1610607869" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536864249" />
+					<sval type="int" val="-1610608632" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608120" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="24" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607352" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -850,22 +721,50 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606589" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606584" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="135" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602493" />
+					<sval type="int" val="-1610603005" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -892,7 +791,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602999" />
+					<sval type="int" val="-1610603511" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="12" />
@@ -905,7 +804,7 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
@@ -927,7 +826,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="5">
 					<sval type="int" val="135" />
@@ -938,7 +837,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="31" />
+					<sval type="int" val="29" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1417" />
@@ -954,14 +853,28 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600445" />
-					<sval type="int" val="1" />
+					<sval type="int" val="-1610601213" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
@@ -971,10 +884,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610601213" />
+					<sval type="int" val="-1610601725" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -985,7 +898,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
-					<sval type="string" val=" CI is looking for its own missing dejure sectors and found " />
+					<sval type="string" val=" CI is looking to steal other factions dejure sectors and found " />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
@@ -1007,16 +920,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="47" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610600699" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="44" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
@@ -1025,7 +929,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
-					<sval type="string" val=" CI is looking to steal other factions dejure sectors and found " />
+					<sval type="string" val=" CI is looking for its own missing dejure sectors and found " />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131074" />
@@ -1070,7 +974,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="39">
+			<sval type="array" size="32">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1086,160 +990,125 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="3" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: Terran memory sectors count as dejure for Terrans. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="9" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="string" val="A non-Terran faction can steal these memory sectors, but the Terrans will want those back." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Determine whose de jure entitlement we are evaluating." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="9" />
+					<sval type="int" val="12" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="9" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Determine effective dejure for this sector." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="11" />
-					<sval type="int" val="1" />
-					<sval type="string" val="As Terran, any memories overrides official dejure." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="13" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="13" />
-					<sval type="int" val="1" />
-					<sval type="string" val="This condition passes only if we want to steal and this sector is owned by Terrans." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="14" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Non-Terrans stealing from Terrans: honor Terran memory as well. " />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="16" />
-					<sval type="int" val="1" />
-					<sval type="string" val="All other cases: use the official dejure flag." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="17" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="17" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="17" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Apply steal vs own/missing filters." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add this sector to the list of dejures if the dejure is not ours and the owner owns that dejure." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="18" />
-					<sval type="int" val="1" />
-					<sval type="string" val="You can't steal from yourself." />
+					<sval type="string" val="Never target our own territory." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="16" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="16" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="16" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The current owner must consider this its de jure territory." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="19" />
 					<sval type="int" val="5" />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="21" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Check if we own or miss any dejures. If we own this dejure, do one more check for any missing dejures." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="23" />
-					<sval type="int" val="6" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="23" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Are we after our missing dejures?" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="24" />
-					<sval type="int" val="1" />
-					<sval type="string" val="If we do not own this dejure, add to the list." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="26" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="26" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="28" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="21" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="24" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="36" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="40" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="40" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
+					<sval type="int" val="43" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="44" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="45" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="45" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
