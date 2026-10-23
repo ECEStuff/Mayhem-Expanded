@@ -3,21 +3,184 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Lib.X.AuctionStation</name>
-	<version>4</version>
+	<version>9</version>
 	<engineversion>50</engineversion>
 	<description>Lib: Auction station, actually destroys the station</description>
 	<arguments>
 		<argument index="1" name="Station" type="Var/Station" desc="Station" />
-		<argument index="2" name="Money" type="Var/Number" desc="Money" />
-		<argument index="3" name="resource.n" type="Var/Number" desc="" />
-		<argument index="4" name="product.n" type="Var/Number" desc="" />
 	</arguments>
 	<sourcetext>
-		<line linenr="001" indent="" />
+		<line linenr="001" indent="">
+			<comment>* Expanded 2.2: validate station before recycling.</comment>
+		</line>
 		<line linenr="002" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="003" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="004" indent="" />
+		<line linenr="005" indent="">
+			<var>$owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="006" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$owner</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Player]</var>
+		</line>
+		<line linenr="007" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<var>$sector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>sector</text>
+		</line>
+		<line linenr="010" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$sector</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_claimRace'</text>
+		</line>
+		<line linenr="011" indent="&#160;">
+			<text>display</text>
+			<text> </text>
+			<text>info</text>
+			<text> </text>
+			<text>box</text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<text>'Cannot disassemble this station while its sector is claimed.'</text>
+			<text>,</text>
+			<text> </text>
+			<text>icon</text>
+			<text>=</text>
+			<var>66</var>
+			<text>,</text>
+			<text> </text>
+			<text>timeout</text>
+			<text>=</text>
+			<var>5000</var>
+			<text>,</text>
+			<text> </text>
+			<text>fadeout</text>
+			<text>=</text>
+			<var>2000</var>
+		</line>
+		<line linenr="012" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="013" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="014" indent="" />
+		<line linenr="015" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>number</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>landed</text>
+			<text> </text>
+			<text>ships</text>
+		</line>
+		<line linenr="016" indent="&#160;">
+			<text>display</text>
+			<text> </text>
+			<text>info</text>
+			<text> </text>
+			<text>box</text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<text>'Disassembly cancelled: ships are still docked.'</text>
+			<text>,</text>
+			<text> </text>
+			<text>icon</text>
+			<text>=</text>
+			<var>66</var>
+			<text>,</text>
+			<text> </text>
+			<text>timeout</text>
+			<text>=</text>
+			<var>5000</var>
+			<text>,</text>
+			<text> </text>
+			<text>fadeout</text>
+			<text>=</text>
+			<var>2000</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="018" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
 			<comment>* ZH 2.0 - also keeping the wares</comment>
 		</line>
-		<line linenr="003" indent="">
+		<line linenr="021" indent="">
 			<var>$product</var>
 			<text> </text>
 			<text>=</text>
@@ -31,7 +194,7 @@
 			<text> </text>
 			<text>ware</text>
 		</line>
-		<line linenr="004" indent="" interruptable="@">
+		<line linenr="022" indent="" interruptable="@">
 			<var>$resource</var>
 			<text> </text>
 			<text>=</text>
@@ -51,9 +214,165 @@
 			<text>=</text>
 			<var>$product</var>
 		</line>
-		<line linenr="005" indent="" />
-		<line linenr="006" indent="">
-			<var>$sector</var>
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
+			<comment>* Mordan9</comment>
+		</line>
+		<line linenr="025" indent="">
+			<comment>* Find the nearest Outpost belonging to the same owner. Recycled resources will be put there.</comment>
+		</line>
+		<line linenr="026" indent="">
+			<comment>* Add-Ons 1.4.10: Fixed a null error (sector argument was passing in as null).</comment>
+		</line>
+		<line linenr="027" indent="" interruptable="@">
+			<var>$outpost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetNearestSafeOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>refObject</text>
+			<text>=</text>
+			<var>$Station</var>
+		</line>
+		<line linenr="028" indent="">
+			<var>$outpost.owner</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>owner</text>
+			<text> </text>
+			<text>race</text>
+		</line>
+		<line linenr="029" indent="">
+			<var>$outpost.exists</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="030" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$outpost.owner</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>[Player]</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>!</text>
+			<var>$outpost.exists</var>
+		</line>
+		<line linenr="031" indent="&#160;" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.Infobox</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<text>'Disassembly canceled: no Outpost is available to receive the resources.'</text>
+			<text> </text>
+			<text>icon</text>
+			<text>=</text>
+			<text>'error'</text>
+			<text> </text>
+			<text>timeout</text>
+			<text>=</text>
+			<var>5000</var>
+			<text> </text>
+			<text>fadeout</text>
+			<text>=</text>
+			<var>2000</var>
+		</line>
+		<line linenr="032" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="033" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
+			<comment>* Protect against overlapping requests.</comment>
+		</line>
+		<line linenr="036" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_disassemblyInProgress'</text>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="038" indent="">
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_disassemblyInProgress'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
+			<comment>* Capture current funds and inventory before recycling.</comment>
+		</line>
+		<line linenr="041" indent="">
+			<var>$Money</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -62,47 +381,57 @@
 			<text> </text>
 			<text>get</text>
 			<text> </text>
-			<text>sector</text>
+			<text>money</text>
 		</line>
-		<line linenr="007" indent="" />
-		<line linenr="008" indent="">
-			<comment>* Mordan9</comment>
-		</line>
-		<line linenr="009" indent="">
-			<comment>* Find the nearest outpost to this $Station.  Recycled resources will be put there.</comment>
-		</line>
-		<line linenr="010" indent="">
-			<comment>* $outpost = find station in galaxy: startsector=$sector class or type={Player Outpost} race=[Player] flags=[Find.Nearest] refobj=$Station serial=null max.jumps=50</comment>
-		</line>
-		<line linenr="011" indent="">
-			<comment>* Add-Ons 1.4.10: Fixed a null error (sector argument was passing in as null).</comment>
-		</line>
-		<line linenr="012" indent="" interruptable="@">
-			<var>$outpost</var>
+		<line linenr="042" indent="">
+			<var>$product.n</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$Station</var>
 			<text>-&gt;</text>
 			<text> </text>
-			<text>call</text>
+			<text>get</text>
 			<text> </text>
-			<text>script</text>
+			<text>amount</text>
 			<text> </text>
-			<call>Mayhem.GetPlayerOutpost</call>
+			<text>of</text>
 			<text> </text>
-			<text>:</text>
+			<text>ware</text>
 			<text> </text>
-			<text>distance</text>
-			<text>=</text>
-			<var>50</var>
+			<var>$product</var>
 			<text> </text>
-			<text>sector</text>
-			<text>=</text>
-			<var>$sector</var>
+			<text>in</text>
+			<text> </text>
+			<text>cargo</text>
+			<text> </text>
+			<text>bay</text>
 		</line>
-		<line linenr="013" indent="" />
-		<line linenr="014" indent="" interruptable="@">
+		<line linenr="043" indent="">
+			<var>$resource.n</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$Station</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>amount</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>ware</text>
+			<text> </text>
+			<var>$resource</var>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>cargo</text>
+			<text> </text>
+			<text>bay</text>
+		</line>
+		<line linenr="044" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -128,7 +457,8 @@
 			<text>=</text>
 			<var>1</var>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="045" indent="" />
+		<line linenr="046" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -136,7 +466,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="047" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -151,14 +481,14 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="017" indent="&#160;">
+		<line linenr="048" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$resource.n</var>
 		</line>
-		<line linenr="018" indent="&#160;&#160;" interruptable="@">
+		<line linenr="049" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -184,14 +514,14 @@
 			<text>=</text>
 			<var>$resource.n</var>
 		</line>
-		<line linenr="019" indent="&#160;">
+		<line linenr="050" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$product.n</var>
 		</line>
-		<line linenr="020" indent="&#160;&#160;" interruptable="@">
+		<line linenr="051" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -217,20 +547,20 @@
 			<text>=</text>
 			<var>$product.n</var>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="052" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="053" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'The station has been disassembled.'</text>
 		</line>
-		<line linenr="023" indent="">
+		<line linenr="054" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="024" indent="" interruptable="@">
+		<line linenr="055" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -260,8 +590,8 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="025" indent="" />
-		<line linenr="026" indent="">
+		<line linenr="056" indent="" />
+		<line linenr="057" indent="">
 			<text>add</text>
 			<text> </text>
 			<text>money</text>
@@ -273,8 +603,8 @@
 			<text> </text>
 			<var>$Money</var>
 		</line>
-		<line linenr="027" indent="" />
-		<line linenr="028" indent="">
+		<line linenr="058" indent="" />
+		<line linenr="059" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -285,53 +615,238 @@
 			<sval type="string" val="Lib.X.AuctionStation" />
 			<sval type="int" val="50" />
 			<sval type="string" val="Lib: Auction station, actually destroys the station" />
-			<sval type="int" val="4" />
+			<sval type="int" val="9" />
 			<sval type="int" val="0" />
-			<sval type="array" size="9">
+			<sval type="array" size="12">
 				<sval type="string" val="Station" />
-				<sval type="string" val="Money" />
-				<sval type="string" val="resource.n" />
-				<sval type="string" val="product.n" />
+				<sval type="string" val="owner" />
+				<sval type="string" val="sector" />
 				<sval type="string" val="product" />
 				<sval type="string" val="resource" />
-				<sval type="string" val="sector" />
 				<sval type="string" val="outpost" />
+				<sval type="string" val="outpost.owner" />
+				<sval type="string" val="outpost.exists" />
+				<sval type="string" val="Money" />
+				<sval type="string" val="product.n" />
+				<sval type="string" val="resource.n" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="16">
+			<sval type="array" size="38">
 				<sval type="array" size="4">
-					<sval type="int" val="638" />
+					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="4" />
+					<sval type="int" val="-536870393" />
 				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetResourceFromProduct" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611448" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="6" />
+					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="10">
-					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.GetPlayerOutpost" />
-					<sval type="int" val="7" />
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_claimRace" />
+					<sval type="int" val="-1610610429" />
+				</sval>
+				<sval type="array" size="9">
+					<sval type="int" val="1861" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Cannot disassemble this station while its sector is claimed." />
+					<sval type="int" val="4" />
+					<sval type="int" val="66" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5000" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2000" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="790" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="2" />
+					<sval type="int" val="-1610609661" />
+				</sval>
+				<sval type="array" size="9">
+					<sval type="int" val="1861" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Disassembly cancelled: ships are still docked." />
 					<sval type="int" val="4" />
-					<sval type="int" val="50" />
+					<sval type="int" val="66" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5000" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2000" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="638" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetResourceFromProduct" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetNearestSafeOutpost" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="701" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="6" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607613" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
+					<sval type="int" val="10" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="6" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.Infobox" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Disassembly canceled: no Outpost is available to receive the resources." />
+					<sval type="int" val="5" />
+					<sval type="string" val="error" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5000" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2000" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_disassemblyInProgress" />
+					<sval type="int" val="-1610607096" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="155" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_disassemblyInProgress" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="600" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="618" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="618" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
@@ -341,7 +856,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="4" />
@@ -350,17 +865,17 @@
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="-1610609661" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-1610604029" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The station has been disassembled and resources have been added to " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="5" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -376,10 +891,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610424" />
+					<sval type="int" val="-1610604792" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -390,19 +905,19 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609912" />
+					<sval type="int" val="-1610604280" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -414,19 +929,19 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="13" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="The station has been disassembled." />
@@ -441,7 +956,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="11" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ok" />
 					<sval type="int" val="4" />
@@ -452,7 +967,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="662" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -460,80 +975,106 @@
 					<sval type="int" val="0" />
 				</sval>
 			</sval>
-			<sval type="array" size="4">
+			<sval type="array" size="1">
 				<sval type="array" size="2">
 					<sval type="int" val="12" />
 					<sval type="string" val="Station" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="10" />
-					<sval type="string" val="Money" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="10" />
-					<sval type="string" val="" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="10" />
-					<sval type="string" val="" />
-				</sval>
 			</sval>
-			<sval type="array" size="13">
-				<sval type="array" size="2">
-					<sval type="int" val="0" />
-					<sval type="int" val="2" />
-				</sval>
+			<sval type="array" size="22">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="ZH 2.0 - also keeping the wares" />
+					<sval type="string" val="Expanded 2.2: validate station before recycling." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="2" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Mordan9" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Find the nearest outpost to this $Station.  Recycled resources will be put there." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="string" val="$outpost = find station in galaxy: startsector=$sector class or type={Player Outpost} race=[Player] flags=[Find.Nearest] refobj=$Station serial=null max.jumps=50" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="3" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.4.10: Fixed a null error (sector argument was passing in as null)." />
-				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="12" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="string" val="ZH 2.0 - also keeping the wares" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="14" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Mordan9" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Find the nearest Outpost belonging to the same owner. Recycled resources will be put there." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.4.10: Fixed a null error (sector argument was passing in as null)." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Protect against overlapping requests." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Capture current funds and inventory before recycling." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="35" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="36" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="37" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
