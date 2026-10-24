@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.plot.OCV.start</name>
-	<version>13</version>
+	<version>14</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -41,9 +41,9 @@
 			<text> </text>
 			<var>$OCVplotstage</var>
 			<text> </text>
-			<text>==</text>
+			<text>!=</text>
 			<text> </text>
-			<text>'playerJoinedOCV'</text>
+			<text>'buildShip'</text>
 		</line>
 		<line linenr="007" indent="&#160;">
 			<text>return</text>
@@ -52,9 +52,12 @@
 		</line>
 		<line linenr="008" indent="" />
 		<line linenr="009" indent="">
-			<comment>* Add-Ons 1.6: Update plot stage early since it is possible for the player to build multiple OCV ships at once. The wait statements can cause transients.</comment>
+			<comment>* Add-Ons 1.6: Update plot stage early since it is possible for the player to build multiple OCV ships at once.</comment>
 		</line>
 		<line linenr="010" indent="">
+			<comment>* Reserve the transition before any calls or waits.</comment>
+		</line>
+		<line linenr="011" indent="">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -70,7 +73,8 @@
 			<text>=</text>
 			<text>'jumpbeacon'</text>
 		</line>
-		<line linenr="011" indent="" interruptable="@">
+		<line linenr="012" indent="" />
+		<line linenr="013" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -88,7 +92,7 @@
 			<text>=</text>
 			<text>'Synthetic Dawn'</text>
 		</line>
-		<line linenr="012" indent="" interruptable="@">
+		<line linenr="014" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -97,8 +101,44 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="013" indent="" />
-		<line linenr="014" indent="">
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="">
+			<comment>* Safety.</comment>
+		</line>
+		<line linenr="017" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="018" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'jumpbeacon'</text>
+		</line>
+		<line linenr="019" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="020" indent="" />
+		<line linenr="021" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -129,7 +169,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="015" indent="" interruptable="@">
+		<line linenr="022" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -163,14 +203,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="016" indent="" />
-		<line linenr="017" indent="">
-			<comment>* $t = sprintf: pageid=4000 textid=45, null, null, null, null, null</comment>
-		</line>
-		<line linenr="018" indent="">
-			<comment>* = [NULL]-&gt; call script 'Joubarbe.Lib.SendMessage' : message=$t log=[TRUE] forceDisplay=[FALSE] delayMs=1000 author=null</comment>
-		</line>
-		<line linenr="019" indent="" interruptable="@">
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -179,18 +213,54 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="">
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
+			<comment>* The beacon or virus route may already have advanced the plot.</comment>
+		</line>
+		<line linenr="027" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="028" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'jumpbeacon'</text>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
 			<comment>* Add-Ons 2.0.3a: Fixed typos.</comment>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="032" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Allow the Xenon to infect one of your jump beacons...'</text>
+			<text>'Allow the Xenon to infect one of your Jump Beacons...'</text>
 		</line>
-		<line linenr="023" indent="" interruptable="@">
+		<line linenr="033" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -212,8 +282,8 @@
 			<text>=</text>
 			<var>$t</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="" interruptable="@">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -222,14 +292,48 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="036" indent="" />
+		<line linenr="037" indent="">
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'OCVplotstage'</text>
+		</line>
+		<line linenr="038" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$OCVplotstage</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<text>'jumpbeacon'</text>
+		</line>
+		<line linenr="039" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="040" indent="" />
+		<line linenr="041" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'...or sacrifice enough OCV type ships to their virus.'</text>
 		</line>
-		<line linenr="027" indent="" interruptable="@">
+		<line linenr="042" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -251,9 +355,9 @@
 			<text>=</text>
 			<var>$t</var>
 		</line>
-		<line linenr="028" indent="" />
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="" />
+		<line linenr="045" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -264,13 +368,13 @@
 			<sval type="string" val="ZH.plot.OCV.start" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="13" />
+			<sval type="int" val="14" />
 			<sval type="int" val="0" />
 			<sval type="array" size="2">
 				<sval type="string" val="OCVplotstage" />
 				<sval type="string" val="t" />
 			</sval>
-			<sval type="array" size="15">
+			<sval type="array" size="24">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -284,12 +388,12 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
-					<sval type="string" val="playerJoinedOCV" />
+					<sval type="string" val="buildShip" />
 					<sval type="int" val="15" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="3">
@@ -319,6 +423,32 @@
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="4" />
 					<sval type="int" val="8000" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610424" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="jumpbeacon" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
@@ -362,12 +492,38 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="30000" />
 				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608888" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="jumpbeacon" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="1" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Allow the Xenon to infect one of your jump beacons..." />
+					<sval type="string" val="Allow the Xenon to infect one of your Jump Beacons..." />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -388,6 +544,32 @@
 					<sval type="int" val="-2147483647" />
 					<sval type="int" val="4" />
 					<sval type="int" val="20000" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="OCVplotstage" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610607352" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="jumpbeacon" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -417,7 +599,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="15">
+			<sval type="array" size="21">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -444,45 +626,70 @@
 				<sval type="array" size="3">
 					<sval type="int" val="3" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.6: Update plot stage early since it is possible for the player to build multiple OCV ships at once. The wait statements can cause transients." />
+					<sval type="string" val="Add-Ons 1.6: Update plot stage early since it is possible for the player to build multiple OCV ships at once." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Reserve the transition before any calls or waits." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="6" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="8" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="8" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
-					<sval type="string" val="$t = sprintf: pageid=4000 textid=45, null, null, null, null, null" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="= [NULL]-&gt; call script 'Joubarbe.Lib.SendMessage' : message=$t log=[TRUE] forceDisplay=[FALSE] delayMs=1000 author=null" />
+					<sval type="string" val="Safety." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="9" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="9" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0.3a: Fixed typos." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="11" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="14" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The beacon or virus route may already have advanced the plot." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 2.0.3a: Fixed typos." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="14" />
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
