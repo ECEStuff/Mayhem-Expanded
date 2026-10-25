@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetMaxPerks</name>
-	<version>18</version>
+	<version>20</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -142,13 +142,16 @@
 			<comment>* Only commonwealth factions qualify. Yaki and Phanon (for OCV playthroughs) do not.</comment>
 		</line>
 		<line linenr="017" indent="">
+			<comment>* Expanded 2.2: Now gives 1 perk slot for every 2 permanent enemies.</comment>
+		</line>
+		<line linenr="018" indent="">
 			<var>$permanentEnemies</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="018" indent="" interruptable="@">
+		<line linenr="019" indent="" interruptable="@">
 			<var>$commonwealth</var>
 			<text> </text>
 			<text>=</text>
@@ -164,7 +167,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="019" indent="">
+		<line linenr="020" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -177,17 +180,17 @@
 			<text> </text>
 			<var>$commonwealth</var>
 		</line>
-		<line linenr="020" indent="&#160;">
+		<line linenr="021" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="021" indent="&#160;&#160;">
+		<line linenr="022" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="023" indent="">
 			<var>$race</var>
 			<text> </text>
 			<text>=</text>
@@ -197,7 +200,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="023" indent="" interruptable="@">
+		<line linenr="024" indent="" interruptable="@">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -217,15 +220,27 @@
 			<text>=</text>
 			<var>$race</var>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="025" indent="">
 			<text>inc</text>
 			<text> </text>
 			<var>$permanentEnemies</var>
 		</line>
-		<line linenr="025" indent="">
+		<line linenr="026" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="027" indent="" />
+		<line linenr="028" indent="">
+			<var>$permanentWarBonus</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$permanentEnemies</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="029" indent="">
 			<var>$maxPerks</var>
 			<text> </text>
 			<text>=</text>
@@ -234,13 +249,13 @@
 			<text> </text>
 			<text>+</text>
 			<text> </text>
-			<var>$permanentEnemies</var>
+			<var>$permanentWarBonus</var>
 		</line>
-		<line linenr="027" indent="" />
-		<line linenr="028" indent="">
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
 			<comment>* ZH 2.0: Every terraformed planet grants +1 Perk.</comment>
 		</line>
-		<line linenr="029" indent="" interruptable="@">
+		<line linenr="032" indent="" interruptable="@">
 			<var>$terraformed</var>
 			<text> </text>
 			<text>=</text>
@@ -260,7 +275,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="033" indent="">
 			<var>$maxPerks</var>
 			<text> </text>
 			<text>=</text>
@@ -271,21 +286,27 @@
 			<text> </text>
 			<var>$terraformed</var>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
+			<comment>* The perk itself consumes one slot.</comment>
+		</line>
+		<line linenr="036" indent="">
 			<comment>* Add-Ons 1.1: searches for Capital Shipyard or standard outpost.</comment>
 		</line>
-		<line linenr="033" indent="&#160;">
-			<comment>* Add-Ons 2.0: Adjacency Perk Bonus shall check only permanently adjacent sectors, i.e. sectors connected via permanent gates.</comment>
+		<line linenr="037" indent="">
+			<comment>* Add-Ons 2.0: Adjacency Perk Bonus checks only permanently adjacent sectors, i.e. sectors connected via permanent gates.</comment>
 		</line>
-		<line linenr="034" indent="&#160;">
+		<line linenr="038" indent="&#160;">
+			<comment>* Expanded 2.2: Adjacency grants 0/0/1/2/3 slots for 0/1/2/3/4 qualifying neighbors.</comment>
+		</line>
+		<line linenr="039" indent="&#160;">
 			<var>$adjacencyBonus</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="035" indent="&#160;&#160;" interruptable="@">
+		<line linenr="040" indent="&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$sanctuary</var>
@@ -303,7 +324,7 @@
 			<text>=</text>
 			<text>'Adjacency perk bonus'</text>
 		</line>
-		<line linenr="036" indent="&#160;&#160;" interruptable="@">
+		<line linenr="041" indent="&#160;&#160;" interruptable="@">
 			<var>$adjacentSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -327,7 +348,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="037" indent="&#160;&#160;&#160;">
+		<line linenr="042" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -340,18 +361,18 @@
 			<text> </text>
 			<var>$adjacentSectors</var>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="043" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="039" indent="">
+		<line linenr="044" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="040" indent="">
-			<var>$sector</var>
+		<line linenr="045" indent="&#160;">
+			<var>$adjacentSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -360,7 +381,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="041" indent="" interruptable="@">
+		<line linenr="046" indent="&#160;" interruptable="@">
 			<var>$outpost.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -382,27 +403,78 @@
 			<text> </text>
 			<text>sector</text>
 			<text>=</text>
-			<var>$sector</var>
+			<var>$adjacentSector</var>
 		</line>
-		<line linenr="042" indent="">
+		<line linenr="047" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$outpost.adjacent</var>
 		</line>
-		<line linenr="043" indent="">
+		<line linenr="048" indent="&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$adjacencyBonus</var>
 		</line>
-		<line linenr="044" indent="">
+		<line linenr="049" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="045" indent="">
+		<line linenr="050" indent="&#160;&#160;" />
+		<line linenr="051" indent="&#160;">
+			<comment>* -1 so that it requires at least 2 (instead of 1) adjacent sectors with Outposts to break even.</comment>
+		</line>
+		<line linenr="052" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$adjacencyBonus</var>
+		</line>
+		<line linenr="053" indent="&#160;" />
+		<line linenr="054" indent="">
+			<comment>* Clamp.</comment>
+		</line>
+		<line linenr="055" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$adjacencyBonus</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="056" indent="">
+			<var>$adjacencyBonus</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="057" indent="">
+			<text>else</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$adjacencyBonus</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="058" indent="">
+			<var>$adjacencyBonus</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>3</var>
+		</line>
+		<line linenr="059" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="046" indent="">
+		<line linenr="060" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="061" indent="" />
+		<line linenr="062" indent="">
 			<var>$maxPerks</var>
 			<text> </text>
 			<text>=</text>
@@ -413,8 +485,8 @@
 			<text> </text>
 			<var>$adjacencyBonus</var>
 		</line>
-		<line linenr="047" indent="" />
-		<line linenr="048" indent="">
+		<line linenr="063" indent="" />
+		<line linenr="064" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$maxPerks</var>
@@ -425,9 +497,9 @@
 			<sval type="string" val="Mayhem.GetMaxPerks" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="18" />
+			<sval type="int" val="20" />
 			<sval type="int" val="0" />
-			<sval type="array" size="13">
+			<sval type="array" size="15">
 				<sval type="string" val="sanctuary" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="maxPerks" />
@@ -436,13 +508,15 @@
 				<sval type="string" val="commonwealth" />
 				<sval type="string" val="race" />
 				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="permanentWarBonus" />
 				<sval type="string" val="terraformed" />
 				<sval type="string" val="adjacencyBonus" />
 				<sval type="string" val="adjacentSectors" />
+				<sval type="string" val="adjacentSector" />
 				<sval type="string" val="XS.Iterator2" />
 				<sval type="string" val="outpost.adjacent" />
 			</sval>
-			<sval type="array" size="34">
+			<sval type="array" size="41">
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPlayerOutpost" />
@@ -589,12 +663,27 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
 					<sval type="int" val="2" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -605,7 +694,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetNbTerraformedPlanets" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -619,7 +708,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -629,7 +718,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -639,7 +728,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610604541" />
+					<sval type="int" val="-1610602749" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -649,7 +738,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Joubarbe.Lib.GetPermanentAdjacentSectors" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -660,59 +749,115 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604535" />
+					<sval type="int" val="-1610604279" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetPlayerOutpost" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604792" />
+					<sval type="int" val="-1610604536" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="142" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="25" />
+					<sval type="int" val="26" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="10" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603261" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602747" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -721,7 +866,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -741,7 +886,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="16">
+			<sval type="array" size="26">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -773,43 +918,88 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Only commonwealth factions qualify. Yaki and Phanon (for OCV playthroughs) do not." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Now gives 1 perk slot for every 2 permanent enemies." />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="19" />
+					<sval type="int" val="20" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 2.0: Every terraformed planet grants +1 Perk." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="22" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="21" />
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The perk itself consumes one slot." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.1: searches for Capital Shipyard or standard outpost." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="21" />
+					<sval type="int" val="22" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0: Adjacency Perk Bonus shall check only permanently adjacent sectors, i.e. sectors connected via permanent gates." />
+					<sval type="string" val="Add-Ons 2.0: Adjacency Perk Bonus checks only permanently adjacent sectors, i.e. sectors connected via permanent gates." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Adjacency grants 0/0/1/2/3 slots for 0/1/2/3/4 qualifying neighbors." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="33" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="33" />
+					<sval type="int" val="1" />
+					<sval type="string" val="-1 so that it requires at least 2 (instead of 1) adjacent sectors with Outposts to break even." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="34" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Clamp." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="40" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
