@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetBailChance</name>
-	<version>52</version>
+	<version>56</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -22,11 +22,20 @@
 		<line linenr="004" indent="">
 			<comment>* Add-Ons 1.13.2: Added comments. Used also by Mayhem.Task.BailMaybe to determine if a fighter is bailing.</comment>
 		</line>
-		<line linenr="005" indent="" />
+		<line linenr="005" indent="">
+			<comment>* Expanded 2.2: </comment>
+		</line>
 		<line linenr="006" indent="">
-			<comment>* These races never bail.</comment>
+			<comment>* - Removed player bail flags (this was acting as a second chance for ships). Also removed no bails because NPCs can benefit from bailed ships.</comment>
 		</line>
 		<line linenr="007" indent="">
+			<comment>* - Phanon may now bail but at 1/5 chance to compensate for their exquisite ships and serve as a trial run until plot completion.</comment>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<comment>* These races never bail.</comment>
+		</line>
+		<line linenr="010" indent="">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -40,7 +49,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="008" indent="">
+		<line linenr="011" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -59,80 +68,16 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="009" indent="&#160;">
+		<line linenr="012" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="010" indent="" />
-		<line linenr="011" indent="">
-			<comment>* player ships cannot bail if set in the t-file. </comment>
-		</line>
-		<line linenr="012" indent="">
-			<text>if</text>
-			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_playerBails'</text>
-		</line>
-		<line linenr="013" indent="&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$owner</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
-		</line>
-		<line linenr="014" indent="&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>[FALSE]</var>
-		</line>
-		<line linenr="015" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="016" indent="" />
-		<line linenr="017" indent="">
-			<comment>* 9972 - id 132 global disable flag for game.</comment>
-		</line>
-		<line linenr="018" indent="">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>global</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_noBail'</text>
-		</line>
-		<line linenr="019" indent="&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>[FALSE]</var>
-		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="">
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
 			<comment>* This is set in Joubarbe.Lib.DisableBailing, and is called at times when squadrons are auto-assigned a new leader by the A.I., or for any ship that bails, preventing them from bailing again.</comment>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="015" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -151,22 +96,22 @@
 			<text>=</text>
 			<text>'_noBail'</text>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="016" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="">
+		<line linenr="017" indent="" />
+		<line linenr="018" indent="">
 			<comment>* Our indicator that is a pre-calculation at ship creation time controlling whether a LARGE ship will bail upon its death. Set in Mayhem.BuildShip.</comment>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="019" indent="">
 			<comment>* If it's already set, don't set it again.</comment>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="020" indent="">
 			<comment>* Small ships use this indicator to prevent savescumming.</comment>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="021" indent="">
 			<var>$WillBail</var>
 			<text> </text>
 			<text>=</text>
@@ -185,20 +130,20 @@
 			<text>=</text>
 			<text>'WillBail'</text>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
 			<comment>* If it's never been calculated, do it now, save it locally and return it.</comment>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="024" indent="">
 			<comment>* Add-Ons 1.4.17: was checking if not $Willbail. Since [FALSE] evaluates as null, this means this condition was being checked a 2nd time upon ship destruction!</comment>
 		</line>
-		<line linenr="032" indent="">
+		<line linenr="025" indent="">
 			<comment>* Add-Ons 2.0.3: Chances are now normalized to a roll out of 1000, providing 0.1 percentage-point precision. Also cleaned up code.</comment>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="026" indent="">
 			<comment>* Add-Ons 2.2: Bailing chance mult is deprecated since it is no longer configurable.</comment>
 		</line>
-		<line linenr="034" indent="">
+		<line linenr="027" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$WillBail</var>
@@ -207,7 +152,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="035" indent="&#160;">
+		<line linenr="028" indent="&#160;">
 			<var>$rng</var>
 			<text> </text>
 			<text>=</text>
@@ -224,14 +169,14 @@
 			<text> </text>
 			<var>999</var>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="029" indent="&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="037" indent="&#160;" interruptable="@">
+		<line linenr="030" indent="&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -247,14 +192,14 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="038" indent="&#160;" />
-		<line linenr="039" indent="&#160;">
+		<line linenr="031" indent="&#160;" />
+		<line linenr="032" indent="&#160;">
 			<comment>* Add-Ons 1.9.3: Fighter bailing is now determined upon creation. 2 categories: big ships (M6, TM, M8, M1, M2, M7) and fighters (M3, M4, M5). </comment>
 		</line>
-		<line linenr="040" indent="&#160;">
+		<line linenr="033" indent="&#160;">
 			<comment>* TL, TP, and TS cannot bail.</comment>
 		</line>
-		<line linenr="041" indent="&#160;">
+		<line linenr="034" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -268,10 +213,10 @@
 			<text> </text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="042" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.3: M8 and TM can now bail, with the chance being 3%.</comment>
 		</line>
-		<line linenr="043" indent="&#160;&#160;">
+		<line linenr="036" indent="&#160;&#160;">
 			<var>$isM6</var>
 			<text> </text>
 			<text>=</text>
@@ -287,7 +232,7 @@
 			<text> </text>
 			<var>[M6]</var>
 		</line>
-		<line linenr="044" indent="&#160;&#160;">
+		<line linenr="037" indent="&#160;&#160;">
 			<var>$isM8</var>
 			<text> </text>
 			<text>=</text>
@@ -303,7 +248,7 @@
 			<text> </text>
 			<var>[M8]</var>
 		</line>
-		<line linenr="045" indent="&#160;&#160;">
+		<line linenr="038" indent="&#160;&#160;">
 			<var>$isTM</var>
 			<text> </text>
 			<text>=</text>
@@ -319,8 +264,8 @@
 			<text> </text>
 			<var>[TM]</var>
 		</line>
-		<line linenr="046" indent="&#160;&#160;" />
-		<line linenr="047" indent="&#160;&#160;">
+		<line linenr="039" indent="&#160;&#160;" />
+		<line linenr="040" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isM6</var>
@@ -333,20 +278,20 @@
 			<text> </text>
 			<var>$isTM</var>
 		</line>
-		<line linenr="048" indent="&#160;&#160;&#160;">
+		<line linenr="041" indent="&#160;&#160;&#160;">
 			<comment>* M6/TM/M8: 3.0%. </comment>
 		</line>
-		<line linenr="049" indent="&#160;&#160;&#160;">
+		<line linenr="042" indent="&#160;&#160;&#160;">
 			<comment>* While the Percentage is lower than the capital ships, there are FAR more M6s in the game and we don't want bailed M6s littered all over.</comment>
 		</line>
-		<line linenr="050" indent="&#160;&#160;&#160;">
+		<line linenr="043" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>30</var>
 		</line>
-		<line linenr="051" indent="&#160;&#160;">
+		<line linenr="044" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -362,17 +307,17 @@
 			<text> </text>
 			<var>[M7]</var>
 		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;">
+		<line linenr="045" indent="&#160;&#160;&#160;">
 			<comment>* M7: 8.0%</comment>
 		</line>
-		<line linenr="053" indent="&#160;&#160;&#160;">
+		<line linenr="046" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>80</var>
 		</line>
-		<line linenr="054" indent="&#160;&#160;">
+		<line linenr="047" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -388,17 +333,17 @@
 			<text> </text>
 			<var>[M1]</var>
 		</line>
-		<line linenr="055" indent="&#160;&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;&#160;">
 			<comment>* M1: 5.0%</comment>
 		</line>
-		<line linenr="056" indent="&#160;&#160;&#160;">
+		<line linenr="049" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>50</var>
 		</line>
-		<line linenr="057" indent="&#160;&#160;">
+		<line linenr="050" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -414,17 +359,17 @@
 			<text> </text>
 			<var>[M2]</var>
 		</line>
-		<line linenr="058" indent="&#160;&#160;&#160;">
+		<line linenr="051" indent="&#160;&#160;&#160;">
 			<comment>* M2: 3.0%</comment>
 		</line>
-		<line linenr="059" indent="&#160;&#160;&#160;">
+		<line linenr="052" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>30</var>
 		</line>
-		<line linenr="060" indent="&#160;&#160;">
+		<line linenr="053" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -440,20 +385,20 @@
 			<text> </text>
 			<var>[TL]</var>
 		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;">
+		<line linenr="054" indent="&#160;&#160;&#160;">
 			<comment>* TL: 0%. TLs cannot bail. The only NPC TLs are Nomad ones.</comment>
 		</line>
-		<line linenr="062" indent="&#160;&#160;&#160;">
+		<line linenr="055" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="063" indent="&#160;&#160;">
+		<line linenr="056" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="064" indent="&#160;">
+		<line linenr="057" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -469,10 +414,10 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="065" indent="&#160;&#160;">
+		<line linenr="058" indent="&#160;&#160;">
 			<comment>* Fighters. This is based on bail chances from the original Mayhem.Task.BailMaybe.xml, but bailing chance is determined here rather than in the BailMaybe task.</comment>
 		</line>
-		<line linenr="066" indent="&#160;&#160;">
+		<line linenr="059" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -486,17 +431,17 @@
 			<text> </text>
 			<var>[M5]</var>
 		</line>
-		<line linenr="067" indent="&#160;&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;&#160;">
 			<comment>* M5: 40.0%</comment>
 		</line>
-		<line linenr="068" indent="&#160;&#160;&#160;">
+		<line linenr="061" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>400</var>
 		</line>
-		<line linenr="069" indent="&#160;&#160;">
+		<line linenr="062" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -512,17 +457,17 @@
 			<text> </text>
 			<var>[M4]</var>
 		</line>
-		<line linenr="070" indent="&#160;&#160;&#160;">
+		<line linenr="063" indent="&#160;&#160;&#160;">
 			<comment>* M4: 35.0%</comment>
 		</line>
-		<line linenr="071" indent="&#160;&#160;&#160;">
+		<line linenr="064" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>350</var>
 		</line>
-		<line linenr="072" indent="&#160;&#160;">
+		<line linenr="065" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -538,33 +483,33 @@
 			<text> </text>
 			<var>[M3]</var>
 		</line>
-		<line linenr="073" indent="&#160;&#160;&#160;">
+		<line linenr="066" indent="&#160;&#160;&#160;">
 			<comment>* M3: 30.0%</comment>
 		</line>
-		<line linenr="074" indent="&#160;&#160;&#160;">
+		<line linenr="067" indent="&#160;&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>300</var>
 		</line>
-		<line linenr="075" indent="&#160;&#160;">
+		<line linenr="068" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="076" indent="&#160;">
+		<line linenr="069" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="077" indent="&#160;" />
-		<line linenr="078" indent="&#160;">
+		<line linenr="070" indent="&#160;" />
+		<line linenr="071" indent="&#160;">
 			<comment>* Faction modifiers.</comment>
 		</line>
-		<line linenr="079" indent="&#160;">
+		<line linenr="072" indent="&#160;">
 			<comment>* Expanded 2.2: Standardized racial bail modifiers across all eligible ship classes.</comment>
 		</line>
-		<line linenr="080" indent="&#160;">
-			<comment>* Kha'ak bail at 1/5 the normal rate. Teladi bail at 4/3 the normal rate.</comment>
+		<line linenr="073" indent="&#160;">
+			<comment>* Kha'ak and Phanon bail at 1/5 the normal rate. Teladi bail at 4/3 the normal rate.</comment>
 		</line>
-		<line linenr="081" indent="&#160;">
+		<line linenr="074" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -573,7 +518,7 @@
 			<text> </text>
 			<var>[Teladi]</var>
 		</line>
-		<line linenr="082" indent="&#160;&#160;">
+		<line linenr="075" indent="&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
@@ -590,7 +535,7 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="083" indent="&#160;">
+		<line linenr="076" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -600,8 +545,16 @@
 			<text>==</text>
 			<text> </text>
 			<var>[Kha'ak]</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$owner</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[Phanon]</var>
 		</line>
-		<line linenr="084" indent="&#160;&#160;">
+		<line linenr="077" indent="&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
@@ -612,14 +565,14 @@
 			<text> </text>
 			<var>5</var>
 		</line>
-		<line linenr="085" indent="&#160;">
+		<line linenr="078" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="086" indent="&#160;" />
-		<line linenr="087" indent="&#160;">
+		<line linenr="079" indent="&#160;" />
+		<line linenr="080" indent="&#160;">
 			<comment>* Add-Ons 1.3: Insane mode halves the bail rate.</comment>
 		</line>
-		<line linenr="088" indent="&#160;">
+		<line linenr="081" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -630,7 +583,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="089" indent="&#160;&#160;">
+		<line linenr="082" indent="&#160;&#160;">
 			<var>$trig</var>
 			<text> </text>
 			<text>=</text>
@@ -641,11 +594,11 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="090" indent="&#160;" />
-		<line linenr="091" indent="&#160;">
+		<line linenr="083" indent="&#160;" />
+		<line linenr="084" indent="&#160;">
 			<comment>* Add-Ons 1.4.17: Flag was not being set if the check failed. Have to explicitly set the flag it to 1 or 0. Setting to TRUE or FALSE will actually set it to 1 or null!</comment>
 		</line>
-		<line linenr="092" indent="&#160;">
+		<line linenr="085" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rng</var>
@@ -654,27 +607,27 @@
 			<text> </text>
 			<var>$trig</var>
 		</line>
-		<line linenr="093" indent="&#160;&#160;">
+		<line linenr="086" indent="&#160;&#160;">
 			<var>$WillBail</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="094" indent="&#160;">
+		<line linenr="087" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="095" indent="&#160;&#160;">
+		<line linenr="088" indent="&#160;&#160;">
 			<var>$WillBail</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="096" indent="&#160;">
+		<line linenr="089" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="097" indent="&#160;">
+		<line linenr="090" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -693,20 +646,20 @@
 			<text>=</text>
 			<var>$WillBail</var>
 		</line>
-		<line linenr="098" indent="&#160;">
+		<line linenr="091" indent="&#160;">
 			<comment>* ** DEBUG ONLY **</comment>
 		</line>
-		<line linenr="099" indent="&#160;">
+		<line linenr="092" indent="&#160;">
 			<comment>* $t = $ship + '; bail flag set to: ' + $WillBail</comment>
 		</line>
-		<line linenr="100" indent="&#160;">
+		<line linenr="093" indent="&#160;">
 			<comment>* write to player logbook $t</comment>
 		</line>
-		<line linenr="101" indent="">
+		<line linenr="094" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="102" indent="" />
-		<line linenr="103" indent="">
+		<line linenr="095" indent="" />
+		<line linenr="096" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$WillBail</var>
@@ -717,7 +670,7 @@
 			<sval type="string" val="Mayhem.GetBailChance" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="52" />
+			<sval type="int" val="56" />
 			<sval type="int" val="0" />
 			<sval type="array" size="9">
 				<sval type="string" val="ship" />
@@ -730,7 +683,7 @@
 				<sval type="string" val="isM8" />
 				<sval type="string" val="isTM" />
 			</sval>
-			<sval type="array" size="56">
+			<sval type="array" size="51">
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
@@ -769,50 +722,13 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_playerBails" />
-					<sval type="int" val="-536869372" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610611192" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="158" />
-					<sval type="int" val="5" />
-					<sval type="string" val="mayhem_noBail" />
-					<sval type="int" val="-1610610680" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="9" />
-				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="_noBail" />
-					<sval type="int" val="-1610610168" />
+					<sval type="int" val="-1610611448" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -829,7 +745,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598653" />
+					<sval type="int" val="-1610599933" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -869,7 +785,7 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610604029" />
+					<sval type="int" val="-1610605309" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2073" />
 				</sval>
@@ -899,7 +815,7 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607101" />
+					<sval type="int" val="-1610608381" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
@@ -929,13 +845,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610606331" />
+					<sval type="int" val="-1610607611" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2027" />
 				</sval>
@@ -950,13 +866,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610605563" />
+					<sval type="int" val="-1610606843" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2021" />
 				</sval>
@@ -971,13 +887,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610604795" />
+					<sval type="int" val="-1610606075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2022" />
 				</sval>
@@ -992,13 +908,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610604283" />
+					<sval type="int" val="-1610605563" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2032" />
 				</sval>
@@ -1013,13 +929,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610601723" />
+					<sval type="int" val="-1610603003" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2034" />
 				</sval>
@@ -1027,7 +943,7 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610603005" />
+					<sval type="int" val="-1610604285" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2025" />
 				</sval>
@@ -1042,13 +958,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610602235" />
+					<sval type="int" val="-1610603515" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2024" />
 				</sval>
@@ -1063,13 +979,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610601723" />
+					<sval type="int" val="-1610603003" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2023" />
 				</sval>
@@ -1084,7 +1000,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600957" />
+					<sval type="int" val="-1610602237" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1122,22 +1038,34 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="48" />
+					<sval type="int" val="43" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600443" />
-					<sval type="int" val="3" />
+					<sval type="int" val="-1610601723" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="10" />
 					<sval type="int" val="7" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
-					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -1156,7 +1084,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599928" />
+					<sval type="int" val="-1610601208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1186,7 +1114,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610599165" />
+					<sval type="int" val="-1610600445" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -1210,7 +1138,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="54" />
+					<sval type="int" val="49" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1242,7 +1170,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="56">
+			<sval type="array" size="54">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -1263,6 +1191,21 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.13.2: Added comments. Used also by Mayhem.Task.BailMaybe to determine if a fighter is bailing." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: " />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- Removed player bail flags (this was acting as a second chance for ships). Also removed no bails because NPCs can benefit from bailed ships." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- Phanon may now bail but at 1/5 chance to compensate for their exquisite ships and serve as a trial run until plot completion." />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1279,228 +1222,206 @@
 				<sval type="array" size="3">
 					<sval type="int" val="3" />
 					<sval type="int" val="1" />
-					<sval type="string" val="player ships cannot bail if set in the t-file. " />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="9972 - id 132 global disable flag for game." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="8" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
 					<sval type="string" val="This is set in Joubarbe.Lib.DisableBailing, and is called at times when squadrons are auto-assigned a new leader by the A.I., or for any ship that bails, preventing them from bailing again." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Our indicator that is a pre-calculation at ship creation time controlling whether a LARGE ship will bail upon its death. Set in Mayhem.BuildShip." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="string" val="If it's already set, don't set it again." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="10" />
+					<sval type="int" val="5" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Small ships use this indicator to prevent savescumming." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="If it's never been calculated, do it now, save it locally and return it." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.4.17: was checking if not $Willbail. Since [FALSE] evaluates as null, this means this condition was being checked a 2nd time upon ship destruction!" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.0.3: Chances are now normalized to a roll out of 1000, providing 0.1 percentage-point precision. Also cleaned up code." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="11" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.2: Bailing chance mult is deprecated since it is no longer configurable." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="15" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.9.3: Fighter bailing is now determined upon creation. 2 categories: big ships (M6, TM, M8, M1, M2, M7) and fighters (M3, M4, M5). " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="15" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="TL, TP, and TS cannot bail." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: M8 and TM can now bail, with the chance being 3%." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="14" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M6/TM/M8: 3.0%. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="string" val="While the Percentage is lower than the capital ships, there are FAR more M6s in the game and we don't want bailed M6s littered all over." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="23" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M7: 8.0%" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="26" />
+					<sval type="int" val="21" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M1: 5.0%" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="29" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M2: 3.0%" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="32" />
+					<sval type="int" val="27" />
 					<sval type="int" val="1" />
 					<sval type="string" val="TL: 0%. TLs cannot bail. The only NPC TLs are Nomad ones." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="35" />
+					<sval type="int" val="30" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Fighters. This is based on bail chances from the original Mayhem.Task.BailMaybe.xml, but bailing chance is determined here rather than in the BailMaybe task." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="36" />
+					<sval type="int" val="31" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M5: 40.0%" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="39" />
+					<sval type="int" val="34" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M4: 35.0%" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="42" />
+					<sval type="int" val="37" />
 					<sval type="int" val="1" />
 					<sval type="string" val="M3: 30.0%" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Faction modifiers." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2: Standardized racial bail modifiers across all eligible ship classes." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="43" />
+					<sval type="int" val="38" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Kha'ak bail at 1/5 the normal rate. Teladi bail at 4/3 the normal rate." />
+					<sval type="string" val="Kha'ak and Phanon bail at 1/5 the normal rate. Teladi bail at 4/3 the normal rate." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="43" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="48" />
+					<sval type="int" val="43" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="48" />
+					<sval type="int" val="43" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: Insane mode halves the bail rate." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
+					<sval type="int" val="45" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="50" />
+					<sval type="int" val="45" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.4.17: Flag was not being set if the check failed. Have to explicitly set the flag it to 1 or 0. Setting to TRUE or FALSE will actually set it to 1 or null!" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="53" />
+					<sval type="int" val="48" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="54" />
+					<sval type="int" val="49" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="55" />
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="** DEBUG ONLY **" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="55" />
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="$t = $ship + '; bail flag set to: ' + $WillBail" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="55" />
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="write to player logbook $t" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="55" />
+					<sval type="int" val="50" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="55" />
+					<sval type="int" val="50" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
