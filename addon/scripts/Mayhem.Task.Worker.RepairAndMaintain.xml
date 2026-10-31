@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.Worker.RepairAndMaintain</name>
-	<version>10</version>
+	<version>12</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -75,32 +75,16 @@
 		</line>
 		<line linenr="007" indent="" />
 		<line linenr="008" indent="">
+			<comment>* Expanded 2.2: Now repairs AI workers not homebased to their Outposts.</comment>
+		</line>
+		<line linenr="009" indent="">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[HOMEBASE]</var>
 		</line>
-		<line linenr="009" indent="" />
-		<line linenr="010" indent="">
-			<comment>* Mordan4. Explorers and Miners can have homebases that are NOT an outpost, so sending them home to repair simply does not work.</comment>
-		</line>
-		<line linenr="011" indent="">
-			<comment>* you need to send them to the nearest outpost.</comment>
-		</line>
-		<line linenr="012" indent="">
-			<text>if</text>
-			<text> </text>
-			<var>[OWNER]</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>[Player]</var>
-		</line>
-		<line linenr="013" indent="&#160;">
-			<comment>* Mordan9: If their homebase isn't an outpost, find a nearby Outpost.</comment>
-		</line>
-		<line linenr="014" indent="&#160;" interruptable="@">
+		<line linenr="010" indent="" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -118,17 +102,24 @@
 			<text> </text>
 			<text>race</text>
 			<text>=</text>
-			<var>[Player]</var>
+			<var>null</var>
 			<text> </text>
 			<text>stationOrType</text>
 			<text>=</text>
-			<var>[HOMEBASE]</var>
+			<var>$station</var>
 		</line>
-		<line linenr="015" indent="&#160;&#160;" />
-		<line linenr="016" indent="&#160;&#160;">
-			<comment>* Expanded 2.2: Miners arrive at their Outpost before requesting maintenance.</comment>
+		<line linenr="011" indent="&#160;">
+			<var>$station</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>null</var>
 		</line>
-		<line linenr="017" indent="&#160;&#160;">
+		<line linenr="012" indent="&#160;" />
+		<line linenr="013" indent="&#160;">
+			<comment>* A miner may already be docked at a repair Outpost.</comment>
+		</line>
+		<line linenr="014" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -150,20 +141,67 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="018" indent="&#160;&#160;&#160;">
-			<var>$station</var>
+		<line linenr="015" indent="&#160;&#160;">
+			<var>$dock</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[DOCKEDAT]</var>
 		</line>
+		<line linenr="016" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$dock</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="017" indent="&#160;&#160;&#160;" interruptable="@">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsOutpost</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>null</var>
+			<text> </text>
+			<text>stationOrType</text>
+			<text>=</text>
+			<var>$dock</var>
+		</line>
+		<line linenr="018" indent="&#160;&#160;&#160;&#160;">
+			<var>$station</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$dock</var>
+		</line>
 		<line linenr="019" indent="&#160;&#160;">
-			<text>else</text>
+			<text>end</text>
 		</line>
-		<line linenr="020" indent="&#160;&#160;&#160;">
-			<comment>* Using a safer Outpost is better than using the nearest Outpost.</comment>
+		<line linenr="020" indent="&#160;">
+			<text>end</text>
 		</line>
-		<line linenr="021" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="021" indent="&#160;" />
+		<line linenr="022" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$station</var>
+		</line>
+		<line linenr="023" indent="&#160;&#160;" interruptable="@">
 			<var>$station</var>
 			<text> </text>
 			<text>=</text>
@@ -182,13 +220,6 @@
 			<text>refObject</text>
 			<text>=</text>
 			<var>[THIS]</var>
-		</line>
-		<line linenr="022" indent="&#160;&#160;">
-			<text>end</text>
-			<text> </text>
-		</line>
-		<line linenr="023" indent="&#160;">
-			<text>end</text>
 		</line>
 		<line linenr="024" indent="">
 			<text>end</text>
@@ -231,7 +262,11 @@
 			<text>=</text>
 			<var>$station</var>
 		</line>
-		<line linenr="029" indent="&#160;">
+		<line linenr="029" indent="&#160;" />
+		<line linenr="030" indent="&#160;">
+			<comment>* Only the player requires inspection.</comment>
+		</line>
+		<line linenr="031" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -250,7 +285,7 @@
 			<text> </text>
 			<var>$autoInspectionThreshold</var>
 		</line>
-		<line linenr="030" indent="&#160;&#160;" interruptable="@">
+		<line linenr="032" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -268,17 +303,17 @@
 			<text>=</text>
 			<var>$station</var>
 		</line>
-		<line linenr="031" indent="">
+		<line linenr="033" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="032" indent="" />
-		<line linenr="033" indent="">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
 			<comment>* Mordan4.  Just in case we went to an outpost to repair but are homebased elsewhere, go back home.</comment>
 		</line>
-		<line linenr="034" indent="">
+		<line linenr="036" indent="">
 			<comment>* Expanded 2.2: Miners no longer return to their homebase after maintenance.</comment>
 		</line>
-		<line linenr="035" indent="">
+		<line linenr="037" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[ENVIRONMENT]</var>
@@ -287,7 +322,7 @@
 			<text> </text>
 			<var>[HOMEBASE]</var>
 		</line>
-		<line linenr="036" indent="&#160;">
+		<line linenr="038" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -311,7 +346,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="037" indent="&#160;&#160;">
+		<line linenr="039" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -349,7 +384,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="038" indent="&#160;&#160;" interruptable="@">
+		<line linenr="040" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -363,14 +398,14 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="039" indent="&#160;">
+		<line linenr="041" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="040" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="041" indent="" />
 		<line linenr="042" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>1</var>
@@ -381,15 +416,16 @@
 			<sval type="string" val="Mayhem.Task.Worker.RepairAndMaintain" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="10" />
+			<sval type="int" val="12" />
 			<sval type="int" val="0" />
-			<sval type="array" size="4">
+			<sval type="array" size="5">
 				<sval type="string" val="autoInspectionThreshold" />
 				<sval type="string" val="hull" />
 				<sval type="string" val="factor" />
 				<sval type="string" val="station" />
+				<sval type="string" val="dock" />
 			</sval>
-			<sval type="array" size="22">
+			<sval type="array" size="25">
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
@@ -430,54 +466,80 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610609661" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="7" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsOutpost" />
-					<sval type="int" val="-536867836" />
+					<sval type="int" val="-536867068" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1072" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610609917" />
+					<sval type="int" val="-1610609405" />
 					<sval type="string" val="Mayhem.Cmd.Worker.Miner" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1610609405" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsOutpost" />
+					<sval type="int" val="-1610609400" />
+					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536867065" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -493,11 +555,11 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
-					<sval type="int" val="-1610608381" />
+					<sval type="int" val="-1610607613" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608888" />
+					<sval type="int" val="-1610608120" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -522,7 +584,7 @@
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608376" />
+					<sval type="int" val="-1610607608" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -559,7 +621,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607357" />
+					<sval type="int" val="-1610606589" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="5" />
@@ -576,7 +638,7 @@
 					<sval type="int" val="1072" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536865532" />
+					<sval type="int" val="-536864764" />
 					<sval type="string" val="Mayhem.Cmd.Worker.Miner" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -613,7 +675,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="21">
+			<sval type="array" size="19">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -622,87 +684,77 @@
 					<sval type="int" val="5" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Mordan4. Explorers and Miners can have homebases that are NOT an outpost, so sending them home to repair simply does not work." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="6" />
-					<sval type="int" val="1" />
-					<sval type="string" val="you need to send them to the nearest outpost." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="7" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Mordan9: If their homebase isn't an outpost, find a nearby Outpost." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="8" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2: Miners arrive at their Outpost before requesting maintenance." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="11" />
 					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="11" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Using a safer Outpost is better than using the nearest Outpost." />
+					<sval type="string" val="Expanded 2.2: Now repairs AI workers not homebased to their Outposts." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="12" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="17" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="17" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="A miner may already be docked at a repair Outpost." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Only the player requires inspection." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="20" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mordan4.  Just in case we went to an outpost to repair but are homebased elsewhere, go back home." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="17" />
+					<sval type="int" val="20" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2: Miners no longer return to their homebase after maintenance." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="24" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
