@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.RepairTarget</name>
-	<version>87</version>
+	<version>94</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -15,6 +15,42 @@
 		</line>
 		<line linenr="002" indent="" />
 		<line linenr="003" indent="">
+			<comment>* Verify target exists.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="005" indent="" />
+		<line linenr="006" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$ship</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[THIS]</var>
+		</line>
+		<line linenr="007" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<comment>* Expanded 2.2: Check for repair lasers.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="011" indent="">
 			<var>$laserRange</var>
 			<text> </text>
 			<text>=</text>
@@ -35,7 +71,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="004" indent="">
+		<line linenr="012" indent="">
 			<var>$Followdistance</var>
 			<text> </text>
 			<text>=</text>
@@ -52,17 +88,17 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="005" indent="" />
-		<line linenr="006" indent="">
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
 			<comment>* MordanB - Even at half laser range, the small &quot;hit box&quot; of fighters makes the repair laser miss often.</comment>
 		</line>
-		<line linenr="007" indent="">
+		<line linenr="015" indent="">
 			<comment>* This only manifests when the player is in-system, but regardless, if the target is tiny, we're going to move closer in order to</comment>
 		</line>
-		<line linenr="008" indent="">
+		<line linenr="016" indent="">
 			<comment>* eliminate most of the &quot;hit box&quot; problem.  A repair laser is still a laser and the game treats it like it can miss.</comment>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="017" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -78,7 +114,7 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="010" indent="&#160;">
+		<line linenr="018" indent="&#160;">
 			<var>$Followdistance</var>
 			<text> </text>
 			<text>=</text>
@@ -89,44 +125,18 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="011" indent="" />
-		<line linenr="012" indent="" />
-		<line linenr="013" indent="">
-			<comment>* and the target still exists</comment>
-		</line>
-		<line linenr="014" indent="">
-			<text>if</text>
-			<text> </text>
-			<text>not</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
-		</line>
-		<line linenr="015" indent="&#160;">
-			<comment>* write to logfile 1 append=[TRUE] printf: fmt='Target doesnt exist', null, null, null, null, null</comment>
-		</line>
-		<line linenr="016" indent="&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="017" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="018" indent="" />
-		<line linenr="019" indent="">
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckTargetSpeed</var>
 			<text>:</text>
 		</line>
-		<line linenr="020" indent="" />
-		<line linenr="021" indent="">
+		<line linenr="021" indent="" />
+		<line linenr="022" indent="">
 			<comment>* keep moving until we get in the same sector as the target.</comment>
 		</line>
-		<line linenr="022" indent="">
+		<line linenr="023" indent="">
 			<text>while</text>
 			<text> </text>
 			<text>not</text>
@@ -146,7 +156,7 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="024" indent="&#160;">
 			<var>$target.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -158,7 +168,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="024" indent="&#160;">
+		<line linenr="025" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -196,7 +206,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="025" indent="&#160;" interruptable="@">
+		<line linenr="026" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -214,26 +224,29 @@
 			<text>=</text>
 			<var>$target.sector</var>
 		</line>
-		<line linenr="026" indent="&#160;">
-			<text>skip</text>
+		<line linenr="027" indent="&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>exists</text>
+			<var>CheckShipExists</var>
+			<text>:</text>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
-			<text>return</text>
+		<line linenr="028" indent="&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<var>null</var>
+			<var>CheckTargetSpeed</var>
+			<text>:</text>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="029" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="030" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="031" indent="" />
+		<line linenr="032" indent="">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -271,8 +284,8 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="033" indent="" />
+		<line linenr="034" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$ship</var>
@@ -280,47 +293,46 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="033" indent="&#160;" />
-		<line linenr="034" indent="&#160;" />
-		<line linenr="035" indent="&#160;">
-			<comment>* double check that the target is still not moving.  Bail completely if it is.</comment>
-		</line>
+		<line linenr="035" indent="&#160;" />
 		<line linenr="036" indent="&#160;">
-			<comment>* Check to make sure the target didn't dock or leave.</comment>
+			<comment>* double check that the target is still not moving. Bail completely if it is.</comment>
 		</line>
 		<line linenr="037" indent="&#160;">
+			<comment>* Check to make sure the target didn't dock or leave.</comment>
+		</line>
+		<line linenr="038" indent="&#160;">
+			<comment>* Expanded 2.2: Check repair lasers.</comment>
+		</line>
+		<line linenr="039" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckTargetSpeed</var>
 			<text>:</text>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="040" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckTargetEnvironment</var>
 			<text>:</text>
 		</line>
-		<line linenr="039" indent="&#160;" />
-		<line linenr="040" indent="&#160;">
-			<comment>* write to logfile 1 append=[TRUE] printf: fmt='Spot 1', null, null, null, null, null</comment>
-		</line>
-		<line linenr="041" indent="&#160;" />
-		<line linenr="042" indent="&#160;">
-			<var>Repeat</var>
+		<line linenr="041" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
 			<text>:</text>
 		</line>
-		<line linenr="043" indent="&#160;" />
-		<line linenr="044" indent="&#160;">
+		<line linenr="042" indent="&#160;" />
+		<line linenr="043" indent="&#160;">
 			<comment>* Move within range.</comment>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="044" indent="&#160;">
 			<var>$ct</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="046" indent="&#160;">
+		<line linenr="045" indent="&#160;">
 			<var>$Distance</var>
 			<text> </text>
 			<text>=</text>
@@ -337,17 +349,17 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="047" indent="&#160;" />
-		<line linenr="048" indent="&#160;">
+		<line linenr="046" indent="&#160;" />
+		<line linenr="047" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$Distance</var>
 			<text> </text>
-			<text>&gt;</text>
+			<text>&gt;=</text>
 			<text> </text>
 			<var>$laserRange</var>
 		</line>
-		<line linenr="049" indent="&#160;&#160;">
+		<line linenr="048" indent="&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -384,8 +396,8 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="050" indent="&#160;&#160;" />
-		<line linenr="051" indent="&#160;&#160;" interruptable="@">
+		<line linenr="049" indent="&#160;&#160;" />
+		<line linenr="050" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -412,6 +424,12 @@
 			<var>60000</var>
 			<text> </text>
 			<text>ms</text>
+		</line>
+		<line linenr="051" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
 		</line>
 		<line linenr="052" indent="&#160;&#160;">
 			<text>gosub</text>
@@ -426,6 +444,13 @@
 			<text>:</text>
 		</line>
 		<line linenr="054" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="055" indent="&#160;&#160;" />
+		<line linenr="056" indent="&#160;&#160;">
 			<var>$NewDistance</var>
 			<text> </text>
 			<text>=</text>
@@ -442,8 +467,7 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="055" indent="&#160;&#160;" />
-		<line linenr="056" indent="&#160;&#160;">
+		<line linenr="057" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$Distance</var>
@@ -452,10 +476,10 @@
 			<text> </text>
 			<var>$NewDistance</var>
 		</line>
-		<line linenr="057" indent="&#160;&#160;&#160;">
+		<line linenr="058" indent="&#160;&#160;&#160;">
 			<comment>* We weren't close enough, and yet the move command didn't bring us any closer.  We've come to a stop too far away.  In this case, reduce the Followdistance by a bit.</comment>
 		</line>
-		<line linenr="058" indent="&#160;&#160;&#160;">
+		<line linenr="059" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -469,7 +493,7 @@
 			<text> </text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="059" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="060" indent="&#160;&#160;&#160;&#160;">
 			<var>$Followdistance</var>
 			<text> </text>
 			<text>=</text>
@@ -480,10 +504,10 @@
 			<text> </text>
 			<var>250</var>
 		</line>
-		<line linenr="060" indent="&#160;&#160;&#160;">
+		<line linenr="061" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="061" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="062" indent="&#160;&#160;&#160;&#160;">
 			<var>$Followdistance</var>
 			<text> </text>
 			<text>=</text>
@@ -494,19 +518,38 @@
 			<text> </text>
 			<var>500</var>
 		</line>
-		<line linenr="062" indent="&#160;&#160;&#160;">
+		<line linenr="063" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="063" indent="&#160;&#160;&#160;" />
-		<line linenr="064" indent="&#160;&#160;&#160;">
+		<line linenr="064" indent="&#160;&#160;&#160;" />
+		<line linenr="065" indent="&#160;&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$Followdistance</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="066" indent="&#160;&#160;&#160;&#160;">
+			<var>$Followdistance</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="067" indent="&#160;&#160;&#160;" />
+		<line linenr="068" indent="&#160;&#160;&#160;">
 			<comment>* safety check, in case we can't seem to ever move close enough.  Allow 3 reductions in distance.</comment>
 		</line>
-		<line linenr="065" indent="&#160;&#160;&#160;">
+		<line linenr="069" indent="&#160;&#160;&#160;">
 			<text>inc</text>
 			<text> </text>
 			<var>$ct</var>
 		</line>
-		<line linenr="066" indent="&#160;&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ct</var>
@@ -515,82 +558,59 @@
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="067" indent="&#160;&#160;&#160;&#160;">
-			<text>write</text>
+		<line linenr="071" indent="&#160;&#160;&#160;&#160;">
+			<var>$t</var>
 			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>log</text>
-			<text> </text>
-			<text>file</text>
-			<text> </text>
-			<var>1</var>
-			<text> </text>
-			<text>append</text>
 			<text>=</text>
+			<text> </text>
+			<text>'Repairs stopped: unable to reach repair range.'</text>
+		</line>
+		<line linenr="072" indent="&#160;&#160;&#160;&#160;">
+			<var>$aborted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
 			<var>[TRUE]</var>
+		</line>
+		<line linenr="073" indent="&#160;&#160;&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>printf</text>
+			<var>FinishRepairs</var>
 			<text>:</text>
-			<text> </text>
-			<text>fmt</text>
-			<text>=</text>
-			<text>'Failed to move within repair range after 3 tries.'</text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
 		</line>
-		<line linenr="068" indent="&#160;&#160;&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="069" indent="&#160;&#160;&#160;">
+		<line linenr="074" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="070" indent="&#160;&#160;&#160;" />
-		<line linenr="071" indent="&#160;&#160;">
+		<line linenr="075" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="072" indent="&#160;&#160;&#160;">
+		<line linenr="076" indent="&#160;&#160;&#160;">
 			<var>$Distance</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$NewDistance</var>
 		</line>
-		<line linenr="073" indent="&#160;&#160;">
+		<line linenr="077" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="074" indent="&#160;">
+		<line linenr="078" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="075" indent="&#160;" />
-		<line linenr="076" indent="&#160;">
+		<line linenr="079" indent="&#160;" />
+		<line linenr="080" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckTargetSpeed</var>
 			<text>:</text>
 		</line>
-		<line linenr="077" indent="&#160;">
+		<line linenr="081" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckTargetEnvironment</var>
 			<text>:</text>
 		</line>
-		<line linenr="078" indent="&#160;">
+		<line linenr="082" indent="&#160;">
 			<var>$Distance</var>
 			<text> </text>
 			<text>=</text>
@@ -607,18 +627,14 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="079" indent="&#160;" />
-		<line linenr="080" indent="&#160;">
-			<comment>* write to log file 1 append=[TRUE] printf: fmt='Within Range of Target.  Distance=%s, laserRange=%s', $Distance, $laserRange, null, null, null</comment>
-		</line>
-		<line linenr="081" indent="&#160;" />
-		<line linenr="082" indent="&#160;">
+		<line linenr="083" indent="&#160;" />
+		<line linenr="084" indent="&#160;">
 			<comment>* We're within range if we get here.</comment>
 		</line>
-		<line linenr="083" indent="&#160;">
+		<line linenr="085" indent="&#160;">
 			<comment>* Limitation of the game:  the &quot;in firing range of&quot; command NeVER works right, in system or out of system.  Don't use it.</comment>
 		</line>
-		<line linenr="084" indent="&#160;">
+		<line linenr="086" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -632,10 +648,10 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="085" indent="&#160;&#160;">
+		<line linenr="087" indent="&#160;&#160;">
 			<comment>* if [THIS]-&gt; is $ship in firing range of turret 0            BROKEN command.  Does not work in or out of system correctly.</comment>
 		</line>
-		<line linenr="086" indent="&#160;&#160;">
+		<line linenr="088" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$Distance</var>
@@ -644,10 +660,11 @@
 			<text> </text>
 			<var>$laserRange</var>
 		</line>
-		<line linenr="087" indent="&#160;&#160;&#160;">
+		<line linenr="089" indent="&#160;&#160;&#160;">
 			<comment>* Issue the follow command first, which essentially TURNS the ship towards the target, allowing the primary lasers to hit.  Otherwise it fires into space.</comment>
 		</line>
-		<line linenr="088" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="090" indent="&#160;&#160;&#160;" />
+		<line linenr="091" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -675,7 +692,81 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="089" indent="&#160;&#160;&#160;">
+		<line linenr="092" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="093" indent="&#160;&#160;&#160;" />
+		<line linenr="094" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckTargetSpeed</var>
+			<text>:</text>
+		</line>
+		<line linenr="095" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckTargetEnvironment</var>
+			<text>:</text>
+		</line>
+		<line linenr="096" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="097" indent="&#160;&#160;&#160;" />
+		<line linenr="098" indent="&#160;&#160;&#160;">
+			<comment>* The player may have left the sector during movement.</comment>
+		</line>
+		<line linenr="099" indent="&#160;&#160;&#160;">
+			<comment>* Never fire actual repair lasers OOS.</comment>
+		</line>
+		<line linenr="100" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>active</text>
+			<text> </text>
+			<text>sector</text>
+		</line>
+		<line linenr="101" indent="&#160;&#160;&#160;&#160;">
+			<var>$Distance</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>distance</text>
+			<text> </text>
+			<text>between</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text> </text>
+			<text>and</text>
+			<text> </text>
+			<var>$ship</var>
+		</line>
+		<line linenr="102" indent="&#160;&#160;&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$Distance</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$laserRange</var>
+		</line>
+		<line linenr="103" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -697,88 +788,54 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="090" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="091" indent="&#160;&#160;&#160;">
-			<var>$Distance</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>get</text>
-			<text> </text>
-			<text>distance</text>
-			<text> </text>
-			<text>between</text>
-			<text> </text>
-			<var>[THIS]</var>
-			<text> </text>
-			<text>and</text>
-			<text> </text>
-			<var>$ship</var>
-		</line>
-		<line linenr="092" indent="&#160;&#160;&#160;">
-			<text>write</text>
-			<text> </text>
-			<text>to</text>
-			<text> </text>
-			<text>log</text>
-			<text> </text>
-			<text>file</text>
-			<text> </text>
-			<var>1</var>
-			<text> </text>
-			<text>append</text>
-			<text>=</text>
-			<var>[TRUE]</var>
-			<text> </text>
-			<text>printf</text>
-			<text>:</text>
-			<text> </text>
-			<text>fmt</text>
-			<text>=</text>
-			<text>'In-System: Ship not in firing range, but Distance %s &lt; Firing Range of turret 0.'</text>
-			<text>,</text>
-			<text> </text>
-			<var>$Distance</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="093" indent="&#160;&#160;&#160;">
-			<text>break</text>
-		</line>
-		<line linenr="094" indent="&#160;&#160;">
+		<line linenr="104" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="095" indent="&#160;">
+		<line linenr="105" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="096" indent="&#160;&#160;">
+		<line linenr="106" indent="&#160;&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Repairs stopped: unable to reach repair range.'</text>
+		</line>
+		<line linenr="107" indent="&#160;&#160;&#160;">
+			<var>$aborted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="108" indent="&#160;&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>FinishRepairs</var>
+			<text>:</text>
+		</line>
+		<line linenr="109" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="110" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="111" indent="&#160;&#160;">
 			<comment>* OOS</comment>
 		</line>
-		<line linenr="097" indent="&#160;&#160;">
+		<line linenr="112" indent="&#160;&#160;">
 			<comment>* OOS can't use the &quot;in firing range of&quot; command, as this appears broken.</comment>
 		</line>
-		<line linenr="098" indent="&#160;&#160;">
+		<line linenr="113" indent="&#160;&#160;">
 			<comment>* Additionally, repair lasers fired OOS just seems to destroy the target ship, even when it's not supposed to.  Apparently no one ever</comment>
 		</line>
-		<line linenr="099" indent="&#160;&#160;">
+		<line linenr="114" indent="&#160;&#160;">
 			<comment>* intended to use repair lasers like this.  So..  We'll fudge it.</comment>
 		</line>
-		<line linenr="100" indent="&#160;&#160;">
+		<line linenr="115" indent="&#160;&#160;">
 			<comment>* don't care much about this value.. Just make sure we're in the neighborhood of the ship. We're OOS so not important that we're right on top of the target.</comment>
 		</line>
-		<line linenr="101" indent="&#160;&#160;">
+		<line linenr="116" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$Distance</var>
@@ -793,16 +850,16 @@
 			<var>5</var>
 			<text>)</text>
 		</line>
-		<line linenr="102" indent="&#160;&#160;&#160;">
+		<line linenr="117" indent="&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>RepairOOS</var>
 			<text>:</text>
 		</line>
-		<line linenr="103" indent="&#160;&#160;">
+		<line linenr="118" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="104" indent="&#160;&#160;&#160;">
+		<line linenr="119" indent="&#160;&#160;&#160;">
 			<var>$Distance</var>
 			<text> </text>
 			<text>=</text>
@@ -819,7 +876,7 @@
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="105" indent="&#160;&#160;&#160;">
+		<line linenr="120" indent="&#160;&#160;&#160;">
 			<text>write</text>
 			<text> </text>
 			<text>to</text>
@@ -856,17 +913,33 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="106" indent="&#160;&#160;">
+		<line linenr="121" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="107" indent="&#160;">
+		<line linenr="122" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="108" indent="&#160;" />
-		<line linenr="109" indent="&#160;">
+		<line linenr="123" indent="&#160;" />
+		<line linenr="124" indent="&#160;">
+			<comment>* Revalidate after firing or the OOS repair wait.</comment>
+		</line>
+		<line linenr="125" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckTargetSpeed</var>
+			<text>:</text>
+		</line>
+		<line linenr="126" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckTargetEnvironment</var>
+			<text>:</text>
+		</line>
+		<line linenr="127" indent="&#160;" />
+		<line linenr="128" indent="&#160;">
 			<comment>* if repair is done</comment>
 		</line>
-		<line linenr="110" indent="&#160;">
+		<line linenr="129" indent="&#160;">
 			<var>$hull</var>
 			<text> </text>
 			<text>=</text>
@@ -880,7 +953,7 @@
 			<text> </text>
 			<text>percent</text>
 		</line>
-		<line linenr="111" indent="&#160;">
+		<line linenr="130" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$hull</var>
@@ -889,67 +962,39 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="112" indent="&#160;&#160;">
-			<comment>* write to log file 1 append=[TRUE] printf: fmt='Finished Repairs', null, null, null, null, null</comment>
-		</line>
-		<line linenr="113" indent="&#160;&#160;">
+		<line linenr="131" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'Finished repairs on '</text>
+			<text>'Repairs completed on '</text>
 			<text> </text>
 			<text>+</text>
 			<text> </text>
 			<var>$ship</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'.'</text>
 		</line>
-		<line linenr="114" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="132" indent="&#160;&#160;">
+			<var>$aborted</var>
 			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
+			<text>=</text>
 			<text> </text>
-			<text>call</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="133" indent="&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.Infobox</call>
-			<text> </text>
+			<var>FinishRepairs</var>
 			<text>:</text>
-			<text> </text>
-			<text>text</text>
-			<text>=</text>
-			<var>$t</var>
-			<text> </text>
-			<text>icon</text>
-			<text>=</text>
-			<var>21</var>
-			<text> </text>
-			<text>timeout</text>
-			<text>=</text>
-			<var>5000</var>
-			<text> </text>
-			<text>fadeout</text>
-			<text>=</text>
-			<var>null</var>
 		</line>
-		<line linenr="115" indent="&#160;&#160;">
-			<text>play</text>
-			<text> </text>
-			<text>sample</text>
-			<text> </text>
-			<var>1239</var>
-		</line>
-		<line linenr="116" indent="&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="117" indent="&#160;">
+		<line linenr="134" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="118" indent="&#160;" />
-		<line linenr="119" indent="&#160;" interruptable="@">
+		<line linenr="135" indent="&#160;" />
+		<line linenr="136" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -958,72 +1003,48 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="120" indent="&#160;" />
-		<line linenr="121" indent="&#160;" />
-		<line linenr="122" indent="&#160;">
+		<line linenr="137" indent="&#160;" />
+		<line linenr="138" indent="&#160;">
 			<comment>* end while 1</comment>
 		</line>
-		<line linenr="123" indent="">
+		<line linenr="139" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="124" indent="" />
-		<line linenr="125" indent="">
-			<var>[THIS]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>orders</text>
-			<text> </text>
-			<text>string</text>
-			<text> </text>
-			<text>sprintf</text>
-			<text>:</text>
-			<text> </text>
-			<text>fmt</text>
-			<text>=</text>
-			<text> </text>
-			<text>'Standby'</text>
-			<text> </text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text> </text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text> </text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text> </text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
-			<text> </text>
-			<text>,</text>
-			<text> </text>
-			<var>null</var>
+		<line linenr="140" indent="" />
+		<line linenr="141" indent="">
+			<comment>* Catch target destruction during the final 100 ms wait.</comment>
 		</line>
-		<line linenr="126" indent="" />
-		<line linenr="127" indent="">
+		<line linenr="142" indent="">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="143" indent="" />
+		<line linenr="144" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="128" indent="" />
-		<line linenr="129" indent="" />
-		<line linenr="130" indent="">
+		<line linenr="145" indent="" />
+		<line linenr="146" indent="">
 			<var>CheckTargetSpeed</var>
 			<text>:</text>
 		</line>
-		<line linenr="131" indent="&#160;">
+		<line linenr="147" indent="&#160;">
 			<comment>* Herobetty 5.4: fix for abandoned ships and if ships switch allegiances.</comment>
 		</line>
-		<line linenr="132" indent="&#160;">
+		<line linenr="148" indent="&#160;">
 			<comment>* Add-Ons 1.5.3: Stationary targets don't need to be on standby since they're not moveable objects. Note that small and large are unused - they are there just for futureproofing.</comment>
 		</line>
-		<line linenr="133" indent="&#160;">
+		<line linenr="149" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="150" indent="&#160;" />
+		<line linenr="151" indent="&#160;">
 			<var>$onStandby</var>
 			<text> </text>
 			<text>=</text>
@@ -1047,7 +1068,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="134" indent="&#160;">
+		<line linenr="152" indent="&#160;">
 			<var>$isMoveable</var>
 			<text> </text>
 			<text>=</text>
@@ -1063,7 +1084,7 @@
 			<text> </text>
 			<var>[Moveable Ship]</var>
 		</line>
-		<line linenr="135" indent="&#160;" interruptable="@">
+		<line linenr="153" indent="&#160;" interruptable="@">
 			<var>$isOWP</var>
 			<text> </text>
 			<text>=</text>
@@ -1083,22 +1104,22 @@
 			<text>=</text>
 			<var>$ship</var>
 		</line>
-		<line linenr="136" indent="&#160;">
+		<line linenr="154" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$isOWP</var>
 		</line>
-		<line linenr="137" indent="&#160;&#160;">
+		<line linenr="155" indent="&#160;&#160;">
 			<var>$isMoveable</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="138" indent="&#160;" />
-		<line linenr="139" indent="&#160;">
+		<line linenr="156" indent="&#160;" />
+		<line linenr="157" indent="&#160;">
 			<var>$owner</var>
 			<text> </text>
 			<text>=</text>
@@ -1112,7 +1133,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="140" indent="&#160;">
+		<line linenr="158" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -1135,60 +1156,31 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="141" indent="&#160;&#160;">
+		<line linenr="159" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'----  Repairs terminated. The target ship is no longer in Standby. ----'</text>
+			<text>'Repairs stopped: the target is no longer on Standby.'</text>
 		</line>
-		<line linenr="142" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="160" indent="&#160;&#160;">
+			<var>$aborted</var>
 			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
+			<text>=</text>
 			<text> </text>
-			<text>call</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="161" indent="&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.Infobox</call>
-			<text> </text>
+			<var>FinishRepairs</var>
 			<text>:</text>
-			<text> </text>
-			<text>text</text>
-			<text>=</text>
-			<var>$t</var>
-			<text> </text>
-			<text>icon</text>
-			<text>=</text>
-			<var>21</var>
-			<text> </text>
-			<text>timeout</text>
-			<text>=</text>
-			<var>10000</var>
-			<text> </text>
-			<text>fadeout</text>
-			<text>=</text>
-			<var>null</var>
 		</line>
-		<line linenr="143" indent="&#160;&#160;">
-			<text>play</text>
-			<text> </text>
-			<text>sample</text>
-			<text> </text>
-			<var>1134</var>
-		</line>
-		<line linenr="144" indent="&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="145" indent="&#160;">
+		<line linenr="162" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="146" indent="&#160;" />
-		<line linenr="147" indent="&#160;">
+		<line linenr="163" indent="&#160;" />
+		<line linenr="164" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$owner</var>
@@ -1205,70 +1197,45 @@
 			<text> </text>
 			<var>[Neutral Race]</var>
 		</line>
-		<line linenr="148" indent="&#160;&#160;">
+		<line linenr="165" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>'----  Repairs terminated. The target ship is no longer abandoned or under your control. ----'</text>
+			<text>'Repairs stopped: the target is neither player-owned nor abandoned.'</text>
 		</line>
-		<line linenr="149" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="166" indent="&#160;&#160;">
+			<var>$aborted</var>
 			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
+			<text>=</text>
 			<text> </text>
-			<text>call</text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="167" indent="&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.Infobox</call>
-			<text> </text>
+			<var>FinishRepairs</var>
 			<text>:</text>
-			<text> </text>
-			<text>text</text>
-			<text>=</text>
-			<var>$t</var>
-			<text> </text>
-			<text>icon</text>
-			<text>=</text>
-			<var>21</var>
-			<text> </text>
-			<text>timeout</text>
-			<text>=</text>
-			<var>10000</var>
-			<text> </text>
-			<text>fadeout</text>
-			<text>=</text>
-			<var>null</var>
 		</line>
-		<line linenr="150" indent="&#160;&#160;">
-			<text>play</text>
-			<text> </text>
-			<text>sample</text>
-			<text> </text>
-			<var>1134</var>
-		</line>
-		<line linenr="151" indent="&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="152" indent="&#160;">
+		<line linenr="168" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="153" indent="">
+		<line linenr="169" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="154" indent="" />
-		<line linenr="155" indent="">
+		<line linenr="170" indent="" />
+		<line linenr="171" indent="">
 			<var>CheckTargetEnvironment</var>
 			<text>:</text>
 		</line>
-		<line linenr="156" indent="&#160;">
-			<comment>* Add-Ons 1.5.3: Don't check if in the same environment (command will abort if the repair ship is docked but target is in space). Instead, check if target is docked.</comment>
+		<line linenr="172" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
 		</line>
-		<line linenr="157" indent="&#160;">
+		<line linenr="173" indent="&#160;" />
+		<line linenr="174" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -1278,82 +1245,113 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="158" indent="&#160;&#160;" interruptable="@">
-			<text>START</text>
+		<line linenr="175" indent="&#160;&#160;">
+			<var>$t</var>
 			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
+			<text>=</text>
 			<text> </text>
-			<text>call</text>
+			<text>'Repairs stopped: the target is docked.'</text>
+		</line>
+		<line linenr="176" indent="&#160;&#160;">
+			<var>$aborted</var>
 			<text> </text>
-			<text>script</text>
+			<text>=</text>
 			<text> </text>
-			<call>Joubarbe.Lib.Infobox</call>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="177" indent="&#160;&#160;">
+			<text>gosub</text>
 			<text> </text>
+			<var>FinishRepairs</var>
 			<text>:</text>
-			<text> </text>
-			<text>text</text>
-			<text>=</text>
-			<text>'Repair target is docked. Repairs canceled.'</text>
-			<text> </text>
-			<text>icon</text>
-			<text>=</text>
-			<var>21</var>
-			<text> </text>
-			<text>timeout</text>
-			<text>=</text>
-			<var>10000</var>
-			<text> </text>
-			<text>fadeout</text>
-			<text>=</text>
-			<var>null</var>
 		</line>
-		<line linenr="159" indent="&#160;&#160;">
-			<text>play</text>
-			<text> </text>
-			<text>sample</text>
-			<text> </text>
-			<var>1221</var>
-		</line>
-		<line linenr="160" indent="&#160;&#160;">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="161" indent="&#160;">
+		<line linenr="178" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="162" indent="">
-			<text>endsub</text>
-		</line>
-		<line linenr="163" indent="" />
-		<line linenr="164" indent="" />
-		<line linenr="165" indent="">
-			<comment>* Repair lasers OOS tend to destroy target ships.  Fun fun.  So if OOS, we just keep it simple and add hull to the target every x seconds.</comment>
-		</line>
-		<line linenr="166" indent="">
-			<comment>* not one can see it, so no one will care.</comment>
-		</line>
-		<line linenr="167" indent="">
-			<var>RepairOOS</var>
-			<text>:</text>
-		</line>
-		<line linenr="168" indent="&#160;">
-			<var>$obj</var>
+		<line linenr="179" indent="&#160;" />
+		<line linenr="180" indent="&#160;">
+			<text>if</text>
 			<text> </text>
-			<text>=</text>
+			<text>not</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>is</text>
+			<text> </text>
+			<text>in</text>
+			<text> </text>
+			<text>same</text>
+			<text> </text>
+			<text>sector</text>
+			<text> </text>
+			<text>as</text>
 			<text> </text>
 			<var>$ship</var>
 		</line>
-		<line linenr="169" indent="&#160;">
-			<comment>* This rate mirrors the general observed in-system repair rate.  That's about 1500 hull / second repair.  We'll do a bit better OOS because I like it that way.</comment>
+		<line linenr="181" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Repairs stopped: the target is in another sector.'</text>
 		</line>
-		<line linenr="170" indent="&#160;">
+		<line linenr="182" indent="&#160;&#160;">
+			<var>$aborted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="183" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>FinishRepairs</var>
+			<text>:</text>
+		</line>
+		<line linenr="184" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="185" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="186" indent="" />
+		<line linenr="187" indent="">
+			<comment>* Repair lasers OOS tend to destroy target ships.  Fun fun.  So if OOS, we just keep it simple and add hull to the target every x seconds.</comment>
+		</line>
+		<line linenr="188" indent="">
+			<comment>* not one can see it, so no one will care.</comment>
+		</line>
+		<line linenr="189" indent="">
+			<var>RepairOOS</var>
+			<text>:</text>
+		</line>
+		<line linenr="190" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="191" indent="&#160;" />
+		<line linenr="192" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="193" indent="&#160;" />
+		<line linenr="194" indent="&#160;">
+			<comment>* Each repair laser restores 1250 hull per cycle.</comment>
+		</line>
+		<line linenr="195" indent="&#160;">
+			<comment>* Six lasers preserve the previous 7500-hull repair amount.</comment>
+		</line>
+		<line linenr="196" indent="&#160;">
 			<var>$hull.max</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$obj</var>
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
@@ -1362,30 +1360,30 @@
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="171" indent="&#160;">
+		<line linenr="197" indent="&#160;">
 			<var>$hull.cur</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$obj</var>
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>get</text>
 			<text> </text>
 			<text>hull</text>
 		</line>
-		<line linenr="172" indent="&#160;">
+		<line linenr="198" indent="&#160;">
 			<var>$hull.rep</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>1500</var>
+			<var>1250</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
-			<var>5</var>
+			<var>$repairLasers</var>
 		</line>
-		<line linenr="173" indent="&#160;">
+		<line linenr="199" indent="&#160;">
 			<var>$newHull</var>
 			<text> </text>
 			<text>=</text>
@@ -1396,7 +1394,8 @@
 			<text> </text>
 			<var>$hull.rep</var>
 		</line>
-		<line linenr="174" indent="&#160;">
+		<line linenr="200" indent="&#160;" />
+		<line linenr="201" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1407,15 +1406,16 @@
 			<text> </text>
 			<var>$hull.max</var>
 		</line>
-		<line linenr="175" indent="&#160;&#160;">
+		<line linenr="202" indent="&#160;&#160;">
 			<var>$newHull</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$hull.max</var>
 		</line>
-		<line linenr="176" indent="&#160;">
-			<var>$obj</var>
+		<line linenr="203" indent="&#160;" />
+		<line linenr="204" indent="&#160;">
+			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
 			<text>set</text>
@@ -1426,7 +1426,7 @@
 			<text> </text>
 			<var>$newHull</var>
 		</line>
-		<line linenr="177" indent="&#160;" interruptable="@">
+		<line linenr="205" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1443,7 +1443,202 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="178" indent="">
+		<line linenr="206" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="207" indent="" />
+		<line linenr="208" indent="">
+			<var>CheckShipExists</var>
+			<text>:</text>
+		</line>
+		<line linenr="209" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>$ship</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="210" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Repairs stopped: the target no longer exists.'</text>
+		</line>
+		<line linenr="211" indent="&#160;&#160;">
+			<var>$aborted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="212" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>FinishRepairs</var>
+			<text>:</text>
+		</line>
+		<line linenr="213" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="214" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="215" indent="" />
+		<line linenr="216" indent="">
+			<var>CheckRepairLasers</var>
+			<text>:</text>
+		</line>
+		<line linenr="217" indent="&#160;" interruptable="@">
+			<var>$repairLasers</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetRepairLaserCount</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>[THIS]</var>
+		</line>
+		<line linenr="218" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$repairLasers</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="219" indent="&#160;&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Repairs stopped: equip at least one Repair Laser and no other laser types in the main battery.'</text>
+		</line>
+		<line linenr="220" indent="&#160;&#160;">
+			<var>$aborted</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="221" indent="&#160;&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>FinishRepairs</var>
+			<text>:</text>
+		</line>
+		<line linenr="222" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="223" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="224" indent="" />
+		<line linenr="225" indent="">
+			<var>FinishRepairs</var>
+			<text>:</text>
+		</line>
+		<line linenr="226" indent="&#160;">
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>clear</text>
+			<text> </text>
+			<text>orders</text>
+			<text> </text>
+			<text>string</text>
+		</line>
+		<line linenr="227" indent="&#160;" />
+		<line linenr="228" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$aborted</var>
+		</line>
+		<line linenr="229" indent="&#160;&#160;">
+			<var>$timeout</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>10000</var>
+		</line>
+		<line linenr="230" indent="&#160;&#160;">
+			<text>play</text>
+			<text> </text>
+			<text>sample</text>
+			<text> </text>
+			<var>1134</var>
+		</line>
+		<line linenr="231" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="232" indent="&#160;&#160;">
+			<var>$timeout</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>5000</var>
+		</line>
+		<line linenr="233" indent="&#160;&#160;">
+			<text>play</text>
+			<text> </text>
+			<text>sample</text>
+			<text> </text>
+			<var>1239</var>
+		</line>
+		<line linenr="234" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="235" indent="&#160;" />
+		<line linenr="236" indent="&#160;" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.Infobox</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<var>$t</var>
+			<text> </text>
+			<text>icon</text>
+			<text>=</text>
+			<var>21</var>
+			<text> </text>
+			<text>timeout</text>
+			<text>=</text>
+			<var>$timeout</var>
+			<text> </text>
+			<text>fadeout</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="237" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="238" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -1452,9 +1647,9 @@
 			<sval type="string" val="Mayhem.RepairTarget" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="87" />
+			<sval type="int" val="94" />
 			<sval type="int" val="0" />
-			<sval type="array" size="18">
+			<sval type="array" size="20">
 				<sval type="string" val="ship" />
 				<sval type="string" val="laserRange" />
 				<sval type="string" val="Followdistance" />
@@ -1462,19 +1657,49 @@
 				<sval type="string" val="ct" />
 				<sval type="string" val="Distance" />
 				<sval type="string" val="NewDistance" />
-				<sval type="string" val="hull" />
 				<sval type="string" val="t" />
+				<sval type="string" val="aborted" />
+				<sval type="string" val="hull" />
 				<sval type="string" val="onStandby" />
 				<sval type="string" val="isMoveable" />
 				<sval type="string" val="isOWP" />
 				<sval type="string" val="owner" />
-				<sval type="string" val="obj" />
 				<sval type="string" val="hull.max" />
 				<sval type="string" val="hull.cur" />
 				<sval type="string" val="hull.rep" />
+				<sval type="string" val="repairLasers" />
 				<sval type="string" val="newHull" />
+				<sval type="string" val="timeout" />
 			</sval>
-			<sval type="array" size="101">
+			<sval type="array" size="146">
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611960" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
+				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1508" />
 					<sval type="int" val="131075" />
@@ -1510,7 +1735,7 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610611704" />
+					<sval type="int" val="-1610610680" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2034" />
 				</sval>
@@ -1529,26 +1754,15 @@
 					<sval type="int" val="14" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-536869372" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="66" />
+					<sval type="int" val="82" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="733" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536867318" />
+					<sval type="int" val="-536866550" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
@@ -1585,20 +1799,21 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
 				</sval>
-				<sval type="array" size="4">
-					<sval type="int" val="706" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-536867577" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="1820" />
@@ -1621,19 +1836,19 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610596343" />
+					<sval type="int" val="-1610592247" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="66" />
+					<sval type="int" val="82" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="84" />
+					<sval type="int" val="99" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="101" />
-					<sval type="string" val="Repeat" />
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1654,17 +1869,17 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602743" />
+					<sval type="int" val="-1610600695" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="17">
@@ -1700,11 +1915,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="66" />
+					<sval type="int" val="122" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="84" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="99" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -1716,7 +1939,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603261" />
+					<sval type="int" val="-1610601213" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1733,7 +1956,7 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610604797" />
+					<sval type="int" val="-1610603517" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2034" />
 				</sval>
@@ -1754,7 +1977,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="32" />
+					<sval type="int" val="37" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -1771,13 +1994,37 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
 				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602744" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="142" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610603517" />
+					<sval type="int" val="-1610601469" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
@@ -1790,33 +2037,31 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="17">
-					<sval type="int" val="405" />
-					<sval type="int" val="4" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs stopped: unable to reach repair range." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Failed to move within repair range after 3 tries." />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="38" />
+					<sval type="int" val="46" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -1829,15 +2074,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="21" />
+					<sval type="int" val="24" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="66" />
+					<sval type="int" val="82" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="84" />
+					<sval type="int" val="99" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -1851,11 +2096,11 @@
 					<sval type="int" val="761" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610599677" />
+					<sval type="int" val="-1610595837" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600701" />
+					<sval type="int" val="-1610596861" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1880,6 +2125,51 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="60000" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="99" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="761" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1610597117" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="738" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597112" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="505" />
 					<sval type="int" val="131075" />
@@ -1892,46 +2182,37 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="50" />
+					<sval type="int" val="65" />
 				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="738" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131075" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs stopped: unable to reach repair range." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="17">
-					<sval type="int" val="405" />
-					<sval type="int" val="4" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="string" val="In-System: Ship not in firing range, but Distance %s &lt; Firing Range of turret 0." />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="64" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610598909" />
+					<sval type="int" val="-1610595069" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1954,11 +2235,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="90" />
+					<sval type="int" val="110" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="738" />
@@ -1987,18 +2268,26 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="82" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="99" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="900" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610596861" />
+					<sval type="int" val="-1610592765" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="15" />
@@ -2008,46 +2297,39 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="3" />
+					<sval type="int" val="7" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Finished repairs on " />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs completed on " />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="11" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="14">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.Infobox" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="131074" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
 					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="21" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5000" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="200" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1239" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -2057,24 +2339,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="15" />
+					<sval type="int" val="18" />
 				</sval>
-				<sval type="array" size="15">
-					<sval type="int" val="1820" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val="Standby" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -2085,11 +2354,15 @@
 					<sval type="int" val="101" />
 					<sval type="string" val="CheckTargetSpeed" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="1072" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="string" val="!move.stay" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -2098,14 +2371,14 @@
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2134" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsOWP" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -2114,16 +2387,16 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610594296" />
+					<sval type="int" val="-1610589944" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
@@ -2134,24 +2407,24 @@
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="33">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592765" />
+					<sval type="int" val="-1610588669" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 					<sval type="int" val="15" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
@@ -2173,51 +2446,38 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="----  Repairs terminated. The target ship is no longer in Standby. ----" />
+					<sval type="string" val="Repairs stopped: the target is no longer on Standby." />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="14">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.Infobox" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="131074" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
 					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="21" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="200" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1134" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610591485" />
+					<sval type="int" val="-1610587645" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="13" />
 					<sval type="int" val="10" />
 					<sval type="int" val="12" />
 					<sval type="int" val="15" />
@@ -2235,38 +2495,25 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="----  Repairs terminated. The target ship is no longer abandoned or under your control. ----" />
+					<sval type="string" val="Repairs stopped: the target is neither player-owned nor abandoned." />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="14">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.Infobox" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
-					<sval type="int" val="131074" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
 					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="21" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="200" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1134" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -2275,37 +2522,67 @@
 					<sval type="int" val="101" />
 					<sval type="string" val="CheckTargetEnvironment" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="745" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
-					<sval type="int" val="-1610589949" />
+					<sval type="int" val="-1610585853" />
 				</sval>
-				<sval type="array" size="14">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.Infobox" />
-					<sval type="int" val="-2147483646" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
-					<sval type="int" val="4" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Repair target is docked. Repairs canceled." />
-					<sval type="int" val="4" />
-					<sval type="int" val="21" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="0" />
+					<sval type="string" val="Repairs stopped: the target is docked." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="733" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-536843004" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="200" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1221" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs stopped: the target is in another sector." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="103" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -2314,25 +2591,24 @@
 					<sval type="int" val="101" />
 					<sval type="string" val="RepairOOS" />
 				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="13" />
-					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="122" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="128" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="786" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="0" />
 					<sval type="int" val="14" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="787" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="0" />
 					<sval type="int" val="15" />
 				</sval>
 				<sval type="array" size="13">
@@ -2340,9 +2616,9 @@
 					<sval type="int" val="16" />
 					<sval type="int" val="3" />
 					<sval type="int" val="4" />
-					<sval type="int" val="1500" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5" />
+					<sval type="int" val="1250" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="3" />
@@ -2352,7 +2628,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="17" />
+					<sval type="int" val="18" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
@@ -2367,10 +2643,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610587640" />
+					<sval type="int" val="-1610582264" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
 					<sval type="int" val="15" />
@@ -2382,7 +2658,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="17" />
+					<sval type="int" val="18" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
@@ -2392,9 +2668,9 @@
 				<sval type="array" size="5">
 					<sval type="int" val="1047" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
+					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
+					<sval type="int" val="18" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="107" />
@@ -2407,6 +2683,169 @@
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="CheckShipExists" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-536838396" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs stopped: the target no longer exists." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="CheckRepairLasers" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetRepairLaserCount" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610578429" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Repairs stopped: equip at least one Repair Laser and no other laser types in the main battery." />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="135" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="string" val="FinishRepairs" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="1821" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610576637" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10000" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="200" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1134" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="143" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5000" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="200" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1239" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.Infobox" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
 			</sval>
 			<sval type="array" size="1">
 				<sval type="array" size="2">
@@ -2414,7 +2853,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="86">
+			<sval type="array" size="101">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -2424,372 +2863,434 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Verify target exists." />
+				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="1" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Check for repair lasers." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="MordanB - Even at half laser range, the small &quot;hit box&quot; of fighters makes the repair laser miss often." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="This only manifests when the player is in-system, but regardless, if the target is tiny, we're going to move closer in order to" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="2" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="string" val="eliminate most of the &quot;hit box&quot; problem.  A repair laser is still a laser and the game treats it like it can miss." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="4" />
-					<sval type="int" val="1" />
-					<sval type="string" val="and the target still exists" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="5" />
-					<sval type="int" val="1" />
-					<sval type="string" val="write to logfile 1 append=[TRUE] printf: fmt='Target doesnt exist', null, null, null, null, null" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="6" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="string" val="keep moving until we get in the same sector as the target." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="14" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="14" />
+					<sval type="int" val="17" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="18" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
-					<sval type="string" val="double check that the target is still not moving.  Bail completely if it is." />
+					<sval type="string" val="double check that the target is still not moving. Bail completely if it is." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Check to make sure the target didn't dock or leave." />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="18" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="18" />
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
-					<sval type="string" val="write to logfile 1 append=[TRUE] printf: fmt='Spot 1', null, null, null, null, null" />
+					<sval type="string" val="Expanded 2.2: Check repair lasers." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="18" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="22" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="19" />
+					<sval type="int" val="22" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Move within range." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="21" />
+					<sval type="int" val="24" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
+					<sval type="int" val="26" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="31" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="28" />
+					<sval type="int" val="33" />
 					<sval type="int" val="1" />
 					<sval type="string" val="We weren't close enough, and yet the move command didn't bring us any closer.  We've come to a stop too far away.  In this case, reduce the Followdistance by a bit." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="31" />
+					<sval type="int" val="36" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="37" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="37" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="32" />
+					<sval type="int" val="39" />
 					<sval type="int" val="1" />
 					<sval type="string" val="safety check, in case we can't seem to ever move close enough.  Allow 3 reductions in distance." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
+					<sval type="int" val="44" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="36" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="37" />
+					<sval type="int" val="45" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="38" />
+					<sval type="int" val="46" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="47" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="39" />
+					<sval type="int" val="47" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="42" />
+					<sval type="int" val="50" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="42" />
-					<sval type="int" val="1" />
-					<sval type="string" val="write to log file 1 append=[TRUE] printf: fmt='Within Range of Target.  Distance=%s, laserRange=%s', $Distance, $laserRange, null, null, null" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="42" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="42" />
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="We're within range if we get here." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="42" />
+					<sval type="int" val="50" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Limitation of the game:  the &quot;in firing range of&quot; command NeVER works right, in system or out of system.  Don't use it." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="43" />
+					<sval type="int" val="51" />
 					<sval type="int" val="1" />
 					<sval type="string" val="if [THIS]-&gt; is $ship in firing range of turret 0            BROKEN command.  Does not work in or out of system correctly." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="44" />
+					<sval type="int" val="52" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Issue the follow command first, which essentially TURNS the ship towards the target, allowing the primary lasers to hit.  Otherwise it fires into space." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="47" />
-					<sval type="int" val="5" />
+					<sval type="int" val="52" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
-					<sval type="int" val="7" />
+					<sval type="int" val="54" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="50" />
+					<sval type="int" val="57" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The player may have left the sector during movement." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Never fire actual repair lasers OOS." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="61" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="51" />
+					<sval type="int" val="62" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="65" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="66" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="51" />
+					<sval type="int" val="66" />
 					<sval type="int" val="1" />
 					<sval type="string" val="OOS" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="51" />
+					<sval type="int" val="66" />
 					<sval type="int" val="1" />
 					<sval type="string" val="OOS can't use the &quot;in firing range of&quot; command, as this appears broken." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="51" />
+					<sval type="int" val="66" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Additionally, repair lasers fired OOS just seems to destroy the target ship, even when it's not supposed to.  Apparently no one ever" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="51" />
+					<sval type="int" val="66" />
 					<sval type="int" val="1" />
 					<sval type="string" val="intended to use repair lasers like this.  So..  We'll fudge it." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="51" />
+					<sval type="int" val="66" />
 					<sval type="int" val="1" />
 					<sval type="string" val="don't care much about this value.. Just make sure we're in the neighborhood of the ship. We're OOS so not important that we're right on top of the target." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="54" />
+					<sval type="int" val="69" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="56" />
+					<sval type="int" val="71" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Revalidate after firing or the OOS repair wait." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="73" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="73" />
 					<sval type="int" val="1" />
 					<sval type="string" val="if repair is done" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="58" />
-					<sval type="int" val="1" />
-					<sval type="string" val="write to log file 1 append=[TRUE] printf: fmt='Finished Repairs', null, null, null, null, null" />
-				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="78" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="62" />
+					<sval type="int" val="78" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="63" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="63" />
+					<sval type="int" val="79" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="63" />
+					<sval type="int" val="79" />
 					<sval type="int" val="1" />
 					<sval type="string" val="end while 1" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
+					<sval type="int" val="80" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="64" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="65" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="66" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="66" />
+					<sval type="int" val="80" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="67" />
+					<sval type="int" val="80" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Catch target destruction during the final 100 ms wait." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="81" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="82" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="83" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Herobetty 5.4: fix for abandoned ships and if ships switch allegiances." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="67" />
+					<sval type="int" val="83" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.5.3: Stationary targets don't need to be on standby since they're not moveable objects. Note that small and large are unused - they are there just for futureproofing." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="72" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="78" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="78" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="83" />
-					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="84" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="85" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.5.3: Don't check if in the same environment (command will abort if the repair ship is docked but target is in space). Instead, check if target is docked." />
-				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="89" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="94" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="90" />
+					<sval type="int" val="94" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="90" />
+					<sval type="int" val="98" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="99" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="101" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="109" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="110" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="90" />
+					<sval type="int" val="110" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Repair lasers OOS tend to destroy target ships.  Fun fun.  So if OOS, we just keep it simple and add hull to the target every x seconds." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="90" />
+					<sval type="int" val="110" />
 					<sval type="int" val="1" />
 					<sval type="string" val="not one can see it, so no one will care." />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="113" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="92" />
+					<sval type="int" val="113" />
 					<sval type="int" val="1" />
-					<sval type="string" val="This rate mirrors the general observed in-system repair rate.  That's about 1500 hull / second repair.  We'll do a bit better OOS because I like it that way." />
+					<sval type="string" val="Each repair laser restores 1250 hull per cycle." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="113" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Six lasers preserve the previous 7500-hull repair amount." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="117" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="119" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="122" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="127" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="128" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="134" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="135" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="137" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="141" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="2" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
