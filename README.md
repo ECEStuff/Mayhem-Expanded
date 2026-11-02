@@ -12,7 +12,7 @@ Base Renegades Full Install - Alternative location on Google Drive: https://driv
 
 Russian localization (outdated): https://github.com/alexalsp2/Renegades_AddOns_russian
 
-Modified ZMap for Expanded: https://github.com/ECEStuff/ZMap_Expanded/tree/main
+Azimuth (improved Mayhem map generator): https://github.com/ECEStuff/Azimuth_Mayhem_MapGen
 
 # Fresh installation 
 If you're installing Expanded from scratch:
