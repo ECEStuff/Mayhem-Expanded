@@ -1,0 +1,183 @@
+------------------
+4.0
+------------------
+
+.  Added 3.0 Release + latest patch files +
+	
+.  Version change to 4.0
+	- Setup.ZH.xml 
+	- mayhem_data\template_8379-L044.xml
+
+.  Fix from betelgeuse97 for Crisis Issue where mercs are flooding the galaxy map.
+	- ZH.Monitor.xml
+	- ZH.Core.xml
+	- ZH.Merc.Generate.Crisis.xml
+	- Mayhem.GetCompanies.xml
+	
+.  Fix from betelgeuse97 for Teraforming issues.
+	- Menu.Mayhem.Ministgry.SM.xml          
+	- Mahyem.SetTerraformingEffects.xml     
+	- Mayhem.GetMaxSpecializationLevel.xml  
+	- Mayhem.Truce.Sign.xml                 
+	- ZH.Terraforming.GetManpower.xml       
+	- ZH.Crisis.End.xml   
+
+.  Fix for Template built ships to properly equip correct Missiles.
+	There is a prior feature where new Big (M6, M8, TM) or Huge ships (M1, M2, M7) would be given a random small assortment of compatible missiles for free.  Unfortunately, this was never meant for ships built from a template.  Templated ships will now correctly build and load the missiles listed in the template during construction.  If the missiles already exist in the outpost cargo, they will be consumed.  If they do not, the outpost will automatically build them, assuming you have the Missile Perk.  This fix should make Missile ships FAR more viable to use in the future.
+	Notes: 
+		. Templates do not observe Lasers or Shield types or amounts.  Hector set this to always build the optimal configuration, even if your template is set otherwise.
+		. Missile Resupply values for new ships should be correctly set after this fix and your resupply ships "should" be able to resupply them correctly.
+		. Minimal random missile loadouts for non-templated Big or Huge ships are provided free.  Templated ship missile loadouts must be acquired or built and thus are not free.  The tradeoff is that for templated ships, you have full control of the loadout.
+		. Missile Encyclopedia is out of date.  Use the Personal Console / Missile Compendium instead.
+	
+	- Mayhem.Task.TemplateWhenReady.xml
+	
+.  Renegades Plot is now OFF by default.  This can be turned on in the player Cheat Menu.
+	Renegades Raids now start later in the game if turned on, giving you more time to build up.
+			
+	- Mayhem.GameCreator.Setup.xml
+	- Renegades.Monitor.xml
+	- z.cheat.cycrow.menu.xml
+	
+.  Missile Rebalance
+	At present, Missiles are a very under-utilized weapon system.  The fact that they are expended and have costs associated
+	with them, along with their somewhat lackluster performance has resulted in them being a second tier choice.  Also, they
+	must be manufactured and auto-resupply operations can be slow, risky, and buggy.  I recognize this may not be the case
+	for some players and welcome constructive feedback and examples in an effort to put Missiles on an equal footing
+	with lasers overall.  The goal is that if someone wants to put out the extra materials for expendable ammo, and take all 
+	the extra personal effort to supply and setup resupply operations, that the reward for this should be tangible.
+	For now, I've made sweeping changes to Missile performance and damage and appropriately raised
+	their cost.  The increased Speed for Missiles should help to reduce the number of in-flight missiles considerably, which
+	I'm hoping will reduce CPU lag and Jitter in large battles.  Rate of Fire for missiles is not changing. 
+	Chaff speed has been increased by approximately 50%	and Chaff damage remains unchanged.  Boarding Pod variants are unchanged.
+	Ovreall, Missiles have been adjusted in Damage, Speed and Cost in order to achieve a balance where your choices are probably no longer
+	going to be based on the Race of the Manufacturer, but rather the Type of Missile appropriate for the role and how you plan
+	on using it.
+	One race is not going to provide a better "value" for missiles over another race.
+	The Price vs. Performance for all missiles in a given class (Fox1, etc) are all balanced.  Some missiles do more
+	damage or go longer range, but they will cost appropriately more.  Some missiles hit much harder but have a slower rate of fire.
+	The stats may vary, but the overall "value" will be consistent across the class regardless of race, or missile type.  All value assessments are based on a weighted value system outlined below.
+	Volume for Missiles has been better standardized.  Less extreme variation now exists for missles of the same exact class and 
+	capability.  Fox2, being heavy missiles have had their volumes increased across the board to match Fox 3 missiles, which are also Heavy missiles.
+	
+	The player will still have some viable choices within a missile class depending on your goal and style.
+	For example, if you want a good anti-fighter missile that has a chance of killing a fighter with 1 shot, the 
+	Firefly will be your best bet because of it's High per-hit damage compared to other Fox 2
+	missiles.  However, you'll pay appropriately more for that choice.  Better options may exist that give more
+	Damage Per Minute than the Firefly, but will require that you use multiple shots to realize that benefit.
+	
+	A global Missile Price adjustment can be found in the 9973-L044.xml file (See ID 127).  If you feel the new
+	missile prices are too low or high, you can make an adjustment to it here.
+	
+	
+	Artilliary:
+		Slow, dumb, long range, Ultra heavy Damage.  Heavy Missile.
+		Massive capital or station killers.  
+	
+	Fox 1: 
+		Cheap, Slow, medium range, Low Damage. Light Missile.
+		A good suppression missile against large targets. Semi active radar homing. 
+		Requires a locked target to be fired, limiting it's effectivelness in large engagements. 
+		
+	Fox 2: 
+		Mid Priced, Fast, Short Range, Medium Damage. Medium Missile.
+		A good Anti-Fighter missile. Less range than the Fox1, but you can fire and forget this as it is a heat seeker.
+		Heat Seeker, No lock required. 		
+	
+	Fox 3: 
+		Expensive, Slow, High Damage, Long Range, Auto-Homing. Medium Missile.
+		A good Anti-Capital missile.
+		Active radar homing. No Lock required. 
+		
+	
+	1. Flight Times have been adjusted to put their total flight range on-par with other missiles of the same class.  
+	
+		Class				Range
+		Artilliary:   	100,000 - 150,000
+		Fox 1:			40,000 - 60,000
+		Fox 2:			30,000 - 40,000
+		Fox 3:			60,000 - 90,000
+
+	2. Damage has been adjusted to put total Damge Per Minute range on-par with other missiles of the same class.
+	
+		Class			Damage Per Minute
+		Artilliary:   	9M - 13M (Million)
+		Fox 1:			  500,000 -   800,000
+		Fox 2:			1,500,000 - 3,000,000
+		Fox 3:			3,000,000 - 4,000,000
+	
+	3. Cost has been adjusted to give a consistent overall Value all missiles based on a weighting system.  
+		Overall weights used for value assessment is as follows:
+		
+		Damage/Minute			60%
+		Range					25%
+		Homing capability		15%
+		
+		
+	- 9973-L044.xml					- added switch for user configure
+	- ZH.Setup.Variables.xml		- initialize value in code.
+	- Mayhem.Costs.Missile.xml		- affects cost of missiles here.		
+	- 12.cat/dat					- actual missile stat changes.
+	
+.  OOS (Out of System) Battle Speed
+	Currently, ship attack scripts are set to have a 5x delay (Time Dialation) when the player is NOT in the same system as that ship,
+	compared to when the player is in that same system.  Hector did this to slow down a battle, giving the player additional
+	time to fly there and participate directly.  While there is merit to this, it does have some negative consequences.
+	It has the effect of greatly slowing down major battles to a crawl.  For any optimal outcome for the players assaults, it doesn't just encourage them to be physically present for a battle, it FORCES them to do so, in order to minimize AI reinforcements.
+	OOS Time Dialation effects for OOS battles has been changed from 5x to 3x so the effect is not so dramatic..
+	
+	- !fight.attack.object.xml
+		
+	
+.  Disable/Enable Automatic assignment of fighters to a Support role in Carrier fleets.
+	Defaults to ON, but this is now configurable in Cheat menu.
+		
+	Prior to this change, all new fighters assigned to a Carrier fleet, or existing fighters added to a Carrier fleet were automatically
+	converted into Support fighters for one of the available carriers in that fleet. I.E. Their home-base was automatically set to a carrier in the fleet, making them a support fighter for only that carrier.
+	
+	Some do not care for this behavior, and now it can be turned off globally in the cheat menu.
+	
+	Note:  Any fighter that is home-based either automatically, or manually to any Carrier will STILL assume a Support Role
+	for that carrier and will not be considered a "Fleet" fighter.  Support fighers run a different script and generally 
+	do what their carrier tells them to do, regardless of any fleet settings that carrier may be a part of.
+	Support fighters do not act in an independent fleet role, obeying fleet orders directly, but rather are used as an extension of the carrier they are home-based at.  Support fighters attack the target of their home carrier, even out to the carrier's max range.
+	
+	. Mayhem.GameCreator.Setup.xml		- Initialize 'AutoNewSupportFighter' to [TRUE]
+	. Mayhem.Task.TemplateWhenReady.xml - Newly built fighters assigned to Carrier fleet will observe cheat switch 
+		before homebasing at any fleet carrier (which would force them into a support ship role).
+	. !ship.cmd.fleet.join.xml - Manually adding fighter to a fleet with a carrier will observe cheat switch "
+	. z.cheat.cycrow.menu.xml	- added on/off to cheat menu
+	
+
+.  Non Support Fighters in a fleet can now be set to engage at shorter range.
+	Default is ON, but is now configurable in the Cheat menu.
+	
+	The default behavior of NON-support fighters in a Carrier Led fleet is to engage enemy targets at the maximum
+	range of that lead Carrier, regardless of their own fighter scanning range.  This "projection" of carrier power with fighters
+	is not always desired by some players, so you can now turn it off.  If OFF, Fleet fighters (non-support) will use their own 
+	max scanning range for engagement.
+	
+	. Mayhem.GameCreator.Setup.xml - Initialize 'AutoProjectFleetFighter' to [TRUE]
+	. z.cheat.cycrow.menu.xml - on/off cheat menu switch
+	. !move.follow.template.xml - alter max attack distance of fleet fighter.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	

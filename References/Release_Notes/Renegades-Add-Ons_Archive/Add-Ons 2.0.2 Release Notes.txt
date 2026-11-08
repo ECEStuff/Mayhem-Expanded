@@ -1,0 +1,401 @@
+The mod has been updated to 2.0.2. Due to increasing IRL responsibilities, development is on hiatus for the next 2 months with the exception of minor bug fixes.
+
+Highlights:
+- Improved extra Xenon defenders.
+- Reworked Renegade roamers and raiders.
+- Reduced ascension sector requirement on smaller galaxies.
+- Removed galaxy map reveal to preserve exploration.
+- Fixed coalition interactions.
+- Fixed missing voice line and IDs for Capital Shipyard, Terran Outpost, and Phanon Outpost.
+
+Previous savegames compatibility: PARTIAL*. 
+Previous galaxies compatibility: PARTIAL**.
+
+Notes:
+- *Existing coalitions may have incorrect diplomatic state. Starting with 2.0.2, the player's reputation is saved before joining a coalition.
+- **Capital Shipyard and Phanon Outpost voice-line files require a newly generated galaxy. 
+  - Existing galaxies will continue using their current 00044.xml voice references.
+
+
+-----------------------------------------
+		ADDITIONS
+-----------------------------------------
+- (2.0.2a) Added a toggle (9973 t-file, variable 134) to disable forced NPC conquests on hard mode upon conquering your first sector.
+  - By default, this setting is enabled.
+  - If disabled, this restores the original hard mode expansion from Renegades/ZH/Mayhem. 
+  - This was requested to preserve the feel of the original hard mode and keep this modifier's identity as a taste of insane mode's modifiers.
+
+	. Mayhem.FirstConquestPlayer.xml
+	. ZH.Setup.Variables.xml
+	. /t/9973-L044.xml
+
+-----------------------------------------
+		CHANGES
+-----------------------------------------
+- Mobile factories and Instant Crafting
+  - Single order reworked: no longer renders your TL stationary. 
+    - Like loop production, now works behind the scenes, allowing the TL to perform other orders.
+  - Instant crafting nerfed: resource costs are doubled compared to mobile factories.
+  - Kha'ak ships, Phanon M3s, and Phanon M4s are now considered mobile factory candidates.
+  - Jump Beacon variable (9972 t-file, variable 174) is now a toggle. 
+    - If enabled and on easy mode, reduces the Jumpdrive Core cost of Jump Beacons by 2. 
+    - Only for new games. Does not apply to normal, hard, and insane difficulties.
+  - Mobile Factory limit (9972 t-file, variable 273) is now a toggle.
+    - Now an optional modifier on easy but required on normal and up. 
+    - Limits the number of Mobile Factories; the limit is proportional to how many planets are in the player's empire.
+  - Outpost GUI now displays the available resource quantities for crafting hackerchips and jump beacons (special items).
+  - Outpost GUIs now use Mobile Factory cost definitions as the source of truth, preventing cost mismatches.
+  - Rationale: 
+    - In all other cases, loop production was superior to the old mobile factory due to preserving resources.
+    - Previously, instant crafting completely bypassed the Mobile Factory's time/resource balance, making Mobile Factory obsolete.
+    - Instant crafting cost is now doubled to ensure that the Mobile Factory remains the primary production source for special items, while keeping instant crafting available for true emergencies.
+
+	. Menu.MobileFactory.xml
+	. Menu.MobileFactory.SM.xml
+	. Menu.DWM.Get.Production.Station.xml
+	. Menu.DWM.Set.Production.Station.xml
+	. Mayhem.Cmd.MobileFactory.xml
+	. Mayhem.CmdPl.MobileFactory.xml
+	. Mayhem.MobileFactory.SetProductCosts.xml
+	. Mayhem.Task.MobileFactory.xml
+	. ZH.Task.MobileFactory.xml
+	. ZH.Terraforming.Get.Limit.xml (the mobile factory limit is calculated using this script)
+	. ZH.Initialize.xml (renamed jump beacon cost variable to toggle. Moved jump beacon cost reduction toggle back to Mayhem.Setup.Variables)
+	. Mayhem.Setup.Variables.xml
+	. setup.ZH.xml (will update mobile factory costs for existing games as of 2.0.2)
+	. /t/9972-L044.xml
+	. /t/9980-L044.xml (updated terraforming mastery message to describe the conferred bonus)
+
+- Renegades
+  - Reworked roamer and raider behavior.
+    - Can now spawn in ANY non-player sector except the Renegade sector. Previously, Yaki and Xenon (non-OCV alignment) sectors were ineligible.
+    - They now relocate to other sectors after extended inactivity. Roamers' fleeing behavior is unchanged.
+    - Roamers trapped by player territory now transition into raiders.
+    - Raiders now relocate between player sectors when no targets remain.
+    - Target selection has been revised to reduce ineffective pursuits and worker (explorer, tug, looter) exploits.
+      - Target selection is now determined solely by ship class, speed, and current distance. Renegades now choose targets they can reasonably engage.
+      - For speed, it uses the attacker's current max speed + 20% or 25m/s, whichever is greater. 
+      - For distance, it uses the attacker's range + 25%. 
+        - In both cases, this is to give roamers and raiders some margin to engage targets that are nearby and respects OOS mechanics. This should result in baiting being less effective while still giving roamers and raiders meaningful targets to engage.
+
+  - Renegades are now color-coded and named by role. Coloring was a scrapped feature from base Renegades.
+    - Assassins and Defenders rename and recolor themselves as raiders when they turn into raiders!
+    - Raider: red
+    - Roamer: yellow
+    - Assassin: magenta
+    - Defender: blue
+
+  - Renegade flee chance is now determined upon creation. A TM gains an additional +15% flat chance (previously +25% flat chance). Renegade roamer flee chance is now as follows and is affected by scaled difficulty:
+    - 25% on easy (up from 20%)
+    - 35% on normal (up from 25%)
+    - 45% on hard (up from 35%)
+    - 55% on insane (up from 50%)
+    - 65% on insane+1 (up from 50%)
+    - 75% on insane+2 (never happens, as roamers at this point will always raid the player)
+
+  - Rationale:
+    - Older Renegade roamers had a chance to flee determined upon killing satellites, and roamers stayed in the same location.
+    - Players could exploit predictable roamer behavior through savescumming or by tracking their locations, giving players more opportunities than intended to intercept them.
+    - For the flee chance, this allows scaled difficulty to affect roamers. The chances are higher since roamer behavior is determined upon creation rather than upon each satellite kill. The increased flee chance should compensate for the anti-savescum measure.
+    - For relocation, this allows roamers and raiders to reposition, ensuring that the player cannot "bank" Renegades. This also solves edge cases where 2+ roamers can occupy the same sector.
+    - For target selection, this ensures that workers cannot be used as spotters.
+    - These changes overall ensure that Renegades are less predictable, preventing players from permanently neutralizing roamers and raiders through avoidance or savescumming. They also require the player to commit to interception.
+
+	. Renegades.Plot.Challenge.xml (removed isRenegadeAssassin flag; assassins now reuse the forceInvasion flag)
+	. Renegades.Plot.GetRandomShip.xml
+	. Renegades.Task.Renegade.xml
+	. Renegades.Task.Station.xml (added toggleable debug mode - reduces invasion timer to 10min)
+	. Renegades.Monitor.xml (added toggleable debug mode - reduces renegades timer to 5min)
+	. /t/9980-L044.xml (removed double-spaced sentences)
+
+- Ascension 
+  - Changed sector requirement: it is now 20% (30% on insane) of the galaxy or 20 (30) sectors, whichever is lower.
+  - Rationale:
+    - Faction territory count scales with galaxy size, but the previous sector requirement did not.
+    - On smaller galaxies, sector discovery can become disproportionately difficult due to hostile patrols and limited unexplored space.
+    - The requirement now scales with galaxy size, making completion more consistent across different galaxy setups.
+
+	. Menu.PC.Ascension.SM.xml
+
+- Starting Options
+  - Removed reveal galaxy map option from chaotic start, starting options, and quickstart.
+  - Rationale:
+    - Exploration is one of the core pillars of a 4X game.
+    - Revealing the entire galaxy at game start granted perfect strategic information from the start and reduced the value of exploration.
+    - Players must now discover the galaxy themselves, making information a resource that must be earned and aligning Quickstart with other gamestarts.
+
+	. z.cheat.cycrow.action.xml (passes debug argument to revealall script)
+	. z.cheat.cycrow.revealall.xml (added a debug argument. Sector is revealed only if there is a gate or debugging rather than always.)
+	. Mayhem.StartingOptions.xml
+	. Mayhem.StartingOptions.Callbacks.xml
+	. ZH.GameCreator.GalaxyStart.xml
+	. ZH.GameCreator.VeryQuickstart.xml
+
+- Faction dynamics: coalitions
+  - Players can no longer join another coalition if they are already in a coalition.
+  - Players can no longer declare permanent war against coalition allies.
+  - Destroying or boarding a coalition ally's assets results in an expulsion and a 12 hour suspension from joining other coalitions.
+  - Player reputation is now saved prior to joining a coalition, meaning the player's old reputation is restored after the coalition disbands.
+  - Rationale:
+    - Coalitions are a political dynamic where AI relations were being restored but not the player's.
+    - Prior this patch, disbanding the coalition could bring the player's reputation to a better state or an even worse state than before the coalition.
+    - These changes ensure that the player's permanent reputation is unaffected and consequences for violating coalitions, since coalitions force temporary friendship until it disbands.
+
+	. !ship.signal.killed.xml
+	. !station.signal.killed.xml
+	. ZH.Sig.Captured.xml
+	. Mayhem.Coalition.Add.xml	
+ 	. Mayhem.Coalition.Remove.xml
+	. Mayhem.Coalition.Update.xml (updated comments)
+	. Menu.Mayhem.Ministry.SM.xml
+	. ZH.Initialize.xml
+	. /t/9974-L044.xml (updated mechanics -> favor and loyalty section to state that coalitions grant 1 favor point with all allied NPC factions)
+
+- Xenon/OCV
+  - The maelstrom sector is now a candidate for extra Xenon defenders if it has more than 2 gates (the maelstrom counts as a dead gate).
+    - If the maelstrom sector is selected, then the extra Xenon fleet spawns at the portal. The fleet is an elite composition of OCV and Xenon ships.
+  - OCV spawn faster if the maelstrom sector has more than 2 gates. Cycle time is now also dependent on difficulty.
+  - OCV fighters and M6 now spawn in batches. Capital ships still spawn 1 at a time.
+  - Initial OCV spawns are now based on difficulty, with hard and insane spawning more enemies. 
+    - Increased OCV quota by 1 M7 for harder difficulties and 1 M2 insane difficulty before OCV commits to an invasion.
+  - Extra Xenon defenders have been reworked:
+    - The amounts per ship type have been increased, but strongholds (Xenon sectors adjacent to the portal sector) spawn 1 less M7 and 1 less M2.
+    - Stations now track their defender leader rather than being given a garrison once per lifetime.
+      - If the leader dies, then its station becomes eligible to spawn a new defender fleet.
+    - Xenon sectors close to the portal (2-4 jumps away) no longer have a chance to downgrade to minimal defenses.
+    - An extra fleet is now guaranteed to spawn every 3 hours until the cap is reached. Previously, each cycle instead had a chance to spawn a fleet.
+    - The number of garrisons is now scaled by difficulty: 
+      - Easy: 0.8x
+      - Normal: 1x
+      - Hard: 1.5x
+      - Insane: 2x (1x if player joined the OCV)
+  - Rationale:
+    - In existing games, Xenon stronghold garrisons could spawn excessive capital ships: 2 M2s, 2 M7s, and 1 M1 per fleet.
+    - It was possible for these sectors to be wiped by roaming patrols, and it is possible for the maelstrom sector to have more than 1 active gate connection (including jump holes).
+    - This allowed multiple full-strength garrisons to stack in a single sector, effectively turning some sectors into no-fly zones.
+    - Conversely, once those garrisons were destroyed, their sectors could be permanently pacified.
+    - These changes make Xenon sectors more consistently threatening while keeping their defenses realistically fortified. 
+    - The gate criteria represents the need for extra security in the maelstrom sector when increased connectivity makes the portal sector easier for hostile fleets to reach.
+    - OCV batch spawning ensures that fighters and M6 fight at full strength; these classes are frail but are strong in numbers. It also means that fighters are no longer the bottleneck for OCV ship production.
+	
+	. Mayhem.GameCreator.SpawnXenons.xml
+	. Mayhem.Monitor.OCV.xml
+	. Mayhem.Task.Squadron.Rearguard.xml (correction to portal check - now explicitly checks if distance to portal is >= 5)
+	. ZH.Xenon.SpawnDefenders.xml
+	. ZH.Get.Distance.Portal.xml (if portal sector is the same as sector, it now returns 0 instead of null)
+	. /t/9973-L044.xml (updated comments for ID variable 55 - the default percentage is at least 30%.)
+
+- Misc
+  - Added error checking for recycling factor and mobile factory efficiency.
+    - Recycling factor is adjustable between 0-65%.
+    - Mobile factory efficiency is adjustable between 20-80%.
+    - Rationale:
+      - Error checking. Having the values too high opens up exploits with mobile factory producing better than factories.
+      - There is already anti-exploitation with recycling factor, ensuring that recycling never generates extra materials. 
+      - 65% is an upper limit for players who want easier recycling.
+
+	. Mayhem.Setup.Variables.xml
+
+  - Repair and inspection warnings are now given every 20 and 30 minutes respectively.
+    - Repair warning threshold decreased: 85% -> 50%
+    - Before, this would play every 6.7 and 10 minutes respectively. 
+    - However, due to a bug, they would never play. These changes ensure that the warnings remind the player without being annoying.
+    - Now, the warning displays how many fleet leaders need inspection and/or repairs. This is to reduce clutter and possibility of subtitles being overwritten.
+
+	. Mayhem.Monitor.FleetControl.xml
+
+  - If the player doesn't have enough money to pay for maintenance, then Outposts now transfers only as much money as needed to the player's account.
+    - Prior to this, maintenance would drain all the money from the Outpost, leaving it with no funds. This fix preserves the Outpost's money for its logistics.
+
+	. Mayhem.Monitor.Maintenance.xml
+
+  - The cash milestone now checks ALL accessible cash rather than checking player cash separately and then player + station cash.
+  - The resource nation milestone now takes the total value of all wares into account rather than of each type.
+    - To compensate for this change, resource milestone value increased: 1M -> 2M
+    - Rationale: 
+      - Prevents players from stockpiling surplus resources of specific types. 
+      - This is to further encourage the player to balance their resources.
+
+	. ZH.Monitor.xml
+	. /t/9973-L044.xml (updated comments)
+
+  - Updated ship traits in the pedia.
+
+	. /t/9974-L044.xml
+
+  - Properly made Private Corp eligible to spawn unusual merc ships except OCV and Phanon ships.
+    - This was due to a referencing bug in ZH.Initialize where Private Corp was being added directly to the company master list. 
+      - This bug has been resolved (see fixes).
+
+	. ZH.Core.xml
+	. Mayhem.Monitor.Autopopulate.Ship.xml
+	. Mayhem.GetCompanyAlly.xml (this script is responsible for determining which faction the merc can pull ships from)
+
+  - Xenon, Kha'ak, OCV, Renegades, and Companies (mercs and neutral traders) now gain 5% passive hull repair.
+    - As usual, Boron ships have 10% passive hull repair.
+    - Kha'ak ships now have 5% passive hull repair.
+    - Rationale:
+      - These factions do not have conventional repair facilities, meaning any damage they take is permanent.
+      - Previously, the player and NPC factions could permanently cripple these factions' ships, effectively neutralizing the threat if the player relies on keeping those ships alive.
+      - This change makes these factions gradually recover, making this tactic a temporary solution. 
+
+	. ZH.BoronHullRegeneration.xml
+
+  - Updated first conquest messages for hard and insane.
+
+	. /t/9973-L044.xml
+
+  - Updated version number.
+
+	. setup.ZH.xml
+	. /mayhem_data/template_8379-L044.xml
+
+-----------------------------------------
+		FIXES
+-----------------------------------------
+- (2.0.2e) Fixed Pirate Bases spawning too many fighters on hard difficulty due to a typo bug.
+
+	. Mayhem.Task.Station.PirateBase.xml
+
+- (2.0.2d) Fixed Xenon portal garrison logic incorrectly treating OCV-aligned player sectors as hostile.
+  - Xenon will now correctly consider adjacent player sectors safe after the player joins the OCV.
+  - Before joining the OCV, adjacent player sectors continue to count as hostile.
+
+	. ZH.Xenon.SpawnDefenders.xml
+
+- (2.0.2d) Cleaned up notifications when player purchases sectors or favor points.
+
+	. Menu.Mayhem.Ministry.SM.xml
+
+- (2.0.2c) Fixed "reduced jumpdrive core cost" difficulty modifier being enabled by default on easy mode.
+
+	. /t/9972-L044.xml
+
+- (2.0.2b) Fixed faction relations being incorrectly set upon gamestart (bug introduced in 2.0).
+
+	. Mayhem.GameCreator.GalaxyData.xml
+	. ZH.Reset.Relations.xml
+	. Mayhem.InitializeRelations.xml
+
+- (2.0.2b) Corrected non-insane mode version of Phanon's introduction.
+
+	. /t/9973-L044.xml
+
+- (2.0.2a) Fixed portal not being spawned upon gamestart on lower difficulties.
+  - Added a safety: if a portal location has not yet been determined, the game picks a random Xenon sector to spawn the portal. 
+  - Rationale:
+    - The game calculates the most isolated sector by summing the distance for each sector from each Xenon sector.
+    - This was due to a null error, notably with the Renegade sector which is disconnected (thus returning null jumps).
+    - Now, sectors with null jumps are ignored. This ensures that the portal is always spawned in.
+
+	. Mayhem.GameCreator.SpawnXenons.xml
+
+- (2.0.2a) Fixed player being automatically dragged into permanent wars upon gamestart due to galaxy settings.
+  - This was caused by galaxy settings where factions could be set to enemies against each other. If so, this dragged the player into permanent war.
+  - This feature removes player agency by dragging the player into total wars and potentially softlocking the game since some starts require positive relations with other races. It also makes ascension harder to complete.
+  - To fit the theme that the player is an independent, automatic permanent wars have been removed to make permanent war a deliberate player choice rather than mandatory.
+
+	. Mayhem.GameCreator.GalaxyData.xml
+
+- Faction dynamics
+  - Fixed pop-up message being displayed when there's no truce between factions.
+  - Cleaned up faction pop-up messages (removed plural form and replaced with "empire").
+  - Rationale:
+    - Truce breaking was not checking if there was a truce between factions. The player receives notifications any time a truce breaks.
+    - There are other actions can break truce (unbreakable alliance, total war, etc.).
+    - This ensures that a truce is broken only if there is really a truce; thus, no pop-up messages will be displayed if there aren't any truces to break.
+
+	. Mayhem.Claim.xml
+	. Mayhem.CancelClaim.xml
+	. Mayhem.Conquer.xml
+	. Mayhem.Favor.Add.xml
+	. Mayhem.Truce.Break.xml
+	. ZH.Monitor.xml
+
+  - Fixed Yaki and Player not being included in coalition allies.
+
+	. Mayhem.Coalition.GetAllies.xml
+	. Mayhem.Coalition.GetPotentialAllies.xml
+
+- 8 hour check:
+  - Fixed sorting errors due to mismatched indices being passed into sorting algorithm.
+  - Fixed potential divide-by-zero errors.
+  - Fixed voting influence (9973-L044, variable 33) and deterrence factor (9973-L044, variable 62) being divisible by 0. These now have an absolute minimum value of 40% and 30% respectively.
+  - Fixed global alliance condition: now checks if a global alliance is to be declared and if the Phanon plot has not yet been completed.
+
+	. ZH.Get.Enclaves.xml
+	. ZH.Core.xml
+	. 9973-L044.xml
+
+- Monitors
+  - Cleaned up code and tips.
+
+	. ShowNewsTips.xml (removed double spaces)
+	. Mayhem.Monitor.News.xml (refactored $div into $UsefulInfoDelay for readability)
+	. Mayhem.Monitor.Autopopulate.Station.xml (refactored duplicate code)
+	. Mayhem.Monitor.Autopopulate.Ship.xml (removed dead variable)
+	. Mayhem.Monitor.GarbageCollection.xml (fixed missing Phanon, Renegades (Unknown), and Private Corp. entries)
+	. Mayhem.Monitor.FleetControl.xml (fixed warnings not being displayed and added a divide-by-0 check)
+	. Mayhem.Monitor.Maintenance.xml (clarified existing comment)
+	. Renegades.Monitor.xml (beacon cleaner now destroys as many excess beacons as possible. Also cleaned up typos and legacy code)
+	. ZH.CI.SelectTarget.xml (fixed duplicate squad leaders, early return (debug mode only), and added comments regarding gate selection)
+	. ZH.Task.PirateWarlord.xml (fixed comment stating incorrect task number)
+
+- Misc
+  - Fixed CIs accessing dereferenced variables (dead members, no members, no target). CIs should now be properly maintained.
+  - Fixed ultimatum removal referencing null variable. The ultimatum should now be properly cleared when the 1 hour grace period expires.
+  - Fixed Nomads not checking for the Nomad flagship.
+
+	. Mayhem.BuyOrLoad.xml
+	. Mayhem.Merc.Generate.xml
+	. ZH.Monitor.xml
+	. ZH.Nomads.Build.xml (added safety)
+
+  - Fixed snowballing chances of removing satellites.
+    - The game was removing a lot more satellites than it should have been due to satellite removal chances increasing when checking EVERY satellite.
+  - Also cleaned up code - consolidated redundant difficulty variables and origin galaxy check.
+
+	. Mayhem.Monitor.Galaxy.xml
+
+  - Fixed NPCs not respecting their safe pathfinding.
+
+	. Mayhem.Task.Move.xml
+
+  - Fixed non-Xenon ships attempting to defend Xenon station, notably causing the player's ships to defend when the player doesn't want to.
+
+	. !station.signal.attacked.xml
+
+  - Fixed cached data structure variables (companies and galaxy) being written to. 
+  - Now, retrieving them returns a copy to protect from dangerous writes.
+
+	. Mayhem.GetGalaxy.xml (contains cached galaxy)
+	. Mayhem.GetCompanies.xml (contained cached company list)
+	. Mayhem.TestShip.xml (added test case to verify caching fix)
+	. ZH.Initialize.xml (was writing directly to companies)
+	. ZH.SyntheticDawnCompletion.xml (was writing directly to companies)
+
+  - Fixed mercs spawning OCV ships. This was because no race was being returned for Private Corp.
+
+	. Mayhem.GetCompanyAlly.xml
+
+  - Fixed player-build ships having a default missile fire probability of 50% instead of 75%. This has been corrected to 75% per Renegades 4.1.
+    - Renegades 4.1 placed the 75% probability before fire probability was finally overridden by defaults.
+    - This is in line with Renegades 4.0 which reworked missiles.
+    - The 75% is to encourage the player's ships to use missiles more aggressively, especially so since missiles come with newly-built ships.
+    
+	. Mayhem.BuildShip.xml
+
+  - Fixed compiler warnings due to even-numbered or redundant IDs for Terran Outpost, Phanon Outpost, and Capital Shipyard.
+    - Their IDs have been moved from the 9973 t-file to 9972.
+  - Fixed Capital Shipyard not having a unique name and voiceline.  
+
+	. /t/9972-L044.xml
+	. /t/9973-L044.xml
+	. /mayhem_data/template_00044.xml
+	. 12.cat/dat - TDocks.pck
+
+  - Cleaned up permanent war descriptions and tooltips.
+
+	. Menu.Mayhem.Ministry.SM.xml
+	. Menu.DWM.Get.Food.Perks.xml
+	. /t/9974-L044.xml

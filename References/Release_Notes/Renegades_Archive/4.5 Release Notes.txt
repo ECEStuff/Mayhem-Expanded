@@ -1,0 +1,426 @@
+Version 4.5
+(Includes all changes from the 4.1 Release).
+
+-------------- Covert Operations ---------------------
+
+This features allows an installed "Software Signature Disruptor" module to effectively allow that player owned
+ship to appear as a Pirate to the A.I. and further severely limits all A.I. commonwealth patrols from classifying it as a hostile,
+even if you are at war with them.
+
+Doing so allows this ship to travel where a Pirate ship might freely travel and 'mostly' cloaks your ship in enemy owned space.
+This allows the player to setup covert Looters, or even Traders to move goods through hostile space.  Detection by Pirates is
+prevented and detection by hostile commonwealth patrol ships is extremely limited.
+You can also use this to setup tactical situations where you bring your own ships into an enemy held system without being immediately attacked,
+allowing for excellent scouting, or even a devastating first strike capability.
+
+	. This feature does NOT allow such a ship to dock where it would not normally be allowed to dock.
+	. Ships so equipped will reveal themselves, at least temporarily, if they attack someone.
+	. Police will not scan a ship with a Software Signature Disruptor installed. (!fight.defend.monitor.xml)
+	. Ships so equipped may still be attacked by the A.I. given they appear as Pirates, but with greatly reduced chance.
+	. This module is found in the Upgrade Ship menu, and costs 20 Blue Crystals, so the upgrade is expensive.  
+		Blue Crystals are also a scarce resource at trade stations, so it will be important
+		to either enlist your own automated mining ships, or to use the Crystal Transmuter to upgrade lower valued crystals.
+	. Only police, border patrol, and rearguard A.I. fleets attack pirates.  BattleGroups and Task Forces and escorts do not.
+
+
+. Change price of Software Signature Disruptor to 20 Green Crystals in the ship upgrade menu.  
+	
+	*. Mayhem.GetEquipmentPrice.xml
+
+. Activate Cover State when installing the Software Signature Disruptor.
+	Also check cover state on any player ship when it is moved to properly synchronize variables in the condition where the 
+	player transfers the Signature Disruptor to another ship, or ejects it.  The Move task is our only reliable option.
+
+	*. Menu.DWM.UpgradeShips.SM.xml
+	*. Mayhem.Task.Move.xml
+	
+. Limit A.I. "Main Faction" Patrol ship chances of engaging a player-owned ship equipped with this device to around 10%.
+	Aggressiveness towards the player-owned ship might be severely reduced, but I'm not sure if this will have an effect
+	as Joubarbe made many many changes here regarding fight mechanics from Base X3 standards.  Either way, the detection 
+	chances are low with the module.  The "Main Faction" patrols comprise all factions except the OCV, Xenon, and Pirates.
+	Pirates however, should not attack a player ship with this module given it makes them look like a pirate. (unless you aggress one of course)
+	
+	*. !fight.defend.monitor.xml
+	
+. Allow player cheat menu created ships to have a pirate coverstate.
+
+	*. z.cheat.cycrow.createship.xml	
+	
+	
+-------------------------------------------------------------------------	
+
+
+. Limit player Trade agents to Profitable Trades only.
+	Until now, the vast majority of NPC to NPC Trades being made by Player owned Trade ships would result in 0 profit.  Yes, ZERO.  No check
+	was in place to ensure the buy price was higher than the sell price and so there was a lot of wasted time on trades that did nothing but
+	benefit NPC logistics at the expense of YOUR traders.  This is no longer the case.
+	Player owned Trade workers, that have completed reviewing their homebase's outpost trade needs will seek work trading between NPC's.
+	This has not changed.  However, now they will only accept trades that make a profit.  Prior to this, 9/10 of these trades made no profit at all.
+	Trading to our from your own outposts will not change in terms of prices.
+	Note, that your Trade Rank affects how much profit you make doing Trade Missions for NPC's.  This rank is boosted for you ONLY by profits you 
+	make in your trades.  So this change will be helpful in ensuring the trades you make at least this way also help your Trade Rank.
+	
+	*. Mayhem.Task.Worker.Trader
+	
+	
+. Updated QuickTrade in the outpost logistics.
+	Quick-Trade "Buy Ship Parts" options have all been restricted to the basic 4 ship parts (Hull Plating, Computer Components, Quantum Tubes, Crystals).
+	This option will no longer attempt to buy Chaff, Missiles, Jump drive cores or Colored crystals, which are non-essential.
+	It's important to note, that Player Traders are not allowed to buy Ship Parts from NPC's (other than Quantum Tubes if the 9973 option is turned on),
+	so using Traders to import these is generally only useful for Trading with your own Outposts.
+	Auto Cash Transfer options now say "Low, Medium, and High" instead of "Minimum, Basic and Shipyard".
+	Added an option to Stop the Auto-Cash transfer process.
+	
+	*. Menu.DWM.Get.Logistics.Thresholds.xml		-   Updated some wording.
+	*. Menu.DWM.Set.Logistics.Threasholds.xml	-   Changed actual quick trade values.
+	
+	
+. Notoriety from Trading
+	At present, When any successful trade (sale) is made by the player, your "Trade Rank" is increased based on the Profit made in the trade,
+	but no improvement is made to the player's Notoriety (standings) with their trade partner.
+	I don't believe this is realistic.  Good trading partners are important and trading with them should improve your notoriety.
+	
+	Now, after any successful player Sale being made to an NPC station, that NPC's Notoriety towards the player will increase by 50-100.
+	This includes automated Trades made by your Outpost Traders!
+	This will allow the player to achieve some of the lower ranks (Federation Associate, Federation Guardian, etc..) through trading,
+	and improve relations.  In the early game when you need to expand, this can be a signifant boost, possibly allowing you to squeeze into 
+	spots next to other races that would otherwise put you into a negative standing with them.
+	
+	Note, this does not affect "Loyalty" between you and a faction, which is more of a military thing.  It affects only your notoriety.
+	
+	*. !ship.signal.sellware.xml
+	
+
+. Research Station names will now blink in the Property Menu if no research is active.
+
+	*. Mayhem.Task.Station.ResearchStation.xml
+	
+	
+. The Satellite Display Monitor now has an [ALL] filter for ship types.
+	This will allow you to quickly see if any ships are abandoned in a sector and then you can filter down from there or just view the sector
+	to see what's there.
+
+	*. Menu.SatellitesMonitoring.SM.xml
+
+
+. Added "Get all Food" to the Courier menu.  
+	This allows your courier to load up all Vegetables, Meat, Fish and Fruit.
+	I often use the "No Food Consumption" Perk just to make things easier, but Outposts still produce food which you should
+	eventually get around to selling.  Having a Courier buzz around to pick up food is an easy way to move it, and requires only
+	one setup rather than trying to setup Export agent jobs at every outpost.
+
+	*. Cmd.Courier.xml
+	*. PL.Courier.SM.xml
+	*. Mayhem.GetFood.All.xml	-  New
+	
+
+. Changed the Bail logic for Capital and M6 ships so that the chance for them to Bail is set when the ship is Created, Not when it is destroyed.
+	This prevents the player from Save-Scumming right before a major battle in order to pick up abandoned capital ships more easily.  
+	Also added M6's to the list of ships that can Bail.  Before this, the only time you would ever see a bailed M6 was at game start, but never after.
+	Bailed M6 and larger ships do not observe the Galaxy Limit value in the 9972-L044 file and can bail as often as they wish, which isn't often.
+	
+	*. !ship.signal.killed.xml	- Checks pre-set bail flag.
+	*. Mayhem.GetBailChance.xml -  New File.  Gets/sets boolean indicating whether it will bail or not, and if never calculated, does so and saves it to the ship. 
+	*. Mayhem.BuildShip.xml		- Added call to set the bail chance at ship creation time.
+	*. Renegades.SetBailChance.xml
+	
+	
+. Added a fixed 2% chance for each group of Missiles (of a type) in a ships cargo to drop as loot when the ship is destroyed.  Missiles are scattered
+	around sectors at game start, but never dropped thereafter.  This is now changed.
+	
+	*. Mayhem.Task.Loot.xml
+	
+	
+. Removed an annoying message that said the player has lost notoriety with Private Corp.  The game has a periodic routine that
+	always tries to reduce the player's notoriety towards Trade stations to 0 (neutral) and while that's fine, the message is confusing
+	and annoying.
+	
+	*. ZH.Monitor.xml
+	
+	
+. Added a short visual notification on the bottom of the screen whenever one of your TL class ships arrives at a destination that's not it's homebase.
+	Often we send a TM somewhere and then forget we did so, but we also don't like to get more Messages in the queue, forcing us to go look at it
+	and dismiss the message.  
+	
+	*. !ship.cmd.moveposition.pl.xml
+	*. !ship.cmd.movesector.pl.xml
+	*. !ship.cmd.movestation.std.xml
+
+
+. Tax income now scales up as outpost population increases.  Prior to this, each person generated a fixed amount of Tax income
+	regardless of how many people an outpost had.  However, there is power in numbers and collaboration and sharing, so as the 
+	overall population goes up, people will generate more individual tax income.
+	Outpost Tax Income is adjusted as follows based on Population:
+	
+	0-50	-	Standard Tax Revenue
+	51-75	-	+25%
+	76-100	-	+50%
+	101-125 -	+75%
+	126-Max	-	+100%
+	
+	*. Mayhem.GetTaxIncome.xml
+	
+	
+.  Default maintenance cost for Hard difficulty level Jump beacons and Jump stations has been cut by 50%.
+
+	*. 9973-L044.xml
+	
+	
+.  All default Logistics jobs for new Player outposts have been removed.
+
+	*. Mayhem.InitializeOutpostLogistics.xml
+	
+	
+.  Pirates Hate Spies.
+	On the Hard Difficulty level, Pirate ships will now have a far higher chance of Attacking Jump Beacons.  
+	They will scan an extended range, and they will aggressively attack beacons of any race, not just player beacons.
+	
+	*. Mayhem.Task.Pirate.Harassment.xml
+	
+	
+. Events and the Insurance Policy Perk
+	The Insurance Policy will no longer eliminate events entirely if playing on Hard difficulty.  
+	Having the Insurance Policy Perk will now provide only a 75% reduction in events on this difficulty level.
+	For the 'Deadly Disease' event, the number of people lost to disease has been doubled.
+		
+	*. Mayhem.Task.Station.Outpost.xml
+	
+	
+. The Cyberware center perk now creates 5 Hackerchips per 20 minute cycle rather than just 1.  Each cycle,
+	the Cyberware center will scan all ships in one random sector within 5 jumps and for each vulnerable port found,
+	it will install a backdoor and consume one of these chips.  Prior to this, the perk only generated 1 chip per cycle,
+	and players would never see any hackerchips in the outpost, making it appear as if the perk was broken.
+	
+	*. Mayhem.Task.Station.outpost.xml
+	
+	
+. Pirate Warlord spawning chance is now determined when a Pirate station is created, rather than when you destroy it.
+	This prevents the player from "save-scumming" in order to always ensure they get a Warlord spawn.
+	Removed the 24 hour restriction on Warlord spawning from destroyed Pirate stations.
+	
+	*. ZH.Pirate.SpawnBase.xml
+	*. Mayhem.GameCreator.SpawnPirates.xml
+	*. !station.signal.killed.xml
+	
+	
+. The player can now issue a manual Trade Command on a ship to Sell acceptable wares to a remote Pirate Station.
+	One typical use for this is to sell your Space Weed.  Prior to this, the game would only allow you to sell
+	at a pirate station if you manually docked a ship there and then performed a trade.  
+	Note:  Issuing this command will ignore your BlackList and send the ship off to the Pirate station to sell the ware,
+	so doing this can be dangerous.
+	
+	*. Lib.Cmd.Trade.Sell.xml
+	*. PL.TradeRun.Sell.SM.xml
+	*. Lib.Cmd.Trade.GetStationBestPrice.xml
+	
+	
+. Added back the old Stock Exchange from Mayhem 2
+	In Mayhem 2, this was placed in Pontifex' Seclusion, and there was a storyline you had to complete to unlock the 
+	ability to use it.  For Mayhem 3, it is placed in a random Teladi sector and locked out for the player
+	until they reach level 6 reputation (3333 notoriety) with the Teladi.  This can easily be achieved through
+	some trading.  Note, that if you have credits invested and lose your Teladi reputation, you will not be able to
+	use the exchange to get your credits out.
+	
+	*. Menu.PC.TotalAssetValue.xml		- Add Stock value in the total.
+	*. setup.Mayhem.xml					- Added back call to start the stock exchange (Gbl.StockExchange.xml). 
+	*. Mayhem.GameCreator.Generate.xml	- Added call to Mayhem.GameCreator.SpawnStockExchange
+	*. Mayhem.GameCreator.SpawnStockExchange.xml	- New file.  Creates the Exchange in a Random Teladi sector at Gamestart.
+	*. Mayhem.Monitor.Galaxy.xml			- Check notoriety and lock/unlock the station.
+	
+	
+. Keep my explorers from Dying
+	Made improvements to the movement logic for the "Explorer" worker, so that it doesn't sit idle for long periods
+	after dropping a satellite and hostiles are closing in on it.  Now, while processing it's list of systems
+	to see where to go next, it will periodically look in a 20k range and if any hostiles are targeting it, it will
+	run to a random neighboring sector and start through it's list again.  This system isn't foolproof 
+	but it's an improvement over just sitting and dying.  Usually pirates close in on it and the first hit
+	knocks the hull down so far that your explorer can't get away.  Hopefully this will improve surviveability.
+		
+	*.  Mayhem.Task.Worker.Explorer	
+	
+. Version Number updated
+
+	*. /t/8379-L044.xml
+	
+. Updated the default Maximum number of bailed ships that can exist in the Galaxy from 60 to 80.  This does not include
+	M6 or larger ships, which can bail with no restriction on numbers as they seldom bail anyway.
+
+	*. /t/9972-L044.xml
+	
+. NPC Squadrons will now have more Missiles and Chaff by default.  
+	This is part of an effort to make Missiles more relevant.
+	In the past, for all NPC ships that were not M8's, there was a significant chance that an NPC ship would have
+	no missiles or chaff equipped at all. This was done to "reduce missile spam" so that frame rates on very slow computers
+	were improved.  This limit has now been removed, but can be turned back on using a new setting in the 9973 t-file (ID: 129).  
+	Default chaff loadout amounts for all ships has been increased.
+	
+	*. Mayhem.GameCreator.Populate.AddSquadrons.xml	-  For new game NPC populated squadrons.
+	*. Mayhem.Task.TemplateWhenReady.xml - For ships created after initial universe population.
+	*. Mayhem.EquipShip.Missiles.xml	- Increase amount of chaff for new ships.
+	*. 9973-L044.xml  Added ID 129 flag, which defaults to FALSE.
+	*. ZH.Setup.Variables.xml	- Added missile spam flag.
+	
+	
+. M8's will no longer close on target if they have no Missiles (does not include chaff in this decision).
+	In the past, when M8's were ordered to attack a target, if they had no missiles, they would still move to the target
+	and then simply not fire anything.  Now, like M7M's, they won't.  Also, M7M and M8's will now close to 80% of their
+	missile range rather than staying out at 100% missile range when attacking NON-HUGE ships.  This keeps a lot of the missiles
+	from being wasted on retreating small targets, at the possible cost of more return fire at the closer range.
+	M8's and M7M's will no longer close to 50% of their primary missile's range when attacking stations or HUGE ships.
+	They will now go to, or orbit at approximately 80% of their effective missile range.  This should greatly
+	increase the survivability of M8's, as closing to 50% range often gave a disasterous result and was not necessary.
+	
+	*. !fight.attack.object.xml
+	*. !fight.attack.object.stationTactics.xml
+
+	
+. Fixed the Terran Skirnir M7M missile loadout.  It is supposed to use the Wraith only, but had a bunch of others listed by mistake.
+
+	*. 12.cat
+	*. 12.dat
+	
+. Enhanced and fixed the Mission Board 
+	Added new columns showing the Rewards (credits/reputation), Difficulty, and the time left before the Mission expires.
+	Also colorized the Jumps based on distance so you can more easily see the close ones.
+	Missions will no longer be created or expired only when you enter that sector where the mission is.  That never worked well
+	and caused Expired missions to show up on the Mission board.	Missions will instead be randomly created
+	within a dozen jumps from the player's location, and each will gradually expire over time, which you can now see
+	on the mission board.  A Maximum amount of available missions is maintained at about 20.  The default mission offer timeout has 
+	been lowered from an hour to 30-40 minute range.  Note, that Reward Multipliers for missions are found in the 9972-L044 file and are applied
+	to the final amount given to the player and is NOT displayed in the mission briefings.
+	
+
+	*. Menu.PC.Journal.xml			- Made call to remove expired missions prior to bringing up the Mission Board.
+	*. Menu.PC.Journal.SM.xml		- Added new columns to mission board.  Fixed problem when hitting Escape on a Briefing screen.
+	*. Mayhem.Missions.Expire.xml	- New file.
+	*. Mayhem.Mission.Generate.xml	- Replaced mission expiration code there with call to Mayhem.Missions.Expire
+	*. Mayhem.Monitor.Missions.xml	- Periodically creates new missions within a jump radius of the player by calling Mayhem.Mission.Generate.
+									  This used to be done only when a player entered a sector.
+									  Now, Every 20 seconds, there is a 25% chance for up to 2 new missions to be created in a random sector.
+	*. !ship.signal.changesector.xml	- Replaced call to generate new missions with a call to Cleanup expired ones.  Mayhem.Monitor.Missions creates new ones now.
+	*. 9972-L044.xml					- Mission timeout default changed from 1 hour to 30 minutes.
+	*. Mayhem.Mission.Create.xml		- Added some variability to mission timeouts.
+	
+	
+. Ship Maintenance adjustments
+	Ship Maintenance is no longer specifically 35% higher for Split, Terran and Paranid.  This modifier has been removed.
+	Maintenance is now 35% higher if the ship is of a Design that is not the Players race.	In other words, if you are playing as Teladi, but build a Paranid ship design, the mainteance will be higher by 35%.  Maintaining foreign cars is higher for obveous reasons.
+	Yaki ship maintenance cost reduction changed from 50% down to 25% when the player has infamy.
+	OCV ships are no longer free mainteance.  No ship operates without maintenance costs.
+	
+	*. Mayhem.GetShipMaintenanceCost.xml
+	*. Menu.SaturnComplexHub.Install.SM.xml	-	Description changes for Yaki maintenance.
+
+	
+.  OCV Adjustments  (betelguese97)
+	*. ZH.Sig.Captured.xml
+	*. Mayhem.GameCreator.SpawnXenons.xml	-	More initial Kha'ak spawns and small chance of larger ships in Unknown sectors on hard difficulty level.
+	*. Mayhem.GetSpaceWeedProduction.xml		-	Players in OCV don't generate spaceweed.
+	*. Mayhem.Perk.Check.xml					-   Players in OCV can't have a Pirate contract perk.
+	*. Mayhem.Perk.SetInfo.xml				-	""
+	*. Mayhem.Recycle.xml					-   Players in OCV don't get research from recycling ships.
+	*. Mayhem.Task.BaitMission.xml			-	Added additional kha'aak ship types in the Bait Mission.
+	*. ZH.PirateSpawnGang.xml				-	Additional ship types are now added to pirate gangs.
+	*. Renegades.Task.Station.xml			-	typo fix
+	*. Menu.DWM.Set.Hangar.xml				-   Xenon marines get a number instead of a name.
+	*. Mayhem.Template.Ships.xml				-	Added missing ships to templates.
+	*. Mayhem.Task.Station.PirateBase.xml	-	Players in OCV are enemies of pirate bases.
+	*. Mayhem.Task.Station.Outpost.xml		-	Players in OCV have Xenon/OCV Support fighters at outposts with fortress perk.
+	*. Mayhem.GetLaser.Medium.xml			-	Added Kha'ak ships and lasers to the compendium.
+	*. Menu.PC.LaserCompendium.xml			-	"
+	*. Mayhem.GetLaser.Race.xml				-	"
+	*. Menu.PC.ShipCompendium.xml			-	"
+
+.  Logistics / Ship Repairs
+	I have added the ability to fit a ship with Repair lasers and use this as a repair vessel.  The Private Corp. Truelight Seeker has been 
+	designated for this role, as it has no general usage in Mayhem 3 and is a vessel you can already research.  This is an M6 class vessel,
+	and is originally of Goner design.  As peaceful galactic citizens, the Goners were the only race to develop a vessel capable of utilizing
+	repair lasers.  This ship is very slow, has minimal armor and reduced mobility.  Tt's focus is repair, not combat, so you will need to
+	escort it.  The primary benefits of this ship are that it provides up to 6 repair lasers, making repair work far faster than using a
+	single laser from your spacesuit.  Also, given you are in a ship, you are far less vulnerable.  Automatic repairs are not yet implemented,
+	so at present, you will have to pilot the ship and shoot the target manually with the repair lasers.
+	
+	. Modified the Truelight Seeker ship allowing it to be used as a Repair Vessel.
+	. You can now load 6 Repair lasers into it's primary forward Turrets.  This is the default build so you shouldn't have to mess with it.
+	. Lowered the maximum speed of the ship from 155 to 120 m/s and added one speed extension.
+	. Lowered the Hull strength from 305184 to 80000.  Increased shield count from 3 to 4.
+	. Lowered Mobility by 50%
+	. Increased the relative cost (value) from 4604 to 10000.  Custom ships are expensive.
+	. Changed the Range of Repair Lasers from 100m to 1000m, so you don't have to get right on top of a ship to repair it.
+		This is a change to the laser itself, so repairing a ship from your own Pod can now be done at 1000m range.
+	
+		*. Mayhem.GetStats.Laser.xml - Adjusted so that Repair Lasers appear to be the best choice by default.
+		*. 12.cat/dat (TLaser.txt and TBullets.pck)
+	
+	
+.  Lasers are Back
+	Restored the Ability to Build Lasers and to use Custom laser configurations in a Ship Template.
+	Lasers will also drop as Loot, are recyclable and again Tradeable at trade stations.
+	While Hector does provide the Optimal DPS configuration for all ships right out of the box, you may want to experiment
+	with other weapons or simply just prefer other choices for different reasons.  You can once again build lasers and no perk is required
+	to do so, and if you save your ship design as a template, it will build the laser configuration you have saved.
+	Unfortunately, for now, all lasers for a Custom Ship template must be either purchased or manufactured by the player.  They are not
+	free like the "Default" lasers.  This is because a 'template system' doesn't know the difference between 6 required lasers in the cargo hold, 
+	and 10000 lasers in the cargo hold, and so building the template with free lasers would result in a LOT of free lasers and an obveous
+	exploit.  Until I work in a way around this, template ships do not have free lasers.
+	
+	Note:  When building a Template Ship, you have the option to Build the Full template.  
+			1. If you choose "YES", the station will build the lasers for that template, even though it may have them already in the station cargo.  
+			2. If you choose "NO", the station will not build them and will use any that already exist in the station cargo.
+			
+	
+	*. Mayhem.IsPerkUnlocked.xml	-  Turning on Laser building perk in this one spot so outposts can always build them.  Laser perk is not being used.
+	*. Menu.DWM.SM.xml	-  	Outpost menu allowing laser build screen to be available.
+	*. Mayhem.GetLaser.Light.xml - Added Repair Laser to list of lasers that you can build.
+	*. Joubarbe.Lib.AddToStation.xml - Removed line where Lasers were not allowed to be added to station inventory.	
+	*. Mayhem.AddFullTemplateToBacklog.xml - Building a Full template will now kick off laser build job.  Unfortunately, not free.
+	*. Menu.DWM.Get.Recycling.xml	-  added back lasers in recycle menu.
+	*. Joubarbe.Lib.GetTradeableWares.xml 	-	Added back Lasers as a tradeable ware in a station, which also allows it to be recycled.
+	*. Mayhem.Task.Loot.xml		-  Restored lasers in loot drops.
+	*. Mayhem.Task.Worker.Looter.xml	-  Looters will no longer automatically destroy lasers it finds.
+	*. ZH.EquipShip.Safety.xml		-  Vanilla bailing ships can now drop lasers.
+	*. Menu.DWM.Get.Logistics.Stock.xml - Lasers show up in the out post Stock menu again.
+	*. Menu.PC.Sanctuaries.SM.xml - not sure, but added back lasers.
+	*. Mayhem.InitializeTradingStation.xml - added back lasers to trade stations.
+	*. Mayhem.GameCreator.AbandonedShips.xml - added back initial random loot in space to include lasers.
+	*. Mayhem.InitializePirateBase.xml - Added lasers
+	
+
+.  Fixed bug where all player beacons were being converted to Phanon when in Phanon space.  The initial player beacon
+	will still be converted to complete the Plot stage, but thereafter, the rules for putting a beacon in their space
+	will be the same as putting them in any other race's space (your notoriety must be high).
+	
+	*. PhanonJumpBeaconConnected.xml	-	Set a global indicating the Close bonds mission is over. 
+	*. Renegades.Monitor.xml			-	Allow converstion of player beacon to Phanon beacon if the global isn't set.
+	
+.  Removed restriction that kept the player from Docking M8s (bombers) from ships that would otherwise allow Big ships to dock.
+	You should now be able to dock M8's at carriers capable of docking Big ships.
+	
+	*. Joubarbe.Lib.CanDock.xml
+	
+.  Greatly enhanced the use of Missiles, making them far more impactful.
+
+	Fixed an old condition where Ships were being instructed to never fire their missiles if the single hit would do enough damage to
+	destroy the target.  This was being done to conserve missiles in the hope that 'someone' would finish off the target
+	using lasers.
+
+	This would often result in ships such as the [M8] sitting there doing nothing but Dying, while they had perfectly good
+	Fox class anti-figher missiles installed.  They simply wouldn't fire because one missile does enough damage to kill a fighter.
+	You would also see ships such as the [M8] just sitting there watching the stars twinkle while a heavily damaged enemy large
+	ship is nearly dead, but alive enough to keep killing.  Again.. one missile would have killed it and so it chose not to fire
+	to conserve that missile.
+	
+	This has been removed.  Now, it will fire that missile, provided it is within 80% of the max range of the missile
+	being used.  Often, a Missile was being fired at 100% range and the target was going the other way and the missile
+	simply ran out of fuel.  Now, it will fire only within the 80% envelope of the missile's max range.
+	
+	Also, Artilliary missiles will not fire on anything but Large or Huge Ships, along with Stations.
+
+	. !lib.get.best.missile.fortarget.xml
+	. !fight.attack.object.xml
+	
+
+
+
+
+

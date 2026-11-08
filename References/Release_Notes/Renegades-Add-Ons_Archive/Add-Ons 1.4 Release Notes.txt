@@ -1,0 +1,553 @@
+Implements suggestions by the community.
+
+NOTE: A NEW game is HIGHLY recommended if playing on insane mode!
+-----------------------------------------
+		ADDITIONS
+-----------------------------------------
+General
+- Ultimatums are back. They were previously unused. If you comply with an ultimatum, you get an alternative message but don't get a favor point.
+- Should you try to abandon or give the sector to someone else other than the faction that demanded that sector, you will get a war declaration from the faction that gave you an ultimatum.
+- On insane, the chances of getting an ultimatum are halved. Thus, a war declaration is more likely to occur.
+
+	. Mayhem.Capture.pl.xml
+	. ZH.declareWarOnPlayer.xml
+	. ZH.Ultimatum.xml
+	. 9973-L044.xml
+	. 7325-L044.xml
+
+- (1.4.24) Added a debug section for easier debugging. Added to Mayhem.GetBailChance since ships die a lot (signal handling done via !ship.signal.killed), thus making it easier to print out global variables.
+
+	. Mayhem.GetBailChance.xml
+
+- (1.4.14) New modifier for insane mode.
+  - While allied with the player, Phanon produces at 70% production speed. If the player has infamy, production speed drops to 63%.
+  - Joining the OCV will remove this limitation from Phanon.
+  - Updated encyclopedia to reflect this change.
+
+	. Mayhem.Task.Station.Outpost.xml
+	. 9974-L044.xml
+
+-----------------------------------------
+		CHANGES
+-----------------------------------------
+
+General
+- Updated tips. Added infamy tips.
+  - Now displays a random set of tips every 4-8 hours (was 4.16 - 8.33 hours) 
+
+	. ShowNewsTips.xml
+	. Mayhem.Monitor.News.xml
+
+- Phanon capital ships now bail without being destroyed. 
+- Nomad flagship is now boardable and will no longer be destroyed upon successfully boarding it.
+
+	. !ship.signal.captured.xml
+
+- The game no longer periodically removes triplex scanner from your ships. 
+  - This feature was redundant with the 2 yellow crystal cost and early access to TM.
+
+	. Renegades.Monitor.xml
+
+- On insane mode, 50% of freighters will spawn with Advanced Firewall Software. 
+  - Should they be scanned because of the police mission, the firewall will be removed.
+
+	. Mayhem.BuildShip.xml
+	. !ship.signal.scanned.xml
+
+- Updated insane mode description in encyclopedia.
+
+	. 9974-L044.xml
+
+- (1.4.24) Removed savescumming from crystal rewards dropped by Renegade roamers.
+
+	. Renegades.Plot.DropReward.xml
+	. Mayhem.GameCreator.RenegadeSetup.xml
+
+- (1.4.23) Changes
+  - On insane mode, conquered Xenon sectors now spawn reduced defenders.
+    - Can now spawn either a Xenon C or Xenon Q as part of standard defenders.
+  - Giving sectors to the Xenon will now spawn defenders.
+
+	. Mayhem.GameCreator.SpawnXenons.xml
+	. Mayhem.Conquer.Xenon.xml
+	. Mayhem.Capture.pl.xml
+
+- (1.4.21) Sacrificing ships to the OCV will now update the "Synthetic Dawn - Initiation" mission objective.
+  - For existing games: existing ships that convert to the OCV will not display the updated mission objective; only new ships will. However, existing ships still contribute to the mission objective. This behavior is intended.
+
+	. Mayhem.Task.OCVVirus.xml
+
+- (1.4.20) Boarding updates
+  - If you have a truce with a faction and you board that faction's ships, your truce will be broken.
+  - Boarding ANY Xenon capital ship now removes 4 infamy. If you don't have any infamy, you get 2 loyalty points with a random faction.
+  - Doubled blue crystal rewards when boarding Xenon M7 and M1. It's still less than boarding the tougher Xenon M2s, but this should now be a better incentive.
+
+	. ZH.Sig.Captured.xml
+
+- (1.4.19a) Updated tips based on changes from 1.4.14.
+
+	. ShowNewsTips.xml
+
+- (1.4.18a) For OCV playthroughs, pirates can attack only player and Xenon beacons whenever they intend to attack a beacon. Normal playthroughs are unchanged.
+
+	. Mayhem.Task.Pirate.Harassment.xml
+
+- (1.4.16) Boarding Pirate, Yaki, and Renegade ships no longer incurs infamy or boarding reactions. These factions operate outside the law.
+
+	. ZH.Sig.Captured.xml
+
+- (1.4.15) Ultimatum shared border requirement is back, regardless of difficulty. This change was introduced initially in 1.4 for insane mode.
+
+	. ZH.Ultimatum.xml
+
+- (1.4.14) Changes
+  - Reduced trade union cash on insane mode from 70% as much to 2/3.
+  - Boarding Xenon ships now does the following:
+    - Gives infamy repair (capital ships only) and blue crystals equal to relValue * 10 / average price of blue crystals.
+    - No longer scales kill chance based on ship's relative value (relValue). For example, the maximum kill chance with 15/15 marines is 31.5% for M2.
+  - Money payout changed.
+    - Boarding Xenon, OCV, and abandoned ships no longer gives cash.
+    - Instead of a 20% chance to get cash equal to the relValue * 20, you now get cash equal to relValue * 4 (20% as much per ship but guaranteed).
+    - Insane difficulty reduces the payout to 2/3 as much.
+  - Updated wording in ZH.Core regarding infamy repair.
+
+	. ZH.Core.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.13) Changes
+  - Removed the Terran memory tutorial from insane mode.
+  - The player is now presented with a score before being asked to transfer a sector to the Xenon.
+    - This score is based on what blueprints were determined at the start of the game. This is to hint the player as to how strong their set of blueprints will be when they join the OCV. The scoring system gives a score between 8 to 20 inclusive, as follows:
+      - 3 points for all OCV ships except #deca_deaf and #deca_fade.
+      - 2 points for #deca_deaf, #deca_fade, and the following Xenon ships:
+        - J, I, Z, H, P Raider, P Sentinel, LX
+      - 1 point for all other basic Xenon ships (K, Q, C, P, L, M, N).
+      - 0 points for TL and otherwise.
+
+	. !ship.signal.changesector.xml
+	. ZH.plot.OCV.sectorTransfer.xml
+	. ZH.plot.OCV.GetBlueprintScore.xml (new script)
+	. 9973-L044.xml
+
+
+- (1.4.12) TLs can now be boarded.
+  - The Ozias, used by Nomad mobile factories, is the only TL that NPCs use. Boarding this TL will incur 20 infamy, same as if it was destroyed.
+  - It's intentional that it doesn't bail upon destruction. Bigger ship bailing is only for military ships.
+
+	. 12.cat/dat - TShips.pck
+	. TShips.txt (put this in your ZMap folder)
+
+- (1.4.10) A ship that has pandora tunings is now guaranteed to retain them upon capture.
+
+	. !ship.signal.killed (used for debugging only, specifically for renegade drop rewards)
+	. Mayhem.BuildShip.xml
+	. Mayhem.CopyShip.xml
+	. Mayhem.Task.Bail.Copy.xml
+	. Renegades.Plot.GetRandomShip.xml
+	. Renegades.Task.Renegade.xml	
+
+- (1.4.9) Changes
+  - Tax income has been reduced to 1/3 as much on insane mode compared to easier difficulties. 
+    - -30% tax reduction was still printing out plenty of cash. This now encourages the player to go to war sooner in order to get more passive income.
+  - Garbage, mediocre, and impeccable maintenance factors applied to maintenance have been changed.
+    - The factors are inversely proportional to maintenance, so a higher factor results in less maintenance.
+    - Old: 58, 82, 94, 100, 106, 110, 111
+    - New: 66, 83, 94, 100, 106, 110, 112
+  - Updated encyclopedia to reflect insane mode change.
+
+	. Mayhem.GetTaxIncome.xml
+	. Mayhem.GetShipMaintenanceCost.xml
+	. 9974-L044.xml
+
+- (1.4.8) Changes
+  - Abandoned sector timer (default: 24 hours) is now halved on insane mode.
+  - Percentage of unknown sectors to leave in the galaxy is now 0 on insane mode.
+
+	. Mayhem.IsClaimable.xml
+	. ZH.GetUnknownSectorBelowGoal.xml
+	. ZH.IsUnknownSectorBelowGoal.xml
+
+- (1.4.7) Nomad TLs are now Private Corp. Ozias instead of OCV Ozias.
+
+	. ZH.Nomads.Build.xml
+
+- (1.4.6) Beacons can now be placed, captured, and kept in unknown sectors except the Renegade sector.
+  - The Renegade sector is an exception until the Renegades plot is completed.
+  - Updated tips because of this change.
+  - (1.4.7) Updated encyclopedia to reflect this change.
+
+	. 9974-L044.xml
+	. ShowNewsTips.xml
+	. !move.capture.xml
+	. Mayhem.Task.JumpBeaconCaptureable.xml
+	. Renegades.Monitor.xml
+
+- (1.4.5a) OCV lasers can now be recycled. However, they recycle for 1/50 of the original recycling factor. 
+  - This means that the recycling factor for OCV weapons is 1% on easy/normal/hard and 0.8% on insane. 
+  - These weapons are color coded orange in the recycling GUI to denote this special case.
+  - (1.4.5b) Changed to 1/100 instead of 1/50. 1/50 was not low enough due to a potential exploit with 60% signals + max specialization + M5s.
+
+	. Menu.DWM.Get.Recycling.xml
+	. Menu.Line.Laser.xml
+	. Mayhem.Costs.Laser.xml
+
+- (1.4.3) Updated messages when player wants to declare war or is given a war declaration: all favors will be canceled.
+  - Reputation now drops to rank -5 @ 0% when a war starts.
+
+	. ZH.declareWarOnPlayer.xml
+	. ZH.Reset.Relations.xml
+	. Menu.Mayhem.Ministry.SM.xml
+	. Mayhem.DeclarePermanentWar.xml
+
+- (1.4.2) Favors now display fractional time rather than whole hours. This is needed because insane mode reduces durations by 30%.
+  - Ongoing favors still display minutes but now when the ongoing favor has less than an hour left (was less than 2 hours left).
+
+	. Mayhem.Favor.GetInfo.xml
+	. Menu.Mayhem.Ministry.SM.xml
+
+Infamy
+- Updated all other pop-up messages to now display total infamy after gaining infamy.
+- Updated favor descriptions.
+- Infamy no longer decays or resets during OCV playthroughs.
+- Boarding Nomad ships now gives the same amount of infamy as if they were destroyed.
+- Boarding a ship now gives a fixed amount of infamy. Infamy amounts increased (decimal values are average amounts of infamy).
+  - M6/TM: 0.5 -> 1
+  - M7: 1 -> 2
+  - M1: 2.5 -> 3 (note: Nomad flagship gives 50 infamy instead. This is the same as if you had killed the Nomad Flagship.)
+  - TL: 0.5 -> 20 (note: only Nomads use TLs, hence the 20 infamy. This is the same as if you had killed a Nomad TL.)
+  - M2: 4.5 -> 5
+
+	. ZH.Sig.Captured.xml
+	. !ship.signal.killed.xml
+	. !station.signal.killed.xml
+	. Mayhem.Capture.pl.xml
+	. Mayhem.Favor.Add.xml
+	. Mayhem.Favor.GetInfo.xml
+	. Mayhem.Hacking.LaunchCounterattack.xml
+	. Mayhem.Task.Claimeable.xml (removed comment mentioning infamy gain)
+	. Menu.PC.Blackmarket.SM.xml
+	. ZH.Crisis.End.xml
+	. ZH.SyntheticDawnCompletion.xml
+	. ZH.CI.SelectTarget.xml
+	. ZH.Core.xml
+
+Ship and Laser Rebalancing (community suggestion)
+- Increased projectile speed of the following weapons. This gives parity between commonwealth M5/TS and Terran/Xenon M5/TS.
+  - IRE: 1500m/s -> 2600m/s
+  - APC: 1500m/s -> 2500m/s
+  - PAC: 1500m/s -> 2200m/s
+  - Plasma Gun: 1500m/s -> 2000m/s
+- Aran and all TL cargo bays have been doubled. Hercules gets an extra 20 cargo units (now 120,020) so that it can carry 1 more station.
+- Most M5 costs decreased by 66%. Yaki Rapier, Terran, Xenon, and OCV M5 costs decreased by 50% because these M5s carry M3-class weapons.
+- Buffed shield of unused Discoverer Vanguard.
+  - Disco Vanguard: 2x 1MJ -> 5x 1MJ
+
+	. 12.cat/dat - TBullets.pck and TShips.pck
+	. TBullets.txt (put this in your ZMap folder)
+	. TShips.txt (put this in your ZMap folder)
+
+
+Faction Wars: Coalition checks, Ultimatums, and Faction Stance (community suggestion)
+- A faction is now considered a superpower when it has at least 120% strength (down from 170%) compared to the average strength of all other factions.
+  - Changed offensive thresholds from more than 130% to at least 120%.
+  - On insane, the chance to become a tyrant is increased. Specifically, personality roll is subtracted by 50. 
+    - Hard is unchanged - still subtracts personality roll by 30.
+- NPC factions can now check relative battle value (BV) as well when they want to form a coalition against an enemy.
+- If a faction's BV is 120% or higher than the enemy's, then that faction can form a coalition against that enemy.
+- If the enemy is the player, then the BV threshold is dependent on difficulty:
+  - Easy: 160%
+  - Normal: 120% (same as NPC)
+  - Hard: 80%
+  - Insane: 40%
+- On insane difficulty, a shared border is no longer required for a faction to give an ultimatum to the player. Halved chances of faction giving ultimatum. (Removed in 1.4.15 as it was exploitable.)
+
+	. Mayhem.Coalition.Roll.xml
+	. ZH.Core.xml
+	. ZH.declareWarOnPlayer.xml
+	. ZH.Ultimatum.xml
+
+Phanon Plot (community suggestion)
+- If you're allied with Phanon, then any unknown sectors you gift for Phanon will now incur a reputation penalty.
+  - The penalty is the same as if you had conquered the sector yourself. 
+- Phanon sectors now count towards the total number of sectors you own for reputation penalty calculation, whenever you conquer a sector for yourself or for Phanon.
+- +35% maintenance penalty no longer applies to Phanon ships after completing the main plot.
+
+	. Mayhem.Capture.pl.xml
+	. Mayhem.Conquer.xml
+	. 9973-L044.xml
+	. Mayhem.GetShipMaintenanceCost.xml
+	. ZH.plot.MaelstromShutdown.xml (updated comments)
+
+Private Corp revamp
+- Aran now repairs ships 4x faster.
+- +35% maintenance penalty no longer applies to private corp. ships. No changes to research - they do not get any research bonuses.
+- Updated Private Corp/Goner research category in research station GUI.
+
+	. Menu.SaturnComplexHub.Install.SM.xml
+	. Mayhem.GetShipMaintenanceCost.xml
+	. Mayhem.Task.CarrierRepair.xml
+
+-----------------------------------------
+		FIXES
+-----------------------------------------
+
+- (1.4.25) Fixes
+  - Fixed police and delivery missions being "updated" (brought back to mission objectives) if the station that gave the mission was already destroyed.
+  - Fixed null error during police mission if a suspect is already destroyed.
+
+	. !ship.signal.scanned.xml
+	. !ship.signal.docked.xml
+	. Mayhem.Monitor.Missions.xml
+
+- (1.4.24) Fixes
+  - For consistency, added parentheses to arithmetic calculation in ZH.Sig.Captured.xml
+  - Fixed permanent war not resetting reputation to -5 rank every hour.
+  - Fixed truces not being removed upon declaring permanent war. This applies to normal and OCV playthroughs.
+  - Fixed satellite monitoring displaying green color for M8 and TM. Now displays yellow color.
+  - (1.4.24a) Fixed unarmed abandoned ships fleeing when attacked.
+  - OCV Playthroughs:
+    - Fixed potential softlock by declaring permanent war on the required faction before getting the mission prompt.
+    - Fixed Phanon jump beacon respawning during OCV playthroughs.
+    - Fixed Phanon Outposts starting with empty wares. Phanon now starts with wares to build its ships.
+
+	. !ship.signal.attacked.xml
+	. Mayhem.Truce.Break.xml
+	. Menu.SatellitesMonitoring.SM.xml
+	. ZH.JumpBeacon.Respawn.xml
+	. ZH.Monitor.xml
+	. ZH.plot.OCV.xml
+	. ZH.SyntheticDawnCompletion.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.23) Fixed Xenon big invasions spawning fewer ships on insane mode (was spawning bigger fleets if player joined the OCV).
+
+	. Mayhem.Monitor.Galaxy.xml
+
+- (1.4.22) Fixes
+  - Fixed bailed ships not retaining pandora tuning when they were being boarded.
+  - Cleaned up code and added debug statements.
+
+	. Mayhem.RetainTunings.xml (new script)
+	. Mayhem.Task.Bail.Copy.xml
+	. Mayhem.CopyShip.xml
+	. Mayhem.Task.OCVVirus.xml
+	. Renegades.Plot.DropClue.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.21) Fixes
+  - Fixed Xenon not conquering sectors upon destroying the last station.
+    - Properly updated code regarding a rare bug when a player's mine is destroyed. The code was causing the Xenon to never conquer sectors when the last station was destroyed!
+  - Fixed incorrect Renegade defender count and ship class being displayed in clues (e.g. reporting 40 M6 on insane mode even though there's some M7s).
+    
+	. !station.signal.killed.xml (added debug statements)
+	. Mayhem.Conquer.Xenon.xml
+	. Renegades.Plot.DropClue.xml
+
+- (1.4.20) Fixes
+  - Fixed marines not getting fighting bonus for first time level up.
+  - Fixed "[Faction] liked that!" message being displayed when loyalty points decrease.
+  - Cleaned up mercenary logic when killing a station and while mercs are hired by the player. Now calls Mayhem.IsMercKill.xml.
+  - Cleaned up displayed messages when breaking truce.
+
+	. !ship.signal.killed.xml
+	. !station.signal.killed.xml
+	. Mayhem.Loyalty.Add.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.19) Fixed free M6 generated at the start of the game being copied upon successfully boarding it. Abandoned ships do not need to be copied over.
+  - Added a safeguard when boarding abandoned ships. Now the game checks if either a local variable was set when the ship bailed or if the ship was abandoned before deciding whether to copy the ship or not (previously checked if only the local variable is set).
+
+	. ZH.Sig.Captured.xml
+	. Mayhem.GameCreator.AbandonedShips.xml
+
+
+- (1.4.18) Fixed rep loss for claiming capital ships in Xenon and Phanon sectors. Cleaned up code.
+  - (1.4.18a) Fixed pirates' chance of attacking beacons (corrected to 80% chance; was 86%). 
+    - Also fixed exploit where pirates could help the player by attacking Phanon's jump beacons during OCV playthroughs.
+
+	. Mayhem.Task.Claimeable.xml
+	. Mayhem.Task.Pirate.Harassment.xml
+	. Joubarbe.Lib.AddReputation.xml
+
+- (1.4.17) Fixed big (M6, TM, M8) and capital ships having a second chance at bailing.
+
+	. Mayhem.GetBailChance.xml
+	. Renegades.SetBailChance.xml (currently an unused script)
+
+- (1.4.16) Fixed wording regarding Terran memory tutorial.
+
+	. 9972-L044.xml
+
+- (1.4.15) Fixed docked ship not giving research points. Added debug statements to research GUI.
+
+	. Menu.SaturnComplexHub.Install.SM.xml
+	. Mayhem.GetResearchPointsPerCycle.xml
+
+- (1.4.13) Cleaned up code regarding getting randomized Xenon and OCV blueprints.
+
+	. Mayhem.Init.XenonOCVBlueprints.xml (now returns the list of blueprints)
+	. Mayhem.StartingOptions.Callbacks.xml (calling XenonOCVBlueprints now returns a list rather than returning null)
+	. ZH.SyntheticDawnCompletion.xml (now retrieves global variable once and gets a return value directly from XenonOCVBlueprints)
+
+- (1.4.12) Fixes
+  - Fixed Nomad flagship notification popping up multiple times on insane mode.
+  - Fixed Nomad flagship giving 3 infamy instead of 50 upon successfully boarding it.
+  - (1.4.12a) Fixed typo that was causing NPC Outposts to not have Pandora Tuning and/or TE4 perks on insane mode.
+
+	. Mayhem.Perk.Init.xml
+	. ZH.Monitor.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.11) Fixes
+  - Fixed Renegade station staying alive for 2 seconds after Renegades plot completion.
+  - Fixed Outpost perks not being properly reset upon joining the OCV.
+    - Fixed a null error shown under the "Population stability" perk after resetting perks.
+  - Fixed insane mode local terraforming modifier multiplying by 0.8x once after getting the total local penalty. 
+    - So instead of 0.5 * 0.5 * 0.5 * 0.8 for 3 projects, it's now 0.4 * 0.4 * 0.4 for 3 projects as intended.
+  - Fixed inconsistent terraforming description in Ministry GUI. 
+    - Made the terraforming statuses at the top of the GUI non-selectable (was causing an out-of-index bug if you try to select a planet in progress).
+  - Fixed followers attacking ships on the same side.
+  - Attempted to fix a rare bug where a docked ship with turrets can cause a game freeze. Still haven't figured this part out, so putting it as a GitHub issue for future reference.
+  - (1.4.11a) Fix null being displayed for faction power in Ministry GUI. 
+  - (1.4.11a) Removed coloring from encyclopedia and fixed formatting in Renegade plot completion message.
+
+	. !move.follow.template.xml
+	. !station.signal.killed.xml
+	. Mayhem.Perk.SetInfo.xml
+	. Mayhem.ResetPerks.xml
+	. Menu.Mayhem.Ministry.SM.xml
+	. ZH.Terraforming.Get.Penalty.Local.xml
+	. 9974-L044.xml
+	. 9980-L044.xml
+
+	Fix attempt regarding the game freeze:
+	. !plugin.gz.missile.def.mk3.xml
+	. !fight.attack.object.xml
+
+- (1.4.10) Fixes
+  - Fixed Renegade clue dropped from pirate reporting NA ships inside Renegade sector.
+  - Fixed Renegade plot immediately updating mission after recreating a gate. Added a 5 second wait (forgot to add a wait in previous patch).
+  - Fixed station recycling not returning resources even though your empire has a player outpost.
+
+	. Lib.X.AuctionStation.xml
+	. Renegades.Plot.Challenge.xml
+	. Renegades.Plot.DropClue.xml
+
+- (1.4.9) Fixed boarding resetting research when boarding a ship that had its blueprint unlocked.
+  - (1.4.9a) Fixed boarding a marked ship (M7 ships with a *) not giving a favor point.
+
+	. ZH.Sig.Captured.xml
+
+- (1.4.8) Fixes
+  - Fixed ultimatums not being given to the player (was not completely fixed in 1.4 since the demanded sectors were not claimable).
+  - Fixed local variable not being properly cleared upon conquering a sector.
+  - Fixed ultimatum chance being halved (insane difficulty only) before ethos modified chance. Halved chance is now applied after ethos.
+  - Fixed encyclopedia not mentioning ultimatums.
+
+	. Mayhem.Claim.xml
+	. Mayhem.Favor.Add.xml
+	. Mayhem.Task.Squadron.BattleGroup.xml
+	. Mayhem.Task.Squadron.TaskForce.xml
+	. Mayhem.Task.Worker.Explorer.xml
+	. Mayhem.IsClaimable.xml
+	. Mayhem.Conquer.xml
+	. ZH.declareWarOnPlayer.xml
+	. ZH.CI.SelectTarget.xml
+	. ZH.Setup.Variables.xml
+	. ZH.Ultimatum.xml
+	. 9974-L044.xml
+
+- (1.4.7): Fixes
+  - Fixed boarded abandoned ships (including those already claimed by tugs) being copied again. They will no longer copy over upon being boarded.
+  - Fixed marines not having their records retained after a successful boarding operation.
+    - Marines are now properly moved over to the copied ship if the boarded ship was copied over upon a successful boarding operation.
+    - Previously, marines were deleted and recreated.
+  - Fixed special case where a tug may claim a ship and thus cause more guaranteed losses upon a successful boarding operation.
+    - This is now handled by a local variable set when a boardable ship bails or is spawned by the black market.
+
+	. !ship.signal.killed.xml
+	. Mayhem.CopyShip.xml
+	. Mayhem.CreateRandomShip.xml
+	. Mayhem.Task.Bail.Copy.xml
+	. ZH.Sig.Captured.xml
+
+- (1.4.5): Fixed exploit where player could use shipbuilding to replace the need for crystal fabs and silicon mines.
+  - Recycling factor for most lasers and all missiles is now 1/6 of the original recycling factor used for ships and stations.
+  - (1.4.5a): Plasma Beam Cannon is the only exception that keeps the original recycling factor. To denote this exception, it is color-coded magenta in the recycling GUI.
+
+	. Menu.DWM.Get.Recycling.xml
+	. Mayhem.Costs.Laser.xml
+	. Mayhem.Costs.Missile.xml
+	. Menu.Line.Laser.xml
+
+- (1.4.4): Fixes
+  - Fixed pirate ascension task not mentioning bailing. Now states "destroy or capture X pirate ships".
+  - Fixed miners spawned by bait mission spawning with extra MDS.
+  - Commented out debug code from Mayhem.Favor.GetData.xml (was printing empty table each time).
+
+	. Mayhem.Favor.GetData.xml
+	. Menu.PC.Ascension.SM.xml
+	. Mayhem.Mission.Callback.xml
+
+- (1.4.3): Fixes
+  - Fixed favors persisting after dropping to negative reputation or any war declaration (from faction or permanent war declaration).
+  - Fixed favor and loyalty being given during permanent war.
+  - Fixed reputation increase at negative reputation causing loyalty and favor points to be lost.
+  - Fixed restriction and priority favors persisting after their favors were removed.
+  - Fixed Space Weed (Limit Drug Control) favor being infinitely purchasable.
+  - Fixed reputation staying positive during permanent war outside a global alliance. 
+    - It will now return back to -5 @ 0% (-1,000,000 reputation) every hour.
+  - Fixed factions accepting sector gifts when those factions are in permanent war.
+  - Fixed reputation not being clamped between -1,000,000 and 1,000,000.
+  - (1.4.3a): Fixed missions being offered during permanent war. Those sectors will now be skipped.
+
+	. !ship.signal.killed.xml
+	. Joubarbe.Lib.AddReputation.xml
+	. Mayhem.Capture.pl.xml
+	. Mayhem.Favor.GetData.xml
+	. Mayhem.Favor.Add.xml
+	. Mayhem.Favor.Remove.xml
+	. Mayhem.Loyalty.Add.xml
+	. Mayhem.Monitor.Missions.xml
+	. Mayhem.Mission.Generate.xml
+	. ZH.Reset.Relations.xml
+	. ZH.Monitor.xml
+
+- (1.4.1): Fixed AFS not being removed from stolen ship upon turning to player's control during police mission.
+
+	. !ship.signal.scanned.xml
+
+- Fixed non-aggression pacts not including default truce duration. 
+
+	. Menu.Mayhem.Ministry.SM.xml
+	. Mayhem.Truce.PlayerOffer.Callback.xml
+
+- Fixed ultimatums not being declared or giving truce. Ultimatum was being skipped by war declaration.
+
+	. ZH.declareWarOnPlayer.xml
+	. Mayhem.Capture.pl.xml
+
+- Fixed copied ships being scannable after scanning the original ship.
+
+	. Mayhem.CopyShip.xml
+
+- Fixed Nomad Flagship not updating nomad resource after collecting wares.
+
+	. ZH.Task.NomadFlagship.xml
+
+- Fixed personality roll not randomizing between -99 to +100 (was previously randomizing between 0 to +100)
+
+	. ZH.Core.xml
+
+- Fixed tips being given every ~4 hours rather than being given every 4-8 hours.
+
+	. Mayhem.Monitor.News.xml
+
+- Fixed off-by-one error causing code fragments with fewer than 4 characters to be generated.
+
+	. Mayhem.GameCreator.RenegadeSetup.xml
+
+- Fixed stations being populated before difficulty settings were picked. 
+  - This is so that NPC outposts can get additional perks (pandora tuning and terraforming efficiency 4) on harder difficulties.
+
+	. Mayhem.GameCreator.Populate.xml

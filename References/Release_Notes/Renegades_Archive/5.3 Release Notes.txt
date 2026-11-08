@@ -1,0 +1,251 @@
+* MordanB
+
+
+
+.  Added a new "Deploy all stations to" command for TL's.   This will deploy ALL station kits it has in it's cargo to a sector automatically.
+	If there is insufficient Sector Support in the target system for all the stations the TL is carrying, it will deploy as many as it can.
+	This command does NOT support automatic deployment of Outposts or Mines:  The command will be rejected if any are in the cargo.
+	If the target system is unclaimed, this will conquer the sector	when the first station is deployed.
+	After deployment, the TL will return home.
+	This command will not be available to TL's that are assigned as the global Architect.
+	
+	.	9972-L044.xml
+			ID 524 - COMMAND_DEPLOY_STATIONS_TO
+			"Deploy Stations to"
+			"DeplFacs"
+		
+	.  Mayhem.Setup.Commands.xml
+	.  Mayhem.CmdChk.DeployStationsTo.xml		- new
+	.  Mayhem.Cmd.DeployStationsTo.xml			- new
+	.  !move.DeployStationsTo.xml				- new
+	
+	
+	
+.  Protectorates have been removed.
+
+	The protectorate system is a misnomer.  This term means that one nation is protecting another.  
+	This is not at all what happens in Mayhem.  In Mayhem, this is simply a global flag on a system that says "This sector was just conquered or tranferred, and is invulnerable for 6 hours".  It was meant to slow the game down, but artificial roadblocks to the progression of war IMO are not a good thing.
+	
+
+	1. The A.I. magically materializes free Outposts in UN-OWNED sectors, and often	behind your lines.
+		You can't just clear out a system and bypass it and keep pressing forward in a scortched earth rampage.  
+		Currently, you have to actually take ownership of any system you clear out as you press forward or risk a magical enemy outpost popping
+		in there from thin air.  It's important to note that the A.I. doesn't need a TL to haul an outpost kit like the player does.  It cheats.
+		I don't like collecting 30+ systems as I take over an area.  I don't want to manage them, I just want to deny them to the enemy.
+		
+		- Renegades already has something in place to prevent a recently "stripped" system (no stations at all) from being claimed by the A.I. for a period of time.  See ID 123 in the 9973 t-file for time duration customization on this.  This is eliminates problem 1 above.  A protectorate status doesn't add any value at all.
+		
+		
+	2.	When the A.I. declares war on you, you can't simply go attack any enemy sector you want to.  Often you will find many enemy sectors are still 
+		under a protectorate timer for some "other" reason and the player's hands are tied.  Even after Truces are made between
+		other nations, the protectorates continue to exist for up to 6 hours.	If the player kills a station in a protectorate 
+		system, they are fined by "terracorp", which is not even an agency capable of enforcement and has no business getting into
+		your business.  There's nothing worse than to have the A.I. declare war on you, only for you to be artificially restricted in what 
+		you can attack to defend yourself.
+		
+		- For problem 2 above, the protectorate serves no good purpose whatsoever for the player.
+		
+		
+	. !ship.signal.changesector.xml
+	. !station.signal.killed.xml
+	. Mayhem.Conquer.xml
+	. Mayhem.GameCreator.SectorData.xml
+	. Mayhem.IsClaimable.xml
+	. Mayhem.Monitor.Galaxy.xml
+	. Mayhem.Setup.Variables.xml
+	. 9972-L044.xml
+	. Mayhem.Task.Squadron.BattleGroup.xml
+	. Mayhem.TransferSectorToRace.xml
+	. Menu.Mayhem.Ministry.SM.xml
+	. Menu.Mayhem.Ministry.xml
+	. Menu.PC.Journal.SM.xml
+	. ZH.Core.xml
+	. ZH.Crisis.End.xml
+	. ZH.Initialize.xml
+	. ZH.Monitor.xml
+	. ZH.Plot.MaelstromShutdown.xml
+	
+	
+.  Fixed the Repair Ship command for the Truelight Seeker.	
+	This was not getting close enough to small targets when the player was In-System,
+	and for Out of System repairs, it was failing.  Also now allowing repair of Abandoned ships.
+	
+	. Mayhem.RepairTarget.xml
+
+
+	
+.  The "Outposts' screen now allows you to set a default Sort Order.
+	This can be a VERY convenient screen to jump to Ship or Station production for a given outpost.
+	Sorting can be done by:
+		 Date Created
+		 Reverse Date Created
+		 Alphabetical
+		 Reverse Alphabetical
+	
+	. Menu.PC.Sanctuaries.SM.xml
+	
+	
+	
+.  The Research Manager screen now has a "button" allowing you to cycle through all player research stations,
+	without leaving the research manager screen.  This does not include Hacking Stations in it's rotation.
+
+	. Menu.SaturnComplexHub.Install.xml
+	. Menu.SaturnComplexHub.install.SM.xml
+
+	
+.  Added slight Bonus to Terrans base research rates.  
+	  When playing as Terrans, the player has an inherent disadvantage.  In order to gain the "Origin" research bonus,
+	  a race must research ships of it's own race.  However, Terrans can only do this in a system that has
+	  Terran Memory.  This disadvantage not exist when playing any other race.  To compensate,
+	  I've increased the Terrans base research rate slightly.  This bonus have no relevance for other
+	  activities such as Hacking etc.	
+	  
+	  . Mayhem.GetResearchPointsPerCycle.xml
+	  . Menu.SaturnComplexHub.Install.SM.xml
+	
+	
+.  	It's now easier to research something you have right in front of you.
+	Docking a ship to a research station, of the exact type you are researching there will provide a research bonus.
+
+	  . Mayhem.GetResearchPointsPerCycle.xml
+	  . Menu.SaturnComplexHub.Install.SM.xml
+	
+		
+.  Changed Default ship building quality from Garbage to Normal
+
+	. Mayhem.InitializeOutpost.xml
+	
+	
+.  If the A.I. declares war on the player, often those enemy stations would not appear as "Red" targets to your ships.  This forced
+	the player to manually use Global Commands to update that race as "foe" to all player properties so that your fleets would attack them.  
+	This is now automatic.
+	
+	. ZH.declareWarOnPlayer.xml
+	
+	
+.  Rate of Fire (ROF) for all Artilliary class Missiles (M7M ammo) has been cut in half.  One M7M can sit at extreme range
+	and take out a destroyer WAY too easily.  It may still be too easy, but I've made an adjustment to reduce the fire rate.
+	
+	. 12.cat/dat
+	
+	
+.  If the player kills a Pirate Outpost, they are restricted from docking at ANY other Pirate base for a period of 12 hours.
+	The pirates remember;  for a while at least.
+	
+	. !station.signal.killed.xml
+	. Joubarbe.Lib.CanDock.xml
+	
+	
+.  Pirates can now claim Abandoned Ships !	
+	There is now a chance for a Pirate ship to claim an abandoned ship if it falls within it's scan range.
+	There is no size restriction for this, so may even see capital ships being flown around by pirates, although rarely.
+	
+	. Mayhem.Task.Pirate.Harassment.xml
+	
+	
+.  Pirate Ship repairs.
+	Pirates have to be very industrious and innovative being so independent and having so few support mechanisms.
+	Pirate ships will now automatically repair their hull at a 5% per 30 minutes rate.  This is half the auto-repair rate
+	for Boron ship designs.  If the pirate ship is of Boron construction, it will auto-repair at the normal 10% Boron rate.
+	
+	. ZH.BoronHullRegeneration.xml
+	
+	
+.  Updated Cleanup.bat to remove old TBullets.txt and TShips.txt files from the /addon/types folder for a fresh install.
+
+	. Cleanup.bat
+	
+	
+
+.  Added overall player fleet power display in the Ministry of war so it can be visually compared with each faction.
+	This fleet power assessment is CPU intensive, so is only updated every 8 hours of gameplay.
+	
+	. Menu.Mayhem.Ministry.SM.xml
+	
+
+.  Updated ZMap to allow for a Customized Music Folder, enabling you to play your own Music.	
+   Also added ability to edit the music selection for each specific sector.
+
+	. /ZMap/X3_Mayhem_Galaxy_Generator.exe
+	. /ZMap/Settings.txt
+	. /ZMap/ReleaseNotes.txt
+	. /ZMap/TBullets.txt	-  updated due to changed repair laser range.
+	
+	
+. Capturing a capital in Unknown space will no longer reduce the player standings towards "Unknown".
+
+	. Mayhem.Task.Claimeable.xml
+	
+	
+. The TL class ship will no longer execute the "Drop Station At" command if it's assigned as the global Architect ship.
+
+	.  Mayhem.CmdChk.DropStationAt.xml
+	.  Mayhem.Cmd.DropStationAt.xml		- added missing $ship var. parameter, although not used.
+	
+	
+. Improvements to the Architect
+
+	Reworked the confusing outpost Architect Screen to be easier to understand, and quicker to deploy stations.
+	
+	. Adjusted Description of the Architect to make it clear where stations are built and that the TL selected is globally assigned to
+		service all player outposts.  Added other useful tips for the user here.
+	. If the player manually orders the Architect to do something else, this cancels it's assignment, but this was still showing the
+		ship as being the Architect in the architect screen.  Now it doesn't.
+	. Improved the Menu's to be far more readable and clear.  Colorized and added a "local station count" column for factories.
+		
+		. Menu.ZH.FactoryConstruction.Get.xml
+		
+	
+. Changed Version Number
+
+	. \mayhem_data\template_8379-L044.xml		
+	
+	
+	
+The following changes were from betelguese97
+-----------------------------------------------------------------------
+- Removed reputation, favor, maintenance, hacking time cost, +1 maximum perk, and EMP cooldown from terraforming effects list.
+  - These made no sense from terraforming. Terraforming is about changing the planet, and these effects don't have any geographical analogs.
+- Removed weaker version of terraforming effects.
+- Terraforming effects are divided into two tiers: common (90% chance to get) and epic (10% chance).
+  - All existing effects have been moved to the common category. Epic effects are equivalent to 2 common effects.
+- Reworked improved version of terraforming effects.
+  - Now called the epic tier.
+  - Added "population+", "research+", "support+", "repair+", "industry", and "specialization+" effects. They give:
+    - Population+: +30 pops and +3 pop growth rate
+    - Research+: +60% research rate
+    - Support+: +4 station support
+    - Repair+: +100% repair rate and +2 station support
+    - Industry: +50% more food, e-cell, waste, and tax.
+    - Specialization+: +5% max specialization
+- Reworked existing versions of terraforming effects
+  - Now moved to common tier.
+  - Changed population, research, support, and specialization effects.
+    - No longer gives a random amount (20-40 pops, 30-50% research rate, 3-4 station support).
+    - Now gives +20 pops, +30% research, +2 station support, and +3% max specialization respectively.
+- Separated increased tax, e-cells, waste, and food into distinct categories. Previously, they were grouped under one category before selecting one of the four.
+- Pop growth rate from terraforming effect now applies to initial population growth as well.
+- Duplicate effects are allowed. Thus, it is theoretically possible for a sector to get 2 standard population effects.
+
+	.Mayhem.SetTerraformingEffects.xml
+	.Mayhem.Terraform.xml
+	.Mayhem.GetSolarPanelsEfficiency.xml
+	.Mayhem.GetTaxIncome.xml
+	.Mayhem.GetNaturalGrowth.xml
+	.Mayhem.Task.Station.Outpost.xml
+
+- Updated terraforming effect descriptions, detailing exactly what bonuses they give.
+- Nerfed standard specialization effect from +5% to +3%.
+  - Enhanced specialization effect is +5% and is moved to the epic tier.
+
+	.Menu.Mayhem.Ministry.SM.xml
+	.Mayhem.GetMaxSpecializationLevel.xml
+
+- Removed (commented out) and added comments for effects involving reputation, favor, maintenance, hacking time cost, +1 maximum perk, and EMP cooldown. 
+They exist only for older games and are now unused.
+	
+	.Mayhem.CountTerraformingEffects.xml
+	.Mayhem.GetShipMaintenanceCost.xml
+	.Mayhem.CmdPreloadEMP.xml
+	.Mayhem.Hacking.Costs.TimeFactor.xml
+	.Mayhem.Terraform.xml

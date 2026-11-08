@@ -1,0 +1,1842 @@
+MAYHEM EXPANDED 2.2
+===================
+
+Renegades Add-Ons is now Mayhem Expanded. Version 2.2 introduces Azimuth,
+reworks campaign progression and fleet behavior, and fixes combat,
+mission, economy, and Terraformer Virus issues.
+
+COMPATIBILITY AND INSTALLATION
+------------------------------
+- Existing saves: NOT compatible. Start a new game.
+- Existing galaxies: NOT compatible. Generate a new galaxy with Azimuth.
+- Follow the updated README, install the complete release, and run the
+  included cleanup.bat before generating and activating your new galaxy.
+- Back up your installation and saves before updating. Do not restore old
+  generated galaxy files or ship and weapon overrides over the update.
+
+A new game is required because existing saves can retain older combat
+tasks, including !fight.attack.object, and remain exposed to the old
+crash. A new galaxy is required for the revised generation and metadata.
+
+HIGHLIGHTS
+----------
+- Azimuth replaces ZMap, with revised galaxy generation, editing,
+  validation, configuration tools, and ship and weapon randomization.
+- Rebalanced starting rewards, Quickstart, and Ascension requirements.
+- Reworked research, taxes, supply, Stock Exchanges, and terraforming.
+- Missions use predetermined selection and target existing fleets where
+  appropriate, with clearer completion, failure, and cleanup rules.
+- Reworked Xenon garrisons, OCV production, and Kha'ak raids.
+- Standardized ship variants and revised ship and laser balance.
+- Fixed fleet leadership, targeting, repairs, and OCV virus takeovers.
+
+CONTENTS
+--------
+1. Azimuth map generator
+2. Starting conditions and galaxy rules
+3. Economy, research, and terraforming
+4. Missions, diplomacy, and workers
+5. Warfare, Xenon, OCV, and Kha'ak
+6. Ships, weapons, and equipment
+7. Interface, visuals, and miscellaneous fixes
+8. Technical cleanup
+Appendix A. Affected files and implementation notes
+
+1. AZIMUTH MAP GENERATOR
+-----------------------
+Azimuth replaces ZMap as Expanded's map generator. It is source-available
+and applies selected options consistently across supported Mayhem editions.
+Azimuth will never introduce edition-specific penalties or artificial
+feature restrictions. Explicitly selected gameplay modifiers remain part
+of galaxy customization.
+
+- Reworked territory generation around the gate network, with connected
+  faction territories, separated faction starts, and Unknown frontiers.
+- Reworked Xenon allocation and enclave placement. Chaotic galaxies use
+  clustered Xenon and require at least two Unknown enclaves; other starts
+  retain the four-Unknown-enclave requirement.
+- Improved gate regeneration, generation retries, and log scrolling.
+- Added editing checks for ownership, sector addition and removal, de jure
+  ownership, company assignment, Xenon counts, and sector stat limits.
+- Separated galaxy-start choices from sector stat modifiers and show the
+  generated or loaded galaxy's modifier as a read-only summary.
+- Added Xenon percentage adjustment and grouped sliders separately from
+  other map options.
+- Expanded and reorganized interfaces, including Save/Load Galaxy, and
+  added tooltips. Improved text colors and use of system background colors.
+- Improved the configuration editor and its setting descriptions.
+- Improved PNG export and sector information, including planet counts.
+- Corrected Xenon Defect starting-sector selection and clarified the
+  optional Gamestart Sector and Maelstrom overrides.
+- Standardized map terminology, including De Jure and Terran Memory.
+- Handles legacy 00044.pck and generator cleanup during activation.
+- Revised ship randomization to share attribute modifiers across each
+  race and normalize shield capacity with the shield-generator modifier.
+  Lower shield tiers are used where permitted to represent adjustments.
+- Ship production values use a weighted mean: 40% movement, 40% durability,
+  and 20% cargo, limiting economic swings while preserving racial variety.
+- Weapon randomization uses racial groups. Repair Lasers and Mobile
+  Drilling Systems are excluded, as is the unused Mounted Railgun.
+- Laser production values use the mean of average damage, firing rate,
+  and range multipliers.
+- Uses azimuth_backups for the relevant backups, with readable timestamps.
+
+Galaxy stat modifiers in Expanded
+---------------------------------
+- Normal: standard sector attributes, 20% base maximum specialization,
+  20,000 progress per specialization percentage point, and four base perk
+  slots.
+- Saboteur: population, research, and station support reduced by 20%;
+  30% base maximum specialization, 25,000 progress per percentage point,
+  and five base perk slots. NPC tall needs increase by 60% for normalization.
+- Extra Stats: population, research, and station support increased by 20%;
+  supply and maximum tax efficiency reduced by 20%; base maximum
+  specialization reduced to 10%; and terraforming scaling reduced by
+  10 percentage points for generic, Gaia, and Barren effects.
+- Base specialization changes apply to NPC Outposts as well as player
+  Outposts. Difficulty adjustments to perk slots still apply.
+
+These are explicit gameplay choices. Validation checks the imported
+galaxy against its declared rules; it does not regenerate sector attributes
+or ownership when a fallback is applied.
+
+2. STARTING CONDITIONS AND GALAXY RULES
+---------------------------------------
+
+Starting rewards and Ascension
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Reworked starting rewards on Easy, Normal, and Hard:
+  - Starting credits are fixed at 20,000; the credits question has been removed.
+  - Starting exploration is automatic; the sector-reveal question has been removed. The reveal budget scales with galaxy size and is capped at five additional nearby sectors within two jumps, plus the origin sector. See the verification appendix for the origin-sector edge case.
+  - Only the initial ship's blueprint is unlocked automatically. Insane does not grant this blueprint.
+  - The Galleon, Truelight Seeker, and bonus ships no longer grant automatic blueprints.
+  - Bonus TPs no longer include a Docking Computer.
+  - Declining a bonus ship installs one Pandora Tuning on the initial ship.
+  - All bonus ships, including Quickstart ships, spawn at random positions in the origin sector, even if the player has moved elsewhere.
+- Reworked Quickstart:
+  - Removed the additional 2 million credits. The ordinary 20,000-credit starting award still applies on eligible difficulties.
+  - Reduced the fleet from 12 M3s, 5 TSs, and 2 M6s to 3 M3s and 2 TSs.
+  - Starting TSs no longer carry additional cargo.
+  - Standardized bonus ships instead of selecting them randomly. Ordinary Quickstart M3 rewards use Spitfyres; these cannot be scanned for blueprints but can be recycled for research.
+  - Xenon Defect instead receives Phanon M3s and TSs. The initial player ship remains the Xenon M, and Phanon production remains gated by plot progression.
+  - Reputation changes from +3,000 with all factions plus +1,000 with the origin faction to rank 6 with the origin faction only.
+  - Removed Quickstart's halved OCV production rate.
+  - Quickstart now emphasizes immediate expansion and a smaller initial fleet. Completing Ascension instead delays expansion in exchange for its larger credit reward.
+- Updated Ascension:
+  - Wealth Ascension no longer grants the hidden +500 Teladi reputation bonus.
+  - Freighter requirements now accept both TSs and TPs.
+  - Yaki kills count toward Fame's Pirate requirement, and OCV kills count toward Power's Xenon requirement.
+
+Campaign validation and configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Validate the declared galaxy start and sector stat modifier during initialization, before the starting questions.
+  - Stat validation and galaxy-start validation are independent.
+  - Failed stat validation uses Normal gameplay modifiers; sector attributes remain unchanged.
+  - Failed galaxy-start validation uses Standard start rules; sector ownership remains unchanged.
+- Lock campaign difficulty modifiers when the starting questions finish.
+  - Send a report of effective settings, mandatory difficulty overrides, galaxy start, and stat modifier to the message log.
+  - Later t-file edits to these locked modifiers do not change the campaign.
+- Standardized or removed the following configuration options:
+  - All bailed ships, including capital ships, respect the global cap of 80.
+  - Removed the configurable station loot drop option.
+  - Mobile Factory efficiency is fixed at 50% for both player and Nomad factories.
+  - Research pacing, including the Cyberwar Center cycle time, uses fixed values.
+  - Removed the OCV cycle and pirate population multiplier settings.
+  - Faction revival during the Xenon Crisis and OWP construction are always enabled.
+  - Looters use their homebase's trade range; the separate range setting has been removed.
+  - Removed the no-bail and player-bailing flags.
+  - Hard and Insane enable Pirate Base spawning in player sectors.
+- Increased the overextension threshold from 150 to 333 fleet power per player sector. The new threshold is approximately 70% of the supply generated by 95 population on Insane.
+- Removed Quantum Tube trading from Trading Stations to preserve shipbuilding logistics and their intermediate-ware role.
+- Reduced the Nomad Flagship's Xenon-sector looting threshold from 200 to 100 wares; it is no longer configurable.
+- Pirate Base capacity now scales with galaxy size, with a minimum of 12.
+- The missile-spam performance setting, variable 129 in 9973, applies only to non-missile boats. Missile boats remain eligible regardless of ship class.
+
+- Fixed Ascension requirements being determined upon opening the Ascension UI rather than at gamestart.
+
+Initialization fixes
+~~~~~~~~~~~~~~~~~~~~
+
+- Fixed Jump Point infrastructure variables showing as null during game initialization.
+  - The game now initializes a placeholder value before finally computing the cap in ZH.Initialize.
+- Fixed factory tutorial being presented shortly after placing an Outpost.
+  - This was due to placing temporary player factories to extract mobile factory metadata during initialization.
+  - The tutorial is now presented only after initialization has finished.
+
+3. ECONOMY, RESEARCH, AND TERRAFORMING
+--------------------------------------
+
+Stock Exchanges
+~~~~~~~~~~~~~~~
+
+- Expanded Stock Exchanges to the other Commonwealth races and added an industrial outlook indicator.
+- Reworked the economic-linkage system initially ported from FoF:
+  - Exchanges spawn only in de jure sectors, preventing acquisition through sector purchases.
+  - Stock valuations respond to the owner's faction-wide industrial outlook.
+  - Outlook considers factory operating conditions and changes in the faction's established industrial scale, using its entire factory base rather than a regional sample.
+  - Only the faction's own factories count; player-owned and foreign factories do not directly affect its market.
+  - Prices retain random movement but are biased toward valuations supported by the economy.
+
+Research
+~~~~~~~~
+
+- Reworked research so Base Research Rate remains relevant throughout the game.
+  - Most bonuses scale with Base Research Rate and add to a unified Research Rate.
+  - Yaki, Faster Research, and terraforming modifiers remain multiplicative.
+  - Faster Research applies after the other research bonuses, affecting their combined output.
+- Rebalanced bonuses:
+  - Origin faction: +50% -> +35%.
+  - Terran origin: replaced +3 Research Points across all projects with +50% Research Rate for Terran ships.
+  - Shared border: +33% -> +20%.
+  - Matching ship: +35% -> +25%.
+  - Coalition: +50 Research Points -> +150% Research Rate.
+  - Favor: +20 Research Points -> +70% Research Rate.
+  - Relations: +1 Research Point per rank above rank 5 -> +3% Research Rate per rank above rank 5.
+- Updated tooltips to distinguish Base Research Rate, bonuses, and final Research Station output.
+
+Supply
+~~~~~~
+
+- Reduced supply scaling on Easy, Normal, and Hard:
+  - Easy: 3x.
+  - Normal: 2x.
+  - Hard: 1.6x.
+  - Insane: 1x, unchanged.
+- Easier difficulties retain more supply, while making the choice between keeping salvaged ships and recycling them more consequential.
+
+Emergency Rations
+~~~~~~~~~~~~~~~~~
+
+- Replaced No Food Consumption with Emergency Rations.
+  - During shortages, 2 units of produced food replace 1 unit of required food, covering up to 50% of demand.
+  - Incompatible with Population Stability and Industrial Overdrive.
+  - Removes the self-sustaining food loop available to one-sector empires under the old perk.
+
+Outpost perks and infrastructure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Removed the +1 perk slot bonus from Easy difficulty.
+- Rebalanced Outpost perk slots:
+  - Every two permanent wars against Commonwealth factions grant one additional slot per Outpost, down from one per war. Yaki and Phanon remain excluded.
+  - Adjacency Perk Bonus requires three adjacent player Outposts to purchase.
+  - After accounting for the perk's own slot cost, three qualifying neighbors grant one net slot and four grant two net slots.
+  - Only permanent gate connections count. Losing neighbors reduces the bonus without removing the purchased perk.
+- Capital Shipyard upgrades preserve stored wares.
+- Capital Shipyard costs scale by +1 Outpost, +30 Blue Crystals, and +15 Green Crystals for each difficulty level.
+- Changed Jump Hole costs:
+  - Crystals: 10 Red, 5 Yellow, and 1 Blue -> 20 Red, 8 Yellow, 5 Blue, 2 Green, and 1 Black.
+  - Also requires 10,000 Energy Cells and one Jump Beacon.
+  - Duration: 6 -> 8 hours, matching the AI's eight-hour strategy update interval.
+- Reworked Orbital Weapons Platforms (OWPs):
+  - Construction costs shipbuilding resources and population instead of fixed station materials and one Black Crystal.
+  - NPC factions place initial OWPs after stations have spawned, prioritizing their most valuable sectors.
+  - NPC factions can build up to two additional OWPs every eight hours.
+  - Maximum OWP limits: Easy 6 -> 4; Hard 1 -> 2.
+
+Mobile Factories
+~~~~~~~~~~~~~~~~
+
+- Reworked Mobile Factory loop production and cargo handling.
+  - Player factories process one complete production cycle at a time; autonomous Nomad factories still process resources in bulk.
+  - Factories check cargo space before starting production.
+  - If cargo space changes during production, completed output waits until the entire batch fits instead of being transferred partially.
+  - Nomad Traders stop delivering additional cargo while a completed batch is waiting for space.
+  - A Mobile Factory Kit is required to start or continue production.
+- The Mobile Factory menu can now be opened while docked.
+
+- Combustor can now combust Artefacts, Parcel, and VIP.
+  - This removes obsolete items from the player's Outposts, if any are stored.
+
+- Food is now produced at a production : consumption ratio of 1.25:1 (was 2:1)
+  - This is due to food production exceeding consumption, potentially saturating the food market.
+
+- Space Weed is now produced only if you have infamy and you have not joined the OCV. This ties Space Weed as an illicit good.
+  - Production rate per cycle is now as follows:
+    - 1-29 infamy: 1 Space Weed.
+    - 30-64 infamy: 2 Space Weed.
+    - 65-99 infamy: 3 Space Weed.
+    - 100+ infamy: 4 Space Weed.
+
+Taxes
+~~~~~
+
+- Tax perk:
+  - Reverted minimum tax efficiency from 300% to 100%.
+  - Now increases the tax efficiency target by 25%.
+- Population scaling:
+  - Normalized tax per pop for easier calculations (178 credits/pop -> 180 credits/pop).
+  - Replaced tiered population tax bonuses with gradual population-dependent tax efficiency scaling.
+  - Population now modifies the tax efficiency target instead of directly multiplying tax income.
+  - Efficiency modifiers range from 75% at 60 population to 125% at 200 population, reaching a maximum of 200% at 1,000 population.
+- Capital Shipyard:
+  - Replaced the immediate +50% tax income bonus with a +50% tax efficiency target bonus.
+  - Its income benefits now develop gradually as actual efficiency approaches the target.
+- Tax efficiency:
+  - Tax efficiency is now tracked individually by each Outpost instead of its sector.
+  - Reworked efficiency growth and decay to use the same proportional adjustment rate.
+  - Each update now closes approximately 10% of the difference between current and target efficiency, regardless of direction.
+    - This significantly accelerates efficiency decay, preventing sectors from retaining excessively high tax income long after their economic conditions deteriorate.
+  - Decreased station contribution: +3.03% efficiency target per station -> +2% efficiency target per station
+  - Tax efficiency, collection timing, and accumulated tax income are preserved when upgrading an Outpost into a Capital Shipyard.
+- Interface:
+  - Updated the Outpost menu to display current and target tax efficiency.
+  - Replaced the previous growth and deterioration indicators with rising, falling, stable, and Tax perk minimum states.
+  - Improved messages for sectors that are not yet generating tax income.
+- Fixes:
+  - Corrected average sector-distance calculations, including jump beacon validation.
+  - Improved tax calculations to reduce the risk of integer overflow in highly developed sectors.
+
+Recycling and terraforming
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Reduced base recycling factor (50% -> 40%) to ensure specialization and recycling factor do not overlap.
+- Reduced maximum number of recyclers (terraforming effect) to 2 within a sector.
+- Reduced recycling factor from capital shipyard (+20% -> +15%) to better increase the value of the recycler terraforming effects.
+- Reduced the maximum rare terraforming roll chance from 10% to 5%. The draft estimates an overall rare-effect frequency of approximately 4.4%, compared with 6.5% previously; these estimates require verification before publication.
+
+- Fixed dynamic Outpost specialization accumulating incorrectly, a regression introduced in Expanded 1.1.
+
+- Fixed NPC Outposts not recycling lasers and shields from recycled ships.
+
+- Fixed station recycling validation:
+  - Moved redundant code from prompt to station recycling.
+  - Capital Shipyards are treated as Outposts for recycling restrictions.
+
+- Fixed non-factory stations being classified as factories by using the shared factory classification logic.
+
+- Fixed terraforming remainders being discarded after terraforming a planet.
+  - Remainders now carry over, ensuring that the generic bonuses are accurately applied.
+
+- Fixed resource transfer (sector transfer to another faction or end of Phanon branch) transferring factory resources when only products should be transferred.
+
+4. MISSIONS, DIPLOMACY, AND WORKERS
+-----------------------------------
+
+Mission generation and behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Reworked mission generation:
+  - Mission types and difficulties are predetermined in separate caches for each mission-giving faction.
+  - Generate 0-2 missions per sector instead of filling every sector to the two-mission cap.
+  - Increased generation chance from 17% to 25% to offset lower mission density.
+  - Mission timers range from 50-70 minutes instead of 60-70 minutes.
+  - Improved station selection, retry handling, dialogue, and completion and failure messages.
+  - The Mission Board sorts by earliest expiration.
+  - On Insane, the limited mission pool is added once instead of twice when weighting selection, making ship-reward missions less excessively rare.
+- Suppression missions target existing fleets instead of generating military forces.
+  - The mission giver must be hostile or in Total War with a Commonwealth faction that still owns sectors.
+  - Yaki can offer missions but cannot be targets. Phanon neither offers these missions nor serves as a target.
+  - Targets are Border Patrol, Battle Group, Rearguard, or Task Force leaders.
+  - Destroying the target or changing its ownership counts as elimination. The mission fails if another faction eliminates it.
+  - Credits, reputation, and Loyalty rewards depend on the target ship's value.
+- Rescue ships spawn with 0.5% hull instead of 200-1,000 hull points. All crew must remain alive and aboard the designated ship for completion.
+- Provision missions distribute delivered resources to the mission giver's assets.
+- Bait mission Kha'ak target the bait ship first, then the player's current ship, then defend the sector.
+- Intel missions can complete after the target station is destroyed if scanning had already reached 100%.
+- Only the player's personal ship triggers Patrol mission Xenon spawns; fleet leaders no longer do so.
+- Defense missions fail if the defended station is destroyed by the Xenon or the player.
+- Defense and Bait mission carriers include support ships. Support ships do not award mission rewards when destroyed. Bait missions can include a Kha'ak Carrier.
+- Xenon Patrol, Kha'ak Bait, and Pirate Delivery groups use more varied three-dimensional spawn positions instead of fixed patterns.
+- Improved mission cleanup:
+  - Mission-generated Xenon and Kha'ak despawn when their missions are aborted.
+  - Delivery mission Pirates become ordinary Pirate harassment groups after the mission ends.
+  - Potential reward ships are reclaimed when appropriate. Ships personally flown by the player are retained to avoid a forced game over, with increased failure penalties instead.
+  - Delivery ships are retained if a destination station was destroyed.
+  - The Police mission's stolen ship is retained because it is an existing worker.
+- Mission failures display their penalties:
+  - Base penalty: 500 reputation and 1 Loyalty.
+  - Reputation multiplier: 1x on Easy and Normal, 1.5x on Hard, and 2x on Insane.
+  - Both penalties double for Bait or Rescue if the player is flying the claimed mission ship; Police if the culprit was identified and the stolen ship claimed; Delivery if all destination stations remain intact and the player is flying the delivery ship; and Supplies in all cases.
+  - Loyalty cannot fall below zero, and notifications report only the Loyalty actually lost.
+
+Additional mission fixes
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fixed Yaki being excluded from mission givers.
+- Fixed missions generating fewer missions due to invalid criteria.
+- Fixed missions being checked for expiration after already being removed due to a station ownership change.
+- Fixed conflicting colored mission entries, which caused the rest of the mission entry to be default colored.
+  - All entries are now default colored to allow parts of the entry to be colored (Suppression missions use colored ship names).
+  - Superseded entries remain grayed out.
+
+Cargo Hauler and Taxi jobs
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Joining the OCV removes Cargo Hauler and Taxi registrations.
+  - Passengers become slaves and can be converted to Energy Cells with the Combustor perk.
+  - Cargo Hauler wares, including drugs, can be combusted at one unit per 15 Energy Cells.
+- Increased base payments: Cargo Hauler 4,000-6,000 -> 15,000 credits; Taxi 1,500-2,000 -> 3,000 credits.
+- Jobs are predetermined rather than rerolled. Timers are fixed at one hour instead of 30-60 minutes.
+- Cargo Hauler deliveries require the player to pilot the registered ship.
+- Job range scales with reputation, reaching three jumps at rank 7 or higher.
+- Cargo Hauler shipment size scales with the registered ship's cargo capacity.
+- Payments depend on delivery distance instead of random rolls.
+- Taxi registration requires Cargo Lifesupport System; ships already receive it as standard equipment.
+- Taxi availability scales with reputation, reaching three passengers at rank 7 or higher.
+- Taxi jobs no longer grant reputation. Cargo Hauler deliveries still do; illegal deliveries reward Yaki reputation instead of the station owner's.
+- Fixed duplicate Cargo Hauler destinations, partial loading of shipments that could not fit, and repeated Taxi attempts to use invalid destinations.
+- Added a notification when attempting delivery without the complete Cargo Hauler shipment.
+- Restored contraband penalties, including for Cargo Hauler jobs:
+  - Confiscation removes the affected job.
+  - Insufficient credits to pay a fine increase the base reputation penalty according to the shortfall.
+  - Fine and reputation multipliers: Easy 0.5x, Normal 1x, Hard 1.5x, and Insane 2x.
+
+Workers
+~~~~~~~
+
+- Added a worker homebase indicator.
+- Improved Traders and the Trade Report Archive, incorporating fixes from FoF:
+  - Traders reserve destination cargo space to reduce redundant deliveries.
+  - Traders can retry destination trade locks instead of immediately abandoning a trade.
+  - If an external destination's price drops below the purchase price, Traders can redirect to another suitable station in the same sector.
+  - Outpost Traders no longer trade with Pirate Bases.
+  - The archive tracks each active Outpost Trader's NPC-to-NPC trades, realized profit, maintenance, and net profit. Profit is realized only when NPC-purchased wares are sold to NPC stations.
+- Improved Miners:
+  - Miners unload at their home Outpost, or the nearest Outpost if not assigned to one. Agents handle subsequent distribution.
+  - The unloading threshold is 50% cargo capacity instead of 3,000 cargo units, applies to both player and NPC Miners, and is no longer configurable.
+  - Miners check the threshold before and after mining debris, as well as after reaching the destination sector.
+- Ported and extended FoF's Tug, Looter, and Explorer improvements:
+  - NPCs use behavior previously restricted to player workers.
+  - Tugs claim the nearest abandoned ship and recalculate the next target after each claim.
+  - Explorers avoid hostile sectors more effectively and maintain a sector list from their homebase.
+  - TSs and TPs are no longer eligible player Tugs or Explorers. TMs can serve as Tugs.
+  - NPC Tugs use M3s and TMs instead of TPs.
+- Changed worker allowances:
+  - Player factory Explorers: 4 -> 2.
+  - NPC factory Explorers: 1-2 -> 2.
+  - NPC Agents: 2 -> 3.
+  - NPC Traders: 1-2 -> 2.
+  - NPC Miners: 1-3 -> 3.
+  - NPC Quantum Tube Factories can support two Miners to help supply Ore and Silicon.
+
+Diplomacy and Loyalty
+~~~~~~~~~~~~~~~~~~~~~
+
+- Display Truce and Non-Aggression Pact durations in the Ministry of War.
+- Provide a reason whenever Loyalty is awarded.
+- Bailing a coalition ally's ship or a ship belonging to a faction under truce has diplomatic consequences, as destroying or boarding it would.
+- Removed random Loyalty awards from reputation gains on Easy and Normal.
+- Destroying a Hive Queen in Yaki territory awards one Yaki Favor Point.
+- Removed the free Favor Point for honoring a truce.
+- Reworked Loyalty rewards for eliminating large ships:
+  - Requires a sector with an existing claim.
+  - Only Huge Ships qualify, awarding two Loyalty for assisting either the owner or the claimant against the other party's ship.
+  - Boarding and hacking count only when assisting the Yaki; O2 hacking does not qualify.
+- Claiming abandoned capital ships, except Black Market M7s, incurs the greater of a flat or percentage-based reputation loss:
+  - M7: 500 or 1%.
+  - M1: 750 or 1.5%; the flat penalty was 700.
+  - M2: 1,000 or 2%.
+  - Harder difficulties continue to double these losses.
+- Priority-target M7s use the assigning faction's color for their asterisk. For example, a blue asterisk identifies an Argon priority target.
+  - Hacking is eligible for the Favor Point reward.
+  - Targets must be hostile or in Total War with the assigning faction.
+  - Targets remain strictly M7s and may be leaders or followers.
+- Doubled faction ethos influence on ultimatum chance:
+  - Every five positive ethos points add one percentage point; every five negative points subtract one.
+  - At reputation rank 9, positive bonuses are 50% larger and negative penalties are halved.
+  - At rank 10, a faction always offers an ultimatum when one is possible and a valid sector can be demanded.
+
+Additional diplomacy fixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fixed Restriction favor canceling a different faction's claim.
+  - A faction can no longer restrict a sector if it has a different faction's claim.
+- Fixed Insane difficulty allowing Favor Points to be bought at rank 6.
+  - The requirement has been corrected to rank 7 for consistency with close ally rules (rank 7 on Insane or rank 6 on lower difficulties).
+- Fixed coalition check occurring before offering truce.
+- Fixed a faction influenced by the fairness favor being unable to conquer unclaimed sectors.
+- Fixed Space Weed favor potentially unlocking Space Weed trades at variable number of eligible factories. Now unlocks Space Weed trades at 33% of eligible factories or at least 1.
+- Fixed a null reference (playtime) when breaking truces. Also fixed truce scripts overwriting races 1 and 2 with strings.
+- Fixed player's Non-Aggression Pact being shown only under player statuses in Ministry of War. Now displayed for both the player and the other faction(s).
+- Fixed truces not ending coordinated invasions (CIs).
+- Moved Coalition and Phanon cost waiver to Mayhem.Favor.GetCost.
+
+Ultimatums
+~~~~~~~~~~
+
+- Fixed another sorting bug with ultimatums. The AI now selects the most valuable sector if there are no de jure sectors under player control.
+  - Also fixed reputation loss from losing an alliance not applying to the faction that issued the ultimatum.
+
+Infamy
+~~~~~~
+
+- Infamy now caps at 1M to protect against overflow.
+- Removed 60 infamy cap from destroying neutral TS for consistency with other infamy sources.
+
+Abandoned ships and Black Market
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Initial abandoned ships and Black Market ships spawn with 30-70% hull instead of 40-70%, giving a midpoint of 50%. Rescue ships use 0.5% hull.
+- Initial abandoned-ship selection now includes TPs: 20% TP, 40% TS, and 40% M3.
+- Private Corp. ships other than the Truelight Seeker can appear in the Black Market and initial abandoned-ship pool.
+- Expanded NPC claim protection to initial abandoned ships, mission ships, Black Market ships, and O2-hacked ships. Bailed ships have no protection.
+  - Base duration: 2.5 hours on Easy, 2 on Normal, 1.5 on Hard, and 1 on Insane.
+  - Random offset: +/-25% of the difficulty's base duration.
+  - Final duration also scales with galaxy size.
+  - Initial ships receive 12x duration; Black Market, O2-hacked, and mission ships receive 1x.
+  - Black Market and mission-spawned abandoned ships use predetermined locations.
+- Rebalanced bailing:
+  - All Phanon ships can bail, at 20% of the ordinary frequency, preserving their rarity while allowing occasional access before plot rewards.
+  - Kha'ak capital ships bail at 20% of the ordinary frequency, accounting for their rarity and greater presence in raids and missions.
+  - Teladi capital ships bail 33% more often instead of twice as often; the fighter bonus remains 33%.
+- The Black Market allows six purchase slots within a one-hour window. Most ships cost one slot; M7s cost three.
+- Purchase options sort by role rather than alphabetically: M7, M6, other combat roles, TM, TS, and TP.
+- Consolidated Black Market initialization after the starting questions, reducing initialization delays and handling sector selection in the same place.
+- Increased ordinary Black Market prices:
+  - M3: 40,000 -> 50,000 credits.
+  - M6: 300,000 -> 325,000.
+  - TM: 125,000 -> 250,000.
+  - TS: 35,000 -> 50,000.
+  - TP: 25,000 -> 60,000.
+  - Prices account for the availability of ship variants.
+- On Insane, TS and TP prices are both 300,000 credits, replacing 350,000 and 250,000 respectively.
+- The Crimson Commando arrives with a Hades Prototype and Toucan Prototype instead of a Viper and Magnir, matching the Yaki's M8 and TP+ introduced in Expanded 2.0.
+
+Mercenaries and group leadership
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Reworked mercenary group leadership and recovery:
+  - Groups retain their identity after a leader dies and reform from their own members.
+  - Fixed mercenary and Xenon/OCV leaders following each other; groups maintain one leader.
+  - Mercenary followers monitor changes to their escort target.
+  - Hired leaders no longer leave despite a valid player escort target. If no nearby player ship is available, they follow the player's personal ship.
+- The Mercenaries interface displays balance and wages every 15 minutes.
+- Corrected mercenary leader charges from 20% to the full rate used for the rest of the group.
+- Fixed incorrect ship counts in the Mercenaries interface.
+
+5. WARFARE, XENON, OCV, AND KHA'AK
+----------------------------------
+
+Initial enemy forces
+~~~~~~~~~~~~~~~~~~~~
+
+- Preserved Xenon and OCV defenders in Peaceful and Chaotic galaxies instead of destroying them during initialization.
+- Chaotic galaxies use one station per non-portal Xenon sector, regardless of difficulty.
+- Increased Hard's initial Xenon and OCV spawn scaling from +20% to +33%.
+- Initial Kha'ak and Xenon roamers spawn only in Standard galaxies.
+
+Territory and enemy fleets
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Removed the sector-count grace radius. NPC expansion unlocks when the player completes Ascension, rather than waiting for the player to own a specified number of sectors.
+- Removed the minimum Unknown-sector goal. Favors, warfare, sector purchases, and temporary abandonment protection provide expansion opportunities.
+- Reworked abandoned-sector protection:
+  - Recently abandoned sectors remain diplomatically contested for four hours. Conquering one before the claim expires can provoke its former owner.
+  - The separate NPC reclaim cooldown is reduced from 24 hours to a two-hour baseline: 2.5 hours on Easy, 2 hours on Normal, 1.5 hours on Hard, and 1 hour on Insane.
+  - Fairness favor respects the reclaim cooldown.
+- NPC factions can place claims on Xenon sectors outside the Xenon Crisis without waiting for Xenon territory to expand. Faction-specific restrictions still apply.
+- Reduced the random factory disassembly cooldown from nine to eight hours to match strategy updates.
+- Aggressive Task Forces can raid enemy factions, ported from FoF.
+- Ships return fire when attacked while engaging defenseless targets. Capital ships prioritize hostile Huge Ships and OWPs before factories and other stations.
+- Improved NPC ship selection:
+  - Missile boats are eligible across all supported classes instead of only M7s.
+  - Regular ships and missile boats can substitute for each other when the preferred type is unavailable.
+  - Miner selection and M8 missile-boat requirements remain strict.
+- Defensive squadrons target hostile Jump Beacons in faction territory. Border Patrols and Rearguards also check after patrols; dedicated cleanup remains with Task Forces, Police, and defensive Raiders.
+- Raider fleets support OCV hunters during the Xenon Crisis. Composition increases from 2 M3s and 8 M4s to 3 M3s and 9 M4s.
+- During the Xenon Crisis, factions must destroy every Xenon station in a sector before conquering it.
+- Nomad Traders can use the Nexus SF.
+
+Xenon defenses and invasions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Initial garrisons spawn per sector rather than per station. Initial and newly conquered Xenon sectors use the same station-defense composition across galaxy types.
+- Station defenders use spawn budgets for M7s and M2s rather than rerolling each selection.
+- Garrison scaling depends on Xenon territory. Invasion scaling depends on difficulty and no longer on Xenon territory.
+- Peaceful and Chaotic starts use a normalized territory baseline for extra-garrison limits and reinforcement frequency.
+- After a Xenon Crisis, all galaxy types reset extra-garrison scaling from galaxy size rather than remaining Xenon territory.
+- Increased baseline extra-garrison coverage from 30% to 60% of Xenon sectors:
+  - Easy: 45%.
+  - Normal: 60%.
+  - Hard: 75%.
+  - Insane: 100%, or 60% if the player joined the OCV.
+- Extra-garrison build time varies from one to three hours, with a two-hour baseline.
+- Insane uses upgraded OCV ships for defenders and further increases fleet strength.
+- Each Xenon sector receives at least one M7-class defender at initialization. Three non-portal sectors receive stronger fleets, and the portal sector receives a dedicated reinforced fleet.
+- Reduced ship counts in large Xenon invasions while using more elite ships on higher difficulties, including carrier fighters.
+- Xenon capital ships no longer randomly abandon station attacks. Removed the previous Easy, Normal, and general retreat chances.
+
+OCV production and invasions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Removed the 75% chance for OCV invasions to ignore player sectors on Easy.
+- On Easy and Normal, OCV deep-strike protection applies to empires with four or fewer sectors instead of nine. Adjacent invasions remain possible.
+- Difficulty-based invasion range and Xenon Jump Beacon targeting are unchanged.
+- The portal prioritizes smaller ships when their numbers are below requirements.
+- Increased production outside Chaotic galaxies:
+  - M1 build time: 4 -> 1.5 hours.
+  - M2: 6 -> 2.5 hours.
+  - M7: 2 -> 1 hour, with two built at a time.
+  - M6: 1 hour -> 30 minutes.
+- In Origin galaxies, the first 24 hours use 75% slower OCV production instead of stopping production completely.
+- If the player joins the OCV, OCV production is 33% slower, alongside the existing weaker fleets.
+- Xenon and OCV fleets reform as evenly as possible. Reformed OCV invasion fleets with fewer than ten ships return to defend the portal if it still exists.
+- Correctly mark invading ships and handle conquest when invaders destroy the sector's last station.
+- Replaced the old OCV defender state with Xenon defenders and waiting OCV ships.
+- Portal-spawned Xenon Js carry LX fighters instead of #deca.cefa.
+
+Kha'ak raids
+~~~~~~~~~~~
+- Raiders spawn together and form a fleet instead of patrolling separately.
+- Standard raids include Destroyers and heavier escorts.
+- The quest uses approximately three times the standard raid composition.
+- Raid strength scales by difficulty: 75% on Easy, 100% on Normal, 133% on Hard, and 175% on Insane.
+- The rework gives Xenon a stronger defensive role, OCV a stronger offensive role, and Kha'ak more cohesive swarm attacks.
+
+Combat and AI fixes
+~~~~~~~~~~~~~~~~~~~
+
+- Huge ships can now acquire otherwise eligible smaller hostiles through the sector-defense fallback search when no preferred target is found.
+- Fixed several squadron targeting and sector-defense issues:
+  - Increased ship search limits for Police and shared hostile detection, reducing missed enemies in crowded sectors.
+  - Fixed Task Forces overlooking lone hostile TMs, retaining outdated opportunistic claim targets, and skipping their last-stand defense.
+  - Fixed Border Patrol sector prioritization and Rearguard fallback sector selection.
+  - Fixed Border Patrols and Rearguards retaining previous pirate-base targets after failed detection checks.
+  - Free Battle Groups now defend their current owned sector when no attack assignment is available.
+  - Fixed Escort squadrons potentially clearing another squadron’s freighter assignment.
+- Fixed AI ships failing to retaliate when attacking nearby unarmed ships (satellites, JBs, pacifist ships).
+  - Ships now retain their current targets when engaging nearby armed opponents, but retaliate when their targets are inherently unarmed.
+- Fixed automatic fleet reinforcements sometimes exceeding their allotted share of an Outpost's construction queue (off-by-one error).
+- Fixed NPC non-missile boats being unable to fire missiles while OOS. This restores NPC and player parity.
+- Fixed capital ships with forward-mounted weapons sometimes delaying their attacks against stations and other capital ships despite already being within firing range. This applies equally to player and AI ships.
+  - Fixed M6 and larger ships sometimes stopping outside firing range instead of continuing their approach.
+  - Improved approach behavior to prevent capital ships from unnecessarily waiting at long range before attacking.
+- Fixed unarmed ships being unable to direct attacks despite having support ships or active fleet followers.
+- Fixed spaceborne fleet fighters being ineligible for spaceborne repairs (bug was fixed in Mayhem FoF).
+  - M6 and M8 support ships can now be repaired at their carriers.
+  - Spaceborne military carriers can now repair themselves.
+- Fixed support ships not checking if they were under attack.
+  - Fixed Xenon and OCV support ships not checking for repairs.
+- Ships no longer fire their main battery at targets outside its actual weapon range.
+- Main battery range now checks all installed main guns instead of only the first weapon bay.
+- Fixed player-owned ships and following foreign ships sometimes inheriting unintended formation and combat behavior.
+  - The player's ship is no longer slowed if the player's ship is a leader.
+  - Player ships no longer join formations led by another faction.
+  - Player ships no longer automatically join a foreign leader's attack against stations unless configured to engage the leader's target.
+- Fixed a potential game hang involving capital ships docking while under attack.
+  - Improved combat target validation and approach-loop termination to prevent attackers from becoming stuck pursuing unreachable targets.
+
+Xenon Crisis fixes
+~~~~~~~~~~~~~~~~~~
+
+- Fixed incorrect sector claim handling during the Xenon Crisis.
+  - Player and allied UNC attacks now assign sector claims to the correct faction.
+  - OCV-aligned players now correctly claim Commonwealth sectors instead of Xenon sectors.
+  - Player-hired mercenaries now follow the same claim rules as the player.
+- Fixed off-by-one error with checking number of rearguard groups and sorting bugs when maintaining OCV hunters.
+
+- Fixed Xenon and OCV combined fleet power calculation ignoring Xenon invaders.
+
+- Fixed Xenon and OCV crisis triggers not being randomized again after a Crisis ends.
+
+Terraformer Virus
+~~~~~~~~~~~~~~~~~
+
+- Fixed Terraformer Virus takeover and propagation:
+  - Boarding back an infected ship not built by the OCV no longer cures it.
+  - Converting a player fleet leader passes leadership to an uninfected follower instead of disbanding the fleet.
+  - Converted ships nested inside docked carriers enter space directly and join OCV fleets.
+  - Stripping equipment or damaging an infected ship no longer interferes with takeover. Converted ships receive lasers, shields, and at least 65% hull.
+  - Converted ships receive standard OCV defenses: HPD, ISL, and a chance of AFS if absent (50% for capitals, 25% otherwise).
+  - OCV-built ships participate regardless of their current owner. OCV-aligned players can mobilize nearby OCV forces, including ships controlled by the Xenon.
+  - Converted fighters join carrier support groups; other converted ships are organized into invasion groups.
+  - Non-combat conversions involving TSs, TPs, TLs, the Truelight Seeker, and the Aran transform into OCV ships.
+- Infection deadlines survive ship copying, replacement, and virus-task restarts. Mature infections and pending takeovers cannot be postponed by replacing the ship.
+- Personally flying an infected ship no longer ends the infection when its timer expires. Conversion remains pending until the player leaves.
+- Broadcast takeovers do not convert or interrupt the current player ship; its own infection remains pending.
+- Ship-loss notifications, sacrifice progress, and reputation penalties count only player-owned ships actually converted.
+
+- On Insane, Phanon now operate at 60% production speed rather than 70% production speed without infamy or 63% with infamy.
+  - This standardizes the production rate penalty between infamy and no-infamy routes and is closer to the ally penalty in the OCV branch.
+  - Note: this penalty is removed if the player joins the OCV.
+
+- Pirate Warlords can now spawn as M2s on harder difficulties, making Pirate Base loot rewards harder to secure.
+  - If a warlord spawns, the M2 chances are 1/3 on Hard and 2/3 on Insane.
+
+- Fixed Lasertowers being cleaned up when the player conquers their first sector via station placement.
+  - Lasertower cleanup is already handled by !station.signal.killed.
+  - This could occur when the player conquered a first sector and immediately unlocked Fortress before starting the OCV plot.
+
+- Fixed de jure ownership not properly handling Terran Memory sectors. Terran Memory sectors are now de jure only when evaluating Terran.
+
+Additional fixes ported from FoF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fixed other missiles not dropping if one missile type had fewer than 10 missiles.
+- Fixed Chaff limitation. Chaff timer fire rate is per-ship at 5 seconds per chaff. There is now a sector limit of 12 chaff launched per second across the sector.
+- Fixed fleet monitoring sometimes interrupting player-issued fleet orders or redirecting fleets already responding to another monitored sector.
+- Revised Xenon sector conquest station checks. The exact rule remains a verification item in the appendix because the source notes contain a conflicting diagnosis.
+- Terraforming: fixed divide-by-zero when getting terraforming rate and aborted projects being processed.
+- Coordinated invasion (CI) and war changes partially ported from FoF; final verification remains listed in the appendix:
+  - Added safety to CIs removing claims.
+  - Added OWP and Stock Exchange targeting to battle groups.
+  - Fixed faction defensive and cautious stances preventing CIs from proceeding.
+  - Fixed missing steady invasion for empires in steady stance.
+  - Fixed a bug where a peaceful faction wanted to sign truces with everyone. A faction will now sign truces only with enemy factions.
+  - Fixed mercs that could turn hostile to the player. This bug was reported in FoF's Discord channel.
+    - ZH.Monitor will periodically check if mercs are hostile or friendly to the player and revert to neutral relations if so.
+  - Merged protector long and short CIs into a single type (protector invasion only).
+
+6. SHIPS, WEAPONS, AND EQUIPMENT
+--------------------------------
+
+New ships
+~~~~~~~~~
+
+- Added the Phanon Scout, an M5 based on a modified Phanon Interceptor model, giving Phanon a dedicated Explorer ship.
+- Added the Xenon J Advanced, an upgraded M1 that provides one of three M1 options on Insane.
+- Reworked the Xenon U's model and role; see TL balancing below.
+
+Ship balancing
+~~~~~~~~~~~~~~
+
+- Adjusted OWP base costs.
+- Restored the Phanon Science Carrier and Terran Tobosaku to NPC ship templates.
+- Reworked laser compatibility in preparation for future laser research.
+- Standardized missile-use probabilities to 50%, or 75% for Xenon, Kha'ak, Pirates, Yaki, and Renegades.
+- Private Corp. fighters and freighters no longer have the 3x research penalty but cannot be scanned. Private Corp. ships no longer spawn with lasers or missiles.
+- Missile-capable ship production requires Missile Manufacture, preventing free missile acquisition through shipbuilding. The AP Gunner remains exempt because it is delivered without weapons.
+
+TLs
+~~~
+- Xenon U now uses a modified Xenon H model instead of the Xenon J model.
+  - Shield generator: 1,800 -> 2,700 (+50%).
+  - Shields: 11 x 200 MJ -> 12 x 200 MJ.
+  - Weapon slots: 48 -> 16.
+  - Fighter launch tubes: 10 -> 2.
+- Increased Orca speed from 64.7 to 74.7 m/s and Albatross speed from 75.6 to 85.6 m/s, improving access to an initial Outpost for Boron and Teladi starts.
+- Added one freighter docking slot to the Tepukei, Ryu, and U.
+- Balanced TL speed against fighter docking capacity. The Ryu remains an exception because it is not a starter TL and its research benefits from infamy.
+- TLs no longer perform spaceborne repairs, reinforcing their civilian role.
+- Replaced the OCV Ozias with the Private Corp. Ozias Hauler: +33% cargo and +20% cost compared with the regular variant. Nomads can use it to carry more recycling cargo.
+
+Individual ships
+~~~~~~~~~~~~~~~~
+- Added SSC compatibility to Xenon and Phanon turrets.
+- Removed PSG compatibility from the Springblossom and normalized its turrets.
+- Spitfyre: removed GRC and OCV weapon compatibility; cargo class M -> L.
+- Phantom: marine capacity 30 -> 20; replaced Ion Cannons with IBLs and removed capital-class turret weaponry. Cost remains unchanged.
+- AP Gunner: marine capacity 15 -> 30; relative value 4,400 -> 3,300 (-25%); accepts all M6 weapon and missile types. Now a Private Corp. ship and removed from Argon fleets, providing all origins a boarding option without a foreign-faction penalty.
+- Truelight Seeker: hull 80,000 -> 280,000; shields 800 -> 600 MJ; replaced the rear Argon M6 turret with a hybrid M3 turret.
+- Corrected M6s using default turrets instead of racial turrets.
+- Added the missing built-in CCDS to the Phanon M8.
+- Reduced Phanon missile-boat cargo bays to approximately one-third of their previous capacities.
+- Rebalanced M5 shielding: corrected undershielded Boron ships and excess Split shielding.
+- Yaki Buster and Elite: +4% speed, +10% agility, and -20% hull relative to their Argon counterparts.
+- Yaki Mamba relative value: 512 -> 576; Yaki Scimitar: 576 -> 512.
+- Yaki Mamba Prototype relative value: 620 -> 691; hull: 60,000 -> 56,000, accounting for its turret and the revised Mamba baseline.
+- Chokaro and Chokaro Advanced cargo: 1,300 -> 1,500.
+- Buster shields: 1 x 5 MJ -> 2 x 5 MJ.
+- Swapped Nomad and Angel costs to reflect the Nomad's higher speed.
+- Baldric shields: 4 x 200 MJ -> 3 x 200 MJ.
+- Bragi shields: 5 x 200 MJ -> 4 x 200 MJ.
+- Split TS and Nomad shields: 3 x 200 MJ -> 2 x 200 MJ.
+- Split M3, M4, and M5 shields: one fewer slot to offset higher speed.
+- Springblossom relative value: 5,276 -> 4,652.
+- Springblossom Raider cargo: 4,700 -> 4,200.
+- Kha'ak Scout cargo: 210 -> 185.
+- Proteus Raider marine capacity: 20 -> 15; transferred the additional five places to the Heavy Nemesis Advanced.
+- Teladi Vulture and Vulture Miner relative value: 300 -> 270.
+- Phanon Fighter cargo class: ST -> XL; Phanon Interceptor: ST -> M. This preserves above-average hauling capability while leaving ST+ cargo and microfactories on small ships as part of Kha'ak logistics.
+
+Standardized ship variants
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bonuses and costs below are relative to the corresponding base ship.
+- Miner: -10% cost, -50% cargo, and +33% hull.
+- Hauler: +33% cargo at the base cost. M8, TM, TS, and TL Haulers instead cost +20% because cargo is central to their role.
+- Sentinel: +7.5% cost and +33% hull.
+- Vanguard: +5% cost and +50% shield generator.
+- Raider: +10% cost, +8% speed, and +20% agility. The Minotaur Raider and Mamba Raider cost approximately +15% because of their other properties.
+- Advanced: +35% cost; half of the Raider, Sentinel, and Vanguard bonuses; and an improvement addressing a significant design weakness.
+  - Population cost matches regular variants.
+  - Removed the additional +35% maintenance penalty.
+  - Research penalty: 6x -> 5x.
+  - Shield regeneration is normalized when shield slots increase.
+  - Improvements generally address TS defensive armament; M6, TP, and TM shielding; or M3 armament and speed where the faction lacks a faster M3.
+
+Advanced variant exceptions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Chokaro: no speed or agility bonuses; +3 fighter slots, +50% shields, and +50% cost rather than +35%.
+- Lofn: no shield bonus; +17% speed rather than +4%.
+- Hydra: no shield bonus; CIG turrets and +10% speed rather than +4%.
+- Heavy Nemesis: no shield bonus; +5 marine capacity and +15% speed, supporting boarding and compensating for the lack of a Paranid TP+.
+- Heavy Osprey: +7 shield slots; costs 20% more than before 2.2.
+- Thor: +50% hull instead of +17%, plus one shield slot; no expanded weapon selection.
+- Barracuda: +15% speed instead of +4%; no expanded weapon selection.
+- Mamba: +1 shield slot and +25% hull instead of +17%; no expanded weapon selection or inherited Raider turret.
+- Kea: +1 shield slot, +25% hull, and PBE compatibility. Its +25% cost premium makes it the cheapest Advanced M3.
+
+Some turret compatibility changes, including CIGs on Terran M6s and M7s, prepare for the planned laser research system.
+
+Laser balancing
+~~~~~~~~~~~~~~~
+
+- On Easy, claimed ships no longer regain weapons automatically. Easy still retains most lasers under the normal salvage rules.
+- Trading Stations and Pirate Bases no longer sell lasers.
+- Reworked laser categories and compatibility in preparation for 2.3's planned laser research.
+- Alpha Particle Cannon (APC): reworked as an all-rounder; +20% damage per projectile and DPS.
+- Plasma Gun (PG): hull-to-shield damage ratio changed to 1:2.
+- Mass Driver (MD): reworked as an all-rounder with equal shield and hull DPS.
+  - Firing rate: 22 -> 24 (+9% DPS).
+  - Projectile speed: 2.5 -> 2.4 km/s.
+  - Range: 4 -> 5.04 km.
+- Pulsed Beam Emitter (PBE): reclassified as an M4 weapon; hull-to-shield damage ratio 1:2; DPS 880 -> 700.
+- High Energy Plasma Thrower (HEPT): reworked as a generic M3 weapon; DPS reduced by 9%.
+- Revised faction-specific M3 weapons relative to the generic baseline:
+  - PRG: +5% damage; the additional "+15% faster" comparison requires clarification in the verification appendix.
+  - Ion Disruptor: unchanged.
+  - PBG: +15% damage; range 3.9 -> 3.825 km; firing rate 20 -> 17 rounds per minute, emphasizing burst damage over sustained fire.
+  - FBL: +20% damage and -40% projectile speed relative to the comparison baseline. Compared with the previous release, projectile speed rises from 500 to 600 m/s; range is unchanged. Confirm the comparison baseline in the verification appendix.
+  - EBC: +4% damage and +15% range.
+  - EMPC damage is unchanged; range 3.9 -> 4.05 km and cargo class M -> L. This retains support for weaker Terran M3s such as the Scimitar.
+- MAML damage: +4%.
+- CIG cost: +7%, between MAML and IPG.
+- Increased firing rates:
+  - PSG: 16 -> 27 rounds per minute (+69% DPS).
+  - PPC: 20 -> 23 (+15% DPS).
+  - IPG: 11 -> 14 (+27% DPS).
+  - GRC: 14 -> 15 (+7% DPS).
+- Repair Laser relative value: 8 -> 32 (4x).
+- PBG and EMPC range changes reinforce the Split's burst-oriented combat role. Equal hull and shield DPS gives the MD a clearer role alongside PAC and IRE, including for NPC M5s and Traders without weapon specialization.
+
+Missiles
+~~~~~~~~
+
+- Missiles have been removed from Trading Stations to encourage the player to get the perk or venture to Pirate Bases to purchase missiles.
+- M8s spawn with 120 chaff to fulfill their role as missile interceptors.
+- Ships no longer spawn with random quantities of missiles.
+- Free CCDS is now exclusive to NPCs, encouraging the player to invest either in M8 or buy CCDS.
+  - By extension, player ships no longer come with free chaff unless the ship is an M8 because the M8 comes with Chaff.
+- Fixed Huge Ships spawning with fewer Chaff than intended. They were spawning with 19-21 Chaff rather than 40 Chaff.
+- Fixed player-built ships setting missile resupply threshold greater than the number of missiles that were successfully added.
+
+SSD
+~~~
+
+- Instead of checking for a flag set by equipping the SSD, now checks if an SSD is installed.
+- All defender fleets, including Xenon defenders, OCV defenders, and faction fleets in sector defense mode are affected.
+  - Fleet leaders have a 10% chance each cycle (approximately 1 minute) to pursue a target equipped with SSD.
+    - If in-sector, the chance is halved (10% -> 5%).
+  - Fleet followers check for SSD only if they're checking for targets near their leader.
+- All ships with an SSD can be checked, not only player ships. This is to preserve parity.
+- This justifies the high price tag of 20 Green Crystals for 1 SSD and provides an additional function for the SSD.
+- The SSD still spoofs Police patrols if the player is attempting an intel mission.
+
+Truelight Seeker repairs
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Requires at least one Repair Laser in the main battery, allows empty slots, and rejects other laser types.
+  - Repairs stop if the loadout becomes invalid.
+- Out-of-sector repair speed now scales with the number of installed Repair Lasers.
+- Added checks for target destruction and sector separation.
+- Standardized repair completion and cancellation notifications.
+
+- Fixed Kha'ak ships coming with Chaff. Ships do not come with Chaff if they cannot fire it.
+
+- Fixed Repair Laser stats being manipulated in weapon data. This ensures that the TLS is compatible with NPC usage.
+
+- Fixed Data Scanner being able to scan OWPs.
+  - Also cleaned up OWP checking.
+
+- Kha'ak lasers now have their own category in the compendium and in laser manufacturing.
+  - The PBC is no longer in the Medium Laser category.
+  - Laser classes are now properly sorted from light to heavy (was sorting laser classes alphabetically).
+
+7. INTERFACE, VISUALS, AND MISCELLANEOUS FIXES
+----------------------------------------------
+
+- Added a percentage-based cargo indicator, ported from FoF.
+  - Includes TPs because they also serve as freighters.
+  - Disabling the indicator removes existing readouts.
+  - For infected freighters built at insured Outposts during the Terraformer Virus event, the infection countdown takes priority over cargo status.
+
+- Detected Terraformer Virus infections now display a countdown in ship names instead of a simple infection indicator.
+  - Compact readouts include <V:4m> and <V:2h17m>.
+  - <V:!> indicates a mature infection or pending takeover.
+  - Undetected infections remain hidden.
+
+- Added a Mobile Factory usage indicator showing the number in use and the empire-wide limit. The planet-based limit introduced in 2.0.2 is now visible in the interface.
+
+- Added previously unused backgrounds from LU.
+
+- Added Outpost, wormhole, and Maelstrom textures from Mayhem FoF, with thanks to Mordan.
+- Added asteroid textures from Solek's asteroid texture pack.
+
+- Renamed wormholes created by Jump Hole Generator to Jump Hole.
+
+- Fixed Satellite Monitoring displaying the wrong ship location (e.g., ship displayed as docked when actually in space).
+
+- Fixed Outpost UI coloring only Advanced ship variants.
+  - Now colors the other ship variants like the Ship Compendium and Research UI.
+
+- Fixed Silicon Wafers in Storage UI not being color-coded.
+  - Silicon Wafers are used in missile production and are now part of the fleet materials category.
+
+- Improved writing and accuracy in the encyclopedia.
+  - Jump Beacon description no longer pulls its information from the pedia entries. This was causing a crash.
+  - Updated faction and ship pages.
+
+- Fixed and improved writing inconsistencies (e.g., Argons -> Argon empire and Dejure -> De Jure).
+  - Also clarified Adjacency perk bonus description to exclude Jump Hole connections.
+
+- Fixed in-sector distance sorting showing 0. There is now a separate helper that handles in-sector sorting.
+
+- Cleaned up randomized timer and offset calculations.
+  - Removed obsolete RNG workarounds from Black Market ship claims, OCV virus takeovers, and empire personality generation.
+  - Simplified Black Market and OCV virus timer calculations.
+  - Standardized duration formatting across affected menus; timers now display hours and minutes instead of decimal hours for improved readability.
+
+- Updated version number.
+  - Also added a warning when enabling developer tools.
+
+8. TECHNICAL CLEANUP
+--------------------
+
+- Cleaned up company logic and game initialization.
+
+- Fully deprecated Research Milestones, removing overhead.
+
+Script cleanup
+~~~~~~~~~~~~~~
+
+- Cleaned up Menu.PC.
+- Removed the ResearchMilestones initialization scripts.
+- Mayhem.BuildShipFromReserve removal remains unconfirmed; check callers before deleting it.
+- Removed HK.FireChaff and Lib.Cmd.FireChaff.Check
+- Removed GameCreator.AddOutpostWares (replaced by StockOutpost).
+- Removed GameCreator.Generate.Prologue.* scripts.
+- Removed all Mayhem.Debug.* scripts except for a few still used since Expanded 1.0.
+- Removed _backup_!plugin.gz.missile.def.mk3.xml
+- Removed Gbl.StockExchange - Copie
+- Removed Menu.PC.Sanctuaries.SM.MayhemOld.xml
+- Removed ReformXenon and ReformOCV.
+- Removed deprecated Hotkey files and setup.hotkeys
+- Removed StationTransferMoney and related scripts.
+- Removed Mayhem.Teleportation.Run/Signal.
+
+- Documented why message-log news remains uncolored, preserving Renegades' performance fix.
+
+- Cleaned up legacy code and comments.
+  - Starting option IDs have been reorganized, removing deprecated questions and IDs.
+
+APPENDIX A. AFFECTED FILES AND IMPLEMENTATION NOTES
+-------------------------------------------------
+File references below are retained from the supplied development log.
+Paths such as /t/ are relative to the game addon directory unless noted.
+Legacy ZMap paths describe the original development layout, not current
+installation instructions. Confirm final Azimuth packaging before release.
+
+Added a percentage-based cargo indicator from FoF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Cmd.ColourShipName.xml
+- Mayhem.ShipName.ClearCargoReadouts.xml (new helper script)
+- Mayhem.ShipName.SetReadout.xml (ported from Mayhem FoF).
+- Renegades.Monitor.xml
+- ZH.Setup.Variables.xml (moved validation from Renegades.Monitor to this script)
+
+Added a Mobile Factory usage indicator to the UI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetMobileFactoriesCount.xml (new helper script)
+- Menu.MobileFactory.xml (now calls a helper script)
+- Menu.MobileFactory.SM.xml
+- /t/9974-L044.xml (added Mobile Factory documentation to Empire -> Manufacture)
+
+Added previously unused backgrounds from LU
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- /mayhem_data/custom_backgrounds.txt
+- /mayhem_data/template_TBackgrounds.txt
+- 11.cat/dat
+
+Added reskinned Outpost, wormhole, and maelstrom textures from Mayhem FoF (thanks, Mordan)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 11.cat/dat - objects/others/
+- 12.cat/dat - dds, objects/stations/sadiablo/
+
+New ships
+~~~~~~~~~
+- Mayhem.ImportShipPopReq.xml
+- Mayhem.Template.Ships.xml
+- /t/9700-L044.xml
+- /t/9978-L044.xml
+- /t/9979-L044.xml
+- 12.cat/dat - addon/types/TShips.pck
+- Azimuth/TShips.txt
+
+Stock Exchanges (initial rework ported from FoF)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Gbl.StockExchange.xml
+- Lib.Cmd.StockExchange.Updater.xml
+- Mayhem.CountForeignDocks.xml
+- Mayhem.GameCreator.Populate.xml
+- Mayhem.GameCreator.SpawnStockExchange.xml
+- Mayhem.IsTradingStation.xml
+- Mayhem.Monitor.Galaxy.xml
+- Mayhem.TransferSectorToRace.xml
+- Menu.StockExchange.SM.xml
+
+New perk: Emergency Rations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Menu.DWM.SM.xml
+- Mayhem.Task.Station.Outpost.xml
+- Mayhem.GetFoodCoverage.xml (new SSOT script)
+- Mayhem.Perk.Check.xml
+- Mayhem.Perk.Init.xml
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.Perk.SetCategory.xml
+- ShowNewsTips.xml
+
+Rebalancing starting conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Ascension.AddDefeat.xml (new helper)
+- Mayhem.Check.Ascension.xml
+- Mayhem.Init.Ascension.xml (new helper)
+- Mayhem.GameCreator.Setup.xml (now saves the player ship as metadata)
+- Mayhem.GetRandomShipType.xml
+- Mayhem.StartingOptions.xml
+- Mayhem.StartingOptions.BonusShip.xml (new script)
+- Mayhem.StartingOptions.Callbacks.xml
+- ZH.GameCreator.VeryQuickstart.xml
+- ZH.Initialize.xml
+- /t/9972-L044.xml
+
+Game Initialization
+~~~~~~~~~~~~~~~~~~~
+- Mayhem.GameCreator.SpawnXenons.xml
+- ZH.GameCreator.GalaxyStart.xml
+
+Research
+~~~~~~~~
+- Mayhem.Favor.GetInfo.xml (updated research favor info)
+- Mayhem.GetResearchStation.Rate (new script)
+- Mayhem.GetResearchPointsPerCycle.xml
+- Menu.SaturnComplexHub.Install.SM.xml
+
+Configuration
+~~~~~~~~~~~~~
+- Mayhem.Setup.Variables.xml
+- ZH.Setup.Variables.xml
+- !fight.defend.monitor.xml (deprecated illegal ware penalty variable)
+- !ship.signal.killed.xml (capital ships now respect global bail cap)
+- !station.signal.killed.xml (deprecated station loot config variable)
+- Mayhem.AddFullTemplateToBacklog.xml and Mayhem.Task.TemplateWhenReady.xml (deprecated redundant AI free equipment cheat - always enabled)
+- Mayhem.BuildShip.xml (deprecated fullequipcheat variable since player ships come with lasers and shields since ZH 2.0)
+- Mayhem.CanAffordStation.xml and Mayhem.PayStation.xml (deprecated AI free station cheat and free player Outposts)
+- Mayhem.Costs.Station.xml and Menu.DWM.Get.Production.Station.xml (deprecated free player Outposts)
+- Mayhem.Coalition.Update.xml (coalition system is now always enabled)
+- Mayhem.Fleet.Rename.xml
+- Mayhem.GameCreator.GalaxyData.xml
+- Mayhem.GameCreator.GalaxyRules.xml (new helper)
+- Mayhem.GameCreator.Generate.xml (moved metadata initialization and validation to GameCreator.Setup, just before asking the starting questions).
+- Mayhem.GameCreator.Populate.AddSquadrons.xml
+- Mayhem.GameCreator.Setup.xml
+- Mayhem.GetBailChance.xml (deprecated bail multiplier)
+- Mayhem.GetMaxPerks.xml
+- Mayhem.GetNaturalGrowth.xml (deprecated natural growth pop growth variable - now always 9)
+- Mayhem.GetOutpostDefaultTradeJumps.xml (now the SSOT for configuring player Outpost default jump range)
+- Mayhem.GetProjectCost.xml (deprecated configurable research multipliers)
+- Mayhem.GetShipMaintenanceCost.xml (deprecated maintenance multiplier and free maintenance on player's current ship)
+- Mayhem.GetTaxIncome.xml (deprecated tax multiplier)
+- Mayhem.GetTerraformingEffectsDescription.xml
+- Mayhem.GetTotalSupply.xml
+- Mayhem.Hacking.Costs.PortResearch.xml (deprecated hacking multiplier)
+- Mayhem.Hacking.Costs.Virus.xml (deprecated hacking multiplier)
+- Mayhem.IsClaimable.xml (deprecated annihilation limit; decreased grace period for abandoned sectors)
+- Mayhem.IsMonitored.xml (deprecated AI all-seeing cheat)
+- Mayhem.InitializeTradingStation.xml
+- Mayhem.Init.Variables.xml (handles PB cap)
+- Mayhem.Mission.Complete.xml (deprecated reputation and credit reward multipliers)
+- Mayhem.Monitor.OCV.xml (deprecated cycle multiplier)
+- Mayhem.SendDifficultyModifiersReport.xml (new helper)
+- Mayhem.Signal.Taxi.Run.xml and Mayhem.Signal.CargoHauler.Run.xml (deprecated pay and rep multipliers)
+- Mayhem.Squadron.GetNeededComposition.xml (deprecated halved squadron factor; origin galaxies now make to full fleet strength)
+- Mayhem.Squadron.GetGlobalNeeds.xml
+- Mayhem.StartingOptions.Callbacks.xml
+- Mayhem.StockTradingStation.xml (new SSOT for trading stations and stock exchanges)
+- Mayhem.Task.Station.Outpost.xml (standardized cyberwar cycle)
+- Mayhem.Task.Squadron.BattleGroup.xml (deprecated battle group completion variable)
+- Mayhem.Task.TemplateWhenReady.xml
+- Mayhem.Template.Ships.xml (deprecated M7M for AI variable; AI now always includes M7Ms)
+- Mayhem.Terraform.xml
+- Menu.Mayhem.Ministry.SM.xml
+- ZH.distributeCorpResources.xml
+- ZH.Get.otherRace.Claim.xml (deprecated faction revival flag. faction revival is now always enabled)
+- ZH.Monitor.xml (cleaned up commented out truce duration)
+- ZH.UpdatePirateCycle.xml (no longer retrieves pirate cycle from 9972 t-file)
+- ZH.TaxEfficiency.Update.xml
+- /t/9972-L044.xml
+- /t/9973-L044.xml
+
+Mobile Factories
+~~~~~~~~~~~~~~~~
+- Mayhem.Cmd.MobileFactory.xml
+- Mayhem.CmdChk.MobileFactory.xml
+- Mayhem.Setup.Variables.xml
+- Mayhem.Task.MobileFactory.xml
+- ZH.Task.MobileFactory.xml
+- ZH.Task.NomadTrader.xml
+- ZH.Task.RecyclingShip.xml
+- Menu.MobileFactory.SM.xml
+
+Supply
+~~~~~~
+- Mayhem.GetTotalSupply.xml
+- Mayhem.GetSupplyMultiplier.xml
+- Menu.DWM.SM.xml
+
+Outpost items: OWP, perks, JHG, Capital Shipyard
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Costs.OutpostItem.xml (new helper; replaces Mayhem.Perk.GetOneTimeCost)
+- Mayhem.CanAffordOutpostItem.xml (new helper)
+- Mayhem.PayOutpostItem.xml (new helper)
+- Mayhem.GetMaxPerks.xml
+- Mayhem.GetAdjacentPlayerOutpostCount.xml (new helper)
+- Mayhem.GetSectorValue.xml
+- Mayhem.GameCreator.Populate.xml
+- Mayhem.IsShipDisabled.xml (only the small and large OWPs are disabled)
+- Mayhem.Perk.Check.xml
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.Perk.Unlock.xml
+- Mayhem.Refinery.Convert.xml (added safeties)
+- Mayhem.Task.Station.Outpost.xml (cleaned up refinery code)
+- Menu.DWM.Get.Food.Perks.xml
+- Menu.PC.ShipCompendium.SM.xml (added OWPs to compendium)
+- Menu.PC.ShipCompendium.Single.xml
+- Menu.PC.LaserCompendium.Single.xml
+- Menu.PC.MissileCompendium.Single.xml
+- Menu.DWM.Get/Set.Production.Station.xml
+- ZH.Build.OWP.xml (new OWP build SSOT, handled inside ZH.Core after NPCs unlock fortress perk)
+- ZH.Core.xml
+- ZH.CI.SelectTarget.xml
+- ZH.RoF.Respawn.xml (no longer handles OWPs).
+- ZH.RoF.NPC.xml (no longer handles OWPs)
+- ZH.Setup.Variables.xml
+- /t/9973-L044.xml
+- /t/9975-L044.xml (updated descriptions; note: Soulstar and Solitas descriptions already handled in 9700-L044.xml)
+
+Missions
+~~~~~~~~
+- !ship.signal.changesector.xml (handles patrol mission)
+- !station.signal.killed.xml (handles defense mission)
+- Joubarbe.Lib.GetRandomOffset.xml (new helper script)
+- Mayhem.GetAbandonedShipDeadline.xml
+- Mayhem.GetCraftingWares.xml (cleaned up the code for better readability)
+- Mayhem.GetMissile.Race.xml (updated comments)
+- Mayhem.Init.MissionCache.xml (new initialization script)
+- Mayhem.Mission.AreObjectivesValid.xml (new helper script)
+- Mayhem.Mission.AddMissionEntry.xml
+- Mayhem.Mission.Cache.GenerateEntry.xml (new helper script)
+- Mayhem.Mission.Callback.xml
+- Mayhem.Mission.Callback.Intel.xml (cleaned up dead code)
+- Mayhem.Mission.Complete.xml
+- Mayhem.Mission.Create.xml (now handles Loyalty payout)
+- Mayhem.Mission.Create.Fedex.xml (now passes in Loyalty argument)
+- Mayhem.Mission.Dock.xml (moved cleanup to Mayhem.Mission.Remove)
+- Mayhem.Mission.Fail.xml
+- Mayhem.Mission.Generate.xml
+- Mayhem.Mission.MakeDelivery.xml
+- Mayhem.Mission.Provision.Distribute.xml (new helper script)
+- Mayhem.Mission.Provision.GetMissileCap.xml (new helper script)
+- Mayhem.Mission.Remove.xml (now handles mission cleanup)
+- Mayhem.Mission.ShowBriefing.xml (added special case for Defense missions if a Jump Hole is connected)
+- Mayhem.Mission.SpawnXenons.xml (added tracker for Xenon spawns)
+- Mayhem.Mission.Suppression.Resolve.xml (new helper to check for player involvement in Suppression missions)
+- Mayhem.Monitor.Missions.xml
+- Mayhem.SpawnDeliveryBoy.xml (now uses the helper script)
+- Mayhem.SpawnScaled.xml
+- Mayhem.Task.BaitMission.xml
+- Mayhem.Task.Bail.Copy.xml
+- Mayhem.Task.KhaakAttack.xml
+- Mayhem.Task.Pirate.ChaseDeliveryMission.xml
+- Menu.PC.Journal.SM.xml
+- ZH.Pirate.SpawnBase.xml (now uses the helper script)
+- /t/9972-L044.xml
+- Mayhem.Missions.Expire.xml
+- Mayhem.TransferSectorToRace.xml
+- ZH.abortMissions.xml
+
+Workers
+~~~~~~~
+- !ship.signal.buyware.xml
+- !ship.signal.sellware.xml
+- Lib.Gen.Abbreviate.xml
+- Lib.Gen.ColourShipName.xml
+- Mayhem.Cmd.Worker.Trader.xml
+- Mayhem.Monitor.GarbageCollection.xml (prevents tugged ships from prematurely flying to Outposts)
+- Mayhem.SellOrUnload.xml
+- Mayhem.Task.Worker.Explorer.xml
+- Mayhem.Task.Worker.Looter.xml
+- Mayhem.Task.Worker.Miner.xml
+- Mayhem.Task.Worker.Tug.xml
+- Mayhem.Task.Worker.RepairAndMaintain.xml
+- Mayhem.Task.Worker.Trader.xml
+- Mayhem.Trade.FindConsumer.xml
+- Mayhem.Trade.FindSupplier.xml
+- Mayhem.Trade.Claim.Load/Set.xml (ported from FoF)
+- Mayhem.Trader.RecordTrade.xml (ported from FoF)
+- Mayhem.Trade.Task.xml
+- Mayhem.SetDefaultAssignments.xml
+- Mayhem.SetDefaultAssignmentsAI.xml
+- Menu.TradeReport.SM.xml
+- Menu.TradeReport.xml
+- ZH.Setup.Variables.xml
+- /t/9973-L044.xml
+
+Sector conquering/claiming and AI fleets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.signal.attacked.xml
+- !ship.signal.killed.xml (added cleanup for OCV hunters if they're destroyed)
+- !station.signal.killed.xml (added Kha'ak case)
+- Mayhem.Capture.pl.xml (cleaned up playtime variable)
+- Mayhem.Conquer.xml
+- Mayhem.Conquer.GetGracePeriod.xml (new helper to calculate grace period)
+- Mayhem.Conquer.Xenon.xml
+- Mayhem.Conquer.SetupXenonSector.xml (new helper script)
+- Mayhem.CreateGenericAttack.xml (cleaned up timing)
+- Mayhem.CreateGenericDefense.xml (cleaned up timing)
+- Mayhem.IsClaimable.xml (deprecated original number of Xenon sectors; now uses the GetGracePeriod helper)
+- Mayhem.GameCreator.Populate.AddSquadrons.xml
+- Mayhem.GameCreator.SpawnXenons.xml (deprecated original number of Xenon sectors)
+- Mayhem.Monitor.Autopopulate.Ship.xml (CIs now reinforce themselves from Outpost 10 jumps away; ported from FoF)
+- Mayhem.Monitor.Galaxy.xml
+- Mayhem.Monitor.OCV.xml
+- Mayhem.ReformOCV.xml (deprecated; merged with Mayhem.ReformTerraformer.xml)
+- Mayhem.ReformXenon.xml (deprecated; merged with Mayhem.ReformTerraformer.xml)
+- Mayhem.ReformTerraformer.xml (new helper script)
+- Mayhem.RestockCarriers.xml (new helper script)
+- Mayhem.Setup.Variables.xml (clarified small Xenon raid comments)
+- Mayhem.SpawnKhaakRaid.xml
+- Mayhem.Task.XenonInvader.Leader.xml
+- Mayhem.Task.XenonInvader.Follower.xml
+- Mayhem.Task.XenonDefender.Follower.xml
+- Mayhem.Task.OCVInvader.Leader.xml
+- Mayhem.Task.OCVInvader.Follower.xml
+- Mayhem.Task.OCVDefender.Follower.xml
+- Mayhem.Task.Squadron.BorderPatrol.xml
+- Mayhem.Task.Squadron.Raider.xml
+- Mayhem.Task.Squadron.Rearguard.xml
+- Mayhem.Task.Squadron.TaskForce.xml (now uses new helper)
+- Mayhem.Task.Worker.Explorer.xml
+- Mayhem.Template.GetRandomShip.xml
+- Mayhem.Template.Squadrons.xml
+- Mayhem.Xenon.CreateInvaders.xml
+- Mayhem.Xenon.CreateDefenders.xml
+- Mayhem.Xenon.Populate.NewStation.xml (replaces Mayhem.GameCreator.SpawnXenons.PopStation)
+- Mayhem.OCV.CreateInvaders.xml
+- ZH.Crisis.End.xml
+- ZH.GameCreator.GalaxyStart.xml
+- ZH.Get.UnknownSectorsBelowGoal.xml (deprecated)
+- ZH.IsUnknownSectorsBelowGoal.xml (deprecated)
+- ZH.isTerraformerInvadingSector.xml (new script)
+- ZH.JoinOCVHunters.xml (new helper script for Border Patrol, Raider, Rearguard, and Task Force fleets)
+- ZH.Monitor.xml (small Xenon raid cycle is now used as baseline for garrison spawning)
+- ZH.Nomads.Build.xml
+- ZH.Setup.Variables.xml (xenon defender percentage is now determined in ZH.Xenon.SpawnDefenders)
+- ZH.Xenon.SpawnDefenders.xml
+
+Ship balancing
+~~~~~~~~~~~~~~
+- Mayhem.BuildShip.xml
+- Mayhem.DataScanner.xml
+- Mayhem.GetProjectCost.xml
+- Mayhem.GetShipMaintenanceCost.xml
+- Mayhem.IsShipDisabled.xml
+- Mayhem.Init.HighResearchCost.xml
+- Mayhem.Init.XenonOCVBlueprints.xml (comments only)
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.Task.CarrierRepair.xml
+- Mayhem.Task.Station.Outpost.xml (comments only)
+- Mayhem.Task.TemplateWhenReady.xml
+- Mayhem.Template.Ships.xml
+- Menu.DWM.Get.Production.Ship.xml
+- Menu.MobileFactory.xml
+- Menu.PC.ShipCompendium.xml
+- Menu.PC.ShipCompendium.SM.xml (now displays M1M and M2M)
+- Menu.SaturnComplexHub.Install.SM.xml
+- ZH.plot.OCV.GetBlueprintScore.xml (comments only)
+- ZH.SyntheticDawnCompletion.xml
+- ZH.Nomads.Build.xml
+- 12.cat/dat - addon/types/TShips.pck and ships/objects
+- Azimuth/TShips.txt
+- /t/9978-L044.xml
+- /t/9979-L044.xml
+
+Laser balancing
+~~~~~~~~~~~~~~~
+- Mayhem.Initialize.PirateBase.xml
+- Mayhem.Initialize.TradingStation.xml
+- ZH.EquipShip.Safety.xml
+- 12.cat/dat - addon/types/TBullets.pck, addon/types/TLaser.pck, addon/types/TCockpits.pck
+- Azimuth/TBullets.txt
+
+Reworked and improved SSD
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- !fight.defend.monitor.xml
+- !move.follow.template.xml
+- z.cheat.cycrow.createship.xml
+- Mayhem.Task.Move.xml
+- Menu.DWM.UpgradeShips.SM.xml
+
+Combustor can now combust Artefacts, Parcel, and VIP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetCombustorEnergy.xml
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.Task.Station.Outpost.xml
+
+On Insane, Phanon now operate at 60% production speed rather than 70% production speed without infamy or 63% with infamy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Task.Station.Outpost.xml
+
+Missiles
+~~~~~~~~
+- Mayhem.InitializeTradingStation.xml
+- Mayhem.EquipShip.Missiles.xml
+- Mayhem.Task.TemplateWhenReady.xml (bug was still present since Add-Ons 1.7.4).
+
+Diplomacy (Favor, Loyalty, Non-Aggression Pacts): these changes emphasize that Favor Points and Loyalty are currencies awarded for helping a faction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.signal.killed.xml
+- !station.signal.killed.xml
+- Joubarbe.Lib.AddReputation.xml
+- Mayhem.Capture.pl.xml
+- Mayhem.CheckDefeatRewards.xml (new consolidated helper SSOT script)
+- Mayhem.Coalition.Add.xml
+- Mayhem.Diplomacy.Violation.xml (new helper script for coalition or truce violations)
+- Mayhem.Loyalty.Add.xml (now displays the reason)
+- Mayhem.Mission.Complete.xml
+- Mayhem.Mission.Fail.xml (added argument to Loyalty.Add)
+- Mayhem.Monitor.Galaxy.xml
+- Mayhem.PlayerPact.Add.xml (new helper)
+- Mayhem.PlayerPact.GetDuration.xml (new helper)
+- Mayhem.PlayerPact.GetTimeLeft.xml (new helper)
+- Mayhem.PlayerPact.IsActive.xml (new helper)
+- Mayhem.PlayerPact.Remove.xml (new helper)
+- Mayhem.Task.Bail.Copy.xml
+- Mayhem.Task.BailMaybe.xml
+- Mayhem.Task.Claimeable.xml
+- Mayhem.Truce.GetTimeLeft.xml (new helper)
+- Mayhem.Truce.PlayerOffer.Callback.xml
+- Menu.Mayhem.Ministry.SM.xml
+- ZH.declareWarOnPlayer.xml
+- ZH.Loyalty.Add.maybe.xml
+- ZH.Monitor.xml
+- ZH.Sig.Captured.xml
+
+Abandoned ships and Black Market
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.signal.killed.xml
+- Mayhem.ActivateYakis.xml
+- Mayhem.BlackMarket.CreateShip.xml (replaces Mayhem.CreateRandomShip)
+- Mayhem.BlackMarket.Cleanup.xml (new helper script)
+- Mayhem.BlackMarket.GetCosts.xml (new helper script)
+- Mayhem.BlackMarket.GenerateEntry.xml (new helper script)
+- Mayhem.CreateAbandonedShip.xml (new SSOT for abandoned ship creation)
+- Mayhem.Debug.BlackMarketEntry.xml (new debug script)
+- Mayhem.GameCreator.AbandonedShips.xml
+- Mayhem.GameCreator.Generate.xml
+- Mayhem.GetAbandonedShipDeadline.xml (new helper script)
+- Mayhem.GetRandomShipType.xml (cleaned up redundant miner blacklisting array traversal)
+- Mayhem.GetBailChance.xml
+- Mayhem.GetYakiStage.xml
+- Mayhem.Hacking.Hack.xml
+- Mayhem.Init.BlackMarket.xml (formerly Mayhem.Init.BlackMarketShips)
+- Mayhem.Init.Variables.xml
+- Mayhem.Mission.Callback.xml
+- Mayhem.Mission.Create.xml
+- Mayhem.Monitor.Galaxy.xml
+- Mayhem.ProtectAbandonedShip.xml (new helper script)
+- Mayhem.StartingOptions.Callbacks.xml
+- Mayhem.Task.Bail.Copy.xml
+- Mayhem.Task.Claimeable.xml
+- Menu.PC.Blackmarket.xml (now requires galaxy and black market initialization to complete)
+- Menu.PC.Blackmarket.SM.xml
+- ZH.Monitor.xml (uses black market threshold SSOT)
+- ZH.SyntheticDawnCompletion.xml
+- ZH.plot.buyMarines.xml
+
+Cargo Hauler and Taxi jobs
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !fight.defend.monitor.xml
+- Mayhem.Cargo.Callbacks.xml
+- Mayhem.Cargo.ConfiscateContraband.xml (new helper script)
+- Mayhem.Cargo.RemoveJob.xml
+- Mayhem.CargoTaxi.GenerateOffer.xml (new helper script)
+- Mayhem.GetCombustorEnergy.xml
+- Mayhem.GetSolarPanelsEfficiency.xml
+- Mayhem.InitializeStation.xml
+- Mayhem.IsCargoTaxiStation.xml (new helper)
+- Mayhem.PayFromAllAccounts.xml (note: Mayhem.Monitor.Maintenance now calls this script as well)
+- Mayhem.Signal.CargoHauler.Run.xml
+- Mayhem.Signal.Taxi.Run.xml
+- Mayhem.Task.Station.Outpost.xml
+- Menu.PC.CargoHaulerManifest.SM.xml
+- Menu.PC.Manifest.SM.xml
+- Menu.PC.xml
+- /t/9972-L044.xml
+- /t/9973-L044.xml
+
+Renamed wormholes created by Jump Hole Generator to Jump Hole
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- /mayhem_data/template_00044.xml
+- /t/9972-L044.xml
+- 12.cat/dat - TGates.pck
+
+Added comments explaining why news messages are not colored in the message log. This was an issue fixed in Renegades for performance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Monitor.News.xml
+
+Standardized infamy messages. A reason is now provided for infamy changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.signal.killed.xml
+- !station.signal.killed.xml
+- Mayhem.Capture.pl.xml
+- Mayhem.Favor.Add.xml
+- Mayhem.Hacking.LaunchCounterattack.xml
+- Mayhem.Infamy.Add.xml (new helper script)
+- Menu.PC.Blackmarket.SM.xml
+- ShowNewsTips.xml
+- ZH.CI.SelectTarget.xml
+- ZH.Core.xml
+- ZH.Crisis.End.xml
+- ZH.SyntheticDawnCompletion.xml
+- ZH.Sig.captured.xml
+
+Food is now produced at a production : consumption ratio of 1.25:1 (was 2:1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Task.Station.Outpost.xml
+- Mayhem.Setup.Variables.xml
+
+Space Weed is now produced only if you have infamy and you have not joined the OCV. This ties Space Weed as an illicit good
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetSpaceWeedProduction.xml
+
+Rebalanced tax income and efficiency
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Menu.DWM.SM.xml
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.GetTaxIncome.xml
+- ZH.Get.Distance.Average.Player.xml
+- ZH.TaxEfficiency.Update.xml
+- ZH.TaxEfficiency.GetMinimum.xml (new helper)
+- Mayhem.IsCapitalShipyard.xml (new helper)
+
+Kha'ak lasers now have their own category in the compendium and in laser manufacturing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetLaser.All.xml
+- Mayhem.GetLaser.Medium.xml
+- Menu.DWM.Get.Production.Laser.xml
+- Menu.PC.LaserCompendium.xml
+
+Improved writing and accuracy in the encyclopedia
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- /t/8383-L044.xml
+- /t/8483-L044.xml
+- /t/9972-L044.xml
+- /t/9974-L044.xml
+
+Pirate Warlords can now spawn as M2s on harder difficulties, making Pirate Base loot rewards harder to secure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ZH.Pirate.SpawnBase.xml
+
+Recycling and terraforming
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetMaxRecycleFactor.xml
+- Mayhem.Recycle.xml
+- Mayhem.Setup.Variables.xml
+- Mayhem.SetTerraformingEffects.xml
+- Menu.DWM.Get.Recycling.xml
+
+Updated version number
+~~~~~~~~~~~~~~~~~~~~~~
+- setup.ZH.xml
+- /mayhem_data/template_8379-L044.xml
+
+Ported from FoF
+~~~~~~~~~~~~~~~
+- !plugin.gz.missile.def.mk3.xml (merged the 3 10-15 sec waits into 1 30-45 sec wait)
+- Lib.Cmd.FireChaff.Check.xml
+- Mayhem.Claim.xml (fixed the "staked a claim" notification to now play only when a faction places a claim; also reverted to "declared war")
+- Mayhem.IsClaimable.xml
+- Mayhem.Monitor.FleetControl.xml
+- Mayhem.Task.Loot.xml
+- Mayhem.Task.Squadron.BattleGroup.xml
+- Menu.Ministry.SM.xml (debug only)
+- ZH.Terraforming.Get.Rate.xml
+- ZH.Terraforming.Update.xml
+- ZH.Core.xml
+- ZH.CI.End.xml
+- ZH.CI.SelectTarget.xml
+- ZH.Monitor.xml
+
+Cleaned up company logic and game initialization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.ActivateYakis.xml
+- Mayhem.GameCreator.Populate.xml
+- Mayhem.GameCreator.SpawnStockExchange.xml
+- Mayhem.GameCreator.SpawnXenons.xml
+- Mayhem.GameCreator.Setup.xml
+- Mayhem.FirstConquestPlayer.xml
+- Mayhem.GetCompanies.xml (no longer retrieves a pointer; now retrieves an array.
+- Mayhem.GetCompanyStations.xml (added comments)
+- Mayhem.GetGalaxyStart.xml (new helper script which returns galaxy start as enumerated types)
+- Mayhem.GetMainFactions.xml
+- Mayhem.IsClaimable.xml
+- Mayhem.IsCompany.xml (also added comments)
+- Mayhem.InitializeOutpost.xml
+- Mayhem.InitializeTradingStation.xml
+- Mayhem.Monitor.Autopopulate.Ship.xml
+- Mayhem.StockTradingStation.xml (new helper SSOT for trading stations)
+- Mayhem.StockOutpost.xml (now the SSOT for stocking Outposts, including during game initialization)
+- PhanonCreation.xml
+- ZH.BoronHullRegeneration.xml
+- ZH.GameCreator.GalaxyStart.xml
+- ZH.Core.xml
+- ZH.Initialize.xml
+- ZH.Monitor.xml
+- ZH.SyntheticDawnCompletion.xml
+
+Fully deprecated Research Milestones, removing overhead
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.CompleteResearch.xml
+- Mayhem.Costs.Ship.xml
+- Mayhem.DataScanner.xml
+- Mayhem.GetShipMaintenanceCost.xml
+- Mayhem.GetProductionTimeCost.xml
+- Mayhem.Init.Variables.xml
+- Mayhem.Task.Station.Outpost.xml
+- Menu.SaturnComplexHub.Install.SM.xml
+
+Diplomacy
+~~~~~~~~~
+- Mayhem.Conquer.xml
+- Mayhem.Favor.Add.xml
+- Mayhem.Favor.GetCost.xml
+- Mayhem.Favor.GetInfo.xml (clarified Space Weed favor)
+- Mayhem.Truce.Break.xml
+- Mayhem.Truce.Sign.xml
+- Menu.Mayhem.Ministry.SM.xml
+
+Combat and AI
+~~~~~~~~~~~~~
+- !plugin.gz.missile.def.mk3.xml
+- !fight.attack.object.xml (also cleaned up missile boat logic)
+- !fight.attack.object.stationTactics.xml
+- !fight.defend.monitor.xml
+- !move.follow.template.xml
+- InFiringRangeOfTurret.xml
+- Mayhem.GetHostileShips.xml
+- Mayhem.Monitor.FleetControl.xml
+- Mayhem.Task.CarrierRepair.xml
+- Mayhem.Task.Support.xml
+- Mayhem.Task.Squadron.Escort/BattleGroup/Rearguard/BorderPatrol/Police.xml
+- SWM3.get.ship.laser.range.main.xml
+
+Xenon Crisis
+~~~~~~~~~~~~
+- !station.signal.killed.xml
+- ZH.Set.OCVhunters.xml
+
+Missions
+~~~~~~~~
+- Mayhem.Mission.GetCompatibleStations.xml
+- Mayhem.Mission.GetRaces.xml (new helper)
+- Mayhem.Mission.Create.xml
+- Mayhem.Mission.Generate.xml
+- Mayhem.Missions.Expire.xml
+- Menu.PC.Journal.SM.xml
+
+Mercenaries and fleets: reworked group management and fixed numerous leadership/recovery bugs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.signal.killed.xml
+- Mayhem.CreateGenericAttack/Defense.xml
+- Mayhem.Debug.MercGroup.xml (new debug script)
+- Mayhem.Merc.CreateGroup.xml
+- Mayhem.Merc.GetFollowers.xml
+- Mayhem.Merc.GetHireCost.xml
+- Mayhem.Merc.Generate.xml
+- Mayhem.Merc.Hire/Dismiss.xml
+- Mayhem.Merc.Init.xml
+- Mayhem.Merc.OrderEscort.xml
+- Mayhem.Merc.Monitor.xml
+- Mayhem.Merc.ReformGroup.xml (new script called by merc follower watchdog script)
+- Mayhem.Task.Merc.Follower.xml
+- Mayhem.Task.Merc.Follower.WD.xml (new background merc follower script)
+- Mayhem.Task.Merc.Leader.xml
+- Mayhem.OCV.CreateInvaders/Defenders.xml
+- Mayhem.SelectNewLeader.xml
+- Mayhem.Squadron.Add.xml
+- Mayhem.Xenon.CreateInvaders/Defenders/PatrolMission.xml
+- Menu.PC.FleetSettings.SM.xml (removed dead comment)
+- Menu.PC.Merc.SM.xml
+- ZH.Merc.Generate.Crisis.xml
+- ZH.Merc.Hire.NPC.xml
+
+Fixed Outpost dynamic specialization being accumulated (bug introduced in Expanded 1.1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ZH.Set.OutpostSpec.xml
+
+Fixed in-sector distance sorting showing 0. There is now a separate helper that handles in-sector sorting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !fight.attack.enemies.xml
+- Joubarbe.Lib.SortByJumps.xml (new helper)
+- Joubarbe.Lib.SortByDistance.xml (moved old logic to SortByJumps; this helper now properly handles in-sector distance sorting).
+- Mayhem.GetNearestSafeOutpost.xml
+- Mayhem.GetNearestSafeOutpostOfRace.xml
+- Mayhem.Fleet.SelectTarget.xml
+- Mayhem.Squadron.SwitchHomebase.xml
+- Mayhem.Trade.FindSupplierV2.xml
+- ZH.Get.Squadron.Closest.xml
+- ZH.Task.Pirate.Harassment.TM.xml
+- ZH.Task.Refugee.xml
+- ZH.Task.SecurityShip.xml
+
+Fixed Satellite Monitoring displaying the wrong ship location (e.g., ship displayed as docked when actually in space)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Menu.SatellitesMonitoring.SM.xml
+
+Fixed Xenon and OCV combined fleet power calculation ignoring Xenon invaders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Monitor.Galaxy.xml
+- Mayhem.OCV.CreateInvaders.xml (now sets invader flags to all invaders).
+- ZH.GameCreator.GalaxyStart.xml
+- ZH.Get.Power.OCV.xml
+- ZH.Xenon.SpawnDefenders.xml
+
+Fixed Truelight Seeker repair command validation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Cmd.RepairTarget.xml
+- Mayhem.CmdChk.RepairTarget.xml
+- Mayhem.GetRepairLaserCount.xml (new helper)
+- Mayhem.RepairTarget.xml
+
+Fixed station recycling
+~~~~~~~~~~~~~~~~~~~~~~~
+- Cmd.AuctionStation.xml
+- Lib.X.AuctionStation.xml
+- Mayhem.Recycle.xml
+
+Fixed Kha'ak ships coming with Chaff. Ships do not come with Chaff if they cannot fire it
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.SpawnKhaakRaid.xml
+
+Fixed Outpost UI coloring only Advanced ship variants
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Menu.DWM.Get.Production.Ship.xml
+
+Azimuth interface and legacy generator fixes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- /Azimuth/*
+
+Fixed Silicon Wafers in Storage UI not being color-coded
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Menu.DWM.Get.Logistics.Stock.xml
+
+Initialization
+~~~~~~~~~~~~~~
+- Mayhem.GameCreator.Setup.xml
+- Mayhem.InitializeFactory.xml
+- ZH.Initialize.xml
+
+Fixed Xenon and OCV crisis triggers not being randomized again after a Crisis ends
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ZH.Crisis.End.xml
+
+Fixed Lasertowers being cleaned up when the player conquers their first sector via station placement
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.Conquer.xml
+
+Fixed de jure ownership not properly handling Terran Memory sectors. Terran Memory sectors are now de jure only when evaluating Terran
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetDejureRace.xml
+
+Fixed other stations being considered as factories. Now uses an SSOT from SetFactoryFromWare
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.IsFactory.xml
+- Mayhem.SetFactoryFromWare.xml
+
+Fixed Repair Laser stats being manipulated in weapon data. This ensures that the TLS is compatible with NPC usage
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GetStats.Laser.xml
+
+Fixed Ascension requirements being determined upon opening the Ascension UI rather than at gamestart
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.CheckAscension.xml
+- Mayhem.GetAmbition.xml (new helper script)
+- Mayhem.Init.Ascension.xml (new script)
+- Mayhem.StartingOptions.Callbacks.xml
+- Menu.PC.Ascension.SM.xml
+
+Fixed and improved writing inconsistencies (e.g., Argons -> Argon empire and Dejure -> De Jure)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !ship.cmd.movestation.std.xml (improved notification)
+- !ship.signal.killed.xml
+- !ship.signal.scanned.xml
+- !station.signal.killed.xml
+- Joubarbe.Lib.SelectedText.xml (added a space after the double arrow)
+- Mayhem.CheckBuildPenalty.xml
+- Mayhem.Coalition.Update.Remove.xml
+- Mayhem.Conquer.xml
+- Mayhem.Favor.Add.xml
+- Mayhem.Favor.GetInfo.xml
+- Mayhem.FirstConquestPlayer.xml (re-added OCV starting quest stating it's optional)
+- Mayhem.Hacking.LaunchCounterattack.xml
+- Mayhem.Mission.AddMissionEntry.xml
+- Mayhem.Mission.PlotAscension.Trigger.xml
+- Mayhem.Mission.SpawnXenons.xml
+- Mayhem.Monitor.Missions.xml
+- Mayhem.Perk.SetInfo.xml
+- Mayhem.SendDailyReport.xml
+- Mayhem.RepairTarget.xml
+- Menu.Assignment.Get.xml
+- Menu.DWM.SM.xml
+- Menu.Heading.Ship.xml (renamed Quantum-T to Q-Tubes)
+- Menu.Mayhem.Ministry.SM.xml
+- Menu.PC.xml
+- Menu.PC.Ascension.SM.xml
+- Menu.PC.FleetSettings.SM.xml
+- Menu.PC.Journal.SM.xml
+- Menu.PC.LaserCompendium.SM.xml
+- Menu.PC.MissileCompendium.SM.xml
+- Menu.PC.Maintenance.SM.xml
+- Menu.PC.ResearchStations.SM.xml
+- Menu.PC.Sanctuaries.SM.xml
+- Menu.PirateOffer.SM.xml
+- Menu.ZH.Architect.Select.xml
+- Menu.ZH.FactoryConstruction.Get/Set.xml (also added a proper queued column for the UI)
+- ShowNewsTips.xml
+- ZH.Core.xml
+- ZH.declareWarOnPlayer.xml
+- ZH.playerBecomesNation.xml
+- ZH.Task.RecyclingShip.xml (renamed Nomad TLs to Mobile Factories)
+- /t/8383-L044.xml
+- /t/9972-L044.xml
+- /t/9973-L044.xml
+- /t/9974-L044.xml
+- /t/9980-L044.xml
+
+Fixed OCV virus takeover propagation and conversion behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.CopyShip.xml
+- Mayhem.Debug.StartOCVVirus.xml (new debug script)
+- Mayhem.ResetEquipment.xml (new script)
+- Mayhem.Task.OCVVirus.xml
+- Mayhem.OCVVirus.ResolveTakeover.xml (now resolves sector-wide OCV conversion)
+- /t/9973-L044.xml (updated OCV ship tutorial to explain the Terraformer Virus Outpost event)
+
+Fixed terraforming remainders being discarded after terraforming a planet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.GameCreator.SectorData.xml
+- Mayhem.Terraform.xml
+
+Fixed Data Scanner being able to scan OWPs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- !fight.attack.enemiesrange.land.xml
+- Cmd.Tug.xml
+- Mayhem.CmdChk.ScanBlueprint.xml (unused)
+- Mayhem.Cmd.RepairTarget.xml
+- Mayhem.DataScanner.xml
+- Mayhem.GetShipValue.Point.xml
+- Mayhem.GetShipPowerSupply.Point.xml
+- Mayhem.IsOWP.xml (new helper script)
+- Mayhem.RepairTarget.xml
+- Menu.DWM.Get.Recycling.xml
+
+Fixed resource transfer (sector transfer to another faction or end of Phanon branch) transferring factory resources when only products should be transferred
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mayhem.TransferWaresToDestination.xml (new SSOT)
+- Mayhem.TransferSectorToRace.xml
+- ZH.plot.MaelstromShutdown.xml
+
+Fixed another sorting bug with ultimatums. The AI now selects the most valuable sector if there are no de jure sectors under player control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ZH.Ultimatum.xml
+- ZH.declareWarOnPlayer.xml
+
+Cleaned up randomized timer and offset calculations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Joubarbe.Lib.FormatDuration.xml (new helper script)
+- Mayhem.Favor.GetInfo.xml
+- Mayhem.Task.OCVVirus.xml
+- Menu.DWM.Get.Production.Ship.xml
+- Menu.DWM.Set.Recycling.xml
+- Menu.Mayhem.Ministry.SM.xml
+- Menu.PC.Blackmarket.SM.xml
+- ZH.Core.xml
+
+Cleaned up legacy code and comments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Cmd.StripShip.xml (removed stale comments)
+- Joubarbe.Lib.GetTradeableWares.xml (removed stale comments)
+- Mayhem.AddPandoraTuning.xml (new helper script)
+- Mayhem.Ascension.AddDefeat.xml (new helper script to handle ascension kills)
+- Mayhem.AwardBounty.xml
+- Mayhem.BuildShip.xml (now calls AddPandoraTuning)
+- Mayhem.Conquer.xml (removed mentioning CheckTerraformingActivation, a deprecated script since ZH)
+- Mayhem.CopyShip.xml (removed stale comments)
+- Mayhem.Debug.CorruptSector.xml (deprecated)
+- Mayhem.FirstConquestPlayer.xml (SSOT'd forced sector conquest)
+- Mayhem.GameCreator.AddOutpostWares.xml (cleaned up origin galaxy check)
+- Mayhem.GameCreator.GalaxyData.xml (removed deprecated code)
+- Mayhem.GameCreator.SpawnXenons.xml (now calls the GetDifficulty helper)
+- Mayhem.GetGalaxy.SizeCategory.xml (new helper script to determine small/medium/large galaxy size)
+- Mayhem.GetLaser.Race.xml
+- Mayhem.GetMainFactions.xml (removed commented out dead code)
+- Mayhem.GetProductionCapacity.xml
+- Mayhem.GetShipValue.xml (fixed typo)
+- Mayhem.GetYakiStage.xml
+- Mayhem.GetDetailedInspectionTimeCost.xml (deprecated inspection time multiplier)
+- Mayhem.Init.XenonOCVBlueprints.xml (added debug mode)
+- Mayhem.IsHard.xml (deprecated; replaced by Mayhem.GetDifficulty.xml)
+- Mayhem.IsMercKill.xml (refactored to use Mayhem.Merc.GetClientRace)
+- Mayhem.IsPlayerAttacker.xml (new helper script)
+- Mayhem.JumpHole.Cleanup.xml (new SSOT script for jump hole cleanup)
+- Mayhem.Merc.GetClientRace.xml (new helper script)
+- Mayhem.Mission.Plot.Hackerchip.xml (deprecated script)
+- Mayhem.Mission.PlotTL.xml
+- Mayhem.Monitor.Galaxy.xml (now uses an SSOT for the 1-day grace period).
+- Mayhem.OCV.Generate.xml (this is already a deprecated file, but it now calls the GetDifficulty helper for consistency)
+- Mayhem.RetainTunings.xml
+- Mayhem.Setup.HotKeys.xml (deprecated setup.HotKeys)
+- Mayhem.StartingOptions.xml
+- Mayhem.StartingOptions.Callbacks.xml
+- Mayhem.Task.Loot.xml (now properly doubles the FLC if playership kills a target rather than using its own variable)
+- Mayhem.Task.BailMaybe.xml
+- Mayhem.Task.Pirate.Harassment.xml (added parentheses around insane difficulty's move chance)
+- Mayhem.Task.Squadron.BattleGroup.xml (cleaned up origin galaxy check)
+- Mayhem.Task.Station.PirateBase.xml (removed dead code)
+- Mayhem.Task.Squadron.Raider.xml (fixed typos and mismatched comments)
+- Mayhem.Task.Worker.Service.xml (removed dormant money reward)
+- Mayhem.Truce.PlayerOffer.Callback.xml (removed dead code)
+- Menu.Mayhem.Ministry.SM.xml (removed deprecated script call)
+- Menu.PC.Ascension.SM.xml (removed duplicate starting options getter)
+- Menu.PC.Bounties.xml
+- Menu.PC.Bounties.SM.xml
+- Menu.PC.ShipOrder.SM.xml (also improved tooltip)
+- Menu.SaturnComplexHub.Install.xml (removed deprecated OCV threat finished variable)
+- Menu.SaturnComplexHub.Install.SM.xml
+- Renegades.Plot.GetRandomShip.xml
+- Renegades.Plot.DropReward.xml
+- Renegades.Task.Renegade.xml (made jump beacon case explicit; also uses the pandora tuning helper)
+- ZH.Calculate.Scaling.xml (now uses the size category helper).
+- ZH.EquipShip.Safety.xml (debug now checks debug mode)
+- ZH.GameCreator.GalaxyStart.xml
+- ZH.Initialize.xml (removed unused starting options getter. Added back portal reveal on peaceful and chaotic galaxies due to map reveal being removed in earlier versions)
+- ZH.IsBorderWithCluster.xml (removed deprecated code)
+- ZH.IsUnknownSectorsBelowGoal.xml (deprecated script)
+- ZH.plot.BlueprintRewards.xml (now unlocks all Private Corp blueprints for OCV players and properly unlocks TS/TP for insane mode)
+- ZH.Sig.Captured.xml (clarified comments regarding tunings)
+- ZH.Task.Architect.xml (cleaned up dead code)
+- ZH.Task.PirateWarlord.xml
+- ZH.Task.Pirate.Harassment.TM.xml
+- ZH.PirateSpawnGang.xml
+- ZH.update.PhanonProtection.xml (updated comment: loose -> lose)
+- /t/9972-L044.xml (deprecated variable 232 (playership FLCC) - now uses variable 140 for SSOT)
+- /t/9973-L044.xml (moved Terran elimination message to 9972 t-file for better organization)
+
+Additional implementation notes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mission cleanup passes an explicit completion flag to Mayhem.Mission.Remove.
+- Ryu, Tepukei, and U model work used .bod files because X2BC was unavailable.
+- Ryu and Tepukei scene extensions were changed to .pbd so X3 prioritizes
+  the newer scenes over the older files.
+- Galaxy metadata initialization and validation run in GameCreator.Setup
+  before the starting questions, rather than waiting for population to finish.
