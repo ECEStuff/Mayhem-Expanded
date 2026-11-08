@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetTotalSupply</name>
-	<version>22</version>
+	<version>23</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -72,14 +72,73 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="011" indent="">
+		<line linenr="011" indent="" />
+		<line linenr="012" indent="">
+			<comment>* Every 1 manpower provides 5 supply.</comment>
+		</line>
+		<line linenr="013" indent="">
+			<comment>* Expanded 2.2: Extra Stats Mode reduces supply from manpower by 20% (5 supply per manpower -&gt; 4).</comment>
+		</line>
+		<line linenr="014" indent="">
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="015" indent="">
+			<var>$statModifier</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_galaxy.stat_modifier'</text>
+		</line>
+		<line linenr="016" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$statModifier</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="017" indent="&#160;">
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>4</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="018" indent="" />
+		<line linenr="019" indent="">
 			<var>$totalSupply.outposts</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="020" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -92,17 +151,17 @@
 			<text> </text>
 			<var>$race.sectors</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="021" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="014" indent="&#160;">
+		<line linenr="022" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="023" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -112,7 +171,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="016" indent="&#160;&#160;" interruptable="@">
+		<line linenr="024" indent="&#160;&#160;" interruptable="@">
 			<var>$manpower</var>
 			<text> </text>
 			<text>=</text>
@@ -132,7 +191,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="017" indent="&#160;&#160;" interruptable="@">
+		<line linenr="025" indent="&#160;&#160;" interruptable="@">
 			<var>$outpost</var>
 			<text> </text>
 			<text>=</text>
@@ -156,7 +215,7 @@
 			<text>=</text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="018" indent="&#160;&#160;">
+		<line linenr="026" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$outpost</var>
@@ -164,10 +223,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="019" indent="&#160;&#160;">
-			<comment>* Must have an outpost to add to total manpower. Every 1 manpower provides 5 supply.</comment>
+		<line linenr="027" indent="&#160;&#160;">
+			<comment>* Must have an outpost to add to total manpower.</comment>
 		</line>
-		<line linenr="020" indent="&#160;&#160;&#160;">
+		<line linenr="028" indent="&#160;&#160;&#160;">
 			<var>$localSupply</var>
 			<text> </text>
 			<text>=</text>
@@ -177,7 +236,7 @@
 			<text> </text>
 			<text>*</text>
 			<text> </text>
-			<var>5</var>
+			<var>$supplyPerPop</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
@@ -188,8 +247,8 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="021" indent="&#160;&#160;" />
-		<line linenr="022" indent="&#160;&#160;" interruptable="@">
+		<line linenr="029" indent="&#160;&#160;" />
+		<line linenr="030" indent="&#160;&#160;" interruptable="@">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -209,7 +268,7 @@
 			<text>=</text>
 			<text>'Supply depot'</text>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="031" indent="&#160;">
 			<var>$localSupply</var>
 			<text> </text>
 			<text>=</text>
@@ -226,8 +285,8 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="024" indent="" />
-		<line linenr="025" indent="">
+		<line linenr="032" indent="" />
+		<line linenr="033" indent="">
 			<var>$totalSupply.outposts</var>
 			<text> </text>
 			<text>=</text>
@@ -238,17 +297,17 @@
 			<text> </text>
 			<var>$localSupply</var>
 		</line>
-		<line linenr="026" indent="">
+		<line linenr="034" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="035" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="028" indent="" />
-		<line linenr="029" indent="">
+		<line linenr="036" indent="" />
+		<line linenr="037" indent="">
 			<comment>* The default supply is 150, scaled by difficulty. Any additional supply must be obtained from Outposts.</comment>
 		</line>
-		<line linenr="030" indent="">
+		<line linenr="038" indent="">
 			<var>$baseSupply</var>
 			<text> </text>
 			<text>=</text>
@@ -265,14 +324,14 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="031" indent="" />
-		<line linenr="032" indent="">
+		<line linenr="039" indent="" />
+		<line linenr="040" indent="">
 			<comment>* Add-Ons 1.8: Changed maximum supply to give 5 (previously 10) supply per pop.</comment>
 		</line>
-		<line linenr="033" indent="">
+		<line linenr="041" indent="">
 			<comment>* Supply per outpost = manpower * 5</comment>
 		</line>
-		<line linenr="034" indent="">
+		<line linenr="042" indent="">
 			<var>$totalSupply</var>
 			<text> </text>
 			<text>=</text>
@@ -283,11 +342,11 @@
 			<text> </text>
 			<var>$totalSupply.outposts</var>
 		</line>
-		<line linenr="035" indent="&#160;" />
-		<line linenr="036" indent="">
+		<line linenr="043" indent="&#160;" />
+		<line linenr="044" indent="">
 			<comment>* Caps at 1M supply.</comment>
 		</line>
-		<line linenr="037" indent="">
+		<line linenr="045" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -298,15 +357,15 @@
 			<text> </text>
 			<var>1000000</var>
 		</line>
-		<line linenr="038" indent="">
+		<line linenr="046" indent="">
 			<var>$totalSupply</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1000000</var>
 		</line>
-		<line linenr="039" indent="" />
-		<line linenr="040" indent="">
+		<line linenr="047" indent="" />
+		<line linenr="048" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$totalSupply</var>
@@ -317,11 +376,13 @@
 			<sval type="string" val="Mayhem.GetTotalSupply" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="22" />
+			<sval type="int" val="23" />
 			<sval type="int" val="0" />
-			<sval type="array" size="10">
+			<sval type="array" size="12">
 				<sval type="string" val="race.sectors" />
 				<sval type="string" val="multiplier" />
+				<sval type="string" val="supplyPerPop" />
+				<sval type="string" val="statModifier" />
 				<sval type="string" val="totalSupply.outposts" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="XS.Iterator1" />
@@ -331,7 +392,7 @@
 				<sval type="string" val="baseSupply" />
 				<sval type="string" val="totalSupply" />
 			</sval>
-			<sval type="array" size="20">
+			<sval type="array" size="24">
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOwnedSectors" />
@@ -357,73 +418,126 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_galaxy.stat_modifier" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611192" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608887" />
+					<sval type="int" val="-1610607863" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="143" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.SectorManpower" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetOutpost" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
+					<sval type="int" val="5" />
 					<sval type="int" val="10" />
 					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
-					<sval type="int" val="-1610609149" />
+					<sval type="int" val="8" />
+					<sval type="int" val="-1610608125" />
 				</sval>
 				<sval type="array" size="27">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
@@ -448,19 +562,19 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsPerkUnlocked" />
-					<sval type="int" val="-1610609400" />
+					<sval type="int" val="-1610608376" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Supply depot" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -480,12 +594,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -495,11 +609,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="4" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="150" />
@@ -522,12 +636,12 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -537,10 +651,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610607864" />
+					<sval type="int" val="-1610606840" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1000000" />
 					<sval type="int" val="15" />
@@ -552,7 +666,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1000000" />
@@ -562,11 +676,11 @@
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="21">
+			<sval type="array" size="25">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -607,61 +721,79 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="************************************************" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="10" />
+					<sval type="int" val="2" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Must have an outpost to add to total manpower. Every 1 manpower provides 5 supply." />
+					<sval type="string" val="Every 1 manpower provides 5 supply." />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="11" />
+				<sval type="array" size="3">
 					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Extra Stats Mode reduces supply from manpower by 20% (5 supply per manpower -&gt; 4)." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="14" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="15" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="15" />
+					<sval type="int" val="6" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Must have an outpost to add to total manpower." />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="17" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="19" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="19" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="19" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The default supply is 150, scaled by difficulty. Any additional supply must be obtained from Outposts." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="20" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="20" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.8: Changed maximum supply to give 5 (previously 10) supply per pop." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="16" />
+					<sval type="int" val="20" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Supply per outpost = manpower * 5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
+					<sval type="int" val="21" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="17" />
+					<sval type="int" val="21" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Caps at 1M supply." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="19" />
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
