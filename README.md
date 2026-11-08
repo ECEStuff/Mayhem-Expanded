@@ -46,7 +46,7 @@ This is your **Expanded directory**, also called the **game root**. It contains 
 
 ### 2. Install Mayhem Expanded
 
-Download the Expanded release package from [ModDB](https://www.moddb.com/mods/mayhem-expanded). It includes the required Renegades files; no separate Renegades download or installation is needed.
+Download the latest Expanded release package from [ModDB](https://www.moddb.com/mods/mayhem-expanded). It includes the required Renegades files; no separate Renegades download or installation is needed.
 
 Open the archive and locate the folder containing `addon`, `mayhem_data`, `cleanup.bat`, and the other release files.
 
@@ -98,12 +98,11 @@ These instructions apply when upgrading Renegades 5.4 to Expanded or updating an
 
 1. Read the new release's changelog. Check whether it requires a new game, a new galaxy, or other migration steps.
 2. Back up your installation, saves, and customized configuration files.
-3. Download the Expanded release package from [ModDB](https://www.moddb.com/mods/mayhem-expanded).
+3. Download the latest Expanded release package from [ModDB](https://www.moddb.com/mods/mayhem-expanded).
 4. Extract its contents into your existing Expanded directory, allowing files to be overwritten.
-5. Run the included `cleanup.bat`.
-6. Follow any additional instructions in the changelog.
+5. Follow any additional instructions in the changelog.
 
-If a new galaxy is required, generate, save, and activate one with the included version of Azimuth before starting a new game.
+If a new galaxy is required: generate, save, and activate one with the included version of Azimuth before starting a new game.
 
 Do not restore old configuration files wholesale. Compare them with the updated files and reapply only supported changes.
 
