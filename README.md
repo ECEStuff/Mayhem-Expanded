@@ -151,6 +151,7 @@ Always check the release changelog for specific savegame and galaxy compatibilit
 ### Localization and assets
 
 - **XenonArchitect7** — Tips and Flail Barrage Missile icon.
+- **Cycrow** — X3AP documentation and QnA.
 - **Alexalsp** — Russian localization work.
 - **Solek** — Asteroid textures used in Expanded.
 - [Sector Names icon by Cap Cool](https://www.flaticon.com/free-icons/text-box).
