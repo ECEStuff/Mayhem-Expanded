@@ -154,8 +154,8 @@ Always check the release changelog for specific savegame and galaxy compatibilit
 - **Cycrow** — X3AP documentation and QnA.
 - **Alexalsp** — Russian localization work.
 - **Solek** — Asteroid textures used in Expanded.
-- [Sector Names icon by Cap Cool](https://www.flaticon.com/free-icons/text-box).
-- [Constellation app icon by Magnific](https://www.flaticon.com/free-icons/constellation).
+- [Sector Names icon by Cap Cool](https://www.flaticon.com/free-icon/text_10768913?term=text+box&page=2&position=2&origin=tag&related_id=10768913).
+- [Constellation app icon by Magnific](https://www.flaticon.com/free-icon/astronomy_3924439?term=constellation&page=1&position=44&origin=tag&related_id=3924439).
 - **XTC for X3TC/AP** — Goner TS/TP ship models.
 
 Thank you to everyone who contributed testing, bug reports, feedback, and suggestions. Additional asset and script credits remain in the included documentation and source files.
