@@ -18,7 +18,6 @@ Mayhem Expanded is an expansion of Renegades, built upon Mayhem 3 Zero Hour and 
 For a fresh installation, you need:
 
 - A clean English installation of **X3: Albion Prelude**, without the Bonus Package.
-- The **Renegades 5.4 full installation**.
 - The **Mayhem Expanded release package** from ModDB.
 
 Install into a separate copy of the game, outside `Program Files` and `Program Files (x86)`. Back up any existing installation, saves, and customized configuration files before making changes.
