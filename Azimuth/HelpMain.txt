@@ -1,0 +1,139 @@
+﻿Azimuth User Guide
+
+Getting started
+- Select your Mayhem installation folder and X3 save folder.
+- Click either path to change it.
+- Back up existing saves before switching galaxies for the first time.
+
+Compatibility with other Mayhem editions
+- Azimuth supports multiple Mayhem editions, but ship, weapon, shield, and configuration files may differ between them. 
+- Before using the Ships and Weapons Editor or Config Editor with another edition, ensure the reference files match your installation.
+
+- Ship and weapon files:
+  - Use X3 Editor 2 to open the relevant .cat/.dat (should be 12.cat/dat) archives from your Mayhem installation.
+  - Extract TShips, TLaser, TShields, and TBullets as .txt files.
+  - Save them beside Azimuth.exe, replacing the existing TShips.txt, TLaser.txt, TShields.txt, and TBullets.txt.
+  - If your installation already contains modified versions in addon/types, use the appropriate active versions instead.
+
+- Configuration files:
+  - The 9972-L044.xml and 9973-L044.xml files are located in your installation's addon/t folder.
+  - Ensure the Config Editor uses the matching files from your selected Mayhem edition.
+
+- Do not mix reference files from different Mayhem editions. Differences in ship definitions, weapon references, or configuration variables may produce incorrect results.
+- Repeat this process when switching Mayhem editions or installing updates that change these files.
+
+Generate a galaxy
+- Choose a galaxy size, shape, and expansion stage.
+- Void sets the target percentage of empty cells within the size limits. 
+- Xenon sets a percentage of actual sectors, excluding voids, rounded up. Peaceful creates one Xenon sector; Chaotic creates 50%, rounded up. 
+- Click Generate Sectors.
+
+How generation works
+- Expansion allocates unknown space from the sectors remaining after Xenon: Early 60%, Average 40%, Advanced 20%, rounded up. 
+  - Races receive the remainder. Origin gives one sector per race. Sector Spread adjusts the relative race quotas; equal values cancel out.
+
+- Gates are finalized before ownership is assigned. Race territories grow through gates from separated seeds and do not directly border other non-Xenon races. 
+  - Unknown or Xenon space forms the separator. Starts are at least four gate jumps apart; generation seeks greater, balanced separation. Exact equal distances are not guaranteed.
+  - Each race’s territory seed keeps its owner and de jure ownership, including after stat rerolls. 
+  - Territory seeds are separate from optional gamestart overrides. Generation retries difficult layouts without relaxing constraints. 
+  - If no plan is found, the previous map is retained.
+
+- New maps retain at least four unknown one-gate enclaves in Standard/Peaceful, or two in Chaotic. 
+
+- Xenon placement starts from an enclave. The Maelstrom checkbox is an optional override; without it, the game selects the portal location. 
+  - Xenon prefer other enclaves. Clustered Xenon allows multiple connected clusters in Standard; Chaotic uses one connected territory. 
+  - Limited Enclaves reduces optional dead ends but retains required enclaves. Gate Density controls the complete network, not only borders.
+
+
+Edit the map
+- Double-click an occupied sector to edit its stats or gates. 
+- Double-click a void to add a sector. 
+- Right-click a tile to add or remove a sector within the size limits.
+
+- New sectors receive a validated gate connection. 
+  - Ownership choices and structural edits must preserve the territory rules, required enclaves, and stored Xenon allocation: exactly one in Peaceful; for Standard and Chaotic, the rounded-up target through one extra Xenon sector. Standard uses the stored percentage; Chaotic uses 50%. Generation uses the target without the extra allowance. Editing limits are recalculated after each proposed edit. Ownership changes must also preserve territory and enclave rules. 
+  - Regenerate Gates retains the existing network if it cannot find a valid replacement. 
+  - Legacy maps without territory seeds cannot use the new structural editing operations.
+
+- Reroll Sector Stats rerolls sector attributes across the galaxy.
+  - Rerolling stats and editing a sector use the stored modifier. 
+
+- Choose Normal, Extra Sector Stats, or Saboteur Mode before generating a galaxy. 
+  - Extra Sector Stats increases population, research, and station support by 20%. 
+    - In Expanded, total supply and maximum tax efficiency are reduced by 20%, and maximum specialization falls from 20% to 10%.
+  - Saboteur Mode reduces population, research, and station support by 20%. 
+    - In Expanded, maximum specialization rises from 20% to 30%, specialization takes 25% longer to grow, and you gain one additional perk slot.
+
+- Use Find to locate a sector and Export PNG to save an image of the current map.
+
+Gamestart and Maelstrom overrides
+- Gamestart Sector sets the owning faction’s starting location.
+  - Selecting another sector replaces that faction’s previous choice. 
+  - Uncheck it to let Azimuth choose a random faction-owned sector when saving. 
+
+- Maelstrom Override is separate: clear it to let the game choose the portal location. Neither changes the protected territory seeds.
+
+Save and play
+- Open Save/Load Galaxy, enter a name, and click Save. 
+- Load in Editor reopens a saved galaxy. 
+- Set Active installs the selected galaxy for X3. 
+- If Azimuth cannot identify your existing save slots, select the galaxy those saves belong to and click Identify Current Saves before switching.
+
+Edit game settings
+- Open Config and choose page 9972 or 9973.
+- Select a section or filter by text, then edit the Current value.
+- Reset selected restores a setting’s reference default. 
+- Reset file to defaults resets all matching settings, including hidden rows. 
+- Neither writes changes until you choose Save and close. Save preset writes a separate JSON file.
+
+Ships and Weapons Editor
+-------------------------
+- Open Ships and Weapons from the toolbar.
+- Choose all ship races, one race, or weapon groups.
+  - Select the maximum adjustment, then click Randomize. 
+  - Ships use ±20% or ±30% in 1% steps; weapons use ±10% or ±15% in 0.5% steps. 
+  - Both include zero and small adjustments.
+
+Ship profiles
+- Each race gets six independent rolls: speed, acceleration, turning, shield generator, hull, and cargo.
+- All ships with that race ID share these rolls. Yaw, pitch, and roll use one turning modifier.
+- The generator modifier also sets target shield capacity; there is no separate capacity roll. 
+- TL cargo and weapon energy remain unchanged.
+
+- Both NPC and player production relative values use:
+  - Movement = (speed + acceleration + turning) / 3
+  - Durability = (hull + shield generator) / 2
+  - Production modifier = Movement x 0.4 + Durability x 0.4 + Cargo modifier x 0.2
+
+- Randomization uses the rolled multipliers: a -6% generator roll contributes 0.94 to durability even if capacity rounds down by 10%. TL cargo contributes 1. Production values round to whole numbers.
+- Shield capacity compares the nearest slot count at the current tier with the nearest slot count at the immediately lower tier. 
+  - Uses the lower tier only if the class minimum allows it and it is closer to the target. Ties retain the current tier. 
+  - Whole slots round half upward, with at least one slot for shielded ships. Lowest-tier shields round count only; unshielded objects remain unshielded.
+  - For example, for 2 x 25 MJ: -6% targets 47 MJ and becomes 9 x 5 MJ; +3% targets 51.5 MJ and retains 2 x 25 MJ; +6% targets 53 MJ and becomes 11 x 5 MJ.
+  - Minimum tiers: M5/M4 1 MJ; M3/TS/TP 5 MJ; M8 5 MJ with a 25 MJ base or 25 MJ with a 200 MJ base; M6/TM 25 MJ; M7/TL 200 MJ; M1 200 MJ, or 1 GJ with a 2 GJ base; M2 1 GJ. 
+    - At the minimum, randomization retains the base tier and round slot count. An M3 with 8 x 5 MJ at +10% therefore becomes 9 x 5 MJ, never 44 x 1 MJ.
+    - Special objects have a minimum one tier below their original base, bounded by 1 MJ. 
+    - Rerolls always use the original bundled base tier, preventing repeated downgrades. 
+
+Weapon groups
+- Weapons share a five-attribute profile per manufacturing group: Argon, Boron, Paranid, Split, Teladi/Yaki, Terran (and associated races), OCV, Kha'ak, or generic Commonwealth.
+  - Trading availability does not change the group: FBC remains Argon and PAA remains Split; MAML belongs to the generic Commonwealth group.
+- Hull damage, shield damage, firing rate, range, and projectile speed each get an independent roll within the displayed limit.
+- Hull and shield modifiers also apply to out-of-sector (OOS) damage. 
+  - TLaser stores firing delay in milliseconds: new delay = old delay / firing-rate factor, rounded to at least 1 ms. Positive firing-rate rolls therefore shorten the delay. Energy values remain unchanged.
+- Projectile lifetime compensates for speed: new lifetime = original lifetime x original speed x range factor / new speed, with integer rounding.
+
+- Both NPC and player laser production values use: 
+  - Average damage = (hull multiplier + shield multiplier) / 2
+  - Production modifier = (Average damage + firing-rate multiplier + range multiplier) / 3
+
+- Speed has no separate production weight. These are rolled multipliers; integer rounding may slightly change the results.
+- Repair Laser, Mobile Drilling System, and Mounted Railgun remain unchanged. 
+- TLaser supplies bullet references; shared bullets change only once, and conflicting cross-group references are rejected.
+
+Defaults and overrides
+- Rerolls calculate from the TShips.txt and TBullets.txt supplied beside Azimuth.exe, with TShields.txt as a shield reference and TLaser.txt supplying laser mappings and production defaults.
+  - They do not compound previous rolls. Rerolling one selected race preserves other races in an existing TShips.txt override; incompatible selected-race records cause the operation to stop.
+- Results are written to the selected game's addon/types folder. Prior text overrides are backed up under <game root>/Azimuth_Backups/Types, alongside the Speech backup category. 
+- Existing backups from older builds are not moved automatically. Weapon changes save TBullets.txt and TLaser.txt together; a failed write rolls back completed replacements.
+- Remove overrides removes the three active text overrides (TShips.txt, TBullets.txt, and TLaser.txt) and retains recovery copies. It does not change packed data or other installed mods. These type-file changes affect the game installation, not just the galaxy currently open in Azimuth.

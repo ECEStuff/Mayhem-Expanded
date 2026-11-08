@@ -1,0 +1,168 @@
+﻿AZIMUTH 2.0.1
+=============
+
+FIXES AND UPDATES
+-----------------
+- Updated the bundled 9972 configuration file for Mayhem Expanded to reflect the latest settings and modifier descriptions.
+- Fixed Xenon territory bounding during galaxy generation.
+
+AZIMUTH 2.0
+===========
+
+Azimuth expands the Mayhem galaxy generator with connected faction territories, safer map editing, a configuration editor, and racial ship and weapon variation.
+Developed by herobetty, based on ZMap v1.8.2 by Mordan (Hairless-Ape) and the original galaxy generator by Joubarbe.
+
+BEFORE YOU START
+---------------
+- Designed for Mayhem editions from Zero Hour onward, including Expanded.
+  - Base Mayhem 3 is outside this scope because it lacks Terran support.
+
+- Generate a new galaxy to use the new territory layout. 
+  - Older maps without recorded territory seeds cannot use structural editing; stats and music remain editable.
+
+- Back up existing saves before switching galaxies. Use Identify Current Saves if Azimuth does not know which galaxy the current saves belong to.
+
+- Ship and weapon overrides affect the selected game installation, not just the galaxy open in Azimuth.
+  - Changing an active galaxy can affect existing saves.
+
+GALAXY GENERATION
+-----------------
+- Reworked territory generation around the final gate network.
+  - Each main race receives a connected territory, separated from other races by unknown or Xenon space, with access to unknown space for expansion.
+  - Race starting sectors are at least four gate jumps apart.
+    - Placement seeks greater, balanced separation across all expansion stages.
+  - Xenon placement starts from an enclave and prefers other dead ends.
+    - Clustered Xenon allows multiple connected clusters in Standard; Chaotic uses one connected territory.
+
+- Retained at least four unknown enclaves for Standard and Peaceful starts, or two for Chaotic. 
+  - Limited Enclaves reduces optional dead ends.
+
+- Replaced Shattered Galaxy with a void percentage slider and added a Xenon percentage slider. 
+  - Square and rectangular maps use the same sector limits: Small 50-85, Medium 86-144, and Large 145-246.
+
+- Xenon percentages use actual sectors, excluding voids, and round up.
+  - Peaceful creates one Xenon sector; Chaotic allocates 50% to Xenon.
+
+- Early, Average, and Advanced reserve 60%, 40%, and 20% of non-Xenon sectors as unknown space, rounded up. 
+  - Races receive the remainder. Origin gives each main race one sector.
+
+- Failed generation preserves the previous galaxy. 
+  - Gate regeneration keeps the existing network when no valid replacement is found.
+
+GALAXY EDITING AND SECTOR STATS
+-------------------------------
+- Add sectors by double-clicking empty cells or using the right-click menu.
+  - Remove sectors through the right-click menu. 
+  - Edits respect size limits, void limits, gate connectivity, territory rules, and required enclaves.
+
+- Ownership choices are limited to valid factions.
+  - Editing preserves the stored Xenon minimum; Peaceful galaxies retain exactly one Xenon sector.
+
+- De jure ownership is limited to the current faction or None. 
+  - Changing the owner clears de jure ownership. Company choices follow the sector owner.
+
+- Gamestart Sector is an optional faction start override. 
+  - Clearing it lets Azimuth select a random faction-owned sector when saving.
+  - Maelstrom Override is separate; clearing it leaves portal placement to the game.
+
+- Protected territory seeds now retain their owners and de jure ownership.
+
+- Added Normal, Extra Stats (+20%), and Saboteur (-20%) modifiers for population, research, and station support.
+  - Editing limits and stat rerolls use the generated galaxy's stored modifier, not the current UI selection.
+
+- Normal station support preserves the original tiers and now balances the total toward an average of 9.65. 
+  - Extra Stats and Saboteur scale that total.
+  - In Expanded: 
+    - Extra Stats reduces total supply by 20%, maximum tax efficiency by 20%, maximum specialization from 20% to 10%, and terraforming scaling bonuses by a flat 10%. 
+    - Saboteur raises maximum specialization from 20% to 30% and adds one perk slot, but increases the specialization growth requirement by 25%.
+
+- Production and consumption food lists exclude the opposite selection.
+
+- Sector information now includes planet counts.
+
+SHIP AND WEAPON RANDOMIZATION
+-----------------------------
+- Ships share independent attribute modifiers across their race: speed, acceleration, turning, shield generator, hull, and cargo.
+
+- Shield capacity now follows the generator modifier. 
+  - Capacity rounds at the original tier or one tier lower, subject to class minimums.
+  - The closer result is used; ties retain the original tier.
+
+- TL cargo and weapon energy remain unchanged.
+
+- Weapons share independent hull damage, shield damage, firing rate, range, and projectile speed modifiers within each manufacturing group.
+  - Damage modifiers also apply to out-of-sector damage.
+
+- Projectile lifetime compensates for speed changes to achieve the range modifier. 
+  - Repair Laser, Mobile Drilling System, and Mounted Railgun (unused) remain unchanged, as does weapon energy consumption.
+
+- Ships retain limits of +/-20% or +/-30%; weapons now use +/-10% or +/-15%.
+  - Rolls now include small adjustments and zero. Removed the Raise/Lower actions.
+
+- Production values now use averages to limit economic swings. 
+  - Ship production weights movement 40%, durability 40%, and cargo 20%. 
+  - Laser production gives equal weight to average damage, firing rate, and range.
+
+- Rerolls use bundled defaults instead of compounding previous adjustments.
+  - Rerolling one race preserves other races' existing overrides.
+
+CONFIGURATION AND INTERFACE
+---------------------------
+- Added an editor for the 9972 and 9973 configuration files, with section filters, setting descriptions, reference defaults, and JSON presets.
+- Added a read-only summary of the loaded galaxy's stat modifier.
+- Added User Guide, Release Notes, and About entries under Help.
+- Improved sector search and full-map PNG export.
+- Reorganized map controls, added mutually exclusive start and stat-modifier choices, and made race relations collapsible.
+- Polished English labels, tooltips, and messages, with consistent terminology and grammar. English remains the default localization template.
+
+FILES AND SAFEGUARDS
+--------------------
+- Type-file backups are stored in Azimuth_Backups\Types inside the game folder, with readable date-and-time filenames.
+
+- Ship and weapon inputs are validated before writing. 
+  - Paired weapon-file updates roll back completed replacements if a later write fails.
+
+- Remove overrides removes TShips.txt, TBullets.txt, and TLaser.txt from the active types folder and retains backup copies. 
+  - The game then uses its remaining installed data.
+
+- Sector music prefers unused eligible tracks before reusing them. 
+  - Custom music imports reject reserved IDs and conflicting files to protect game audio.
+
+- Improved saved-game ownership checks when switching galaxies and added recovery safeguards for galaxy file operations.
+
+See the User Guide for detailed editing rules, shield tiers, production formulas, and backup behavior.
+
+
+EARLIER RELEASES
+================
+These summaries describe earlier versions and may not reflect current behavior.
+
+ZMap Expanded (formerly ZMap Add-Ons) releases
+----------------
+1.8.6  Removed the legacy generator dependency and revised status colors.
+1.8.5  Standardized terminology and fixed Xenon Defect's preferred start.
+1.8.4  Updated the version number.
+1.8.3  Added the Xenon Defect gamestart.
+
+Original ZMap
+-------------
+1.8.2  Fixed an incorrect missing-custom-music-folder message.
+1.8.1  Added sector music editing.
+1.8.0  Added custom music folders.
+1.7.8  Capped randomized laser generator values at the game's limit.
+1.7.7  Added a required unknown-enclave check.
+1.7.6  Fixed reactivation of the current map.
+1.7.5  Added folder reminders and revised default map overlays.
+1.7.4  Fixed a lockup involving Chaotic Start and Clustered Voids.
+1.7.3  Added randomization limits and shield-count adjustments.
+1.7.2  Created the types folder automatically when needed.
+1.7.1  Switched to a release build and updated bundled type files.
+1.7    Added ship and weapon randomization.
+1.6.1  Fixed saving maps with Terran de jure ownership.
+1.6    Added Terrans as a full faction.
+1.5    Updated Maelstrom handling, Russian translations, and sunlight editing.
+1.4    Added gate editing, Peaceful and Chaotic starts, and long-gate indicators.
+1.3    Added localization and a Maelstrom location override.
+1.2    Fixed Extra Stats, older-map loading, and asteroid generation; added
+       configurable empty-space and Xenon percentages.
+1.1    Initial release.
