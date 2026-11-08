@@ -5,8 +5,9 @@ Mayhem Expanded is an expansion of Renegades, built upon Mayhem 3 Zero Hour and 
 ## Downloads and support
 
 - [Download Mayhem Expanded on ModDB](https://www.moddb.com/mods/mayhem-expanded)
-- [Discussion and support on the Egosoft forums](https://forum.egosoft.com/viewtopic.php?t=473331)
 - [Azimuth source code and standalone releases](https://github.com/ECEStuff/Azimuth_Mayhem_MapGen)
+- [Discussion and support on the Egosoft forums](https://forum.egosoft.com/viewtopic.php?t=473331)
+- [Mayhem Expanded discussion and support — SWLU Discord](https://discord.com/invite/S587CRb)
 
 **Read the changelog included with your release before installing or updating.** It contains compatibility requirements, gameplay changes, and any additional migration steps.
 
@@ -114,7 +115,7 @@ Azimuth replaces ZMap in this workflow. The old instructions for copying `TShips
 
 Use Azimuth's **Help** menu for generator instructions and the in-game encyclopedia for gameplay information. Consult the release changelog for changed rules and known issues.
 
-For support, use the [Egosoft discussion thread](https://forum.egosoft.com/viewtopic.php?t=473331).
+For discussion and support, visit the [Egosoft forum thread](https://forum.egosoft.com/viewtopic.php?t=473331) or the [SWLU Discord server](https://discord.com/invite/S587CRb). On Discord, use the appropriate Mayhem channel.
 
 When reporting a problem, include:
 
