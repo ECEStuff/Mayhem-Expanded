@@ -1,0 +1,461 @@
+Note: 
+- A small 2.0a hotfix was released shortly after 2.0 to include a few scripts unintentionally omitted during upload. The issue affected only a very small number of files; the vast majority of the 2.0 release was unaffected.
+
+
+It's been almost 11 years of Mayhem, and we're approaching the 6 year anniversary of Mayhem 3's initial launch! The mod has been updated to 2.0.
+
+Highlights
+- New perk: Jump Hole Generator. Allows you to open temporary jump holes. Beware - enemies can exploit them for travel!
+- New ships and ship balancing!
+- Renegades plot tweaks: Added subtle hints per community feedback.
+- TIS fixed (additional issues were discovered after 1.14 release).
+- Terraforming perks and academy effect tweaked.
+
+Previous savegames compatibility: NO. 
+Previous galaxies compatibility: YES.
+
+-----------------------------------------
+		ADDITIONS
+-----------------------------------------
+- Jump hole Generator (JHG)
+  - New Outpost perk. Requires the Jump Station to be unlocked and an upfront cost of 2 black crystals.
+  - Adjacency perk bonus does not count sectors connected via jump holes.
+  - Sectors connected via jump holes count for terraforming manpower. This is to give more utility to the perk.
+  - Destroying the Outpost frees up the JHG slot.
+  - A jump hole cannot be created in the Outpost's sector, its adjacent sectors, or in a sector where there's already an active or opening jump hole.
+  - An Outpost with an active or opening jump hole cannot be upgraded to a Capital Shipyard until the jump hole pair expires.
+  - The activation cost is 10k energy cells, 1 Jump Beacon, 10 red crystals, 5 yellow crystals, and 1 blue crystal.
+  - Jump hole generation has a 30-35 minute delay.
+  - Jump holes last 6 hours or until the source Outpost is destroyed, whichever comes first.
+  - This perk is designed to give a resource dump for Jump Beacons (Jumpdrive Cores) and give a mobility tool
+
+	. !station.signal.killed.xml
+	. !galaxyeditor.create.gates.xml
+	. Joubarbe.Lib.GetPermanentAdjacentSectors.xml (new library script; wraps around GetAdjacentSectors)
+	. Mayhem.Debug.CreateGates.xml (debug script used to generate wormholes and gates)
+	. Mayhem.GameCreator.SectorData.xml
+	. Mayhem.GetMaxPerks.xml
+	. Mayhem.Perk.Check.xml
+	. Mayhem.Perk.Init.xml
+	. Mayhem.ResetPerks.xml
+	. Mayhem.Perk.SetCategory.xml (new script)
+	. Mayhem.Perk.SetInfo.xml
+	. Mayhem.Perk.Unlock.xml
+	. Mayhem.Task.Station.Outpost.xml
+	. ZH.Initialize.xml
+	. Menu.DWM.Get.Production.Station.xml
+	. Menu.DWM.Set.Production.Station.xml
+	. t/9972-L044.xml (updated description)
+	. t/9973-L044.xml (added object class for unstable wormholes)
+
+- Ships
+  - Added a legend to the ship compendium.
+    - Kha'ak ships, Phanon ships, and all ships during OCV playthroughs are now colored red, signifying research restriction.
+  - Added 7 ships - 4 new, 3 returning:
+    - Private Corp. Solitas (new) - a new neutral TS+ which is slightly faster and carries 40% more cargo than usual TS+, but it has no weapons and costs 25% more than average.
+    - Private Corp. Soulstar (new) - a new neutral TP+ which can carry XL cargo, but it has no weapons, reduced cargo, and reduced marine capacity.
+    - Yaki Minotaur Raider (new) - faster than the standard minotaur, more spacious and expensive, but less durable. Can fire all commonwealth (except Terran) artillery missiles.
+    - Yaki Hades Prototype (new) - compared to the hades raider, this ship is slightly faster but less maneuverable and durable. Its payload is weaker (Yaki fox 1/3 deal less DPS than Paranid fox 1/3), but it compensates with a larger cargo bay.
+    - Yaki Toucan Prototype (returning) - formerly a Teladi ship, the Yaki have stolen the design and repurposed it to be between a TP and TP+.
+    - Yaki Nexus SF (returning) - formerly an Argon ship, the Yaki have repurposed and upgraded the Nexus into their own TS+. It is faster and slightly more spacious but less durable than the Lotan.
+    - Yaki Mamba Hauler (returning, renamed to Mamba Prototype). Stats are now between a Pirate Mamba and the Split Mamba Raider.
+    - Solitas and Soulstar are given as OCV branch plot rewards or via research during normal playthroughs.
+    - Nomads can use the Solitas as a trader.
+  - Added Prototype variant to the game. 
+    - It costs 33% more research than standard variants, i.e. 4x as much research compared to standard ships.
+    - Unlike Advanced, they CAN be scanned. They recycle for up to 70% research instead of 50% research.
+    - Research UI and Compendium will color-code prototypes as magenta.
+  - The Yaki now use the Minotaur Raider, Hades Proto, Toucan Proto, Falcon Hauler/Vanguard, Mamba Proto, and Nexus SF for their ship jobs. 
+    - The previous M7M, M8, and TP placeholders added in 1.9 have been replaced with their corresponding ships.
+
+	. Menu.PC.ShipCompendium.SM.xml
+	. Mayhem.Recycle.xml
+	. Mayhem.GetProjectCost.xml
+	. Mayhem.ImportShipPopReq.xml
+	. Mayhem.Template.Ships.xml
+	. ZH.PhanonDeadCheck.xml
+	. ZH.Nomads.Build.xml
+	. t/9700-L044.xml
+	. t/9975-L044.xml
+	. t/9978-L044.xml
+	. t/9979-L044.xml
+	. 12.cat/dat - addon/types/TShips.pck, objects/ships/goner
+
+- Misc
+  - Added greeting message for Quickstart.
+
+	. t/9972-L044.xml
+	. Mayhem.StartingOptions.Callbacks.xml
+
+-----------------------------------------
+		CHANGES
+-----------------------------------------
+- Main plot
+  - Phanon buff: Jump beacon placement (OCV playthroughs)
+    - When Phanon places a claim on a player-owned sector, they place a jump beacon in an allied or neutral sector within 4 jumps from the claimed sector.
+    - The selected sector must be OOS and not the Renegade sector.
+  - When the OCV demand a sector, the player receives a warning that TIS access and any stored wares will be revoked upon joining the OCV.
+
+	. Mayhem.Claim.xml
+	. t/9973-L044.xml
+
+- Renegades plot
+  - The Renegades timer is now scaled by difficulty:
+    - Easy: 1 hour
+    - Normal: 50 minutes
+    - Hard: 40 minutes
+    - Insane: 30 minutes (same as before)
+  - The first renegade killed now hints the player to install a triplex scanner.
+    - This hint is given only on easy/normal. Hard gives an indirect hint, and insane doesn't give this hint.
+  - The Helios Hauler has been replaced with the Chokaro Advanced.
+    - Zephyrus advanced is now a "better" TM rather than an elite. There are now 2 elites, 2 above-average, and 2 average TMs.
+  - On scaled difficulty of insane or higher, Renegades will spawn with missiles.
+
+	. t/9980-L044.xml (added a subtle hint regarding the shipwreck; this hint is available on all difficulties)
+	. Renegades.Plot.DropClue.xml
+	. Renegades.Plot.GetRandomShip.xml
+	. Renegades.Monitor.xml
+
+- Ship balancing
+  - Upon creation, NPC ships now use the same turret settings as newly created player ships.
+  - Added FBC to Xenon and Phanon M7 right/left turrets. 
+    - This restores some of their combat prowess (justifies their high cost) against other capitals ships but preserves their reduced strength (makes them easier to take on) that base Mayhem introduced.
+  - NPC M6 and TM have a small chance to spawn with AFS and/or HPD. This is to encourage decision making with approaching early-game boarding.
+  - Added AFS back to OCV ships, but only 50% chance for capitals and 25% otherwise. This makes them harder to board and also resistant to hacking.
+  - Added HPD to ship defenses. Terran does not equip HPD.
+  - For reference, ships can spawn with defenses with chances as follows:
+    - For M6/TM:
+      - AFS: 6.25% normal, 12.5% insane
+      - HPD: 5% normal, 10% insane
+      - ISL: 0%
+    - For capital ships:
+      - AFS: 12.5% normal, 25% insane
+      - HPD: 10% normal, 20% insane
+      - ISL: 33.3% normal, 66.7% insane
+  - For ship stat changes, see each subsection below.
+
+	. Mayhem.BuildShip.xml
+	. 12.cat/dat - addon/types/TShips.pck and addon/types/TCockpits.txt
+	. ZMap/TShips.txt 
+	  - Updated also in the ZMap Add-Ons repo. ZMap is now v1.8.4d.
+
+- Ship balancing (TSs)
+  - This normalizes TS costs, with TS basic variants being between TS and TS+.
+  - Phanon freighter A: Speed increased (95.2 -> 142.8). Cost decreased by 20% (665 -> 532). Angular acceleration increased from 9 to 25.
+  - Phanon freighter B: Cargo decreased (45600 -> 41000). Speed increased (104.1 -> 160). Shield increased (10x25 -> 20x25). Hull increased (380k -> 450k). Angular acceleration increased (10 -> 25). This gives it the TS+ status that it was otherwise lacking compared to the other TS+.
+  - Phanon miner A: Now has the same stats as A but halved cargo.
+  - Phanon miner B: Now has the same stats and cost as B but -25% cargo. This is now a hybrid TS+ and miner in one package.
+  - Demeter Hauler: Cost increased (360 -> 400). Cargo size increased from 33% more to 50% more make it distinct from regular Demeter.
+  - Dolphin: Cargo increased (15.5k -> 17.0k) to justify its slowness.
+  - Dolphin miner: cost decreased (384 -> 264) for consistency.
+  - Dolphin Hauler: Cost decreased (550 -> 400) to justify its research cost and stats relative to Sturgeon.
+  - Mistral: Cost decreased (512 -> 496), making it a sidegrade of the Nexus - a tradeoff of armor vs speed.
+  - Teladi Vulture Miner: Cost increased (132 -> 264) for consistency.
+  - Demeter Miner: Cost increased (288 -> 312) for consistency.
+  - Baldric miner: cost decreased (660 -> 590) for consistency.
+  - F and F miner: 30% cheaper (1400 -> 980). Miner is now 10% cheaper than F.
+  - Drake Adv: Cost increased (550 -> 750). 
+  - Bragi: Cost increased (850 -> 900). Shield decreased (8x200 -> 6x200). Reactor decreased (1770 -> 1330). 
+  - Bragi Adv: Cost increased (1300 -> 1350) for consistency. Shield decreased (10x200 -> 8x200). Reactor decreased (1770 -> 1416). This ensures regen time to 100% is approximately the same as before.
+
+- Ship balancing (TPs)
+  - This normalizes the regular TPs, naucell, and magnir adv.
+  - Hermes: decreased cost (912 -> 850)
+  - Iguana: Speed increased (140.8 -> 154)
+  - Toucan: cost increased (384 -> 500). Speed increased (111.6 -> 131)
+  - Naucell: cost increased (720 -> 950). Speed increased (139.5 -> 163.8)
+  - Naucell adv: cost increased (1100 -> 1160). speed increased (163.8 -> 186.7).
+  - Magnir Adv: cost increased (1228 -> 2304). Shield increased (4x200 -> 5x200), speed increased (226 -> 248.6), hull increased (304096 -> 460000)
+  - Phanon Shuttle: cost increased (387 -> 900) 
+
+- Ship balancing (TMs)
+  - The cost factors also the hangar size; this carries more weight because it represents the TM's frontloaded damage.
+  - Zephyrus: Cost decreased (3744 -> 3200)
+    - The Boa Hauler is this TM's competitor, both formerly around the same price. The issue is that the Boa Hauler not only carries a bit more cargo but also has more durability, while the Zephyrus is between a Boa and a standard TM in terms of speed.
+    - A cost reduction for the Zephyrus is justified. Even though the Zephyrus has +2 guns, those guns are not the primary DPS source.
+  - Zephyrus Adv: speed increased (410 -> 450m/s). Reactor increased (500 -> 600). Accel increased (10 -> 15), angular accel increased (10 -> 15)
+    - This justifies its price tag as a fast TM with standard hangar size and main guns.
+  - Lofn: Cost increased (3200 -> 3744). Shield decreased (8x200 -> 6x200), making it a cheaper alternative to the Akurei.
+  - Chokaro and Chokaro Adv balancing (DONE)
+    - Chokaro: 
+      - Cargo: 920 -> 1300.
+      - It also makes it a sidegrade of the caravel. It trades durability and frontloaded firepower for speed and cargo.
+      - The cargo increase is a tradeoff for giving up one of its hangar slots compared to standard TMs.
+    - Chokaro adv: 
+      - Speed increase: 200 -> 400m/s (same as chokaro). 
+      - Cost increased: 3500 -> 4620.
+      - Cargo decreased: 9625 -> 1300. 
+      - Shield decreased: 200x6 -> 200x4
+      - Reactor increased: 464 -> 696
+      - This is the only TM that drastically changes its attributes (+3 hangar slots is A LOT for a TM) compared to the original.
+      - The cost increase is to make it a combat-oriented version of the Chokaro. The standard Chokaro is a blockade runner with exceptional cargo for a TM.
+
+- Ship balancing (other)
+  - M3 and their variants: normalized hull.
+  - Minotaur: Decreased speed (201 -> 191). Cargo increased (6195 -> 6500) to compensate.
+    - This was almost as fast as the Cobra. The speed has been decreased to make room for the new Minotaur Raider and put it close to the Aquillo.
+  - Gladiator and Gladiator hauler: cargo increased (540 -> 650 for normal; 718 -> 975 for hauler). Hull increased (80729 -> 100729)
+  - Springblossom raider: increased speed (168.2 -> 178.2). increased cargo (4200 -> 4700)
+    - As it's not a dedicated combat M6, the increased cargo is to compensate for its role as a faster but more expensive courier compared to the regular Springblossom. The speed helps makes it somewhat suitable for combat, mitigating the drawbacks of the standard version.
+  - Fixed Osprey Hauler being cheaper than Osprey.
+  - Fixed Osprey Vanguard not having +50% reactor compared to Osprey.
+  - Fixed Falcon Sentinel and Vanguard having +15 cargo over normal variants. The extra cargo is now for the Yaki Falcon Tanker.
+  - Falcon Tanker
+    - Renamed to Falcon Hauler.
+    - Increased mobility: 5.5 RPM -> 15.8, acceleration: 19.7m/s^2 -> 40
+    - Increased Falcon Tanker cargo (204 -> 360) and size (L -> XL)
+    - Cost decreased: 737 -> 500 to justify its decreased mobility and increased durability. It is ~10% less nimble than the regular Falcon.
+  - Yaki Falcon Vanguard
+    - Comparable to Falcon Raider.
+    - Speed increased: 266.9 -> 291
+    - Mobility increased: 7.6 RPM -> 22.8; acceleration: 20.8 -> 60, angular accel: 38 -> 50
+    - Cost increased: 500 -> 737
+  - Kha'ak capitals:
+    - Kha'ak corvette: increased shields (10x25 -> 16x25), hull (362k -> 420k), reactor: 300 -> 480 (normalization)
+    - Hive queen shields increased: 5x2GJ -> 8x2GJ
+    - All other Kha'ak capitals: shields increased by 50%.
+    - All reactors increased to 2.25x as much, with the exception of the hive queen having 2.4x as much. 
+      - This factor includes normalization so that recharge time to 100% is the same and 50% faster recharge rate.
+    - All speeds increased by 20%. All acceleration values increased by 30%. Rotation speed increased by 30%.
+    - These Kha'ak buffs aim to address their matchup against most capital ships. They're still slower than M7s and can still be kited, but the extra shields and speed aim to help them close the distance against commonwealth capships.
+  
+- Missiles
+  - Chaff speed increased to allow it to catch up to all fox missiles: 2000m/s -> 3000m/s.
+    - Turn rate increased by 25% to compensate: 219.4 RPM -> 274.3
+  - Spectre missile speed slightly decreased to allow chaff to catch up: 3000m/s -> 2950m/s
+  - Missile chances are now universal and no longer faction-dependent. Chances are now:
+    - 20% chance to equip 5-20 fox 3
+    - 35% chance to equip 10-30 fox 2
+    - 60% chance to equip 15-40 fox 1
+  - Reworded missile entry in the pedia.
+
+	. Mayhem.EquipShip.Missiles.xml
+	. 12.cat/dat - addon/types/TMissiles.txt
+	. t/9974-L044.xml
+
+- Perks
+  - The Outpost perk list no longer shows disabled plot-exclusive perks. 
+  - Outpost perk list is now sorted by category.
+    - Logistics and Outpost PC menus still show via alphabetical order. This is intentional as these are summaries and not detailed lists.
+  - Logistics PC menu no longer shows disabled perks. 
+  - Jump station now has an upfront cost of 1 Jump Beacon and 1 Black Crystal. This is to serve as progression toward Jump Hole Generator.
+  - Buffed TE2: reduces global penalty by 33% instead of 20%.
+  - Reworked TE3: 
+    - Old: +1 local terraforming project in the sector.
+      - +1 option had little effect when most sectors have 2-3 planets (with 3 planets, terraforming specialist can allow 3 planets being terraformed at once).
+    - New: Outpost contributes 100% of its population to adjacent terraforming projects instead of 50%.
+  - The player is now notified that obsolete perks are refunded upon joining the OCV.
+  - Reworded EMP commands - they now show the cost in EC.
+  - Pirate Contract (and OCV alignment) now properly add skill points (+20 fighting for Pirate Contract, +10 fighting and +10 hacking for OCV alignment) to newly recruited marines. 
+    - Previously, Pirate Contract set new marines' fighting skill to 30; OCV alignment set new marines' fighting and hacking skills to 20 and 15 respectively.
+  - Cleaned up perk descriptions and tooltips.
+
+	. Menu.Mayhem.Ministry.SM.xml
+	. Menu.DWM.Get.Food.Perks.xml
+	. Menu.DWM.Set.Hangar.xml
+	. Menu.PC.Logistics.SM.xml
+	. Menu.PC.Sanctuaries.SM.xml (comments only - regarding perk sorting via alphabetical order)
+	. Mayhem.Init.Variables.xml
+	. Mayhem.Perk.Check.xml
+	. Mayhem.Perk.GetOneTimeCost.xml (refactored from Mayhem.GetRefineryCost)
+	. Mayhem.Perk.SetInfo.xml
+	. Mayhem.Perk.SetCategory.xml
+	. Mayhem.Perk.Unlock.xml
+	. ZH.SyntheticDawnCompletion.xml
+	. ZH.Terraforming.Get.Penalty.Global.xml
+	. ZH.Terraforming.Get.Manpower.xml
+ 	. t/9972-L044.xml
+ 	. t/9974-L044.xml
+
+- Mobile Factory
+  - Decreased Jump Beacon build time (10 minutes -> 5 minutes).
+  - Decreased Hackerchip cost (300 microchips -> 100 microchips) and build time (3 minutes -> 90 seconds).
+  - The Jump Beacon cost is no longer hardcoded at 10 jumpdrive cores. It now uses the jump beacon cost read from variable 174 in the 9972 t-file.
+    - The minimum cost is now 5 jumpdrive cores. Previously, there was no minimum.
+    - This variable is no longer set upon each game load. Now, it is set only upon gamestart.
+  - These changes are to give mobile factory consistency with the Outpost's ability to instantly craft Jump Beacons and Hackerchips. 
+
+	. Mayhem.MobileFactory.SetProductCosts.xml
+	. Mayhem.Setup.Variables.xml (moved jumpbeacon cost variable setter from here to ZH.Initialize)
+	. ZH.Initialize.xml
+ 	. t/9972-L044.xml
+
+- Marines
+  - Buffed academy (rare terraforming effect). Now gives +10 to all marine stats instead of +5.
+  - New marines now spawn under player ownership.
+  - Rationale:
+    - These changes ensure marines can be better controlled this also means your enemies will attack your men (if in space) rather than sometimes spare them.
+    - The +10 makes the effect meaningful for a rare effect, as +5 per stat was effectively as much as what OCV alignment or pirate contract gives, point-per-point. 
+    - Mercenaries bought from Pirate Bases are unchanged.
+
+	. Menu.DWM.Set.Hangar.xml
+	. Menu.Mayhem.Ministry.SM.xml
+	. Mayhem.SetTerraformingEffects.xml (updated comments)
+
+- Misc
+  - All Private Corp. fighters and freighters now cost more research (previously, only the Spitfyre was subject to the 3x research cost).
+    - Their research cost is now scaled by the high research cost multiplier rather than strictly tripled.
+  - The high research cost multiplier is now at least 2. The default is still 3. This prevents exploits with getting free research by setting the factor to 0.
+
+	. Mayhem.GetProjectCost.xml
+	. t/9972-L044.xml
+
+  - Yaki now use the Chokaro Adv in their fleets. Replaced Boa, Zephyrus, Zephyrus Adv, and Lofn Adv from pirate gangs with Chokaro Adv.
+    - These pirate gang TMs were previously placeholders until reworking the Chokaro Advanced into a combat-ready ship capable of restoring Yaki/Pirate TM capabilities. 
+    - Prior to adding those placeholders, Yaki/Pirates had slightly weaker TM presence due to fielding the Caravel and the weaker Chokaro, resulting in an average of 3.5 fighters per TM.
+    - Adding back the Chokaro Adv raises the average to 4.33 fighters per TM. This is slightly more fighters per TM but makes up for their universal disdain.
+
+	. Mayhem.Template.Ships.xml
+	. ZH.PirateSpawnGang.xml
+
+  - Initial Yaki Outposts now start with 50% more wares to compensate for universal disdain.
+  - Intermediate wares are now included with new Phanon, Yaki, and origin galaxy Outposts to help jumpstart factories acquired from sector takeover. 
+    - This is because sector takeover rebuilds stations, and the rebuilt stations have nothing in storage.
+
+	. Mayhem.StockOutpost.xml
+
+  - Kha'ak scouts can now spawn during bait missions.
+
+	. Mayhem.Task.BaitMission.xml
+
+  - Updated version number.
+
+	. setup.ZH.xml
+	. \mayhem_data\template_8379-L044.xml
+
+-----------------------------------------
+		FIXES
+-----------------------------------------
+- Hotfix a: fixed missing scripts accidentally not being included in 2.0 release.
+  - These scripts were already updated for 2.0 internally but were unintentionally omitted during release packaging/upload.
+
+	. Mayhem.Setup.Variables.xml
+	. Mayhem.MobileFactory.SetProductCosts.xml
+	. Menu.DWM.Get.Production.Ship.xml
+	. ZH.Initialize.xml
+
+- Main plot
+  - Merged blueprint rewards into a new helper script, ensuring one source of truth.
+  - Fixed Private Corp. ship blueprints not being displayed in the shipbuilding GUI after completing the OCV plot branch.
+  - Updated pedia to specify that all ships cost no upkeep during OCV playthroughs.
+
+	. Menu.DWM.Get.Production.Ship.xml
+	. ZH.PhanonDeadCheck.xml
+	. ZH.plot.BlueprintRewards.xml (new script)
+	. ZH.plot.MaelstromShutdown.xml
+	. t/9974-L044.xml
+
+  - Fixed OCV playthrough appending Private Corp and Nomad to company list at the source of truth. 
+    - This addresses the root cause by appending only to a copy and not to the original list.
+
+	. Mayhem.GetCompanies.xml
+	. ZH.Monitor.xml
+
+  - Fixed Phanon having a one-sided unbreakable alliance. The alliance is now applied to both sides.
+
+	. Mayhem.GameCreator.GalaxyData.xml (added Yaki and Phanon to relations metadata; these factions are used for unbreakable alliance and total war)
+	. ZH.SyntheticDawnCompletion.xml
+	. Mayhem.TestShip.xml (for debugging)
+
+  - Fixed a TOCTOU race condition where factions could place claims against Phanon when Phanon arrived due to player joining the OCV.
+    - This was caused by a 10 second wait between Phanon's arrival and Phanon setting up relations.
+
+	. ZH.SyntheticDawnCompletion.xml
+	. Mayhem.IsClaimable.xml
+
+  - Clarified that Yaki and Phanon permanent wars do not give extra perk slots (OCV alignment).
+
+	. Menu.DWM.Get.Food.Perk.xml
+
+  - Fixed Company Stations reappearing in player sectors during OCV alignment.
+
+	. Mayhem.Monitor.Autopopulate.Station.xml
+	
+- TIS
+  - In the PC, under the debug section, the "Instant tasks" debug flag is now used for TIS debugging. This was previously an unused debug variable.
+  - TIS deliveries and pickups now prevent Outpost upgrading while active.
+  - Delivery and delivery type are now global metadata instead of local metadata tied to Outposts.
+  - Fixed import settings not respecting available space.
+  - Fixed dropship getting interrupted if it was docked at its destination when the latter is destroyed.
+  - Fixed dropship not actually delivering wares during deliveries.
+  - Fixed dropship not returning items to TIS if there's not enough space at the station or if there's an interruption.
+    - There is now a visual indicator (scan the dropship when it undocks) which shows how many wares will be returned to TIS.
+  - Fixed possible race condition due to the dropship despawner releasing TIS metadata (mutexes) before dropship despawns.
+    - Fixed dropship escorts not despawning if they're in space.
+    - Fixed deprecated JOO script being used instead of JOO.Global. 
+    - The dropship is now despawned first before any surviving escort ships are despawned.
+  - Fixed dropship relentlessly pursuing potential attackers. It will now stop attacking its attackers after 3 minutes.
+  - Rationale:
+    - TIS metadata must remain valid until dropship destruction/capture finalizes.
+    - This ensures that !ship.signal.killed (or ZH.Sig.Captured) are the only locations to release TIS mutexes, as ship destruction signifies end-of-life. 
+    - There is an issue with the old JOO script being stuck, but destroying the ship in JOO.Global ensures that !ship.signal.killed is called.
+
+	. !station.signal.killed.xml
+	. !ship.signal.attacked.xml
+	. !ship.signal.killed.xml
+	. ZH.Sig.Captured.xml
+	. Mayhem.SpawnDeliveryBoy.xml - restored escort metadata.
+	. Mayhem.DespawnDeliveryBoy.xml - updated cleanup to use JOO.Global and serially clean up dropship.
+	. Mayhem.Task.DeliveryBoy.xml - dropship now reimburses remaining shipment if the full shipment failed to deliver.
+	. Menu.DWM.Get.Logistics.Stock.xml - added robustness for importing from TIS to station.
+	. Menu.DWM.Set.Logistics.Stock.xml - debug variable is now used to toggle dropship arrival timer.
+	. Menu.DWM.Set.Production.Station.xml
+
+- Faction relations
+  - Fixed Yaki and Phanon having truce and federation favor. These favors are blacklisted from these factions for these reasons:
+    - Yaki: criminal faction - no one wants them.
+    - Phanon: this was per design from ZH 2.0. Previously (an oversight from ZH 2.0), the player could have Phanon sign truces or unbreakable alliances with other factions. Like Yaki, they are also undesirable if they're allied with the player.
+  - Fixed unbreakable alliance not removing coalition from source faction against target faction.
+
+	. Mayhem.Favor.Add.xml
+	. Mayhem.SetUnbreakableAlliance.xml
+
+- Misc
+  - Improved greeting messages.
+
+	. t/9972-L044.xml
+
+  - Cleaned up deprecated code.
+    - Deprecated high research costs are no longer used.
+
+	. Mayhem.GameCreator.Setup.xml
+	. Menu.PC.Blueprints.SM.xml
+	. Menu.SaturnComplexHub.Install.SM.xml
+
+    - Other
+
+	. Menu.DWM.Get.Production.Station.xml (cleaned up tooltips)
+	. Renegades.Plot.Challenge.xml (removed old questions. Also passes in third parameter to gate creator)
+
+  - Fixed distant sector being revealed. 
+    - This occurred because the mobile factory script temporarily populates factories in order to initialize mobile factory rates.
+    - The temporary factory sector is now restricted to the player's starting sector or any adjacent sector, provided the player is not currently present there.
+      - You may briefly see a nearby sector appear and glow green on the galaxy map before fading back to gray. This is normal behavior.
+    - This prevents distant sectors from unintentionally counting toward exploration ascension tasks.
+
+	. Mayhem.MobileFactory.SetProductCosts.xml
+
+  - Fixed Renegades monitor being duplicated due to script updates. There is now only 1 instance whenever it is updated.
+
+	. Renegades.Monitor.xml
+
+  - Fixed logistics PC menu not displaying anything under "Trading" if the Outpost isn't trading anything.
+
+	. Menu.PC.Logistics.SM.xml
+
+  - Fixed some ships not spawning with missiles. Missile equipping no longer checks for race.
+
+	. Mayhem.EquipShip.Missiles.xml
+
+  - Fixed ships not respecting fight timeout (missing parentheses)
+
+	. !fight.attack.object.xml
+
+  - Fixed Yaki Vulture and Vulture Miner having Teladi colored engines instead of Yaki colored.
+
+	. 12.cat/dat - addon/types/TShips.pck
+	. ZMap/TShips.txt
+
+  - Fixed missing voiceline when targeting raider fleet ships.
+
+	. t/9972-L044.xml

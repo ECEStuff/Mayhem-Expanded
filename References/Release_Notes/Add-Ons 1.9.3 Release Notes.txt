@@ -1,0 +1,154 @@
+The mod has been updated to 1.9.3. 
+
+Previous savegames compatibility: PARTIAL. 
+- Reasons:
+  - Stock exchange now functions as a proper trade station (buy/sell wares).
+  - Trade stations now have the correct missiles assigned to them.
+- A new game is not required but recommended due to this patch being applicable to existing games.
+
+Previous galaxies compatibility: YES.
+
+-----------------------------------------
+		ADDITIONS
+-----------------------------------------
+- OCV spawning
+  - Added #deca_cefa and #deca_deaf to OCV spawns, allowing the OCV to use tougher fighters.
+  - Added difficulty scaling to OCV initial spawns in chaotic galaxy gamestarts. Normal is baseline (1.0x).
+    - Easy: -20% spawns
+    - Hard: +20% spawns
+    - Insane: +50% spawns
+
+	. Mayhem.Monitor.OCV.xml
+	. Mayhem.GameCreator.SpawnXenons.xml
+	. ZH.GameCreator.GalaxyStart.xml
+
+-----------------------------------------
+		CHANGES
+-----------------------------------------
+- Added FBC and PAA to Industritech stations. This is because Terran ships can use these guns.
+
+	. Mayhem.GetLaser.Race.xml
+	. Mayhem.InitializeTradingStation.xml
+	. Menu.PC.LaserCompendium.xml
+	. Mayhem.Template.Lasers.xml (modified script call; it's in deprecated code)
+
+- Teladi Stock Exchange is now considered a trading station. 
+  - This means it will now sell the same wares that the Salecrest Corp. Stations sell. 
+  - However, it spawns with 10% as much stock compared to company stations.
+  - Must now be a close ally in order to access the stock market (rank 7+ on insane; unchanged for lower difficulties).
+
+	. Mayhem.IsTradingStation.xml
+	. Mayhem.GameCreator.SpawnStockExchange.xml
+	. Mayhem.Monitor.Galaxy.xml
+
+- Post-boarding ops no longer kills random marines. Now kills less experienced marines.
+
+	. ZH.Sig.Captured.xml
+
+- Fighter bailing rework
+  - Bail chance is now determined upon creation rather than while fleeing. 
+  - Unlike capital ships, fighters do not bail on death. The only time they will bail is if they're fleeing.
+  - Teladi fighters are now 33% more likely to bail.
+    - This gives parity with Teladi capships bailing more often; it's Teladi philosophy to be cowards.
+
+	. !ship.signal.killed.xml
+	. Mayhem.Task.BailMaybe.xml
+	. Mayhem.GetBailChance.xml
+	. Renegades.SetBailChance.xml
+
+- Unfortunate events and Insurance Policy rework
+  - On hard and insane, rather than 85% reduced chance of unfortunate events, now reduces the severity by 85% (70% on insane).
+  - Updated Deadly Disease and Major Setback event descriptions.
+  - Deadly disease now blocks population transfer at afflicted Outposts.
+  - Added color coding to Outpost statuses (orange for mitigated events, green for insured Outposts) in the Outpost GUI.
+  - With insurance policy on hard and insane:
+    - Terraformer virus causes all non-OCV ships built during the event to get an indicator. Timer variance is also reduced.
+    - Kernel bug reduces the maintenance penalty from +100% to +15% (+30% on insane).
+    - Deadly disease kills 2-3 (4-6 on insane) people per consumption cycle.
+    - Storage fire destroys 0.19% (0.38% on insane) of wares per minute.
+    - Major setback restores 85% (70% on insane) of lost progress per tick. In other words, progress per tick is ~92% (85% on insane) as much compared to normal.
+
+	. Mayhem.Debug.StartEvent.xml
+	. Mayhem.CopyShip.xml
+	. Mayhem.GetShipMaintenanceCost.xml
+	. Mayhem.GetEventDescription.xml
+	. Mayhem.Perk.SetInfo.xml
+	. Mayhem.Task.Station.Outpost.xml
+	. Mayhem.Task.OCVVirus.xml
+	. Menu.DWM.Get.Hangar.xml
+	. Menu.DWM.Set.Hangar.xml
+	. Menu.DWM.SM.xml
+	. Menu.PC.Sanctuaries.SM.xml
+
+- Updated version number. For existing games, this will update the Outpost perk descriptions. No changes on easy or normal.
+
+	. setup.ZH.xml
+
+- Updated ZMap: updated title and version number to 1.8.4.
+  - ZMap_AddOns: https://github.com/ECEStuff/ZMap_AddOns
+
+	. \ZMap\X3_Mayhem_Galaxy_Generator.exe
+
+-----------------------------------------
+		FIXES
+-----------------------------------------
+- Fixed Chaotic Galaxy start removing the majority of wares from trading stations. 
+  - This is a very difficult bug to fix due to timing, and I've fixed the issue only on gamestart. 
+  - IMPORTANT: If this bug occurs in any other galaxies or at any point in time, please report this bug ASAP.
+
+	. ZH.GameCreator.GalaxyStart.xml
+	. ZH.Task.NomadFlagship.xml (no changes; attempted to fix here but this script is not the culprit)
+
+- Fixed debug message being displayed for custom maelstrom location.
+
+	. Mayhem.GameCreator.SpawnXenons.xml
+
+- Fixed Stock Exchange bugs.
+  - Previously, it was being initialized only upon reloading the game, i.e. not at gamestart. 
+  - Now it will be initialized when starting a new game.
+  - Also fixed a readtext error if the player doesn't have enough reputation.
+  - Now checks the station owner's reputation rather than Teladi reputation. 
+    - Functionally, the behavior is unchanged since only Teladi has the stock exchange.
+
+	. Mayhem.Monitor.Galaxy.xml
+	. Mayhem.GameCreator.SpawnStockExchange.xml
+	. setup.Mayhem.xml
+	. 8383-L044.xml
+
+- Fixed mismatched missiles sold by company stations. For example, Paranid missiles were sold by non-Paranid company stations.
+
+	. Mayhem.InitializeTradingStation.xml
+	. Mayhem.GetMissile.Race.xml
+	. Menu.DWM.Set.Logistics.Jobs.xml (needed since Yaki now have their own category in Mayhem.GetMissile.Race)
+	. Mayhem.GetCompanyProducts.xml (added comments: this is an unused script)
+
+- Fixed peaceful galaxies not having reduced wares due to improperly checking null condition.
+
+	. Mayhem.GameCreator.Populate.xml
+	. Mayhem.GameCreator.AddOutpostWares.xml
+	. ZH.Initialize.xml
+
+- Fixed non-OCV infected ships (made during the terraformer virus event) not turning to OCV control.
+
+	. Mayhem.Task.OCVVirus.xml
+
+- Fixed Outpost menu showing "insured" Outpost status even when Outpost has a negative event. Will now display "Event (Mitigated by Insurance policy)" if insurance policy is unlocked (must be unlocked prior the event) and an event is in progress.
+
+	. Menu.PC.Sanctuaries.SM.xml
+
+- Fixed Insurance Policy not properly de-selecting events. What it was actually doing was ending the event selector/start subroutine early, and it did not de-select the event starting time and event type before ending the subroutine. This resulted in insurance policy effectively doing nothing on hard and insane.
+
+	. Mayhem.Task.Station.Outpost.xml
+
+- Fixed bait missions giving 15k credits (instead of 50k) per kha'ak capital ship kill.
+
+	. Mayhem.Mission.GetKillCredits.xml
+
+- Fixed capital ship bail chance not being scaled by bail chance multiplier. However, it's intended that their bail chance does not scale above 100%.
+
+	. Mayhem.GetBailChance.xml
+	. Renegades.SetBailChance.xml
+
+- Fixed best marines not being leveled up due to a sorting bug.
+
+	. ZH.Sig.Captured.xml
