@@ -155,6 +155,7 @@ Always check the release changelog for specific savegame and galaxy compatibilit
 - **Solek** — Asteroid textures used in Expanded.
 - [Sector Names icon by Cap Cool](https://www.flaticon.com/free-icons/text-box).
 - [Constellation app icon by Magnific](https://www.flaticon.com/free-icons/constellation).
+- **XTC for X3TC/AP** - Goner TS/TP ship models.
 
 Thank you to everyone who contributed testing, bug reports, feedback, and suggestions. Additional asset and script credits remain in the included documentation and source files.
 
