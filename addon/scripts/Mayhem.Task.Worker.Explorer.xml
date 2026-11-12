@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.Worker.Explorer</name>
-	<version>61</version>
+	<version>62</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -2023,10 +2023,13 @@
 			<var>null</var>
 		</line>
 		<line linenr="210" indent="&#160;" />
-		<line linenr="211" indent="&#160;&#160;">
-			<comment>* If an attack diverted us during the trip, avoid the sector where it happened.</comment>
+		<line linenr="211" indent="&#160;">
+			<comment>* Expanded 2.2.1: Resolve a completed attack interrupt.</comment>
 		</line>
 		<line linenr="212" indent="&#160;&#160;">
+			<comment>* The original mapping movement may resume after FleeHome inside !ship.signal.attacked finishes.</comment>
+		</line>
+		<line linenr="213" indent="&#160;&#160;">
 			<var>$fleeSector</var>
 			<text> </text>
 			<text>=</text>
@@ -2045,20 +2048,12 @@
 			<text>=</text>
 			<text>'mayhem_explorerFlee'</text>
 		</line>
-		<line linenr="213" indent="&#160;&#160;">
+		<line linenr="214" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$fleeSector</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>[SECTOR]</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>$sector</var>
 		</line>
-		<line linenr="214" indent="&#160;&#160;">
+		<line linenr="215" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2077,39 +2072,31 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="215" indent="&#160;">
+		<line linenr="216" indent="&#160;&#160;">
 			<var>$avoidSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$fleeSector</var>
 		</line>
-		<line linenr="216" indent="&#160;">
+		<line linenr="217" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>AvoidSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="217" indent="&#160;">
-			<text>goto</text>
-			<text> </text>
-			<text>label</text>
-			<text> </text>
-			<var>NextTarget</var>
-			<text>:</text>
+		<line linenr="218" indent="&#160;&#160;&#160;" />
+		<line linenr="219" indent="&#160;">
+			<comment>* Do not map the sector in which the attack occurred.</comment>
 		</line>
-		<line linenr="218" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="219" indent="&#160;" />
 		<line linenr="220" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<var>[SECTOR]</var>
+			<var>$fleeSector</var>
 			<text> </text>
-			<text>!=</text>
+			<text>==</text>
 			<text> </text>
 			<var>$sector</var>
 		</line>
@@ -2121,25 +2108,22 @@
 			<var>NextTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="222" indent="&#160;" />
-		<line linenr="223" indent="&#160;&#160;">
-			<comment>* The sector may have changed owner, blacklist status, or satellite coverage during travel.</comment>
+		<line linenr="222" indent="&#160;&#160;">
+			<text>end</text>
 		</line>
+		<line linenr="223" indent="&#160;" />
 		<line linenr="224" indent="&#160;">
-			<text>gosub</text>
-			<text> </text>
-			<var>CheckSector</var>
-			<text>:</text>
-		</line>
-		<line linenr="225" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
-			<text>!</text>
-			<var>$sector.ok</var>
+			<var>[SECTOR]</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>$sector</var>
 		</line>
-		<line linenr="226" indent="&#160;">
+		<line linenr="225" indent="&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2147,11 +2131,37 @@
 			<var>NextTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="227" indent="&#160;&#160;" />
-		<line linenr="228" indent="&#160;&#160;&#160;">
+		<line linenr="226" indent="&#160;" />
+		<line linenr="227" indent="&#160;&#160;">
+			<comment>* The sector may have changed owner, blacklist status, or satellite coverage during travel.</comment>
+		</line>
+		<line linenr="228" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>CheckSector</var>
+			<text>:</text>
+		</line>
+		<line linenr="229" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$sector.ok</var>
+		</line>
+		<line linenr="230" indent="&#160;">
+			<text>goto</text>
+			<text> </text>
+			<text>label</text>
+			<text> </text>
+			<var>NextTarget</var>
+			<text>:</text>
+		</line>
+		<line linenr="231" indent="&#160;&#160;" />
+		<line linenr="232" indent="&#160;&#160;&#160;">
 			<comment>* From FoF: 2026-08-20 The satellite goes down the moment the ship arrives.</comment>
 		</line>
-		<line linenr="229" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="233" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2173,7 +2183,7 @@
 			<text>=</text>
 			<text>'mapping'</text>
 		</line>
-		<line linenr="230" indent="&#160;&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>find</text>
@@ -2217,7 +2227,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="231" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>find</text>
@@ -2261,7 +2271,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="232" indent="&#160;&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2269,36 +2279,36 @@
 			<var>NextTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="233" indent="&#160;&#160;">
+		<line linenr="237" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="234" indent="&#160;&#160;&#160;">
+		<line linenr="238" indent="&#160;&#160;&#160;">
 			<var>$playerSat</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="235" indent="&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="236" indent="&#160;">
+		<line linenr="240" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="237" indent="&#160;&#160;">
+		<line linenr="241" indent="&#160;&#160;">
 			<var>$playerSat</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="238" indent="&#160;&#160;&#160;">
+		<line linenr="242" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="239" indent="&#160;">
+		<line linenr="243" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="240" indent="&#160;">
+		<line linenr="244" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2344,7 +2354,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="241" indent="&#160;">
+		<line linenr="245" indent="&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2352,14 +2362,14 @@
 			<var>NextTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="242" indent="&#160;">
+		<line linenr="246" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="243" indent="&#160;" />
-		<line linenr="244" indent="&#160;&#160;">
+		<line linenr="247" indent="&#160;" />
+		<line linenr="248" indent="&#160;&#160;">
 			<comment>* Drop a satellite and set it to be owned by the player if this is the NPC doing us a favor.</comment>
 		</line>
-		<line linenr="245" indent="&#160;&#160;&#160;">
+		<line linenr="249" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2381,7 +2391,7 @@
 			<text>=</text>
 			<var>1</var>
 		</line>
-		<line linenr="246" indent="&#160;" interruptable="@">
+		<line linenr="250" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2403,14 +2413,14 @@
 			<text>=</text>
 			<text>'mapping'</text>
 		</line>
-		<line linenr="247" indent="&#160;">
+		<line linenr="251" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$playerSat</var>
 		</line>
-		<line linenr="248" indent="&#160;">
+		<line linenr="252" indent="&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2424,11 +2434,11 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="249" indent="&#160;">
+		<line linenr="253" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="250" indent="&#160;" />
-		<line linenr="251" indent="&#160;">
+		<line linenr="254" indent="&#160;" />
+		<line linenr="255" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2447,68 +2457,43 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="252" indent="&#160;" />
-		<line linenr="253" indent="&#160;">
+		<line linenr="256" indent="&#160;" />
+		<line linenr="257" indent="&#160;">
 			<comment>* Expanded 2.2.1: Distinguish actual fire from hostile combat-capable ships.</comment>
 		</line>
-		<line linenr="254" indent="&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;">
 			<comment>* Under fire: return home. Hostile presence alone: select another mapping target.</comment>
 		</line>
-		<line linenr="255" indent="&#160;&#160;">
+		<line linenr="259" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckAttacked</var>
 			<text>:</text>
 		</line>
-		<line linenr="256" indent="&#160;&#160;">
+		<line linenr="260" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$underAttack</var>
 		</line>
-		<line linenr="257" indent="&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>AbandonSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="258" indent="&#160;&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;&#160;">
 			<comment>* Nobody has fired: keep the remaining satellites and take the next target instead of flying</comment>
 		</line>
-		<line linenr="259" indent="&#160;&#160;">
+		<line linenr="263" indent="&#160;&#160;">
 			<comment>* home and dumping them. CheckAvoid: keeps this sector off the list for the next 30 minutes.</comment>
 		</line>
-		<line linenr="260" indent="&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
 			<var>$underFire</var>
-		</line>
-		<line linenr="261" indent="&#160;">
-			<text>goto</text>
-			<text> </text>
-			<text>label</text>
-			<text> </text>
-			<var>NextTarget</var>
-			<text>:</text>
-		</line>
-		<line linenr="262" indent="&#160;">
-			<text>gosub</text>
-			<text> </text>
-			<var>GoHome</var>
-			<text>:</text>
-		</line>
-		<line linenr="263" indent="&#160;">
-			<text>goto</text>
-			<text> </text>
-			<text>label</text>
-			<text> </text>
-			<var>Restart</var>
-			<text>:</text>
-		</line>
-		<line linenr="264" indent="&#160;">
-			<text>end</text>
 		</line>
 		<line linenr="265" indent="&#160;">
 			<text>goto</text>
@@ -2518,13 +2503,38 @@
 			<var>NextTarget</var>
 			<text>:</text>
 		</line>
-		<line linenr="266" indent="&#160;" />
-		<line linenr="267" indent="&#160;&#160;">
+		<line linenr="266" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>GoHome</var>
+			<text>:</text>
+		</line>
+		<line linenr="267" indent="&#160;">
+			<text>goto</text>
+			<text> </text>
+			<text>label</text>
+			<text> </text>
+			<var>Restart</var>
+			<text>:</text>
+		</line>
+		<line linenr="268" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="269" indent="&#160;">
+			<text>goto</text>
+			<text> </text>
+			<text>label</text>
+			<text> </text>
+			<var>NextTarget</var>
+			<text>:</text>
+		</line>
+		<line linenr="270" indent="&#160;" />
+		<line linenr="271" indent="&#160;&#160;">
 			<var>NoMoreTargets</var>
 			<text>:</text>
 		</line>
-		<line linenr="268" indent="&#160;" />
-		<line linenr="269" indent="&#160;">
+		<line linenr="272" indent="&#160;" />
+		<line linenr="273" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2548,7 +2558,7 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="270" indent="&#160;">
+		<line linenr="274" indent="&#160;">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2556,14 +2566,14 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="271" indent="&#160;" />
-		<line linenr="272" indent="&#160;">
+		<line linenr="275" indent="&#160;" />
+		<line linenr="276" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>GoHome</var>
 			<text>:</text>
 		</line>
-		<line linenr="273" indent="&#160;">
+		<line linenr="277" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2601,14 +2611,14 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="274" indent="&#160;" />
-		<line linenr="275" indent="&#160;&#160;">
+		<line linenr="278" indent="&#160;" />
+		<line linenr="279" indent="&#160;&#160;">
 			<comment>* Player: wait 1-2 minutes. This is an exception to the parity rule, because NPCs do not lose satellites to periodic removal.</comment>
 		</line>
-		<line linenr="276" indent="&#160;">
+		<line linenr="280" indent="&#160;">
 			<comment>* Therefore, they do not need to work as often as player explorers. NPCs wait 10x longer.</comment>
 		</line>
-		<line linenr="277" indent="&#160;&#160;">
+		<line linenr="281" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -2617,7 +2627,7 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="278" indent="&#160;" interruptable="@">
+		<line linenr="282" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2634,10 +2644,10 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="279" indent="&#160;">
+		<line linenr="283" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="280" indent="&#160;" interruptable="@">
+		<line linenr="284" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2654,11 +2664,11 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="281" indent="">
+		<line linenr="285" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="282" indent="" />
-		<line linenr="283" indent="">
+		<line linenr="286" indent="" />
+		<line linenr="287" indent="">
 			<text>goto</text>
 			<text> </text>
 			<text>label</text>
@@ -2666,48 +2676,48 @@
 			<var>Restart</var>
 			<text>:</text>
 		</line>
-		<line linenr="284" indent="">
+		<line linenr="288" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="285" indent="" />
-		<line linenr="286" indent="&#160;">
+		<line linenr="289" indent="" />
+		<line linenr="290" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="287" indent="&#160;" />
-		<line linenr="288" indent="&#160;">
+		<line linenr="291" indent="&#160;" />
+		<line linenr="292" indent="&#160;">
 			<var>CheckAttacked</var>
 			<text>:</text>
 		</line>
-		<line linenr="289" indent="&#160;">
+		<line linenr="293" indent="&#160;">
 			<comment>* Expanded 2.2.1: Evaluate combat capability instead of relative speed. This is because slower enemies in OOS can still kill.</comment>
 		</line>
-		<line linenr="290" indent="&#160;">
+		<line linenr="294" indent="&#160;">
 			<comment>* $underAttack means an actionable threat exists; leave this sector.</comment>
 		</line>
-		<line linenr="291" indent="&#160;">
+		<line linenr="295" indent="&#160;">
 			<comment>* $underFire means the Explorer was attacked; return home.</comment>
 		</line>
-		<line linenr="292" indent="&#160;">
+		<line linenr="296" indent="&#160;">
 			<comment>* Hostile armed presence alone sets $underAttack but not $underFire.</comment>
 		</line>
-		<line linenr="293" indent="&#160;">
+		<line linenr="297" indent="&#160;">
 			<var>$underAttack</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="294" indent="&#160;">
+		<line linenr="298" indent="&#160;">
 			<var>$underFire</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="295" indent="&#160;&#160;" />
-		<line linenr="296" indent="&#160;&#160;">
+		<line linenr="299" indent="&#160;&#160;" />
+		<line linenr="300" indent="&#160;&#160;">
 			<var>$fleeSector</var>
 			<text> </text>
 			<text>=</text>
@@ -2726,7 +2736,7 @@
 			<text>=</text>
 			<text>'mayhem_explorerFlee'</text>
 		</line>
-		<line linenr="297" indent="&#160;&#160;">
+		<line linenr="301" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$fleeSector</var>
@@ -2735,31 +2745,31 @@
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="298" indent="&#160;">
+		<line linenr="302" indent="&#160;">
 			<var>$underAttack</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="299" indent="&#160;">
+		<line linenr="303" indent="&#160;">
 			<var>$underFire</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="300" indent="&#160;">
+		<line linenr="304" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="301" indent="&#160;">
+		<line linenr="305" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="302" indent="&#160;" />
-		<line linenr="303" indent="&#160;&#160;">
+		<line linenr="306" indent="&#160;" />
+		<line linenr="307" indent="&#160;&#160;">
 			<comment>* Actual attacks take priority over proactive threat classification.</comment>
 		</line>
-		<line linenr="304" indent="&#160;&#160;">
+		<line linenr="308" indent="&#160;&#160;">
 			<var>$attacker</var>
 			<text> </text>
 			<text>=</text>
@@ -2771,7 +2781,7 @@
 			<text> </text>
 			<text>attacker</text>
 		</line>
-		<line linenr="305" indent="&#160;&#160;&#160;">
+		<line linenr="309" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$attacker</var>
@@ -2779,7 +2789,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="306" indent="&#160;&#160;&#160;">
+		<line linenr="310" indent="&#160;&#160;&#160;">
 			<var>$attacker.sector</var>
 			<text> </text>
 			<text>=</text>
@@ -2791,7 +2801,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="307" indent="&#160;&#160;&#160;">
+		<line linenr="311" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$attacker.sector</var>
@@ -2800,8 +2810,8 @@
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="308" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="309" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="313" indent="&#160;&#160;&#160;&#160;">
 			<var>$attacker.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2815,7 +2825,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="310" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="314" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$attacker.owner</var>
@@ -2824,40 +2834,40 @@
 			<text> </text>
 			<var>[OWNER]</var>
 		</line>
-		<line linenr="311" indent="&#160;&#160;&#160;">
+		<line linenr="315" indent="&#160;&#160;&#160;">
 			<var>$underAttack</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="312" indent="&#160;&#160;">
+		<line linenr="316" indent="&#160;&#160;">
 			<var>$underFire</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="313" indent="&#160;">
+		<line linenr="317" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="314" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="315" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="316" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="317" indent="&#160;" />
 		<line linenr="318" indent="&#160;">
-			<comment>* OOS combat can threaten the Explorer without a conventional pursuit.</comment>
+			<text>end</text>
 		</line>
 		<line linenr="319" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="320" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="321" indent="&#160;" />
+		<line linenr="322" indent="&#160;">
+			<comment>* OOS combat can threaten the Explorer without a conventional pursuit.</comment>
+		</line>
+		<line linenr="323" indent="&#160;">
 			<comment>* Find hostile ships, then check whether they have usable armament.</comment>
 		</line>
-		<line linenr="320" indent="&#160;&#160;">
+		<line linenr="324" indent="&#160;&#160;">
 			<var>$flags</var>
 			<text> </text>
 			<text>=</text>
@@ -2868,7 +2878,7 @@
 			<text> </text>
 			<var>[Find.Multiple]</var>
 		</line>
-		<line linenr="321" indent="&#160;">
+		<line linenr="325" indent="&#160;">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -2914,7 +2924,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="322" indent="&#160;">
+		<line linenr="326" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2927,11 +2937,11 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="323" indent="&#160;&#160;">
+		<line linenr="327" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="324" indent="&#160;&#160;&#160;" />
-		<line linenr="325" indent="&#160;&#160;">
+		<line linenr="328" indent="&#160;&#160;&#160;" />
+		<line linenr="329" indent="&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -2944,17 +2954,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="326" indent="&#160;&#160;">
+		<line linenr="330" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="327" indent="&#160;&#160;">
+		<line linenr="331" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="328" indent="&#160;&#160;&#160;">
+		<line linenr="332" indent="&#160;&#160;&#160;">
 			<var>$enemy</var>
 			<text> </text>
 			<text>=</text>
@@ -2964,7 +2974,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="329" indent="&#160;&#160;">
+		<line linenr="333" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -2974,11 +2984,11 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="330" indent="&#160;&#160;">
+		<line linenr="334" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="331" indent="&#160;&#160;" />
-		<line linenr="332" indent="&#160;&#160;&#160;">
+		<line linenr="335" indent="&#160;&#160;" />
+		<line linenr="336" indent="&#160;&#160;&#160;">
 			<var>$enemy.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -2992,7 +3002,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="333" indent="&#160;&#160;">
+		<line linenr="337" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3003,14 +3013,14 @@
 			<text> </text>
 			<var>[OWNER]</var>
 		</line>
-		<line linenr="334" indent="&#160;&#160;">
+		<line linenr="338" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="335" indent="&#160;&#160;" />
-		<line linenr="336" indent="&#160;&#160;&#160;">
+		<line linenr="339" indent="&#160;&#160;" />
+		<line linenr="340" indent="&#160;&#160;&#160;">
 			<comment>* Freighters are excluded from proactive avoidance; actual attacks still count.</comment>
 		</line>
-		<line linenr="337" indent="&#160;&#160;&#160;">
+		<line linenr="341" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3026,11 +3036,11 @@
 			<text> </text>
 			<var>[Freighter]</var>
 		</line>
-		<line linenr="338" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="342" indent="&#160;&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="339" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="340" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="343" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="344" indent="&#160;&#160;&#160;&#160;">
 			<var>$armed</var>
 			<text> </text>
 			<text>=</text>
@@ -3046,13 +3056,13 @@
 			<text> </text>
 			<text>strength</text>
 		</line>
-		<line linenr="341" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="345" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
 			<var>$armed</var>
 		</line>
-		<line linenr="342" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="346" indent="&#160;&#160;&#160;&#160;">
 			<var>$missiles</var>
 			<text> </text>
 			<text>=</text>
@@ -3068,7 +3078,7 @@
 			<text> </text>
 			<text>array</text>
 		</line>
-		<line linenr="343" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="347" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator3</var>
 			<text> </text>
 			<text>=</text>
@@ -3081,17 +3091,17 @@
 			<text> </text>
 			<var>$missiles</var>
 		</line>
-		<line linenr="344" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="348" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="345" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="349" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator3</var>
 		</line>
-		<line linenr="346" indent="&#160;&#160;&#160;">
+		<line linenr="350" indent="&#160;&#160;&#160;">
 			<var>$missile</var>
 			<text> </text>
 			<text>=</text>
@@ -3101,7 +3111,7 @@
 			<var>$XS.Iterator3</var>
 			<text>]</text>
 		</line>
-		<line linenr="347" indent="&#160;&#160;">
+		<line linenr="351" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -3112,14 +3122,14 @@
 			<text> </text>
 			<var>{Chaff}</var>
 		</line>
-		<line linenr="348" indent="&#160;&#160;">
+		<line linenr="352" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="349" indent="&#160;&#160;" />
-		<line linenr="350" indent="&#160;&#160;&#160;">
+		<line linenr="353" indent="&#160;&#160;" />
+		<line linenr="354" indent="&#160;&#160;&#160;">
 			<comment>* Compatible missiles count only when actually present in cargo.</comment>
 		</line>
-		<line linenr="351" indent="&#160;&#160;&#160;">
+		<line linenr="355" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$enemy</var>
@@ -3141,69 +3151,69 @@
 			<text> </text>
 			<text>bay</text>
 		</line>
-		<line linenr="352" indent="&#160;&#160;">
+		<line linenr="356" indent="&#160;&#160;">
 			<var>$armed</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="353" indent="&#160;&#160;">
+		<line linenr="357" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="354" indent="&#160;&#160;">
+		<line linenr="358" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="355" indent="&#160;">
+		<line linenr="359" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="356" indent="">
+		<line linenr="360" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="357" indent="" />
-		<line linenr="358" indent="">
+		<line linenr="361" indent="" />
+		<line linenr="362" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$armed</var>
 		</line>
-		<line linenr="359" indent="&#160;">
+		<line linenr="363" indent="&#160;">
 			<var>$underAttack</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="360" indent="&#160;">
+		<line linenr="364" indent="&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="361" indent="&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="362" indent="&#160;" />
-		<line linenr="363" indent="&#160;">
-			<comment>* End enemy check.</comment>
-		</line>
-		<line linenr="364" indent="&#160;">
-			<text>end</text>
-		</line>
 		<line linenr="365" indent="&#160;">
-			<text>endsub</text>
+			<text>end</text>
 		</line>
 		<line linenr="366" indent="&#160;" />
-		<line linenr="367" indent="&#160;&#160;">
+		<line linenr="367" indent="&#160;">
+			<comment>* End enemy check.</comment>
+		</line>
+		<line linenr="368" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="369" indent="&#160;">
+			<text>endsub</text>
+		</line>
+		<line linenr="370" indent="&#160;" />
+		<line linenr="371" indent="&#160;&#160;">
 			<var>AbandonSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="368" indent="&#160;&#160;&#160;">
+		<line linenr="372" indent="&#160;&#160;&#160;">
 			<comment>* Expanded 2.2.1: Preserve 2.2's response to actual attacks versus hostile presence.</comment>
 		</line>
-		<line linenr="369" indent="&#160;&#160;">
+		<line linenr="373" indent="&#160;&#160;">
 			<comment>* Actual fire sends the ship home; hostile presence alone permits continued mapping.</comment>
 		</line>
-		<line linenr="370" indent="&#160;&#160;&#160;">
+		<line linenr="374" indent="&#160;&#160;&#160;">
 			<comment>* Avoidance state remains per-ship and does not modify global routing.</comment>
 		</line>
-		<line linenr="371" indent="&#160;&#160;">
+		<line linenr="375" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3222,7 +3232,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="372" indent="&#160;&#160;">
+		<line linenr="376" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3234,7 +3244,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="373" indent="&#160;">
+		<line linenr="377" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -3249,7 +3259,7 @@
 			<text> </text>
 			<text>' - leaving'</text>
 		</line>
-		<line linenr="374" indent="&#160;">
+		<line linenr="378" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3287,7 +3297,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="375" indent="&#160;">
+		<line linenr="379" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -3296,12 +3306,12 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="376" indent="&#160;">
+		<line linenr="380" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$underFire</var>
 		</line>
-		<line linenr="377" indent="">
+		<line linenr="381" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -3324,10 +3334,10 @@
 			<text> </text>
 			<text>' and heading home.'</text>
 		</line>
-		<line linenr="378" indent="">
+		<line linenr="382" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="379" indent="">
+		<line linenr="383" indent="">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -3350,10 +3360,10 @@
 			<text> </text>
 			<text>' and moving on.'</text>
 		</line>
-		<line linenr="380" indent="">
+		<line linenr="384" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="381" indent="" interruptable="@">
+		<line linenr="385" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3383,51 +3393,51 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="382" indent="">
+		<line linenr="386" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="383" indent="" />
-		<line linenr="384" indent="&#160;">
+		<line linenr="387" indent="" />
+		<line linenr="388" indent="&#160;">
 			<var>$avoidSector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="385" indent="&#160;">
+		<line linenr="389" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>AvoidSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="386" indent="&#160;">
+		<line linenr="390" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="387" indent="&#160;&#160;" />
-		<line linenr="388" indent="&#160;">
+		<line linenr="391" indent="&#160;&#160;" />
+		<line linenr="392" indent="&#160;">
 			<comment>* Half an hour of playing time, then the sector is fair game again -- long enough that the explorer</comment>
 		</line>
-		<line linenr="389" indent="&#160;">
+		<line linenr="393" indent="&#160;">
 			<comment>* gets useful work done elsewhere in the meantime, short enough that a garrison the player has</comment>
 		</line>
-		<line linenr="390" indent="&#160;&#160;">
+		<line linenr="394" indent="&#160;&#160;">
 			<comment>* since cleared out does not stay off the map forever.  The entry is removed as it expires, so the</comment>
 		</line>
-		<line linenr="391" indent="&#160;">
+		<line linenr="395" indent="&#160;">
 			<comment>* table cannot grow without bound.</comment>
 		</line>
-		<line linenr="392" indent="&#160;">
+		<line linenr="396" indent="&#160;">
 			<var>CheckAvoid</var>
 			<text>:</text>
 		</line>
-		<line linenr="393" indent="&#160;&#160;">
+		<line linenr="397" indent="&#160;&#160;">
 			<var>$avoided</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="394" indent="&#160;">
+		<line linenr="398" indent="&#160;">
 			<var>$avoid</var>
 			<text> </text>
 			<text>=</text>
@@ -3446,17 +3456,17 @@
 			<text>=</text>
 			<text>'mayhem_explorerAvoid'</text>
 		</line>
-		<line linenr="395" indent="&#160;&#160;">
+		<line linenr="399" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$avoid</var>
 		</line>
-		<line linenr="396" indent="&#160;">
+		<line linenr="400" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="397" indent="">
+		<line linenr="401" indent="">
 			<var>$avoidedAt</var>
 			<text> </text>
 			<text>=</text>
@@ -3473,17 +3483,17 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="398" indent="">
+		<line linenr="402" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$avoidedAt</var>
 		</line>
-		<line linenr="399" indent="">
+		<line linenr="403" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="400" indent="&#160;">
+		<line linenr="404" indent="&#160;">
 			<var>$now</var>
 			<text> </text>
 			<text>=</text>
@@ -3492,7 +3502,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="401" indent="&#160;">
+		<line linenr="405" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$now</var>
@@ -3505,17 +3515,17 @@
 			<text> </text>
 			<var>1800</var>
 		</line>
-		<line linenr="402" indent="&#160;&#160;">
+		<line linenr="406" indent="&#160;&#160;">
 			<var>$avoided</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="403" indent="&#160;&#160;">
+		<line linenr="407" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="404" indent="&#160;">
+		<line linenr="408" indent="&#160;">
 			<text>=</text>
 			<text> </text>
 			<text>table</text>
@@ -3534,18 +3544,18 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="405" indent="&#160;">
+		<line linenr="409" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="406" indent="&#160;">
+		<line linenr="410" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="407" indent="" />
-		<line linenr="408" indent="">
+		<line linenr="411" indent="" />
+		<line linenr="412" indent="">
 			<var>AvoidSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="409" indent="">
+		<line linenr="413" indent="">
 			<var>$avoid</var>
 			<text> </text>
 			<text>=</text>
@@ -3564,13 +3574,13 @@
 			<text>=</text>
 			<text>'mayhem_explorerAvoid'</text>
 		</line>
-		<line linenr="410" indent="">
+		<line linenr="414" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
 			<var>$avoid</var>
 		</line>
-		<line linenr="411" indent="">
+		<line linenr="415" indent="">
 			<var>$avoid</var>
 			<text> </text>
 			<text>=</text>
@@ -3579,7 +3589,7 @@
 			<text> </text>
 			<text>alloc</text>
 		</line>
-		<line linenr="412" indent="&#160;">
+		<line linenr="416" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -3598,10 +3608,10 @@
 			<text>=</text>
 			<var>$avoid</var>
 		</line>
-		<line linenr="413" indent="&#160;">
+		<line linenr="417" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="414" indent="&#160;">
+		<line linenr="418" indent="&#160;">
 			<var>$now</var>
 			<text> </text>
 			<text>=</text>
@@ -3610,7 +3620,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="415" indent="&#160;&#160;">
+		<line linenr="419" indent="&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -3627,28 +3637,28 @@
 			<text> </text>
 			<var>$now</var>
 		</line>
-		<line linenr="416" indent="&#160;&#160;">
+		<line linenr="420" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="417" indent="&#160;&#160;&#160;" />
-		<line linenr="418" indent="&#160;&#160;">
+		<line linenr="421" indent="&#160;&#160;&#160;" />
+		<line linenr="422" indent="&#160;&#160;">
 			<comment>* Whether $sector still wants a satellite from this owner.  It is asked when the list is built and</comment>
 		</line>
-		<line linenr="419" indent="&#160;&#160;&#160;">
+		<line linenr="423" indent="&#160;&#160;&#160;">
 			<comment>* again as each sector is taken, because the list can be minutes old by then.</comment>
 		</line>
-		<line linenr="420" indent="&#160;&#160;">
+		<line linenr="424" indent="&#160;&#160;">
 			<var>CheckSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="421" indent="&#160;">
+		<line linenr="425" indent="&#160;">
 			<var>$sector.ok</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="422" indent="&#160;">
+		<line linenr="426" indent="&#160;">
 			<var>$sector.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -3662,7 +3672,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="423" indent="&#160;&#160;">
+		<line linenr="427" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -3671,10 +3681,10 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="424" indent="&#160;&#160;&#160;">
+		<line linenr="428" indent="&#160;&#160;&#160;">
 			<comment>* For the AI, we manage sector blacklist here.</comment>
 		</line>
-		<line linenr="425" indent="&#160;&#160;">
+		<line linenr="429" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -3703,7 +3713,7 @@
 			<var>[Xenon]</var>
 			<text>)</text>
 		</line>
-		<line linenr="426" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="430" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3725,7 +3735,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="427" indent="&#160;&#160;" interruptable="@">
+		<line linenr="431" indent="&#160;&#160;" interruptable="@">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3749,16 +3759,16 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="428" indent="&#160;">
+		<line linenr="432" indent="&#160;">
 			<comment>* already handled by Zero Hour Core AI update</comment>
 		</line>
-		<line linenr="429" indent="&#160;">
+		<line linenr="433" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="430" indent="&#160;&#160;">
+		<line linenr="434" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="431" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="435" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3780,7 +3790,7 @@
 			<text>=</text>
 			<var>[OWNER]</var>
 		</line>
-		<line linenr="432" indent="&#160;&#160;">
+		<line linenr="436" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -3789,10 +3799,10 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="433" indent="&#160;&#160;&#160;">
+		<line linenr="437" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="434" indent="&#160;&#160;" interruptable="@">
+		<line linenr="438" indent="&#160;&#160;" interruptable="@">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3818,16 +3828,16 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="435" indent="&#160;">
+		<line linenr="439" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="436" indent="&#160;">
+		<line linenr="440" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="437" indent="&#160;&#160;">
+		<line linenr="441" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="438" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="442" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3849,7 +3859,7 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="439" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="443" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -3858,10 +3868,10 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="440" indent="&#160;&#160;">
+		<line linenr="444" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="441" indent="&#160;" interruptable="@">
+		<line linenr="445" indent="&#160;" interruptable="@">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -3887,16 +3897,16 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="442" indent="&#160;&#160;">
+		<line linenr="446" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="443" indent="&#160;&#160;">
+		<line linenr="447" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="444" indent="&#160;&#160;&#160;">
+		<line linenr="448" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="445" indent="&#160;" interruptable="@">
+		<line linenr="449" indent="&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -3918,7 +3928,7 @@
 			<text>=</text>
 			<text>'mapping'</text>
 		</line>
-		<line linenr="446" indent="&#160;">
+		<line linenr="450" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>find</text>
@@ -3962,7 +3972,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="447" indent="">
+		<line linenr="451" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4007,20 +4017,20 @@
 			<text>refpos</text>
 			<text>=</text>
 			<var>null</var>
-		</line>
-		<line linenr="448" indent="">
-			<text>endsub</text>
-		</line>
-		<line linenr="449" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="450" indent="">
-			<text>else</text>
-		</line>
-		<line linenr="451" indent="">
-			<comment>* No second satellite where we already have one.</comment>
 		</line>
 		<line linenr="452" indent="">
+			<text>endsub</text>
+		</line>
+		<line linenr="453" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="454" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="455" indent="">
+			<comment>* No second satellite where we already have one.</comment>
+		</line>
+		<line linenr="456" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4066,42 +4076,42 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="453" indent="&#160;">
+		<line linenr="457" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="454" indent="&#160;&#160;">
+		<line linenr="458" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="455" indent="&#160;&#160;&#160;">
+		<line linenr="459" indent="&#160;&#160;&#160;">
 			<var>$sector.ok</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="456" indent="&#160;&#160;">
+		<line linenr="460" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="457" indent="&#160;&#160;&#160;" />
-		<line linenr="458" indent="&#160;&#160;">
+		<line linenr="461" indent="&#160;&#160;&#160;" />
+		<line linenr="462" indent="&#160;&#160;">
 			<comment>* Only one explorer rebuilds the list at a time, because a second rebuild would put back sectors</comment>
 		</line>
-		<line linenr="459" indent="&#160;&#160;">
+		<line linenr="463" indent="&#160;&#160;">
 			<comment>* already taken. The marker counts only while its ship still exists and is still exploring.</comment>
 		</line>
-		<line linenr="460" indent="&#160;&#160;">
+		<line linenr="464" indent="&#160;&#160;">
 			<comment>* As such, one left by a destroyed or reassigned explorer is cleared.</comment>
 		</line>
-		<line linenr="461" indent="&#160;&#160;&#160;">
+		<line linenr="465" indent="&#160;&#160;&#160;">
 			<var>WaitForRebuild</var>
 			<text>:</text>
 		</line>
-		<line linenr="462" indent="&#160;&#160;">
+		<line linenr="466" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="463" indent="&#160;&#160;">
+		<line linenr="467" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4111,10 +4121,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="464" indent="&#160;&#160;">
+		<line linenr="468" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="465" indent="&#160;&#160;">
+		<line linenr="469" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4125,11 +4135,11 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="466" indent="&#160;&#160;&#160;">
+		<line linenr="470" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="467" indent="&#160;&#160;&#160;" />
-		<line linenr="468" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="471" indent="&#160;&#160;&#160;" />
+		<line linenr="472" indent="&#160;&#160;&#160;&#160;">
 			<var>$rebuilder</var>
 			<text> </text>
 			<text>=</text>
@@ -4148,7 +4158,7 @@
 			<text>=</text>
 			<text>'mayhem_explorerRebuild'</text>
 		</line>
-		<line linenr="469" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="473" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4156,18 +4166,18 @@
 			<text>!</text>
 			<var>$rebuilder</var>
 		</line>
-		<line linenr="470" indent="&#160;&#160;&#160;">
+		<line linenr="474" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="471" indent="&#160;&#160;" />
-		<line linenr="472" indent="&#160;&#160;">
+		<line linenr="475" indent="&#160;&#160;" />
+		<line linenr="476" indent="&#160;&#160;">
 			<var>$rebuilding</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="473" indent="&#160;&#160;">
+		<line linenr="477" indent="&#160;&#160;">
 			<var>$rebuilder.exists</var>
 			<text> </text>
 			<text>=</text>
@@ -4177,7 +4187,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="474" indent="&#160;&#160;&#160;">
+		<line linenr="478" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rebuilder</var>
@@ -4190,7 +4200,7 @@
 			<text> </text>
 			<var>$rebuilder.exists</var>
 		</line>
-		<line linenr="475" indent="&#160;&#160;&#160;">
+		<line linenr="479" indent="&#160;&#160;&#160;">
 			<var>$rebuilder.homebase</var>
 			<text> </text>
 			<text>=</text>
@@ -4202,7 +4212,7 @@
 			<text> </text>
 			<text>homebase</text>
 		</line>
-		<line linenr="476" indent="&#160;&#160;">
+		<line linenr="480" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$rebuilder.homebase</var>
@@ -4211,7 +4221,7 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="477" indent="&#160;&#160;">
+		<line linenr="481" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4235,27 +4245,27 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="478" indent="&#160;&#160;">
+		<line linenr="482" indent="&#160;&#160;">
 			<var>$rebuilding</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="479" indent="&#160;&#160;">
+		<line linenr="483" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="480" indent="&#160;&#160;">
+		<line linenr="484" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="481" indent="&#160;" />
-		<line linenr="482" indent="">
+		<line linenr="485" indent="&#160;" />
+		<line linenr="486" indent="">
 			<text>if</text>
 			<text> </text>
 			<text>!</text>
 			<var>$rebuilding</var>
 		</line>
-		<line linenr="483" indent="">
+		<line linenr="487" indent="">
 			<var>$queueBase</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4274,21 +4284,21 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="484" indent="">
+		<line linenr="488" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="485" indent="&#160;">
+		<line linenr="489" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="486" indent="&#160;" />
-		<line linenr="487" indent="&#160;">
+		<line linenr="490" indent="&#160;" />
+		<line linenr="491" indent="&#160;">
 			<var>$waited</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="488" indent="&#160;">
+		<line linenr="492" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4326,7 +4336,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="489" indent="&#160;" interruptable="@">
+		<line linenr="493" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -4343,24 +4353,24 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="490" indent="&#160;">
+		<line linenr="494" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="491" indent="&#160;">
+		<line linenr="495" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="492" indent="&#160;" />
-		<line linenr="493" indent="&#160;">
+		<line linenr="496" indent="&#160;" />
+		<line linenr="497" indent="&#160;">
 			<var>RebuildList</var>
 			<text>:</text>
 		</line>
-		<line linenr="494" indent="&#160;&#160;">
+		<line linenr="498" indent="&#160;&#160;">
 			<comment>* Expanded 2.2.1: Cache the Explorer list once per rebuild, reducing redundant lookups.</comment>
 		</line>
-		<line linenr="495" indent="&#160;&#160;">
+		<line linenr="499" indent="&#160;&#160;">
 			<comment>* The queue excludes destinations reserved by other Explorers at this homebase.</comment>
 		</line>
-		<line linenr="496" indent="&#160;&#160;">
+		<line linenr="500" indent="&#160;&#160;">
 			<var>$queueBase</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4379,7 +4389,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="497" indent="&#160;&#160;">
+		<line linenr="501" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4417,8 +4427,8 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="498" indent="&#160;&#160;" />
-		<line linenr="499" indent="&#160;&#160;&#160;">
+		<line linenr="502" indent="&#160;&#160;" />
+		<line linenr="503" indent="&#160;&#160;&#160;">
 			<var>$found</var>
 			<text> </text>
 			<text>=</text>
@@ -4432,7 +4442,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="500" indent="&#160;&#160;" interruptable="@">
+		<line linenr="504" indent="&#160;&#160;" interruptable="@">
 			<var>$sectors</var>
 			<text> </text>
 			<text>=</text>
@@ -4460,7 +4470,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="501" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="505" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$explorers</var>
 			<text> </text>
 			<text>=</text>
@@ -4484,7 +4494,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="502" indent="&#160;&#160;">
+		<line linenr="506" indent="&#160;&#160;">
 			<var>$XS.Iterator4</var>
 			<text> </text>
 			<text>=</text>
@@ -4497,17 +4507,17 @@
 			<text> </text>
 			<var>$sectors</var>
 		</line>
-		<line linenr="503" indent="&#160;&#160;">
+		<line linenr="507" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
 		</line>
-		<line linenr="504" indent="&#160;&#160;">
+		<line linenr="508" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator4</var>
 		</line>
-		<line linenr="505" indent="&#160;&#160;&#160;">
+		<line linenr="509" indent="&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -4517,11 +4527,11 @@
 			<var>$XS.Iterator4</var>
 			<text>]</text>
 		</line>
-		<line linenr="506" indent="&#160;&#160;" />
-		<line linenr="507" indent="&#160;&#160;">
+		<line linenr="510" indent="&#160;&#160;" />
+		<line linenr="511" indent="&#160;&#160;">
 			<comment>* Expanded 2.2.1: Spread sector checks across frames with shorter rebuild latency.</comment>
 		</line>
-		<line linenr="508" indent="&#160;&#160;" interruptable="@">
+		<line linenr="512" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -4538,8 +4548,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="509" indent="&#160;&#160;&#160;" />
-		<line linenr="510" indent="&#160;&#160;&#160;">
+		<line linenr="513" indent="&#160;&#160;&#160;" />
+		<line linenr="514" indent="&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4549,10 +4559,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="511" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="515" indent="&#160;&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="512" indent="&#160;&#160;&#160;">
+		<line linenr="516" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4563,17 +4573,17 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="513" indent="&#160;&#160;&#160;">
+		<line linenr="517" indent="&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="514" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="515" indent="&#160;&#160;&#160;">
+		<line linenr="518" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="519" indent="&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="516" indent="&#160;&#160;&#160;">
+		<line linenr="520" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4581,18 +4591,18 @@
 			<text>!</text>
 			<var>$sector.ok</var>
 		</line>
-		<line linenr="517" indent="&#160;&#160;&#160;">
+		<line linenr="521" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="518" indent="&#160;&#160;&#160;" />
-		<line linenr="519" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="522" indent="&#160;&#160;&#160;" />
+		<line linenr="523" indent="&#160;&#160;&#160;&#160;">
 			<var>$taken</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="520" indent="&#160;&#160;&#160;">
+		<line linenr="524" indent="&#160;&#160;&#160;">
 			<var>$XS.Iterator5</var>
 			<text> </text>
 			<text>=</text>
@@ -4605,17 +4615,17 @@
 			<text> </text>
 			<var>$explorers</var>
 		</line>
-		<line linenr="521" indent="&#160;&#160;&#160;">
+		<line linenr="525" indent="&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="522" indent="&#160;&#160;&#160;">
+		<line linenr="526" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="523" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="527" indent="&#160;&#160;&#160;&#160;">
 			<var>$explorer</var>
 			<text> </text>
 			<text>=</text>
@@ -4625,10 +4635,10 @@
 			<var>$XS.Iterator5</var>
 			<text>]</text>
 		</line>
-		<line linenr="524" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="528" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Ignore destroyed or invalid Explorer references.</comment>
 		</line>
-		<line linenr="525" indent="&#160;&#160;&#160;">
+		<line linenr="529" indent="&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4638,11 +4648,11 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="526" indent="&#160;&#160;">
+		<line linenr="530" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="527" indent="&#160;&#160;" />
-		<line linenr="528" indent="&#160;&#160;">
+		<line linenr="531" indent="&#160;&#160;" />
+		<line linenr="532" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4653,14 +4663,14 @@
 			<text> </text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="529" indent="&#160;&#160;&#160;">
+		<line linenr="533" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="530" indent="&#160;" />
-		<line linenr="531" indent="&#160;">
+		<line linenr="534" indent="&#160;" />
+		<line linenr="535" indent="&#160;">
 			<comment>* A reassigned Explorer must not reserve a sector for this homebase.</comment>
 		</line>
-		<line linenr="532" indent="&#160;">
+		<line linenr="536" indent="&#160;">
 			<var>$explorer.homebase</var>
 			<text> </text>
 			<text>=</text>
@@ -4672,7 +4682,7 @@
 			<text> </text>
 			<text>homebase</text>
 		</line>
-		<line linenr="533" indent="&#160;">
+		<line linenr="537" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4683,11 +4693,11 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="534" indent="&#160;&#160;">
+		<line linenr="538" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="535" indent="&#160;" />
-		<line linenr="536" indent="&#160;">
+		<line linenr="539" indent="&#160;" />
+		<line linenr="540" indent="&#160;">
 			<var>$explorer.dest</var>
 			<text> </text>
 			<text>=</text>
@@ -4706,7 +4716,7 @@
 			<text>=</text>
 			<text>'mayhem_explorerTarget'</text>
 		</line>
-		<line linenr="537" indent="&#160;">
+		<line linenr="541" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$explorer.dest</var>
@@ -4715,24 +4725,24 @@
 			<text> </text>
 			<var>$sector</var>
 		</line>
-		<line linenr="538" indent="&#160;&#160;">
+		<line linenr="542" indent="&#160;&#160;">
 			<var>$taken</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="539" indent="&#160;">
+		<line linenr="543" indent="&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="540" indent="&#160;">
+		<line linenr="544" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="541" indent="&#160;&#160;">
+		<line linenr="545" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="542" indent="&#160;&#160;" />
-		<line linenr="543" indent="&#160;&#160;">
+		<line linenr="546" indent="&#160;&#160;" />
+		<line linenr="547" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4740,7 +4750,7 @@
 			<text>!</text>
 			<var>$taken</var>
 		</line>
-		<line linenr="544" indent="&#160;&#160;">
+		<line linenr="548" indent="&#160;&#160;">
 			<text>append</text>
 			<text> </text>
 			<var>$sector</var>
@@ -4751,18 +4761,18 @@
 			<text> </text>
 			<var>$found</var>
 		</line>
-		<line linenr="545" indent="&#160;&#160;">
+		<line linenr="549" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="546" indent="&#160;" />
-		<line linenr="547" indent="&#160;">
+		<line linenr="550" indent="&#160;" />
+		<line linenr="551" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="548" indent="&#160;">
+		<line linenr="552" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4772,11 +4782,11 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="549" indent="&#160;">
+		<line linenr="553" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="550" indent="" />
-		<line linenr="551" indent="">
+		<line linenr="554" indent="" />
+		<line linenr="555" indent="">
 			<var>$lockOwner</var>
 			<text> </text>
 			<text>=</text>
@@ -4795,7 +4805,7 @@
 			<text>=</text>
 			<text>'mayhem_explorerRebuild'</text>
 		</line>
-		<line linenr="552" indent="">
+		<line linenr="556" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4806,11 +4816,11 @@
 			<text> </text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="553" indent="">
+		<line linenr="557" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="554" indent="" />
-		<line linenr="555" indent="">
+		<line linenr="558" indent="" />
+		<line linenr="559" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[HOMEBASE]</var>
@@ -4818,38 +4828,6 @@
 			<text>==</text>
 			<text> </text>
 			<var>$queueBase</var>
-		</line>
-		<line linenr="556" indent="&#160;">
-			<var>$queueBase</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>set</text>
-			<text> </text>
-			<text>local</text>
-			<text> </text>
-			<text>variable</text>
-			<text>:</text>
-			<text> </text>
-			<text>name</text>
-			<text>=</text>
-			<text>'mayhem_explorerSectors'</text>
-			<text> </text>
-			<text>value</text>
-			<text>=</text>
-			<var>$found</var>
-		</line>
-		<line linenr="557" indent="&#160;" />
-		<line linenr="558" indent="&#160;">
-			<comment>* Expanded 2.2.1: Record when this homebase last received a completed queue.</comment>
-		</line>
-		<line linenr="559" indent="&#160;">
-			<var>$now</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>playing</text>
-			<text> </text>
-			<text>time</text>
 		</line>
 		<line linenr="560" indent="&#160;">
 			<var>$queueBase</var>
@@ -4864,20 +4842,52 @@
 			<text> </text>
 			<text>name</text>
 			<text>=</text>
+			<text>'mayhem_explorerSectors'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$found</var>
+		</line>
+		<line linenr="561" indent="&#160;" />
+		<line linenr="562" indent="&#160;">
+			<comment>* Expanded 2.2.1: Record when this homebase last received a completed queue.</comment>
+		</line>
+		<line linenr="563" indent="&#160;">
+			<var>$now</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>playing</text>
+			<text> </text>
+			<text>time</text>
+		</line>
+		<line linenr="564" indent="&#160;">
+			<var>$queueBase</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
 			<text>'mayhem_explorerLastRebuild'</text>
 			<text> </text>
 			<text>value</text>
 			<text>=</text>
 			<var>$now</var>
 		</line>
-		<line linenr="561" indent="&#160;&#160;">
+		<line linenr="565" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="562" indent="&#160;&#160;&#160;" />
-		<line linenr="563" indent="&#160;&#160;">
+		<line linenr="566" indent="&#160;&#160;&#160;" />
+		<line linenr="567" indent="&#160;&#160;">
 			<comment>* Always release our rebuild lock, including after reassignment.</comment>
 		</line>
-		<line linenr="564" indent="&#160;&#160;&#160;">
+		<line linenr="568" indent="&#160;&#160;&#160;">
 			<var>$queueBase</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -4896,51 +4906,51 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="565" indent="&#160;&#160;">
+		<line linenr="569" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="566" indent="&#160;&#160;" />
-		<line linenr="567" indent="&#160;&#160;">
+		<line linenr="570" indent="&#160;&#160;" />
+		<line linenr="571" indent="&#160;&#160;">
 			<comment>* The homebase list of sectors waiting for a satellite, shared by every explorer based there. </comment>
 		</line>
-		<line linenr="568" indent="&#160;&#160;">
+		<line linenr="572" indent="&#160;&#160;">
 			<comment>* A sector leaves the list in the same instant it is taken, so no two explorers are sent to the same</comment>
 		</line>
-		<line linenr="569" indent="&#160;&#160;">
+		<line linenr="573" indent="&#160;&#160;">
 			<comment>* one, and the list is rebuilt only once it is empty. Returns $sector, or null when nothing is left that this ship may take.</comment>
 		</line>
-		<line linenr="570" indent="&#160;&#160;&#160;">
+		<line linenr="574" indent="&#160;&#160;&#160;">
 			<var>TakeSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="571" indent="&#160;&#160;">
+		<line linenr="575" indent="&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="572" indent="&#160;&#160;&#160;">
+		<line linenr="576" indent="&#160;&#160;&#160;">
 			<var>$waited</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="573" indent="&#160;&#160;">
+		<line linenr="577" indent="&#160;&#160;">
 			<var>$queueBase</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[HOMEBASE]</var>
 		</line>
-		<line linenr="574" indent="&#160;&#160;" />
-		<line linenr="575" indent="&#160;&#160;">
+		<line linenr="578" indent="&#160;&#160;" />
+		<line linenr="579" indent="&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="576" indent="&#160;&#160;">
+		<line linenr="580" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4950,10 +4960,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="577" indent="&#160;&#160;&#160;">
+		<line linenr="581" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="578" indent="&#160;&#160;">
+		<line linenr="582" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -4964,21 +4974,21 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="579" indent="&#160;&#160;&#160;">
+		<line linenr="583" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="580" indent="&#160;&#160;&#160;" />
-		<line linenr="581" indent="&#160;&#160;&#160;">
+		<line linenr="584" indent="&#160;&#160;&#160;" />
+		<line linenr="585" indent="&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>WaitForRebuild</var>
 			<text>:</text>
 		</line>
-		<line linenr="582" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="583" indent="&#160;&#160;&#160;">
+		<line linenr="586" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="587" indent="&#160;&#160;&#160;">
 			<comment>* The homebase may have changed while we waited.</comment>
 		</line>
-		<line linenr="584" indent="&#160;&#160;&#160;">
+		<line linenr="588" indent="&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -4988,10 +4998,10 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="585" indent="&#160;&#160;&#160;">
+		<line linenr="589" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="586" indent="&#160;&#160;&#160;">
+		<line linenr="590" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5002,11 +5012,11 @@
 			<text> </text>
 			<var>$queueBase</var>
 		</line>
-		<line linenr="587" indent="&#160;&#160;&#160;">
+		<line linenr="591" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="588" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="589" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="592" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="593" indent="&#160;&#160;&#160;&#160;">
 			<var>$list</var>
 			<text> </text>
 			<text>=</text>
@@ -5025,21 +5035,21 @@
 			<text>=</text>
 			<text>'mayhem_explorerSectors'</text>
 		</line>
-		<line linenr="590" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="594" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$list.s</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="591" indent="&#160;&#160;&#160;">
+		<line linenr="595" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$list</var>
 		</line>
-		<line linenr="592" indent="&#160;&#160;&#160;">
+		<line linenr="596" indent="&#160;&#160;&#160;">
 			<var>$list.s</var>
 			<text> </text>
 			<text>=</text>
@@ -5052,7 +5062,7 @@
 			<text> </text>
 			<var>$list</var>
 		</line>
-		<line linenr="593" indent="&#160;&#160;&#160;">
+		<line linenr="597" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$list.s</var>
@@ -5061,30 +5071,30 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="594" indent="&#160;&#160;&#160;">
+		<line linenr="598" indent="&#160;&#160;&#160;">
 			<comment>* Expanded 2.2.1: Do not rebuild an empty shared queue repeatedly.</comment>
 		</line>
-		<line linenr="595" indent="&#160;&#160;&#160;">
+		<line linenr="599" indent="&#160;&#160;&#160;">
 			<comment>* Preserve the existing one-rebuild-per-selection guard.</comment>
 		</line>
-		<line linenr="596" indent="&#160;&#160;&#160;">
+		<line linenr="600" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$waited</var>
 		</line>
-		<line linenr="597" indent="&#160;&#160;">
+		<line linenr="601" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="598" indent="&#160;&#160;" />
-		<line linenr="599" indent="&#160;&#160;">
+		<line linenr="602" indent="&#160;&#160;" />
+		<line linenr="603" indent="&#160;&#160;">
 			<comment>* Throttle empty-queue rebuilds across all explorers sharing this homebase.</comment>
 		</line>
-		<line linenr="600" indent="&#160;&#160;">
+		<line linenr="604" indent="&#160;&#160;">
 			<comment>* 2 minutes because player explorers wait up to 2 minutes, so we want to discover newly available sectors reasonably quickly.</comment>
 		</line>
-		<line linenr="601" indent="&#160;&#160;">
+		<line linenr="605" indent="&#160;&#160;">
 			<var>$lastRebuild</var>
 			<text> </text>
 			<text>=</text>
@@ -5103,12 +5113,12 @@
 			<text>=</text>
 			<text>'mayhem_explorerLastRebuild'</text>
 		</line>
-		<line linenr="602" indent="&#160;&#160;">
+		<line linenr="606" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$lastRebuild</var>
 		</line>
-		<line linenr="603" indent="&#160;&#160;">
+		<line linenr="607" indent="&#160;&#160;">
 			<var>$now</var>
 			<text> </text>
 			<text>=</text>
@@ -5117,7 +5127,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="604" indent="&#160;&#160;">
+		<line linenr="608" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5134,40 +5144,40 @@
 			<text> </text>
 			<var>120</var>
 		</line>
-		<line linenr="605" indent="&#160;&#160;&#160;">
+		<line linenr="609" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="606" indent="&#160;&#160;&#160;">
+		<line linenr="610" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="607" indent="&#160;&#160;&#160;" />
-		<line linenr="608" indent="&#160;&#160;&#160;">
+		<line linenr="611" indent="&#160;&#160;&#160;" />
+		<line linenr="612" indent="&#160;&#160;&#160;">
 			<comment>* The queue is empty and the refresh interval has expired.</comment>
 		</line>
-		<line linenr="609" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="613" indent="&#160;&#160;&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>RebuildList</var>
 			<text>:</text>
 		</line>
-		<line linenr="610" indent="&#160;&#160;&#160;">
+		<line linenr="614" indent="&#160;&#160;&#160;">
 			<var>$waited</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="611" indent="&#160;&#160;&#160;">
+		<line linenr="615" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="612" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="616" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="613" indent="&#160;&#160;&#160;" />
-		<line linenr="614" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="617" indent="&#160;&#160;&#160;" />
+		<line linenr="618" indent="&#160;&#160;&#160;&#160;">
 			<comment>* The nearest sector to where this ship is now, passing over any it was recently driven out of.</comment>
 		</line>
-		<line linenr="615" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="619" indent="&#160;&#160;&#160;&#160;">
 			<var>$here</var>
 			<text> </text>
 			<text>=</text>
@@ -5179,38 +5189,38 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="616" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="620" indent="&#160;&#160;&#160;&#160;">
 			<var>$best.index</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="617" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="621" indent="&#160;&#160;&#160;&#160;">
 			<var>$best.jumps</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="618" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="622" indent="&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator5</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$list.s</var>
 		</line>
-		<line linenr="619" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="623" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="620" indent="&#160;&#160;&#160;">
+		<line linenr="624" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="621" indent="&#160;&#160;">
+		<line linenr="625" indent="&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -5220,30 +5230,30 @@
 			<var>$XS.Iterator5</var>
 			<text>]</text>
 		</line>
-		<line linenr="622" indent="&#160;&#160;">
+		<line linenr="626" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckAvoid</var>
 			<text>:</text>
 		</line>
-		<line linenr="623" indent="&#160;&#160;">
+		<line linenr="627" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$avoided</var>
 		</line>
-		<line linenr="624" indent="&#160;&#160;">
+		<line linenr="628" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="625" indent="&#160;&#160;">
+		<line linenr="629" indent="&#160;&#160;">
 			<var>$jumps</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="626" indent="&#160;&#160;&#160;">
+		<line linenr="630" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5254,7 +5264,7 @@
 			<text> </text>
 			<var>$here</var>
 		</line>
-		<line linenr="627" indent="&#160;&#160;&#160;">
+		<line linenr="631" indent="&#160;&#160;&#160;">
 			<var>$jumps</var>
 			<text> </text>
 			<text>=</text>
@@ -5275,7 +5285,7 @@
 			<text> </text>
 			<var>$sector</var>
 		</line>
-		<line linenr="628" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="632" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -5296,25 +5306,25 @@
 			<var>$best.jumps</var>
 			<text>)</text>
 		</line>
-		<line linenr="629" indent="&#160;&#160;&#160;">
+		<line linenr="633" indent="&#160;&#160;&#160;">
 			<var>$best.index</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$XS.Iterator5</var>
 		</line>
-		<line linenr="630" indent="&#160;&#160;&#160;">
+		<line linenr="634" indent="&#160;&#160;&#160;">
 			<var>$best.jumps</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$jumps</var>
 		</line>
-		<line linenr="631" indent="&#160;&#160;&#160;" />
-		<line linenr="632" indent="&#160;&#160;&#160;">
+		<line linenr="635" indent="&#160;&#160;&#160;" />
+		<line linenr="636" indent="&#160;&#160;&#160;">
 			<comment>* Zero jumps is the shortest possible distance.</comment>
 		</line>
-		<line linenr="633" indent="&#160;&#160;&#160;">
+		<line linenr="637" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5325,25 +5335,25 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="634" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="638" indent="&#160;&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="635" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="639" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="636" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="640" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="637" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="638" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="641" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="642" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="639" indent="&#160;&#160;&#160;" />
-		<line linenr="640" indent="&#160;&#160;&#160;">
+		<line linenr="643" indent="&#160;&#160;&#160;" />
+		<line linenr="644" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$best.index</var>
@@ -5352,27 +5362,27 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="641" indent="&#160;&#160;&#160;">
+		<line linenr="645" indent="&#160;&#160;&#160;">
 			<comment>* No queued sector is currently eligible because of avoidance cooldowns.</comment>
 		</line>
-		<line linenr="642" indent="&#160;&#160;&#160;">
+		<line linenr="646" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$waited</var>
 		</line>
-		<line linenr="643" indent="&#160;&#160;&#160;">
+		<line linenr="647" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="644" indent="&#160;&#160;&#160;" />
-		<line linenr="645" indent="&#160;&#160;">
+		<line linenr="648" indent="&#160;&#160;&#160;" />
+		<line linenr="649" indent="&#160;&#160;">
 			<comment>* The queue contains sectors, but none are currently eligible for this explorer.</comment>
 		</line>
-		<line linenr="646" indent="&#160;&#160;">
+		<line linenr="650" indent="&#160;&#160;">
 			<comment>* Avoid repeatedly rebuilding the shared queue while avoidance cooldowns are active.</comment>
 		</line>
-		<line linenr="647" indent="&#160;&#160;">
+		<line linenr="651" indent="&#160;&#160;">
 			<var>$lastRebuild</var>
 			<text> </text>
 			<text>=</text>
@@ -5391,18 +5401,18 @@
 			<text>=</text>
 			<text>'mayhem_explorerLastRebuild'</text>
 		</line>
-		<line linenr="648" indent="&#160;&#160;">
+		<line linenr="652" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$lastRebuild</var>
 		</line>
-		<line linenr="649" indent="&#160;&#160;">
+		<line linenr="653" indent="&#160;&#160;">
 			<comment>* Throttle repeated rebuilds of a nonempty queue to once every 5 minutes. This allows newly eligible sectors to be discovered periodically.</comment>
 		</line>
-		<line linenr="650" indent="&#160;&#160;">
+		<line linenr="654" indent="&#160;&#160;">
 			<comment>* Note: this is a tradeoff with newly eligible sectors taking up to 5 minutes to enter the nonempty, all-avoided queue.</comment>
 		</line>
-		<line linenr="651" indent="&#160;&#160;">
+		<line linenr="655" indent="&#160;&#160;">
 			<var>$now</var>
 			<text> </text>
 			<text>=</text>
@@ -5411,7 +5421,7 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="652" indent="&#160;&#160;">
+		<line linenr="656" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -5428,40 +5438,40 @@
 			<text> </text>
 			<var>300</var>
 		</line>
-		<line linenr="653" indent="&#160;&#160;">
+		<line linenr="657" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="654" indent="&#160;&#160;">
+		<line linenr="658" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="655" indent="&#160;&#160;" />
-		<line linenr="656" indent="&#160;&#160;&#160;">
+		<line linenr="659" indent="&#160;&#160;" />
+		<line linenr="660" indent="&#160;&#160;&#160;">
 			<comment>* The shared queue is old enough to refresh for newly available sectors.</comment>
 		</line>
-		<line linenr="657" indent="&#160;&#160;">
+		<line linenr="661" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>RebuildList</var>
 			<text>:</text>
 		</line>
-		<line linenr="658" indent="&#160;&#160;">
+		<line linenr="662" indent="&#160;&#160;">
 			<var>$waited</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="659" indent="&#160;&#160;">
+		<line linenr="663" indent="&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="660" indent="&#160;">
+		<line linenr="664" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="661" indent="" />
-		<line linenr="662" indent="">
+		<line linenr="665" indent="" />
+		<line linenr="666" indent="">
 			<comment>* Off the list and onto this ship with no wait in between, so no other explorer can take it.</comment>
 		</line>
-		<line linenr="663" indent="">
+		<line linenr="667" indent="">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -5471,7 +5481,7 @@
 			<var>$best.index</var>
 			<text>]</text>
 		</line>
-		<line linenr="664" indent="&#160;">
+		<line linenr="668" indent="&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -5488,7 +5498,7 @@
 			<text> </text>
 			<var>$best.index</var>
 		</line>
-		<line linenr="665" indent="&#160;&#160;">
+		<line linenr="669" indent="&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5507,30 +5517,30 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="666" indent="&#160;&#160;" />
-		<line linenr="667" indent="&#160;">
+		<line linenr="670" indent="&#160;&#160;" />
+		<line linenr="671" indent="&#160;">
 			<comment>* A sector that has gained a satellite or turned hostile since the list was built is dropped,</comment>
 		</line>
-		<line linenr="668" indent="&#160;">
+		<line linenr="672" indent="&#160;">
 			<comment>* and the next nearest taken instead.</comment>
 		</line>
-		<line linenr="669" indent="&#160;">
+		<line linenr="673" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>CheckSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="670" indent="">
+		<line linenr="674" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$sector.ok</var>
 		</line>
-		<line linenr="671" indent="">
+		<line linenr="675" indent="">
 			<text>endsub</text>
 		</line>
-		<line linenr="672" indent="">
+		<line linenr="676" indent="">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5549,14 +5559,14 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="673" indent="&#160;">
+		<line linenr="677" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="674" indent="&#160;&#160;" interruptable="@">
+		<line linenr="678" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -5573,18 +5583,18 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="675" indent="&#160;&#160;">
+		<line linenr="679" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="676" indent="&#160;&#160;">
+		<line linenr="680" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="677" indent="&#160;" />
-		<line linenr="678" indent="&#160;&#160;">
+		<line linenr="681" indent="&#160;" />
+		<line linenr="682" indent="&#160;&#160;">
 			<var>GoHome</var>
 			<text>:</text>
 		</line>
-		<line linenr="679" indent="&#160;&#160;">
+		<line linenr="683" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[ENVIRONMENT]</var>
@@ -5593,7 +5603,7 @@
 			<text> </text>
 			<var>[HOMEBASE]</var>
 		</line>
-		<line linenr="680" indent="&#160;&#160;&#160;">
+		<line linenr="684" indent="&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -5631,7 +5641,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="681" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="685" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5645,10 +5655,10 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="682" indent="&#160;&#160;&#160;">
+		<line linenr="686" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="683" indent="&#160;&#160;" interruptable="@">
+		<line linenr="687" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5662,7 +5672,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="684" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="688" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5676,15 +5686,15 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="685" indent="&#160;&#160;&#160;">
+		<line linenr="689" indent="&#160;&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="686" indent="&#160;&#160;" />
-		<line linenr="687" indent="&#160;">
+		<line linenr="690" indent="&#160;&#160;" />
+		<line linenr="691" indent="&#160;">
 			<var>Abort</var>
 			<text>:</text>
 		</line>
-		<line linenr="688" indent="">
+		<line linenr="692" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[OWNER]</var>
@@ -5693,21 +5703,21 @@
 			<text> </text>
 			<var>[Player]</var>
 		</line>
-		<line linenr="689" indent="">
+		<line linenr="693" indent="">
 			<comment>* $t = [THIS] + ' in ' + [SECTOR] + ' has stopped working.'</comment>
 		</line>
-		<line linenr="690" indent="">
+		<line linenr="694" indent="">
 			<comment>* START [NULL]-&gt; call script 'Joubarbe.Lib.Infobox': text=$t icon=29 timeout=0 fadeout=0 </comment>
 		</line>
-		<line linenr="691" indent="">
+		<line linenr="695" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="692" indent="">
+		<line linenr="696" indent="">
 			<text>else</text>
 		</line>
-		<line linenr="693" indent="" interruptable="@">
+		<line linenr="697" indent="" interruptable="@">
 			<var>$nearestOutpost</var>
 			<text> </text>
 			<text>=</text>
@@ -5727,7 +5737,7 @@
 			<text>=</text>
 			<var>[THIS]</var>
 		</line>
-		<line linenr="694" indent="">
+		<line linenr="698" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$nearestOutpost</var>
@@ -5735,7 +5745,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="695" indent="" interruptable="@">
+		<line linenr="699" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -5753,7 +5763,7 @@
 			<text>=</text>
 			<var>$nearestOutpost</var>
 		</line>
-		<line linenr="696" indent="" interruptable="@">
+		<line linenr="700" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -5770,45 +5780,45 @@
 			<text>ship</text>
 			<text>=</text>
 			<var>[THIS]</var>
-		</line>
-		<line linenr="697" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
-		</line>
-		<line linenr="698" indent="">
-			<text>else</text>
-		</line>
-		<line linenr="699" indent="" interruptable="@">
-			<text>START</text>
-			<text> </text>
-			<var>[NULL]</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>call</text>
-			<text> </text>
-			<text>script</text>
-			<text> </text>
-			<call>Joubarbe.Lib.JOO.Global</call>
-			<text> </text>
-			<text>:</text>
-			<text> </text>
-			<text>ship</text>
-			<text>=</text>
-			<var>[THIS]</var>
-		</line>
-		<line linenr="700" indent="">
-			<text>return</text>
-			<text> </text>
-			<var>null</var>
 		</line>
 		<line linenr="701" indent="">
-			<text>end</text>
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
 		</line>
 		<line linenr="702" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="703" indent="" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.JOO.Global</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>[THIS]</var>
+		</line>
+		<line linenr="704" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="705" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="703" indent="">
+		<line linenr="706" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="707" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -5817,7 +5827,7 @@
 			<sval type="string" val="Mayhem.Task.Worker.Explorer" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="61" />
+			<sval type="int" val="62" />
 			<sval type="int" val="0" />
 			<sval type="array" size="69">
 				<sval type="string" val="homebase" />
@@ -5890,7 +5900,7 @@
 				<sval type="string" val="jumps" />
 				<sval type="string" val="nearestOutpost" />
 			</sval>
-			<sval type="array" size="463">
+			<sval type="array" size="464">
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="0" />
@@ -6139,7 +6149,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610566135" />
+					<sval type="int" val="-1610565879" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="101" />
@@ -6227,7 +6237,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="450" />
+					<sval type="int" val="451" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
@@ -6237,7 +6247,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="450" />
+					<sval type="int" val="451" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="1820" />
@@ -6783,7 +6793,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -6936,7 +6946,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="1820" />
@@ -7034,7 +7044,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
@@ -7050,11 +7060,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="171" />
+					<sval type="int" val="172" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="372" />
+					<sval type="int" val="373" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
@@ -7099,7 +7109,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
-					<sval type="int" val="171" />
+					<sval type="int" val="172" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="1820" />
@@ -7150,26 +7160,14 @@
 					<sval type="string" val="mayhem_explorerFlee" />
 					<sval type="int" val="28" />
 				</sval>
-				<sval type="array" size="19">
+				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610576381" />
-					<sval type="int" val="5" />
+					<sval type="int" val="-1610576125" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="28" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="6" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
-					<sval type="int" val="15" />
 					<sval type="int" val="1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
@@ -7191,7 +7189,22 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="261" />
+					<sval type="int" val="262" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610576120" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="28" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
@@ -7199,7 +7212,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610575864" />
+					<sval type="int" val="-1610575608" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="6" />
@@ -7218,11 +7231,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610575096" />
+					<sval type="int" val="-1610574840" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
@@ -7239,7 +7252,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Favor.GetTimeout" />
-					<sval type="int" val="-1610572797" />
+					<sval type="int" val="-1610572541" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -7250,7 +7263,7 @@
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610573309" />
+					<sval type="int" val="-1610573053" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -7270,7 +7283,7 @@
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610573821" />
+					<sval type="int" val="-1610573565" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -7294,7 +7307,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="153" />
+					<sval type="int" val="154" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -7307,7 +7320,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="155" />
+					<sval type="int" val="156" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -7320,11 +7333,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="158" />
+					<sval type="int" val="159" />
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610572280" />
+					<sval type="int" val="-1610572024" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -7359,7 +7372,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Favor.GetTimeout" />
-					<sval type="int" val="-1610571261" />
+					<sval type="int" val="-1610571005" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -7370,7 +7383,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610571256" />
+					<sval type="int" val="-1610571000" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="30" />
@@ -7395,11 +7408,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="183" />
+					<sval type="int" val="184" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610569213" />
+					<sval type="int" val="-1610568957" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="6" />
@@ -7408,11 +7421,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="233" />
+					<sval type="int" val="234" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610569720" />
+					<sval type="int" val="-1610569464" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -7428,7 +7441,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="100" />
@@ -7446,7 +7459,7 @@
 					<sval type="int" val="618" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536826361" />
+					<sval type="int" val="-536826105" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="4" />
 				</sval>
@@ -7456,7 +7469,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 				</sval>
 				<sval type="array" size="15">
 					<sval type="int" val="1820" />
@@ -7477,7 +7490,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610566909" />
+					<sval type="int" val="-1610566653" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -7500,7 +7513,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="180" />
+					<sval type="int" val="181" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="107" />
@@ -7555,7 +7568,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610563837" />
+					<sval type="int" val="-1610563581" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="28" />
@@ -7599,7 +7612,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="32" />
-					<sval type="int" val="-1610561533" />
+					<sval type="int" val="-1610561277" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
@@ -7609,7 +7622,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561533" />
+					<sval type="int" val="-1610561277" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="33" />
@@ -7630,7 +7643,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610561533" />
+					<sval type="int" val="-1610561277" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="34" />
@@ -7701,7 +7714,7 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="-536818681" />
+					<sval type="int" val="-536818425" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 				</sval>
@@ -7716,7 +7729,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610553335" />
+					<sval type="int" val="-1610553079" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="38" />
@@ -7739,11 +7752,11 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="-536817145" />
+					<sval type="int" val="-536816889" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="205" />
+					<sval type="int" val="206" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
@@ -7753,7 +7766,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610558200" />
+					<sval type="int" val="-1610557944" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="39" />
@@ -7768,19 +7781,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="205" />
+					<sval type="int" val="206" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="705" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="-1610557688" />
+					<sval type="int" val="-1610557432" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2038" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="205" />
+					<sval type="int" val="206" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="717" />
@@ -7790,7 +7803,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610554365" />
+					<sval type="int" val="-1610554109" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="40" />
@@ -7814,7 +7827,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610554359" />
+					<sval type="int" val="-1610554103" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="43" />
@@ -7835,7 +7848,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610555384" />
+					<sval type="int" val="-1610555128" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="42" />
@@ -7850,13 +7863,13 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="219" />
+					<sval type="int" val="220" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="618" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="-1610554621" />
+					<sval type="int" val="-1610554365" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="42" />
 				</sval>
@@ -7871,15 +7884,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="228" />
+					<sval type="int" val="229" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="219" />
+					<sval type="int" val="220" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610553597" />
+					<sval type="int" val="-1610553341" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="40" />
@@ -7897,11 +7910,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="232" />
+					<sval type="int" val="233" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="205" />
+					<sval type="int" val="206" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -7966,7 +7979,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610550269" />
+					<sval type="int" val="-1610550013" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -7981,7 +7994,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610550781" />
+					<sval type="int" val="-1610550525" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -8023,7 +8036,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="243" />
+					<sval type="int" val="244" />
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
@@ -8085,7 +8098,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="261" />
+					<sval type="int" val="262" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -8113,7 +8126,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536806393" />
+					<sval type="int" val="-536806137" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="44" />
@@ -8133,7 +8146,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536805625" />
+					<sval type="int" val="-536805369" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="45" />
@@ -8149,7 +8162,7 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610546429" />
+					<sval type="int" val="-1610546173" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="46" />
@@ -8179,7 +8192,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="260" />
+					<sval type="int" val="261" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="1711" />
@@ -8206,7 +8219,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610544637" />
+					<sval type="int" val="-1610544381" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="44" />
@@ -8266,7 +8279,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610541821" />
+					<sval type="int" val="-1610541565" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -8281,7 +8294,7 @@
 				</sval>
 				<sval type="array" size="41">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610542077" />
+					<sval type="int" val="-1610541821" />
 					<sval type="int" val="11" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -8336,12 +8349,12 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="277" />
+					<sval type="int" val="278" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Blacklist.Get" />
-					<sval type="int" val="-1610541819" />
+					<sval type="int" val="-1610541563" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8353,7 +8366,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsHostileTo" />
-					<sval type="int" val="-1610540285" />
+					<sval type="int" val="-1610540029" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8364,7 +8377,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610540797" />
+					<sval type="int" val="-1610540541" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -8382,12 +8395,12 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="283" />
+					<sval type="int" val="284" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="SWM3.IsSatWhitelisted" />
-					<sval type="int" val="-536798458" />
+					<sval type="int" val="-536798202" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8402,7 +8415,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.IsBlacklisted" />
-					<sval type="int" val="-1610538749" />
+					<sval type="int" val="-1610538493" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8413,7 +8426,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610539261" />
+					<sval type="int" val="-1610539005" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -8431,12 +8444,12 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="289" />
+					<sval type="int" val="290" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="SWM3.IsSatWhitelisted" />
-					<sval type="int" val="-536796922" />
+					<sval type="int" val="-536796666" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8451,7 +8464,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.Favor.GetTimeout" />
-					<sval type="int" val="-1610537469" />
+					<sval type="int" val="-1610537213" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -8462,7 +8475,7 @@
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610537725" />
+					<sval type="int" val="-1610537469" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -8482,7 +8495,7 @@
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610537720" />
+					<sval type="int" val="-1610537464" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -8505,11 +8518,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="296" />
+					<sval type="int" val="297" />
 				</sval>
 				<sval type="array" size="18">
 					<sval type="int" val="757" />
-					<sval type="int" val="-1610536952" />
+					<sval type="int" val="-1610536696" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131074" />
@@ -8548,7 +8561,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610530551" />
+					<sval type="int" val="-1610530295" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
@@ -8559,14 +8572,14 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="-536793593" />
+					<sval type="int" val="-536793337" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610534904" />
+					<sval type="int" val="-1610534648" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="4" />
@@ -8592,7 +8605,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610534136" />
+					<sval type="int" val="-1610533880" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="47" />
@@ -8622,7 +8635,7 @@
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610532349" />
+					<sval type="int" val="-1610532093" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="47" />
@@ -8649,7 +8662,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610532349" />
+					<sval type="int" val="-1610532093" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="50" />
@@ -8666,7 +8679,7 @@
 					<sval type="int" val="1072" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="47" />
-					<sval type="int" val="-1610532344" />
+					<sval type="int" val="-1610532088" />
 					<sval type="string" val="Mayhem.Cmd.Worker.Explorer" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -8682,7 +8695,7 @@
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610531581" />
+					<sval type="int" val="-1610531325" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="48" />
@@ -8740,7 +8753,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="299" />
+					<sval type="int" val="300" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -8815,7 +8828,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610520567" />
+					<sval type="int" val="-1610520311" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="54" />
@@ -8846,15 +8859,15 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="-536785145" />
+					<sval type="int" val="-536784889" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="360" />
+					<sval type="int" val="361" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610526456" />
+					<sval type="int" val="-1610526200" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="4" />
@@ -8869,15 +8882,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="360" />
+					<sval type="int" val="361" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610525688" />
+					<sval type="int" val="-1610525432" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
@@ -8889,7 +8902,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="329" />
+					<sval type="int" val="330" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -8908,7 +8921,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610521335" />
+					<sval type="int" val="-1610521079" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="57" />
@@ -8931,15 +8944,15 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="56" />
-					<sval type="int" val="-536782073" />
+					<sval type="int" val="-536781817" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="342" />
+					<sval type="int" val="343" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610523384" />
+					<sval type="int" val="-1610523128" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="56" />
@@ -8954,7 +8967,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="342" />
+					<sval type="int" val="343" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="704" />
@@ -8964,7 +8977,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610522616" />
+					<sval type="int" val="-1610522360" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="58" />
@@ -8979,7 +8992,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="342" />
+					<sval type="int" val="343" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
@@ -8991,7 +9004,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610521597" />
+					<sval type="int" val="-1610521341" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="59" />
@@ -9015,15 +9028,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="357" />
+					<sval type="int" val="358" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="342" />
+					<sval type="int" val="343" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610520824" />
+					<sval type="int" val="-1610520568" />
 					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="55" />
@@ -9042,7 +9055,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="329" />
+					<sval type="int" val="330" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -9057,7 +9070,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="-536777977" />
+					<sval type="int" val="-536777721" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -9072,7 +9085,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610519032" />
+					<sval type="int" val="-1610518776" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="60" />
@@ -9090,7 +9103,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610518013" />
+					<sval type="int" val="-1610517757" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="4" />
@@ -9170,7 +9183,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610499575" />
+					<sval type="int" val="-1610499319" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
@@ -9181,14 +9194,14 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="-536773881" />
+					<sval type="int" val="-536773625" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610515192" />
+					<sval type="int" val="-1610514936" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="4" />
@@ -9206,20 +9219,20 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="298" />
+					<sval type="int" val="299" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="-536772601" />
+					<sval type="int" val="-536772345" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610513912" />
+					<sval type="int" val="-1610513656" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="4" />
@@ -9254,7 +9267,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610512888" />
+					<sval type="int" val="-1610512632" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="61" />
@@ -9269,7 +9282,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610510077" />
+					<sval type="int" val="-1610509821" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="62" />
@@ -9284,7 +9297,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610512120" />
+					<sval type="int" val="-1610511864" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="51" />
@@ -9304,7 +9317,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610510845" />
+					<sval type="int" val="-1610510589" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="63" />
@@ -9317,7 +9330,7 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610510840" />
+					<sval type="int" val="-1610510584" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="46" />
@@ -9343,7 +9356,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="322" />
+					<sval type="int" val="323" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -9356,7 +9369,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="376" />
+					<sval type="int" val="377" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
@@ -9393,7 +9406,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610505207" />
+					<sval type="int" val="-1610504951" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="57" />
@@ -9414,11 +9427,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610507512" />
+					<sval type="int" val="-1610507256" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="8" />
@@ -9427,7 +9440,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="405" />
+					<sval type="int" val="406" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -9440,7 +9453,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610506744" />
+					<sval type="int" val="-1610506488" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="10" />
@@ -9463,7 +9476,7 @@
 				</sval>
 				<sval type="array" size="29">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610505469" />
+					<sval type="int" val="-1610505213" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="65" />
@@ -9512,7 +9525,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610505464" />
+					<sval type="int" val="-1610505208" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="67" />
@@ -9527,11 +9540,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="420" />
+					<sval type="int" val="421" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="405" />
+					<sval type="int" val="406" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -9544,7 +9557,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610502141" />
+					<sval type="int" val="-1610501885" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="65" />
@@ -9559,7 +9572,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610504184" />
+					<sval type="int" val="-1610503928" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="51" />
@@ -9579,7 +9592,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610502909" />
+					<sval type="int" val="-1610502653" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="63" />
@@ -9592,7 +9605,7 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610502904" />
+					<sval type="int" val="-1610502648" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="46" />
@@ -9618,7 +9631,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="322" />
+					<sval type="int" val="323" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -9631,7 +9644,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="376" />
+					<sval type="int" val="377" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
@@ -9659,11 +9672,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610500600" />
+					<sval type="int" val="-1610500344" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
@@ -9701,7 +9714,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="376" />
+					<sval type="int" val="377" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -9712,7 +9725,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610498301" />
+					<sval type="int" val="-1610498045" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="5" />
@@ -9775,7 +9788,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610496509" />
+					<sval type="int" val="-1610496253" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="7" />
@@ -9795,7 +9808,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="462" />
+					<sval type="int" val="463" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -9811,7 +9824,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="68" />
-					<sval type="int" val="-1610494973" />
+					<sval type="int" val="-1610494717" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -9840,7 +9853,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="462" />
+					<sval type="int" val="463" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -9862,7 +9875,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="284">
+			<sval type="array" size="287">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -10212,877 +10225,891 @@
 				<sval type="array" size="3">
 					<sval type="int" val="136" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If an attack diverted us during the trip, avoid the sector where it happened." />
+					<sval type="string" val="Expanded 2.2.1: Resolve a completed attack interrupt." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="136" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The original mapping movement may resume after FleeHome inside !ship.signal.attacked finishes." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="142" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="142" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="144" />
+					<sval type="int" val="141" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="144" />
+					<sval type="int" val="141" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Do not map the sector in which the attack occurred." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="145" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="145" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The sector may have changed owner, blacklist status, or satellite coverage during travel." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="147" />
+					<sval type="int" val="148" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="147" />
+					<sval type="int" val="148" />
 					<sval type="int" val="1" />
 					<sval type="string" val="From FoF: 2026-08-20 The satellite goes down the moment the ship arrives." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="152" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="153" />
-					<sval type="int" val="4" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="154" />
-					<sval type="int" val="5" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="155" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="156" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="158" />
+					<sval type="int" val="156" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="158" />
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="159" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="159" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="158" />
+					<sval type="int" val="159" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Drop a satellite and set it to be owned by the player if this is the NPC doing us a favor." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="162" />
+					<sval type="int" val="163" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="162" />
+					<sval type="int" val="163" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="163" />
+					<sval type="int" val="164" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="163" />
+					<sval type="int" val="164" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Distinguish actual fire from hostile combat-capable ships." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="163" />
+					<sval type="int" val="164" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Under fire: return home. Hostile presence alone: select another mapping target." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="166" />
+					<sval type="int" val="167" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Nobody has fired: keep the remaining satellites and take the next target instead of flying" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="166" />
+					<sval type="int" val="167" />
 					<sval type="int" val="1" />
 					<sval type="string" val="home and dumping them. CheckAvoid: keeps this sector off the list for the next 30 minutes." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="170" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="171" />
-					<sval type="int" val="2" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="172" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="174" />
+					<sval type="int" val="173" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="176" />
+					<sval type="int" val="175" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="177" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="176" />
+					<sval type="int" val="177" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Player: wait 1-2 minutes. This is an exception to the parity rule, because NPCs do not lose satellites to periodic removal." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="176" />
+					<sval type="int" val="177" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Therefore, they do not need to work as often as player explorers. NPCs wait 10x longer." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="179" />
+					<sval type="int" val="180" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="180" />
+					<sval type="int" val="181" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="180" />
+					<sval type="int" val="181" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="182" />
+					<sval type="int" val="183" />
 					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="182" />
-					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="183" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="184" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="185" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Evaluate combat capability instead of relative speed. This is because slower enemies in OOS can still kill." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="184" />
+					<sval type="int" val="185" />
 					<sval type="int" val="1" />
 					<sval type="string" val="$underAttack means an actionable threat exists; leave this sector." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="184" />
+					<sval type="int" val="185" />
 					<sval type="int" val="1" />
 					<sval type="string" val="$underFire means the Explorer was attacked; return home." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="184" />
+					<sval type="int" val="185" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Hostile armed presence alone sets $underAttack but not $underFire." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="186" />
+					<sval type="int" val="187" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="191" />
+					<sval type="int" val="192" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="191" />
+					<sval type="int" val="192" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="191" />
+					<sval type="int" val="192" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Actual attacks take priority over proactive threat classification." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="195" />
+					<sval type="int" val="196" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="1" />
 					<sval type="string" val="OOS combat can threaten the Explorer without a conventional pursuit." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="200" />
+					<sval type="int" val="201" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Find hostile ships, then check whether they have usable armament." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="204" />
+					<sval type="int" val="205" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="210" />
+					<sval type="int" val="211" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="210" />
+					<sval type="int" val="211" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="213" />
+					<sval type="int" val="214" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="213" />
+					<sval type="int" val="214" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="213" />
+					<sval type="int" val="214" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Freighters are excluded from proactive avoidance; actual attacks still count." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="215" />
+					<sval type="int" val="216" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="215" />
+					<sval type="int" val="216" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="224" />
+					<sval type="int" val="225" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="224" />
+					<sval type="int" val="225" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="224" />
+					<sval type="int" val="225" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Compatible missiles count only when actually present in cargo." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="227" />
+					<sval type="int" val="228" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="227" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="228" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="228" />
+					<sval type="int" val="229" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="228" />
+					<sval type="int" val="229" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="229" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="231" />
+					<sval type="int" val="232" />
 					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="231" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="231" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="231" />
-					<sval type="int" val="1" />
-					<sval type="string" val="End enemy check." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="232" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="233" />
+					<sval type="int" val="232" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
+					<sval type="int" val="232" />
+					<sval type="int" val="1" />
+					<sval type="string" val="End enemy check." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="233" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="234" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="235" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Preserve 2.2's response to actual attacks versus hostile presence." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="234" />
+					<sval type="int" val="235" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Actual fire sends the ship home; hostile presence alone permits continued mapping." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="234" />
+					<sval type="int" val="235" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Avoidance state remains per-ship and does not modify global routing." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="242" />
+					<sval type="int" val="243" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="243" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="244" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="244" />
+					<sval type="int" val="245" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="245" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Half an hour of playing time, then the sector is fair game again -- long enough that the explorer" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 					<sval type="int" val="1" />
 					<sval type="string" val="gets useful work done elsewhere in the meantime, short enough that a garrison the player has" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 					<sval type="int" val="1" />
 					<sval type="string" val="since cleared out does not stay off the map forever.  The entry is removed as it expires, so the" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="247" />
+					<sval type="int" val="248" />
 					<sval type="int" val="1" />
 					<sval type="string" val="table cannot grow without bound." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="259" />
+					<sval type="int" val="260" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="260" />
+					<sval type="int" val="261" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="261" />
+					<sval type="int" val="262" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="266" />
+					<sval type="int" val="267" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Whether $sector still wants a satellite from this owner.  It is asked when the list is built and" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="269" />
+					<sval type="int" val="270" />
 					<sval type="int" val="1" />
 					<sval type="string" val="again as each sector is taken, because the list can be minutes old by then." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="273" />
+					<sval type="int" val="274" />
 					<sval type="int" val="1" />
 					<sval type="string" val="For the AI, we manage sector blacklist here." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="277" />
+					<sval type="int" val="278" />
 					<sval type="int" val="1" />
 					<sval type="string" val="already handled by Zero Hour Core AI update" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="277" />
+					<sval type="int" val="278" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="277" />
+					<sval type="int" val="278" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="283" />
+					<sval type="int" val="284" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="283" />
+					<sval type="int" val="284" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="289" />
+					<sval type="int" val="290" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="289" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="293" />
+					<sval type="int" val="290" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="294" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="295" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="294" />
+					<sval type="int" val="295" />
 					<sval type="int" val="1" />
 					<sval type="string" val="No second satellite where we already have one." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="296" />
+					<sval type="int" val="297" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="298" />
+					<sval type="int" val="299" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="298" />
+					<sval type="int" val="299" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Only one explorer rebuilds the list at a time, because a second rebuild would put back sectors" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="298" />
+					<sval type="int" val="299" />
 					<sval type="int" val="1" />
 					<sval type="string" val="already taken. The marker counts only while its ship still exists and is still exploring." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="298" />
+					<sval type="int" val="299" />
 					<sval type="int" val="1" />
 					<sval type="string" val="As such, one left by a destroyed or reassigned explorer is cleared." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="304" />
+					<sval type="int" val="305" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="307" />
+					<sval type="int" val="308" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="314" />
+					<sval type="int" val="315" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="314" />
+					<sval type="int" val="315" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="314" />
+					<sval type="int" val="315" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="317" />
+					<sval type="int" val="318" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="317" />
+					<sval type="int" val="318" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="321" />
-					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="322" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="323" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="323" />
+					<sval type="int" val="324" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Cache the Explorer list once per rebuild, reducing redundant lookups." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="323" />
+					<sval type="int" val="324" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The queue excludes destinations reserved by other Explorers at this homebase." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="325" />
+					<sval type="int" val="326" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="332" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="332" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2.1: Spread sector checks across frames with shorter rebuild latency." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="333" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="335" />
-					<sval type="int" val="7" />
+				<sval type="array" size="3">
+					<sval type="int" val="333" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Spread sector checks across frames with shorter rebuild latency." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="337" />
-					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="337" />
+					<sval type="int" val="334" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="340" />
+					<sval type="int" val="336" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="338" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="338" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="341" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="340" />
+					<sval type="int" val="341" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="345" />
+					<sval type="int" val="346" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Ignore destroyed or invalid Explorer references." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="347" />
+					<sval type="int" val="348" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="347" />
+					<sval type="int" val="348" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="349" />
+					<sval type="int" val="350" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="349" />
+					<sval type="int" val="350" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="349" />
+					<sval type="int" val="350" />
 					<sval type="int" val="1" />
 					<sval type="string" val="A reassigned Explorer must not reserve a sector for this homebase." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="352" />
+					<sval type="int" val="353" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="352" />
+					<sval type="int" val="353" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="356" />
+					<sval type="int" val="357" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="356" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="357" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="357" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="360" />
+					<sval type="int" val="358" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="360" />
+					<sval type="int" val="358" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="363" />
+					<sval type="int" val="361" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="361" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="366" />
+					<sval type="int" val="364" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="368" />
+					<sval type="int" val="367" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="369" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="368" />
+					<sval type="int" val="369" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Record when this homebase last received a completed queue." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="370" />
+					<sval type="int" val="371" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="370" />
+					<sval type="int" val="371" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="370" />
+					<sval type="int" val="371" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Always release our rebuild lock, including after reassignment." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="372" />
+					<sval type="int" val="373" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="372" />
+					<sval type="int" val="373" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The homebase list of sectors waiting for a satellite, shared by every explorer based there. " />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="372" />
+					<sval type="int" val="373" />
 					<sval type="int" val="1" />
 					<sval type="string" val="A sector leaves the list in the same instant it is taken, so no two explorers are sent to the same" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="372" />
+					<sval type="int" val="373" />
 					<sval type="int" val="1" />
 					<sval type="string" val="one, and the list is rebuilt only once it is empty. Returns $sector, or null when nothing is left that this ship may take." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="376" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="381" />
+					<sval type="int" val="377" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="382" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="383" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="382" />
+					<sval type="int" val="383" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The homebase may have changed while we waited." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="386" />
+					<sval type="int" val="387" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="391" />
+					<sval type="int" val="392" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2.1: Do not rebuild an empty shared queue repeatedly." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="391" />
+					<sval type="int" val="392" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Preserve the existing one-rebuild-per-selection guard." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="393" />
+					<sval type="int" val="394" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="393" />
+					<sval type="int" val="394" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Throttle empty-queue rebuilds across all explorers sharing this homebase." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="393" />
+					<sval type="int" val="394" />
 					<sval type="int" val="1" />
 					<sval type="string" val="2 minutes because player explorers wait up to 2 minutes, so we want to discover newly available sectors reasonably quickly." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="398" />
+					<sval type="int" val="399" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="398" />
+					<sval type="int" val="399" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="398" />
+					<sval type="int" val="399" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The queue is empty and the refresh interval has expired." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="401" />
+					<sval type="int" val="402" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="401" />
+					<sval type="int" val="402" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="401" />
+					<sval type="int" val="402" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="401" />
+					<sval type="int" val="402" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The nearest sector to where this ship is now, passing over any it was recently driven out of." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="411" />
+					<sval type="int" val="412" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="417" />
+					<sval type="int" val="418" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="417" />
+					<sval type="int" val="418" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Zero jumps is the shortest possible distance." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="419" />
+					<sval type="int" val="420" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="419" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
 					<sval type="int" val="420" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="420" />
-					<sval type="int" val="2" />
+					<sval type="int" val="421" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="421" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
+				<sval type="array" size="2">
 					<sval type="int" val="422" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="423" />
 					<sval type="int" val="1" />
 					<sval type="string" val="No queued sector is currently eligible because of avoidance cooldowns." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="424" />
+					<sval type="int" val="425" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="424" />
+					<sval type="int" val="425" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The queue contains sectors, but none are currently eligible for this explorer." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="424" />
+					<sval type="int" val="425" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Avoid repeatedly rebuilding the shared queue while avoidance cooldowns are active." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="426" />
+					<sval type="int" val="427" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Throttle repeated rebuilds of a nonempty queue to once every 5 minutes. This allows newly eligible sectors to be discovered periodically." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="426" />
+					<sval type="int" val="427" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Note: this is a tradeoff with newly eligible sectors taking up to 5 minutes to enter the nonempty, all-avoided queue." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="429" />
+					<sval type="int" val="430" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="429" />
+					<sval type="int" val="430" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="429" />
+					<sval type="int" val="430" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The shared queue is old enough to refresh for newly available sectors." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="432" />
+					<sval type="int" val="433" />
 					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="432" />
+					<sval type="int" val="433" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="432" />
+					<sval type="int" val="433" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="432" />
+					<sval type="int" val="433" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Off the list and onto this ship with no wait in between, so no other explorer can take it." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="435" />
+					<sval type="int" val="436" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="435" />
+					<sval type="int" val="436" />
 					<sval type="int" val="1" />
 					<sval type="string" val="A sector that has gained a satellite or turned hostile since the list was built is dropped," />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="435" />
+					<sval type="int" val="436" />
 					<sval type="int" val="1" />
 					<sval type="string" val="and the next nearest taken instead." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="442" />
+					<sval type="int" val="443" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="443" />
+					<sval type="int" val="444" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="447" />
+					<sval type="int" val="448" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="450" />
+					<sval type="int" val="451" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="452" />
+					<sval type="int" val="453" />
 					<sval type="int" val="1" />
 					<sval type="string" val="$t = [THIS] + ' in ' + [SECTOR] + ' has stopped working.'" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="452" />
+					<sval type="int" val="453" />
 					<sval type="int" val="1" />
 					<sval type="string" val="START [NULL]-&gt; call script 'Joubarbe.Lib.Infobox': text=$t icon=29 timeout=0 fadeout=0 " />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="454" />
+					<sval type="int" val="455" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="460" />
+					<sval type="int" val="461" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="462" />
+					<sval type="int" val="463" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="462" />
+					<sval type="int" val="463" />
 					<sval type="int" val="4" />
 				</sval>
 			</sval>
