@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Task.OCVVirus</name>
-	<version>136</version>
+	<version>143</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -106,23 +106,40 @@
 		</line>
 		<line linenr="015" indent="" />
 		<line linenr="016" indent="">
-			<comment>* Warning-name cycle remains task-local.</comment>
+			<comment>* Cache the last displayed duration to avoid unnecessary ship-name updates.</comment>
 		</line>
 		<line linenr="017" indent="">
-			<var>$cycle.name</var>
+			<var>$lastVirusDisplay</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$playtime</var>
+			<var>null</var>
 		</line>
 		<line linenr="018" indent="" />
 		<line linenr="019" indent="">
-			<comment>* ===== Incubation =====</comment>
+			<comment>* Display the countdown immediately for detected infections.</comment>
 		</line>
 		<line linenr="020" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$detected</var>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<text>gosub</text>
+			<text> </text>
+			<var>UpdateVirusReadout</var>
+			<text>:</text>
+		</line>
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
+			<comment>* ===== Incubation =====</comment>
+		</line>
+		<line linenr="024" indent="">
 			<comment>* Mature at the saved deadline or when an early takeover is triggered.</comment>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="025" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$playtime</var>
@@ -131,11 +148,11 @@
 			<text> </text>
 			<var>$infectionTime</var>
 		</line>
-		<line linenr="022" indent="&#160;" />
-		<line linenr="023" indent="&#160;">
+		<line linenr="026" indent="&#160;" />
+		<line linenr="027" indent="&#160;">
 			<comment>* Restart updated scripts without resetting the infection deadline.</comment>
 		</line>
-		<line linenr="024" indent="&#160;">
+		<line linenr="028" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>is</text>
@@ -150,7 +167,7 @@
 			<text> </text>
 			<text>available</text>
 		</line>
-		<line linenr="025" indent="&#160;&#160;">
+		<line linenr="029" indent="&#160;&#160;">
 			<var>$scriptName</var>
 			<text> </text>
 			<text>=</text>
@@ -161,7 +178,7 @@
 			<text> </text>
 			<text>name</text>
 		</line>
-		<line linenr="026" indent="&#160;&#160;">
+		<line linenr="030" indent="&#160;&#160;">
 			<var>$taskID</var>
 			<text> </text>
 			<text>=</text>
@@ -172,7 +189,7 @@
 			<text> </text>
 			<text>ID</text>
 		</line>
-		<line linenr="027" indent="&#160;&#160;" interruptable="@">
+		<line linenr="031" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -226,19 +243,19 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="028" indent="&#160;&#160;">
+		<line linenr="032" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="029" indent="&#160;">
+		<line linenr="033" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="030" indent="&#160;" />
-		<line linenr="031" indent="&#160;">
+		<line linenr="034" indent="&#160;" />
+		<line linenr="035" indent="&#160;">
 			<comment>* Broadcast takeover overrides the remaining incubation period.</comment>
 		</line>
-		<line linenr="032" indent="&#160;">
+		<line linenr="036" indent="&#160;">
 			<var>$takeoverPending</var>
 			<text> </text>
 			<text>=</text>
@@ -257,27 +274,118 @@
 			<text>=</text>
 			<text>'mayhem_OCVTakeoverPending'</text>
 		</line>
-		<line linenr="033" indent="&#160;">
+		<line linenr="037" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$takeoverPending</var>
 		</line>
-		<line linenr="034" indent="&#160;&#160;">
+		<line linenr="038" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="035" indent="&#160;" />
-		<line linenr="036" indent="&#160;" interruptable="@">
+		<line linenr="039" indent="&#160;" />
+		<line linenr="040" indent="&#160;">
+			<comment>* Expanded 2.2.1: Adaptive OCV virus polling.</comment>
+		</line>
+		<line linenr="041" indent="&#160;">
+			<comment>* OCV-built ships poll rapidly for combat-triggered maturation.</comment>
+		</line>
+		<line linenr="042" indent="&#160;">
+			<comment>* Detected infections poll rapidly near maturity.</comment>
+		</line>
+		<line linenr="043" indent="&#160;">
+			<comment>* Other infections retain the low-overhead 10-second interval.</comment>
+		</line>
+		<line linenr="044" indent="&#160;">
+			<var>$remaining</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$infectionTime</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$playtime</var>
+		</line>
+		<line linenr="045" indent="&#160;">
+			<var>$detected</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_detectedVirus'</text>
+		</line>
+		<line linenr="046" indent="&#160;">
+			<var>$waitMs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>10000</var>
+		</line>
+		<line linenr="047" indent="&#160;" />
+		<line linenr="048" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$makerRace</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[OCV]</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<text>(</text>
+			<var>$detected</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<var>$remaining</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>310</var>
+			<text>)</text>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$remaining</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>20</var>
+		</line>
+		<line linenr="049" indent="&#160;&#160;">
+			<var>$waitMs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1000</var>
+		</line>
+		<line linenr="050" indent="&#160;" />
+		<line linenr="051" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
 			<text> </text>
-			<var>10000</var>
+			<var>$waitMs</var>
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="037" indent="&#160;">
+		<line linenr="052" indent="&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -286,11 +394,11 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="038" indent="&#160;" />
-		<line linenr="039" indent="&#160;">
+		<line linenr="053" indent="&#160;" />
+		<line linenr="054" indent="&#160;">
 			<comment>* The ship may have been destroyed while waiting.</comment>
 		</line>
-		<line linenr="040" indent="&#160;">
+		<line linenr="055" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -300,19 +408,19 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="041" indent="&#160;&#160;">
+		<line linenr="056" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="042" indent="&#160;" />
-		<line linenr="043" indent="&#160;">
+		<line linenr="057" indent="&#160;" />
+		<line linenr="058" indent="&#160;">
 			<comment>* ZH 1.10: OCV-built ships mature immediately when attacking Xenon or OCV.</comment>
 		</line>
-		<line linenr="044" indent="&#160;">
+		<line linenr="059" indent="&#160;">
 			<comment>* Non-OCV infectees must mature normally.</comment>
 		</line>
-		<line linenr="045" indent="&#160;">
+		<line linenr="060" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$makerRace</var>
@@ -321,7 +429,7 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="046" indent="&#160;&#160;">
+		<line linenr="061" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -343,7 +451,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="047" indent="&#160;&#160;&#160;">
+		<line linenr="062" indent="&#160;&#160;&#160;">
 			<var>$target</var>
 			<text> </text>
 			<text>=</text>
@@ -357,7 +465,7 @@
 			<text> </text>
 			<text>target</text>
 		</line>
-		<line linenr="048" indent="&#160;&#160;&#160;">
+		<line linenr="063" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target</var>
@@ -365,7 +473,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="049" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="064" indent="&#160;&#160;&#160;&#160;">
 			<var>$target.owner</var>
 			<text> </text>
 			<text>=</text>
@@ -379,7 +487,7 @@
 			<text> </text>
 			<text>race</text>
 		</line>
-		<line linenr="050" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="065" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$target.owner</var>
@@ -396,7 +504,7 @@
 			<text> </text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="051" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="066" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -415,66 +523,69 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="052" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="067" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="053" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="068" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="054" indent="&#160;&#160;&#160;">
+		<line linenr="069" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="055" indent="&#160;&#160;">
+		<line linenr="070" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="056" indent="&#160;">
+		<line linenr="071" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="057" indent="&#160;" />
-		<line linenr="058" indent="&#160;">
-			<comment>* Expanded 2.2: Display the remaining incubation time on detected infectees.</comment>
+		<line linenr="072" indent="&#160;" />
+		<line linenr="073" indent="&#160;">
+			<comment>* Expanded 2.2.1: Refresh detected infection countdown.</comment>
 		</line>
-		<line linenr="059" indent="&#160;">
-			<comment>* Refresh once per minute; undetected infections remain hidden.</comment>
+		<line linenr="074" indent="&#160;">
+			<comment>* Whole-minute display during incubation, second-level display near maturity.</comment>
 		</line>
-		<line linenr="060" indent="&#160;">
+		<line linenr="075" indent="&#160;">
+			<comment>* UpdateVirusReadout skips unchanged values.</comment>
+		</line>
+		<line linenr="076" indent="&#160;">
+			<var>$detected</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_detectedVirus'</text>
+		</line>
+		<line linenr="077" indent="&#160;">
+			<text>do</text>
+			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$detected</var>
-			<text> </text>
-			<text>AND</text>
-			<text> </text>
-			<var>$playtime</var>
-			<text> </text>
-			<text>&gt;=</text>
-			<text> </text>
-			<var>$cycle.name</var>
 		</line>
-		<line linenr="061" indent="&#160;&#160;">
+		<line linenr="078" indent="&#160;&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>UpdateVirusReadout</var>
 			<text>:</text>
 		</line>
-		<line linenr="062" indent="&#160;&#160;">
-			<var>$cycle.name</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$playtime</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>60</var>
-		</line>
-		<line linenr="063" indent="&#160;">
+		<line linenr="079" indent="&#160;" />
+		<line linenr="080" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="064" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="065" indent="" />
-		<line linenr="066" indent="">
+		<line linenr="081" indent="" />
+		<line linenr="082" indent="">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -484,27 +595,27 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="067" indent="&#160;">
+		<line linenr="083" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="068" indent="" />
-		<line linenr="069" indent="">
+		<line linenr="084" indent="" />
+		<line linenr="085" indent="">
 			<comment>* ===== Infection matured. =====</comment>
 		</line>
-		<line linenr="070" indent="" />
-		<line linenr="071" indent="">
+		<line linenr="086" indent="" />
+		<line linenr="087" indent="">
 			<text>gosub</text>
 			<text> </text>
 			<var>GetCurrentSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="072" indent="" />
-		<line linenr="073" indent="">
+		<line linenr="088" indent="" />
+		<line linenr="089" indent="">
 			<comment>* Preserve maturity independently of the asynchronous resolver.</comment>
 		</line>
-		<line linenr="074" indent="">
+		<line linenr="090" indent="">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -523,16 +634,35 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="075" indent="" />
-		<line linenr="076" indent="">
+		<line linenr="091" indent="" />
+		<line linenr="092" indent="">
 			<comment>* Expanded 2.2: Show that the detected infection has matured.</comment>
 		</line>
-		<line linenr="077" indent="">
+		<line linenr="093" indent="">
+			<var>$detected</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[THIS]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>local</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_detectedVirus'</text>
+		</line>
+		<line linenr="094" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$detected</var>
 		</line>
-		<line linenr="078" indent="&#160;">
+		<line linenr="095" indent="&#160;">
 			<var>$playtime</var>
 			<text> </text>
 			<text>=</text>
@@ -541,20 +671,20 @@
 			<text> </text>
 			<text>time</text>
 		</line>
-		<line linenr="079" indent="&#160;">
+		<line linenr="096" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>UpdateVirusReadout</var>
 			<text>:</text>
 		</line>
-		<line linenr="080" indent="">
+		<line linenr="097" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="081" indent="" />
-		<line linenr="082" indent="">
+		<line linenr="098" indent="" />
+		<line linenr="099" indent="">
 			<comment>* Defer conversion of the current player ship.</comment>
 		</line>
-		<line linenr="083" indent="">
+		<line linenr="100" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -563,11 +693,11 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="084" indent="&#160;" />
-		<line linenr="085" indent="&#160;">
+		<line linenr="101" indent="&#160;" />
+		<line linenr="102" indent="&#160;">
 			<comment>* Resolve other eligible infectees immediately.</comment>
 		</line>
-		<line linenr="086" indent="&#160;" interruptable="@">
+		<line linenr="103" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -585,8 +715,8 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="087" indent="&#160;" />
-		<line linenr="088" indent="&#160;">
+		<line linenr="104" indent="&#160;" />
+		<line linenr="105" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -594,7 +724,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="089" indent="&#160;&#160;" interruptable="@">
+		<line linenr="106" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -603,7 +733,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="090" indent="&#160;&#160;">
+		<line linenr="107" indent="&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -614,14 +744,14 @@
 			<text> </text>
 			<var>[PLAYERSHIP]</var>
 		</line>
-		<line linenr="091" indent="&#160;&#160;&#160;">
+		<line linenr="108" indent="&#160;&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="092" indent="&#160;">
+		<line linenr="109" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="093" indent="&#160;" />
-		<line linenr="094" indent="&#160;">
+		<line linenr="110" indent="&#160;" />
+		<line linenr="111" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -631,29 +761,29 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="095" indent="&#160;&#160;">
+		<line linenr="112" indent="&#160;&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="096" indent="&#160;" />
-		<line linenr="097" indent="&#160;">
+		<line linenr="113" indent="&#160;" />
+		<line linenr="114" indent="&#160;">
 			<comment>* The player may have changed the deferred ship's sector.</comment>
 		</line>
-		<line linenr="098" indent="&#160;">
+		<line linenr="115" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>GetCurrentSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="099" indent="">
+		<line linenr="116" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="100" indent="" />
-		<line linenr="101" indent="">
+		<line linenr="117" indent="" />
+		<line linenr="118" indent="">
 			<comment>* Resolve this ship and all other eligible infectees in its sector.</comment>
 		</line>
-		<line linenr="102" indent="" interruptable="@">
+		<line linenr="119" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -671,28 +801,28 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="103" indent="" />
-		<line linenr="104" indent="">
+		<line linenr="120" indent="" />
+		<line linenr="121" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="105" indent="" />
-		<line linenr="106" indent="">
+		<line linenr="122" indent="" />
+		<line linenr="123" indent="">
 			<var>InitializeDeadline</var>
 			<text>:</text>
 		</line>
-		<line linenr="107" indent="&#160;">
+		<line linenr="124" indent="&#160;">
 			<comment>* Generate and store an absolute infection deadline exactly once.</comment>
 		</line>
-		<line linenr="108" indent="&#160;">
+		<line linenr="125" indent="&#160;">
 			<text>gosub</text>
 			<text> </text>
 			<var>GetCurrentSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="109" indent="&#160;" />
-		<line linenr="110" indent="&#160;">
+		<line linenr="126" indent="&#160;" />
+		<line linenr="127" indent="&#160;">
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>=</text>
@@ -711,22 +841,22 @@
 			<text>=</text>
 			<text>'mayhem_sector.ocvSignals'</text>
 		</line>
-		<line linenr="111" indent="&#160;">
+		<line linenr="128" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ocvSignals</var>
 		</line>
-		<line linenr="112" indent="&#160;&#160;">
+		<line linenr="129" indent="&#160;&#160;">
 			<var>$ocvSignals</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="113" indent="&#160;" />
-		<line linenr="114" indent="&#160;">
+		<line linenr="130" indent="&#160;" />
+		<line linenr="131" indent="&#160;">
 			<var>$delay.base</var>
 			<text> </text>
 			<text>=</text>
@@ -743,7 +873,7 @@
 			<var>600</var>
 			<text>)</text>
 		</line>
-		<line linenr="115" indent="&#160;">
+		<line linenr="132" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -754,15 +884,15 @@
 			<text> </text>
 			<var>3600</var>
 		</line>
-		<line linenr="116" indent="&#160;&#160;">
+		<line linenr="133" indent="&#160;&#160;">
 			<var>$delay.base</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3600</var>
 		</line>
-		<line linenr="117" indent="&#160;" />
-		<line linenr="118" indent="&#160;" interruptable="@">
+		<line linenr="134" indent="&#160;" />
+		<line linenr="135" indent="&#160;" interruptable="@">
 			<var>$shipQuality</var>
 			<text> </text>
 			<text>=</text>
@@ -786,7 +916,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="119" indent="&#160;">
+		<line linenr="136" indent="&#160;">
 			<var>$offsets</var>
 			<text> </text>
 			<text>=</text>
@@ -800,7 +930,7 @@
 			<text>=</text>
 			<var>7</var>
 		</line>
-		<line linenr="120" indent="&#160;">
+		<line linenr="137" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>0</var>
@@ -810,7 +940,7 @@
 			<text> </text>
 			<var>3000</var>
 		</line>
-		<line linenr="121" indent="&#160;">
+		<line linenr="138" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>1</var>
@@ -820,7 +950,7 @@
 			<text> </text>
 			<var>2600</var>
 		</line>
-		<line linenr="122" indent="&#160;">
+		<line linenr="139" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>2</var>
@@ -830,7 +960,7 @@
 			<text> </text>
 			<var>2200</var>
 		</line>
-		<line linenr="123" indent="&#160;">
+		<line linenr="140" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>3</var>
@@ -840,7 +970,7 @@
 			<text> </text>
 			<var>1800</var>
 		</line>
-		<line linenr="124" indent="&#160;">
+		<line linenr="141" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>4</var>
@@ -850,7 +980,7 @@
 			<text> </text>
 			<var>1400</var>
 		</line>
-		<line linenr="125" indent="&#160;">
+		<line linenr="142" indent="&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>5</var>
@@ -860,7 +990,7 @@
 			<text> </text>
 			<var>1000</var>
 		</line>
-		<line linenr="126" indent="&#160;&#160;">
+		<line linenr="143" indent="&#160;&#160;">
 			<var>$offsets</var>
 			<text>[</text>
 			<var>6</var>
@@ -870,7 +1000,7 @@
 			<text> </text>
 			<var>600</var>
 		</line>
-		<line linenr="127" indent="&#160;&#160;&#160;">
+		<line linenr="144" indent="&#160;&#160;&#160;">
 			<var>$delay.baseOffset</var>
 			<text> </text>
 			<text>=</text>
@@ -880,8 +1010,8 @@
 			<var>$shipQuality</var>
 			<text>]</text>
 		</line>
-		<line linenr="128" indent="&#160;&#160;&#160;" />
-		<line linenr="129" indent="&#160;&#160;" interruptable="@">
+		<line linenr="145" indent="&#160;&#160;&#160;" />
+		<line linenr="146" indent="&#160;&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -897,16 +1027,16 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="130" indent="&#160;&#160;&#160;" />
-		<line linenr="131" indent="&#160;&#160;">
+		<line linenr="147" indent="&#160;&#160;&#160;" />
+		<line linenr="148" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.9.3: Insurance reduces timing variance by 85% on Hard and 70% on Insane.</comment>
 		</line>
-		<line linenr="132" indent="&#160;&#160;&#160;">
+		<line linenr="149" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$detected</var>
 		</line>
-		<line linenr="133" indent="&#160;&#160;">
+		<line linenr="150" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -915,17 +1045,17 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="134" indent="&#160;">
+		<line linenr="151" indent="&#160;">
 			<comment>* Never happens on easy/normal (negative events cannot occur with insurance policy); just in case.</comment>
 		</line>
-		<line linenr="135" indent="&#160;">
+		<line linenr="152" indent="&#160;">
 			<var>$delay.baseOffset</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="136" indent="&#160;">
+		<line linenr="153" indent="&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -936,7 +1066,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="137" indent="&#160;">
+		<line linenr="154" indent="&#160;">
 			<var>$delay.baseOffset</var>
 			<text> </text>
 			<text>=</text>
@@ -953,10 +1083,10 @@
 			<text> </text>
 			<var>20</var>
 		</line>
-		<line linenr="138" indent="&#160;">
+		<line linenr="155" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="139" indent="&#160;">
+		<line linenr="156" indent="&#160;">
 			<var>$delay.baseOffset</var>
 			<text> </text>
 			<text>=</text>
@@ -973,17 +1103,17 @@
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="140" indent="&#160;">
+		<line linenr="157" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="141" indent="&#160;">
+		<line linenr="158" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="142" indent="&#160;" />
-		<line linenr="143" indent="&#160;">
+		<line linenr="159" indent="&#160;" />
+		<line linenr="160" indent="&#160;">
 			<comment>* Expanded 2.2: Removed obsolete RNG workaround. Randomize timing using the ship quality offset.</comment>
 		</line>
-		<line linenr="144" indent="&#160;&#160;">
+		<line linenr="161" indent="&#160;&#160;">
 			<var>$delay.baseOffset.neg</var>
 			<text> </text>
 			<text>=</text>
@@ -994,7 +1124,7 @@
 			<text> </text>
 			<var>-1</var>
 		</line>
-		<line linenr="145" indent="&#160;">
+		<line linenr="162" indent="&#160;">
 			<var>$delay.baseOffset.max</var>
 			<text> </text>
 			<text>=</text>
@@ -1005,7 +1135,7 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="146" indent="&#160;">
+		<line linenr="163" indent="&#160;">
 			<var>$delay.randomOffset</var>
 			<text> </text>
 			<text>=</text>
@@ -1022,7 +1152,7 @@
 			<text> </text>
 			<var>$delay.baseOffset.max</var>
 		</line>
-		<line linenr="147" indent="&#160;">
+		<line linenr="164" indent="&#160;">
 			<var>$delay.final</var>
 			<text> </text>
 			<text>=</text>
@@ -1033,11 +1163,11 @@
 			<text> </text>
 			<var>$delay.randomOffset</var>
 		</line>
-		<line linenr="148" indent="&#160;&#160;" />
-		<line linenr="149" indent="&#160;">
+		<line linenr="165" indent="&#160;&#160;" />
+		<line linenr="166" indent="&#160;">
 			<comment>* Add-Ons 1.3: Duration reduced by 30% on insane.</comment>
 		</line>
-		<line linenr="150" indent="&#160;">
+		<line linenr="167" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1048,7 +1178,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="151" indent="&#160;">
+		<line linenr="168" indent="&#160;">
 			<var>$delay.final</var>
 			<text> </text>
 			<text>=</text>
@@ -1065,11 +1195,11 @@
 			<text> </text>
 			<var>10</var>
 		</line>
-		<line linenr="152" indent="&#160;" />
-		<line linenr="153" indent="&#160;&#160;">
+		<line linenr="169" indent="&#160;" />
+		<line linenr="170" indent="&#160;&#160;">
 			<comment>* Minimum incubation time: 600 seconds.</comment>
 		</line>
-		<line linenr="154" indent="&#160;">
+		<line linenr="171" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -1080,18 +1210,18 @@
 			<text> </text>
 			<var>600</var>
 		</line>
-		<line linenr="155" indent="&#160;">
+		<line linenr="172" indent="&#160;">
 			<var>$delay.final</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>600</var>
 		</line>
-		<line linenr="156" indent="&#160;" />
-		<line linenr="157" indent="&#160;">
+		<line linenr="173" indent="&#160;" />
+		<line linenr="174" indent="&#160;">
 			<comment>* Expanded 2.2: Debug overrides timer. 5-minute incubation.</comment>
 		</line>
-		<line linenr="158" indent="&#160;">
+		<line linenr="175" indent="&#160;">
 			<var>$showDebugZH</var>
 			<text> </text>
 			<text>=</text>
@@ -1107,22 +1237,22 @@
 			<text>=</text>
 			<text>'ZH_showDebug'</text>
 		</line>
-		<line linenr="159" indent="">
+		<line linenr="176" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$showDebugZH</var>
 		</line>
-		<line linenr="160" indent="">
+		<line linenr="177" indent="">
 			<var>$delay.final</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>300</var>
 		</line>
-		<line linenr="161" indent="" />
-		<line linenr="162" indent="&#160;">
+		<line linenr="178" indent="" />
+		<line linenr="179" indent="&#160;">
 			<var>$infectionTime</var>
 			<text> </text>
 			<text>=</text>
@@ -1133,11 +1263,11 @@
 			<text> </text>
 			<var>$delay.final</var>
 		</line>
-		<line linenr="163" indent="&#160;" />
-		<line linenr="164" indent="&#160;&#160;">
+		<line linenr="180" indent="&#160;" />
+		<line linenr="181" indent="&#160;&#160;">
 			<comment>* Store the deadline permanently on this ship.</comment>
 		</line>
-		<line linenr="165" indent="&#160;">
+		<line linenr="182" indent="&#160;">
 			<var>[THIS]</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -1156,18 +1286,18 @@
 			<text>=</text>
 			<var>$infectionTime</var>
 		</line>
-		<line linenr="166" indent="&#160;&#160;">
+		<line linenr="183" indent="&#160;&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="167" indent="&#160;" />
-		<line linenr="168" indent="">
+		<line linenr="184" indent="&#160;" />
+		<line linenr="185" indent="">
 			<var>GetCurrentSector</var>
 			<text>:</text>
 		</line>
-		<line linenr="169" indent="">
+		<line linenr="186" indent="">
 			<comment>* Resolve the sector containing the ship, including docked ships.</comment>
 		</line>
-		<line linenr="170" indent="">
+		<line linenr="187" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>[THIS]</var>
@@ -1177,7 +1307,7 @@
 			<text> </text>
 			<text>docked</text>
 		</line>
-		<line linenr="171" indent="&#160;">
+		<line linenr="188" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -1189,31 +1319,50 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="172" indent="&#160;">
+		<line linenr="189" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="173" indent="&#160;">
+		<line linenr="190" indent="&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[SECTOR]</var>
 		</line>
-		<line linenr="174" indent="&#160;">
+		<line linenr="191" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="175" indent="&#160;">
+		<line linenr="192" indent="&#160;">
 			<text>endsub</text>
 		</line>
-		<line linenr="176" indent="&#160;&#160;" />
-		<line linenr="177" indent="&#160;">
+		<line linenr="193" indent="&#160;" />
+		<line linenr="194" indent="&#160;">
 			<var>UpdateVirusReadout</var>
 			<text>:</text>
 		</line>
-		<line linenr="178" indent="&#160;&#160;">
-			<comment>* Expanded 2.2: Compact countdown for detected infections.</comment>
+		<line linenr="195" indent="&#160;">
+			<comment>* Expanded 2.2.1: Hybrid OCV incubation countdown.</comment>
 		</line>
-		<line linenr="179" indent="&#160;&#160;">
+		<line linenr="196" indent="&#160;">
+			<comment>* Above 5 minutes: whole-minute precision.</comment>
+		</line>
+		<line linenr="197" indent="&#160;">
+			<comment>* Final 5 minutes: second-level precision.</comment>
+		</line>
+		<line linenr="198" indent="&#160;">
+			<comment>* FormatDuration remains the SSOT.</comment>
+		</line>
+		<line linenr="199" indent="&#160;" />
+		<line linenr="200" indent="&#160;">
+			<var>$playtime</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>playing</text>
+			<text> </text>
+			<text>time</text>
+		</line>
+		<line linenr="201" indent="&#160;&#160;">
 			<var>$takeoverPending</var>
 			<text> </text>
 			<text>=</text>
@@ -1232,7 +1381,7 @@
 			<text>=</text>
 			<text>'mayhem_OCVTakeoverPending'</text>
 		</line>
-		<line linenr="180" indent="&#160;&#160;">
+		<line linenr="202" indent="&#160;&#160;&#160;">
 			<var>$remaining</var>
 			<text> </text>
 			<text>=</text>
@@ -1243,38 +1392,50 @@
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="181" indent="&#160;&#160;" />
-		<line linenr="182" indent="&#160;&#160;">
+		<line linenr="203" indent="&#160;&#160;&#160;" />
+		<line linenr="204" indent="&#160;&#160;">
+			<comment>* -1 represents a matured or pending takeover.</comment>
+		</line>
+		<line linenr="205" indent="&#160;&#160;&#160;">
+			<var>$displaySeconds</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="206" indent="&#160;&#160;&#160;" />
+		<line linenr="207" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
+			<text>!</text>
 			<var>$takeoverPending</var>
 			<text> </text>
-			<text>OR</text>
+			<text>AND</text>
 			<text> </text>
 			<var>$remaining</var>
 			<text> </text>
-			<text>&lt;=</text>
+			<text>&gt;</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="183" indent="&#160;&#160;">
-			<var>$readout</var>
+		<line linenr="208" indent="&#160;">
+			<text>if</text>
 			<text> </text>
-			<text>=</text>
+			<var>$remaining</var>
 			<text> </text>
-			<text>' &lt;V:!&gt;'</text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>300</var>
 		</line>
-		<line linenr="184" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="185" indent="&#160;">
+		<line linenr="209" indent="&#160;">
 			<comment>* Round up to the next whole minute.</comment>
 		</line>
-		<line linenr="186" indent="&#160;">
-			<var>$minutes</var>
+		<line linenr="210" indent="&#160;">
+			<var>$displaySeconds</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
+			<text>(</text>
 			<text>(</text>
 			<var>$remaining</var>
 			<text> </text>
@@ -1286,23 +1447,104 @@
 			<text>/</text>
 			<text> </text>
 			<var>60</var>
-		</line>
-		<line linenr="187" indent="&#160;">
-			<var>$remaining.f</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$minutes</var>
+			<text>)</text>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
 			<var>60</var>
 		</line>
-		<line linenr="188" indent="" />
-		<line linenr="189" indent="">
-			<comment>* Use shared time formatter.</comment>
+		<line linenr="211" indent="&#160;">
+			<text>else</text>
 		</line>
-		<line linenr="190" indent="" interruptable="@">
+		<line linenr="212" indent="&#160;&#160;">
+			<comment>* Show actual remaining seconds during the final 5 minutes.</comment>
+		</line>
+		<line linenr="213" indent="&#160;">
+			<var>$displaySeconds</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$remaining</var>
+		</line>
+		<line linenr="214" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="215" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="216" indent="&#160;" />
+		<line linenr="217" indent="&#160;&#160;">
+			<comment>* Skip the ship-name update if the displayed value has not changed.</comment>
+		</line>
+		<line linenr="218" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$displaySeconds</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>$lastVirusDisplay</var>
+		</line>
+		<line linenr="219" indent="&#160;&#160;">
+			<text>endsub</text>
+		</line>
+		<line linenr="220" indent="&#160;&#160;" />
+		<line linenr="221" indent="&#160;&#160;&#160;">
+			<var>$lastVirusDisplay</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$displaySeconds</var>
+		</line>
+		<line linenr="222" indent="&#160;&#160;" />
+		<line linenr="223" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$displaySeconds</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="224" indent="&#160;&#160;">
+			<var>$readout</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>' &lt;V:!&gt;'</text>
+		</line>
+		<line linenr="225" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="226" indent="&#160;">
+			<var>$includeSeconds</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="227" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$remaining</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>300</var>
+		</line>
+		<line linenr="228" indent="">
+			<var>$includeSeconds</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="229" indent="" />
+		<line linenr="230" indent="" interruptable="@">
 			<var>$time.f</var>
 			<text> </text>
 			<text>=</text>
@@ -1320,7 +1562,7 @@
 			<text> </text>
 			<text>seconds</text>
 			<text>=</text>
-			<var>$remaining.f</var>
+			<var>$displaySeconds</var>
 			<text> </text>
 			<text>approximate</text>
 			<text>=</text>
@@ -1329,8 +1571,12 @@
 			<text>abbreviate</text>
 			<text>=</text>
 			<var>[TRUE]</var>
+			<text> </text>
+			<text>includeSeconds</text>
+			<text>=</text>
+			<var>$includeSeconds</var>
 		</line>
-		<line linenr="191" indent="">
+		<line linenr="231" indent="">
 			<var>$readout</var>
 			<text> </text>
 			<text>=</text>
@@ -1345,11 +1591,11 @@
 			<text> </text>
 			<text>'&gt;'</text>
 		</line>
-		<line linenr="192" indent="">
+		<line linenr="232" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="193" indent="" />
-		<line linenr="194" indent="" interruptable="@">
+		<line linenr="233" indent="" />
+		<line linenr="234" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1375,7 +1621,7 @@
 			<text>=</text>
 			<text>'virus'</text>
 		</line>
-		<line linenr="195" indent="">
+		<line linenr="235" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -1384,17 +1630,19 @@
 			<sval type="string" val="Mayhem.Task.OCVVirus" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="136" />
+			<sval type="int" val="143" />
 			<sval type="int" val="0" />
-			<sval type="array" size="27">
+			<sval type="array" size="28">
 				<sval type="string" val="playtime" />
 				<sval type="string" val="detected" />
 				<sval type="string" val="makerRace" />
 				<sval type="string" val="infectionTime" />
-				<sval type="string" val="cycle.name" />
+				<sval type="string" val="lastVirusDisplay" />
 				<sval type="string" val="scriptName" />
 				<sval type="string" val="taskID" />
 				<sval type="string" val="takeoverPending" />
+				<sval type="string" val="remaining" />
+				<sval type="string" val="waitMs" />
 				<sval type="string" val="target" />
 				<sval type="string" val="target.owner" />
 				<sval type="string" val="sector" />
@@ -1409,13 +1657,12 @@
 				<sval type="string" val="delay.randomOffset" />
 				<sval type="string" val="delay.final" />
 				<sval type="string" val="showDebugZH" />
-				<sval type="string" val="remaining" />
+				<sval type="string" val="displaySeconds" />
 				<sval type="string" val="readout" />
-				<sval type="string" val="minutes" />
-				<sval type="string" val="remaining.f" />
+				<sval type="string" val="includeSeconds" />
 				<sval type="string" val="time.f" />
 			</sval>
-			<sval type="array" size="110">
+			<sval type="array" size="129">
 				<sval type="array" size="2">
 					<sval type="int" val="141" />
 					<sval type="int" val="0" />
@@ -1459,20 +1706,33 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="51" />
+					<sval type="int" val="59" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610424" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1167" />
+					<sval type="int" val="106" />
+				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604535" />
+					<sval type="int" val="-1610602743" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
@@ -1487,7 +1747,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1201" />
-					<sval type="int" val="-1610609405" />
+					<sval type="int" val="-1610608893" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1032" />
@@ -1540,7 +1800,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610608632" />
+					<sval type="int" val="-1610608120" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="7" />
@@ -1549,13 +1809,101 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="32" />
+					<sval type="int" val="39" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_detectedVirus" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10000" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="45">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606840" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="310" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="20" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="17" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-10" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-11" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1000" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
 					<sval type="int" val="-2147483647" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="141" />
@@ -1565,7 +1913,7 @@
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536865785" />
+					<sval type="int" val="-536863993" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -1574,7 +1922,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605565" />
+					<sval type="int" val="-1610603773" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
@@ -1591,7 +1939,7 @@
 					<sval type="int" val="1072" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610605565" />
+					<sval type="int" val="-1610603773" />
 					<sval type="string" val="!fight.attack.object" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -1600,32 +1948,32 @@
 					<sval type="int" val="522" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="-1610605565" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-1610603773" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="701" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="9" />
+					<sval type="int" val="10" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610605565" />
+					<sval type="int" val="-1610603773" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="10" />
 					<sval type="int" val="6" />
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
+					<sval type="int" val="11" />
 					<sval type="int" val="10" />
 					<sval type="int" val="16" />
 					<sval type="int" val="15" />
@@ -1652,57 +2000,38 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="32" />
+					<sval type="int" val="39" />
 				</sval>
-				<sval type="array" size="19">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610604797" />
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
+					<sval type="string" val="mayhem_detectedVirus" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603000" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="9" />
-					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="98" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="0" />
-					<sval type="int" val="4" />
-					<sval type="int" val="60" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
+					<sval type="int" val="106" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536862201" />
+					<sval type="int" val="-536860409" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -1711,7 +2040,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="92" />
+					<sval type="int" val="100" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="155" />
@@ -1722,9 +2051,17 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="156" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_detectedVirus" />
+					<sval type="int" val="1" />
+				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610602749" />
+					<sval type="int" val="-1610600701" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -1737,11 +2074,11 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="98" />
+					<sval type="int" val="106" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610600189" />
+					<sval type="int" val="-1610598141" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
@@ -1762,13 +2099,13 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610600951" />
+					<sval type="int" val="-1610598903" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -1778,7 +2115,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536859385" />
+					<sval type="int" val="-536857337" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
@@ -1793,17 +2130,17 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="46" />
+					<sval type="int" val="54" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="41" />
+					<sval type="int" val="49" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="706" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-536858617" />
+					<sval type="int" val="-536856569" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -1812,7 +2149,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="92" />
+					<sval type="int" val="100" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -1822,7 +2159,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -1835,28 +2172,28 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="92" />
+					<sval type="int" val="100" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_sector.ocvSignals" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536856569" />
+					<sval type="int" val="-536854521" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
@@ -1865,12 +2202,12 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
 					<sval type="int" val="39600" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="11" />
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="600" />
 					<sval type="int" val="15" />
@@ -1888,10 +2225,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536855801" />
+					<sval type="int" val="-536853753" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3600" />
 					<sval type="int" val="15" />
@@ -1903,7 +2240,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3600" />
@@ -1913,7 +2250,7 @@
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetShipQuality" />
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
@@ -1924,14 +2261,14 @@
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="128" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="4" />
@@ -1940,7 +2277,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
@@ -1949,7 +2286,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="4" />
@@ -1958,7 +2295,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="4" />
@@ -1967,7 +2304,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="4" />
 					<sval type="int" val="4" />
@@ -1976,7 +2313,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="5" />
 					<sval type="int" val="4" />
@@ -1985,7 +2322,7 @@
 				<sval type="array" size="7">
 					<sval type="int" val="130" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 					<sval type="int" val="6" />
 					<sval type="int" val="4" />
@@ -1993,23 +2330,23 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="129" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="14" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="13" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610592765" />
+					<sval type="int" val="-1610590717" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
@@ -2018,10 +2355,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593789" />
+					<sval type="int" val="-1610591741" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -2033,7 +2370,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -2042,14 +2379,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610593019" />
+					<sval type="int" val="-1610590971" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -2061,10 +2398,10 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -2084,14 +2421,14 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="3" />
 					<sval type="int" val="15" />
@@ -2111,10 +2448,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="17" />
+					<sval type="int" val="19" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="15" />
@@ -2126,10 +2463,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="18" />
+					<sval type="int" val="20" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="15" />
+					<sval type="int" val="17" />
 					<sval type="int" val="4" />
 					<sval type="int" val="1" />
 					<sval type="int" val="15" />
@@ -2141,20 +2478,20 @@
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="110" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="17" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="18" />
+					<sval type="int" val="20" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="12" />
+					<sval type="int" val="14" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="19" />
+					<sval type="int" val="21" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2164,10 +2501,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610591224" />
+					<sval type="int" val="-1610589176" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
@@ -2179,10 +2516,10 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="4" />
 					<sval type="int" val="7" />
 					<sval type="int" val="15" />
@@ -2202,10 +2539,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-536848889" />
+					<sval type="int" val="-536846841" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="4" />
 					<sval type="int" val="600" />
 					<sval type="int" val="15" />
@@ -2217,7 +2554,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="600" />
@@ -2228,20 +2565,20 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_showDebug" />
-					<sval type="int" val="21" />
+					<sval type="int" val="23" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610589944" />
+					<sval type="int" val="-1610587896" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="21" />
+					<sval type="int" val="23" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="300" />
@@ -2255,7 +2592,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="20" />
+					<sval type="int" val="22" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -2283,21 +2620,21 @@
 					<sval type="int" val="745" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
-					<sval type="int" val="-1610588157" />
+					<sval type="int" val="-1610586109" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="11" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="97" />
+					<sval type="int" val="105" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="10" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="6" />
@@ -2311,6 +2648,10 @@
 					<sval type="int" val="101" />
 					<sval type="string" val="UpdateVirusReadout" />
 				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="141" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="156" />
 					<sval type="int" val="131075" />
@@ -2321,7 +2662,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="22" />
+					<sval type="int" val="8" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="3" />
@@ -2333,47 +2674,61 @@
 					<sval type="int" val="-1" />
 					<sval type="int" val="12" />
 					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="19">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610586109" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="22" />
-					<sval type="int" val="4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="5" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-3" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="23" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
-					<sval type="int" val="5" />
-					<sval type="string" val=" &lt;V:!&gt;" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="108" />
+				<sval type="array" size="22">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610583037" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="9" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-4" />
 				</sval>
-				<sval type="array" size="21">
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610583293" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="300" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="29">
 					<sval type="int" val="104" />
 					<sval type="int" val="24" />
-					<sval type="int" val="5" />
+					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="22" />
+					<sval type="int" val="8" />
 					<sval type="int" val="4" />
 					<sval type="int" val="59" />
 					<sval type="int" val="15" />
@@ -2382,7 +2737,12 @@
 					<sval type="int" val="60" />
 					<sval type="int" val="15" />
 					<sval type="int" val="14" />
-					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="60" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="11" />
+					<sval type="int" val="16" />
 					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
 					<sval type="int" val="11" />
@@ -2390,44 +2750,135 @@
 					<sval type="int" val="17" />
 					<sval type="int" val="14" />
 					<sval type="int" val="-4" />
+					<sval type="int" val="17" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-6" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="116" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="25" />
+					<sval type="int" val="-1610582520" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="24" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="1">
+					<sval type="int" val="1168" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="24" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610581501" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="24" />
 					<sval type="int" val="4" />
-					<sval type="int" val="60" />
+					<sval type="int" val="0" />
 					<sval type="int" val="15" />
-					<sval type="int" val="13" />
+					<sval type="int" val="3" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
+					<sval type="int" val="3" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="12">
-					<sval type="int" val="102" />
-					<sval type="string" val="Joubarbe.Lib.FormatDuration" />
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val=" &lt;V:!&gt;" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="127" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
 					<sval type="int" val="26" />
+					<sval type="int" val="1" />
 					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610580728" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="25" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="300" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="26" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.FormatDuration" />
+					<sval type="int" val="27" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="24" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="26" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
-					<sval type="int" val="23" />
+					<sval type="int" val="25" />
 					<sval type="int" val="5" />
 					<sval type="int" val="5" />
 					<sval type="string" val=" &lt;V:" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="26" />
+					<sval type="int" val="27" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -2451,7 +2902,7 @@
 					<sval type="int" val="131075" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="23" />
+					<sval type="int" val="25" />
 					<sval type="int" val="5" />
 					<sval type="string" val="virus" />
 				</sval>
@@ -2460,7 +2911,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="94">
+			<sval type="array" size="116">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -2505,7 +2956,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="6" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Warning-name cycle remains task-local." />
+					<sval type="string" val="Cache the last displayed duration to avoid unnecessary ship-name updates." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="7" />
@@ -2513,43 +2964,48 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Display the countdown immediately for detected infections." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="string" val="===== Incubation =====" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="7" />
+					<sval type="int" val="9" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Mature at the saved deadline or when an early takeover is triggered." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="8" />
+					<sval type="int" val="10" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Restart updated scripts without resetting the infection deadline." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="13" />
+					<sval type="int" val="15" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Broadcast takeover overrides the remaining incubation period." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="16" />
+					<sval type="int" val="18" />
 					<sval type="int" val="7" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="16" />
-					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="18" />
@@ -2557,137 +3013,149 @@
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Adaptive OCV virus polling." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="OCV-built ships poll rapidly for combat-triggered maturation." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Detected infections poll rapidly near maturity." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Other infections retain the low-overhead 10-second interval." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="25" />
 					<sval type="int" val="1" />
 					<sval type="string" val="The ship may have been destroyed while waiting." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="20" />
+					<sval type="int" val="27" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
+					<sval type="int" val="27" />
 					<sval type="int" val="1" />
 					<sval type="string" val="ZH 1.10: OCV-built ships mature immediately when attacking Xenon or OCV." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="20" />
+					<sval type="int" val="27" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Non-OCV infectees must mature normally." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2: Display the remaining incubation time on detected infectees." />
+					<sval type="string" val="Expanded 2.2.1: Refresh detected infection countdown." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="28" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Refresh once per minute; undetected infections remain hidden." />
+					<sval type="string" val="Whole-minute display during incubation, second-level display near maturity." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="35" />
+					<sval type="int" val="1" />
+					<sval type="string" val="UpdateVirusReadout skips unchanged values." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="31" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="32" />
+					<sval type="int" val="38" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="34" />
+					<sval type="int" val="39" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="39" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="41" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="34" />
+					<sval type="int" val="41" />
 					<sval type="int" val="1" />
 					<sval type="string" val="===== Infection matured. =====" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="34" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="35" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="35" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Preserve maturity independently of the asynchronous resolver." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="36" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="36" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2: Show that the detected infection has matured." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="39" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="39" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="39" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Defer conversion of the current player ship." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="40" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="40" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Resolve other eligible infectees immediately." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="41" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="45" />
-					<sval type="int" val="7" />
+					<sval type="int" val="42" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="42" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Preserve maturity independently of the asynchronous resolver." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="46" />
+					<sval type="int" val="43" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="43" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Show that the detected infection has matured." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="47" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="46" />
+					<sval type="int" val="47" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="47" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Defer conversion of the current player ship." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="48" />
@@ -2696,179 +3164,261 @@
 				<sval type="array" size="3">
 					<sval type="int" val="48" />
 					<sval type="int" val="1" />
-					<sval type="string" val="The player may have changed the deferred ship's sector." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="49" />
-					<sval type="int" val="4" />
+					<sval type="string" val="Resolve other eligible infectees immediately." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="49" />
 					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="49" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Resolve this ship and all other eligible infectees in its sector." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="50" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="51" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="52" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Generate and store an absolute infection deadline exactly once." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="53" />
+					<sval type="int" val="7" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="54" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="54" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="56" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="56" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The player may have changed the deferred ship's sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="57" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="57" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="57" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Resolve this ship and all other eligible infectees in its sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="58" />
+					<sval type="int" val="2" />
+				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="59" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="60" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Generate and store an absolute infection deadline exactly once." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="69" />
+					<sval type="int" val="61" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="70" />
+					<sval type="int" val="64" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="67" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="77" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="78" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="70" />
+					<sval type="int" val="78" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.9.3: Insurance reduces timing variance by 85% on Hard and 70% on Insane." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="72" />
+					<sval type="int" val="80" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Never happens on easy/normal (negative events cannot occur with insurance policy); just in case." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="77" />
+					<sval type="int" val="85" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="78" />
+					<sval type="int" val="86" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Expanded 2.2: Removed obsolete RNG workaround. Randomize timing using the ship quality offset." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="82" />
+					<sval type="int" val="90" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="82" />
+					<sval type="int" val="90" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 1.3: Duration reduced by 30% on insane." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="84" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="84" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Minimum incubation time: 600 seconds." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="86" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="86" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2: Debug overrides timer. 5-minute incubation." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="89" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="90" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="90" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Store the deadline permanently on this ship." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="92" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="93" />
+					<sval type="int" val="92" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Resolve the sector containing the ship, including docked ships." />
+					<sval type="string" val="Minimum incubation time: 600 seconds." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="96" />
-					<sval type="int" val="5" />
+					<sval type="int" val="94" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="94" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Debug overrides timer. 5-minute incubation." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="97" />
-					<sval type="int" val="4" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="98" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="99" />
+					<sval type="int" val="98" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Expanded 2.2: Compact countdown for detected infections." />
+					<sval type="string" val="Store the deadline permanently on this ship." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="101" />
+					<sval type="int" val="100" />
 					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="101" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Resolve the sector containing the ship, including docked ships." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="104" />
 					<sval type="int" val="5" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Round up to the next whole minute." />
+				<sval type="array" size="2">
+					<sval type="int" val="105" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="106" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="106" />
+					<sval type="int" val="107" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Use shared time formatter." />
+					<sval type="string" val="Expanded 2.2.1: Hybrid OCV incubation countdown." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="107" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Above 5 minutes: whole-minute precision." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="107" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Final 5 minutes: second-level precision." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="107" />
+					<sval type="int" val="1" />
+					<sval type="string" val="FormatDuration remains the SSOT." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="108" />
+					<sval type="int" val="107" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="110" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="110" />
+					<sval type="int" val="1" />
+					<sval type="string" val="-1 represents a matured or pending takeover." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="111" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="113" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Round up to the next whole minute." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="115" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="115" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Show actual remaining seconds during the final 5 minutes." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="116" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="108" />
+					<sval type="int" val="116" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="116" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="116" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Skip the ship-name update if the displayed value has not changed." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="118" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="119" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="122" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="125" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="127" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="127" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Menu.DWM.Set.Recycling</name>
-	<version>15</version>
+	<version>20</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -165,7 +165,80 @@
 			<text> </text>
 			<var>$return</var>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="015" indent="&#160;" />
+		<line linenr="016" indent="&#160;">
+			<comment>* Expanded 2.2.1: Revalidate recycling eligibility before proceeding.</comment>
+		</line>
+		<line linenr="017" indent="&#160;" interruptable="@">
+			<var>$canRecycle</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.CanRecycleShip</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>ship</text>
+			<text>=</text>
+			<var>$ship</var>
+			<text> </text>
+			<text>automatic</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="018" indent="&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$canRecycle</var>
+		</line>
+		<line linenr="019" indent="&#160;&#160;" interruptable="@">
+			<text>START</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.Infobox</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>text</text>
+			<text>=</text>
+			<text>'This ship cannot be recycled.'</text>
+			<text> </text>
+			<text>icon</text>
+			<text>=</text>
+			<text>'no'</text>
+			<text> </text>
+			<text>timeout</text>
+			<text>=</text>
+			<var>0</var>
+			<text> </text>
+			<text>fadeout</text>
+			<text>=</text>
+			<var>0</var>
+		</line>
+		<line linenr="020" indent="&#160;&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="021" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="022" indent="&#160;" />
+		<line linenr="023" indent="&#160;">
 			<var>$dockedShips</var>
 			<text> </text>
 			<text>=</text>
@@ -187,7 +260,7 @@
 			<text>/</text>
 			<text>station</text>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="024" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>size</text>
@@ -198,14 +271,14 @@
 			<text> </text>
 			<var>$dockedShips</var>
 		</line>
-		<line linenr="017" indent="&#160;&#160;">
+		<line linenr="025" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>'All carried ships must be undocked first.'</text>
 		</line>
-		<line linenr="018" indent="&#160;&#160;" interruptable="@">
+		<line linenr="026" indent="&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -235,72 +308,14 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="019" indent="&#160;">
+		<line linenr="027" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="020" indent="&#160;&#160;">
-			<comment>* Add-Ons 2.1.1: Display delay. Also, Toxic Worlds speed up recycling by 50%.</comment>
+		<line linenr="028" indent="&#160;&#160;">
+			<comment>* Expanded 2.2.1: Use the shared recycling duration for manual and automatic recycling.</comment>
 		</line>
-		<line linenr="021" indent="&#160;&#160;">
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>is</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>class</text>
-			<text> </text>
-			<var>[Huge Ship]</var>
-		</line>
-		<line linenr="022" indent="&#160;&#160;&#160;">
-			<var>$delay</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>600</var>
-		</line>
-		<line linenr="023" indent="&#160;&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$ship</var>
-			<text>-&gt;</text>
-			<text> </text>
-			<text>is</text>
-			<text> </text>
-			<text>of</text>
-			<text> </text>
-			<text>class</text>
-			<text> </text>
-			<var>[Big Ship]</var>
-		</line>
-		<line linenr="024" indent="&#160;&#160;&#160;">
-			<var>$delay</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>300</var>
-		</line>
-		<line linenr="025" indent="&#160;&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="026" indent="&#160;&#160;&#160;">
-			<var>$delay</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>120</var>
-		</line>
-		<line linenr="027" indent="&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="028" indent="&#160;&#160;" />
 		<line linenr="029" indent="&#160;&#160;" interruptable="@">
-			<var>$toxicWorlds</var>
+			<var>$delay</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -311,75 +326,23 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>Mayhem.CountTerraformingEffects</call>
+			<call>Mayhem.GetShipRecycleDelay</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>sector</text>
+			<text>ship</text>
 			<text>=</text>
-			<var>[SECTOR]</var>
+			<var>$ship</var>
 			<text> </text>
-			<text>effect</text>
+			<text>outpost</text>
 			<text>=</text>
-			<text>'toxic'</text>
+			<var>[THIS]</var>
 		</line>
-		<line linenr="030" indent="&#160;&#160;">
-			<var>$delay</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$delay</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>100</var>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<text>(</text>
-			<var>100</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>50</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>$toxicWorlds</var>
-			<text>)</text>
+		<line linenr="030" indent="&#160;&#160;" />
+		<line linenr="031" indent="&#160;&#160;">
+			<comment>* Expanded 2.2: Now uses standardized duration formatting.</comment>
 		</line>
-		<line linenr="031" indent="&#160;&#160;" />
-		<line linenr="032" indent="&#160;&#160;">
-			<comment>* Round up to the next whole minute to keep a conservative estimate.</comment>
-		</line>
-		<line linenr="033" indent="&#160;&#160;">
-			<var>$delay</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>(</text>
-			<text>(</text>
-			<var>$delay</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>59</var>
-			<text>)</text>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>60</var>
-			<text>)</text>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>60</var>
-		</line>
-		<line linenr="034" indent="&#160;&#160;" />
-		<line linenr="035" indent="&#160;&#160;">
-			<comment>* Add-Ons 2.1.3: Now uses standardized duration formatting.</comment>
-		</line>
-		<line linenr="036" indent="&#160;&#160;" interruptable="@">
+		<line linenr="032" indent="&#160;&#160;" interruptable="@">
 			<var>$delay.f</var>
 			<text> </text>
 			<text>=</text>
@@ -407,8 +370,8 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="037" indent="&#160;&#160;" />
-		<line linenr="038" indent="&#160;&#160;">
+		<line linenr="033" indent="&#160;&#160;" />
+		<line linenr="034" indent="&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -431,7 +394,7 @@
 			<text> </text>
 			<text>'. Are you sure?'</text>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;">
 			<var>$confirm</var>
 			<text> </text>
 			<text>=</text>
@@ -459,15 +422,15 @@
 			<text>=</text>
 			<var>$t</var>
 		</line>
-		<line linenr="040" indent="&#160;&#160;">
+		<line linenr="036" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$confirm</var>
 		</line>
-		<line linenr="041" indent="&#160;&#160;&#160;">
+		<line linenr="037" indent="&#160;&#160;&#160;">
 			<comment>* 3.15</comment>
 		</line>
-		<line linenr="042" indent="&#160;&#160;&#160;">
+		<line linenr="038" indent="&#160;&#160;&#160;">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -496,7 +459,7 @@
 			<text> </text>
 			<text>arg2</text>
 			<text>=</text>
-			<var>null</var>
+			<var>[FALSE]</var>
 			<text> </text>
 			<text>arg3</text>
 			<text>=</text>
@@ -510,7 +473,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="043" indent="&#160;&#160;&#160;" interruptable="@">
+		<line linenr="039" indent="&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -540,33 +503,27 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="044" indent="&#160;&#160;&#160;">
-			<comment>* = [NULL]-&gt; call script 'Mayhem.Recycle' : outpost=[THIS] objectOrType=$ship qty=1</comment>
-		</line>
-		<line linenr="045" indent="&#160;&#160;&#160;">
-			<comment>* gosub Confirm:</comment>
-		</line>
-		<line linenr="046" indent="&#160;&#160;">
+		<line linenr="040" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="047" indent="&#160;">
+		<line linenr="041" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="048" indent="">
+		<line linenr="042" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="049" indent="" />
-		<line linenr="050" indent="">
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="051" indent="" />
-		<line linenr="052" indent="">
+		<line linenr="045" indent="" />
+		<line linenr="046" indent="">
 			<var>Confirm</var>
 			<text>:</text>
 		</line>
-		<line linenr="053" indent="&#160;" interruptable="@">
+		<line linenr="047" indent="&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -596,7 +553,7 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="054" indent="">
+		<line linenr="048" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -605,7 +562,7 @@
 			<sval type="string" val="Menu.DWM.Set.Recycling" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="15" />
+			<sval type="int" val="20" />
 			<sval type="int" val="0" />
 			<sval type="array" size="12">
 				<sval type="string" val="return" />
@@ -614,14 +571,14 @@
 				<sval type="string" val="qty" />
 				<sval type="string" val="enter" />
 				<sval type="string" val="ship" />
+				<sval type="string" val="canRecycle" />
 				<sval type="string" val="dockedShips" />
 				<sval type="string" val="t" />
 				<sval type="string" val="delay" />
-				<sval type="string" val="toxicWorlds" />
 				<sval type="string" val="delay.f" />
 				<sval type="string" val="confirm" />
 			</sval>
-			<sval type="array" size="37">
+			<sval type="array" size="32">
 				<sval type="array" size="6">
 					<sval type="int" val="125" />
 					<sval type="int" val="-1610610173" />
@@ -708,15 +665,15 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="34" />
+					<sval type="int" val="29" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="125" />
-					<sval type="int" val="-1610604283" />
+					<sval type="int" val="-1610605563" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 					<sval type="int" val="20" />
@@ -731,21 +688,66 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.CanRecycleShip" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608637" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.Infobox" />
+					<sval type="int" val="-2147483646" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="string" val="This ship cannot be recycled." />
+					<sval type="int" val="5" />
+					<sval type="string" val="no" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1008" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
-					<sval type="int" val="6" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="131" />
-					<sval type="int" val="-1610608381" />
+					<sval type="int" val="-1610607357" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="6" />
+					<sval type="int" val="7" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
 					<sval type="string" val="All carried ships must be undocked first." />
@@ -760,7 +762,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="5" />
 					<sval type="string" val="no" />
 					<sval type="int" val="4" />
@@ -770,136 +772,19 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="33" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="705" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-1610607613" />
-					<sval type="int" val="12" />
-					<sval type="int" val="2019" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="600" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="24" />
-				</sval>
-				<sval type="array" size="6">
-					<sval type="int" val="705" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="5" />
-					<sval type="int" val="-1610606843" />
-					<sval type="int" val="12" />
-					<sval type="int" val="2073" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="300" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="24" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="120" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="28" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
-					<sval type="string" val="Mayhem.CountTerraformingEffects" />
+					<sval type="string" val="Mayhem.GetShipRecycleDelay" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="2" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
-					<sval type="string" val="toxic" />
-				</sval>
-				<sval type="array" size="33">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="9" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="100" />
-					<sval type="int" val="4" />
-					<sval type="int" val="50" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="14" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-6" />
-					<sval type="int" val="17" />
-				</sval>
-				<sval type="array" size="29">
-					<sval type="int" val="104" />
-					<sval type="int" val="8" />
-					<sval type="int" val="7" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="4" />
-					<sval type="int" val="59" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
-					<sval type="int" val="4" />
-					<sval type="int" val="60" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="4" />
-					<sval type="int" val="60" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="11" />
-					<sval type="int" val="16" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="17" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="1" />
 				</sval>
 				<sval type="array" size="12">
 					<sval type="int" val="102" />
@@ -909,7 +794,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
+					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
 					<sval type="int" val="131075" />
@@ -917,7 +802,7 @@
 				</sval>
 				<sval type="array" size="31">
 					<sval type="int" val="104" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 					<sval type="int" val="9" />
 					<sval type="int" val="5" />
 					<sval type="string" val="Recycling " />
@@ -956,11 +841,11 @@
 					<sval type="int" val="24" />
 					<sval type="int" val="63" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="7" />
+					<sval type="int" val="8" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610604285" />
+					<sval type="int" val="-1610605565" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="11" />
@@ -977,9 +862,9 @@
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="8" />
-					<sval type="int" val="0" />
-					<sval type="int" val="0" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -1038,7 +923,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="21">
+			<sval type="array" size="18">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -1053,81 +938,67 @@
 					<sval type="string" val="Ship." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="17" />
-					<sval type="int" val="5" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="17" />
+					<sval type="int" val="12" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.1.1: Display delay. Also, Toxic Worlds speed up recycling by 50%." />
+					<sval type="string" val="Expanded 2.2.1: Revalidate recycling eligibility before proceeding." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="23" />
-					<sval type="int" val="5" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="16" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="24" />
+					<sval type="int" val="16" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="26" />
+					<sval type="int" val="21" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Use the shared recycling duration for manual and automatic recycling." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="22" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2: Now uses standardized duration formatting." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="23" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="26" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Round up to the next whole minute to keep a conservative estimate." />
+					<sval type="string" val="3.15" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
-					<sval type="int" val="2" />
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="27" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.1.3: Now uses standardized duration formatting." />
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="28" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="31" />
-					<sval type="int" val="1" />
-					<sval type="string" val="3.15" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="33" />
-					<sval type="int" val="1" />
-					<sval type="string" val="= [NULL]-&gt; call script 'Mayhem.Recycle' : outpost=[THIS] objectOrType=$ship qty=1" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="33" />
-					<sval type="int" val="1" />
-					<sval type="string" val="gosub Confirm:" />
-				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="4" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="33" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="34" />
+					<sval type="int" val="29" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>
