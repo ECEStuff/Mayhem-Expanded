@@ -2,7 +2,7 @@
 
 Mayhem Expanded is an expansion of Renegades, built upon Mayhem 3 Zero Hour and the original Mayhem 3. It includes Azimuth, a map generator for creating and customizing galaxies.
 
-## Downloads and support
+## Downloads and Support
 
 - [Download Mayhem Expanded on ModDB](https://www.moddb.com/mods/mayhem-expanded)
 - [Azimuth source code and standalone releases](https://github.com/ECEStuff/Azimuth_Mayhem_MapGen)
@@ -11,7 +11,7 @@ Mayhem Expanded is an expansion of Renegades, built upon Mayhem 3 Zero Hour and 
 
 **Read the changelog included with your release before installing or updating.** It contains compatibility requirements, gameplay changes, and any additional migration steps.
 
-## Before installing
+## Before Installing
 
 **Mayhem Expanded 2.2 requires both a new game and a new galaxy generated with Azimuth. Existing saves and previously generated galaxies are not compatible.**
 
@@ -22,7 +22,7 @@ For a fresh installation, you need:
 
 Install into a separate copy of the game, outside `Program Files` and `Program Files (x86)`. Back up any existing installation, saves, and customized configuration files before making changes.
 
-## Fresh installation
+## Fresh Installation
 
 ### 1. Prepare the game directory
 
@@ -109,7 +109,7 @@ Do not routinely reactivate an old galaxy or restore old ship and weapon overrid
 
 Azimuth replaces ZMap in this workflow. The old instructions for copying `TShips.txt` and `TBullets.txt` into a separately installed ZMap folder no longer apply.
 
-## Help and bug reports
+## Help and Bug Reports
 
 Use Azimuth's **Help** menu for generator instructions and the in-game encyclopedia for gameplay information. Consult the release changelog for changed rules and known issues.
 
@@ -129,7 +129,7 @@ Expanded's installation instructions assume English game files.
 
 [Russian localization by Alexalsp](https://github.com/alexalsp2/Renegades_AddOns_russian) is available separately, but is outdated and may not match the current release. Do not assume it is compatible with Expanded 2.2.
 
-## Versioning policy
+## Versioning Policy
 
 - **Major releases** (`X.0`, such as `2.0`) introduce substantial changes and require a new game.
 - **Minor releases** (`X.Y`, such as `2.2`) may change persistent world behavior and may require a new game.
@@ -140,7 +140,7 @@ Always check the release changelog for specific savegame and galaxy compatibilit
 
 ## Credits
 
-### Mayhem and its expansions
+### Mayhem and its Expansions
 
 - **Egosoft** — X3: Albion Prelude and the underlying game.
 - **Litcube** — Litcube's Universe, upon which Mayhem was built.
@@ -148,19 +148,17 @@ Always check the release changelog for specific savegame and galaxy compatibilit
 - **Hector0x** — Mayhem 3 Zero Hour.
 - **Mordan (Hairless-Ape)** — Mayhem 3 Renegades, ZMap, and credited contributions ported from Mayhem FoF.
 
-### Localization and assets
+### Localization and Assets
 
 - **XenonArchitect7** — Tips and Flail Barrage Missile icon.
 - **Cycrow** — X3AP documentation and QnA.
-- **Alexalsp** — Russian localization work.
+- **Fallout/Alexalsp** — Russian localization work.
 - **Solek** — Asteroid textures used in Expanded.
-- [Sector Names icon by Cap Cool](https://www.flaticon.com/free-icon/text_10768913?term=text+box&page=2&position=2&origin=tag&related_id=10768913).
-- [Constellation app icon by Magnific](https://www.flaticon.com/free-icon/astronomy_3924439?term=constellation&page=1&position=44&origin=tag&related_id=3924439).
 - **XTC for X3TC/AP** — Goner TS/TP ship models.
 
 Thank you to everyone who contributed testing, bug reports, feedback, and suggestions. Additional asset and script credits remain in the included documentation and source files.
 
-## Licenses and notices
+## Licenses and Notices
 
 Consult the license and attribution notices included with each component before redistributing or modifying it. Azimuth's licensing terms do not automatically apply to Expanded, inherited code, or third-party assets.
 
