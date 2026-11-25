@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Costs.Laser</name>
-	<version>15</version>
+	<version>17</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -327,14 +327,17 @@
 			<text> </text>
 			<var>$qty</var>
 		</line>
-		<line linenr="033" indent="&#160;&#160;" />
-		<line linenr="034" indent="&#160;&#160;&#160;">
+		<line linenr="033" indent="&#160;" />
+		<line linenr="034" indent="&#160;&#160;">
 			<comment>* Add-Ons 1.4.5: Patch exploit where recycling lasers from newly built ships can give a net gain on crystals. </comment>
 		</line>
-		<line linenr="035" indent="&#160;&#160;&#160;">
-			<comment>* Dividing the cost by 1/6 when recycling is effectively 1/6 of the recycling factor. Plasma Beam Cannon untouched because Kha'ak ships cannot be crafted.</comment>
+		<line linenr="035" indent="&#160;&#160;">
+			<comment>* Dividing the cost by 1/6 when recycling is effectively 1/6 of the recycling factor.</comment>
 		</line>
 		<line linenr="036" indent="&#160;&#160;">
+			<comment>* Expanded 2.2.1: Plasma Beam Cannon exemption removed.</comment>
+		</line>
+		<line linenr="037" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$isRecycling</var>
@@ -343,35 +346,54 @@
 			<text> </text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="037" indent="&#160;&#160;&#160;">
+		<line linenr="038" indent="&#160;&#160;" />
+		<line linenr="039" indent="&#160;&#160;&#160;">
+			<comment>* Better: Check the race.</comment>
+		</line>
+		<line linenr="040" indent="&#160;&#160;&#160;" interruptable="@">
+			<var>$OCVlasers</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetLaser.Race</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>race</text>
+			<text>=</text>
+			<var>[OCV]</var>
+			<text> </text>
+			<text>forTrade</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+			<text> </text>
+		</line>
+		<line linenr="041" indent="&#160;&#160;" />
+		<line linenr="042" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
-			<var>$laser</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>{Alpha Kyon Emitter}</var>
-			<text> </text>
-			<text>OR</text>
+			<text>find</text>
 			<text> </text>
 			<var>$laser</var>
 			<text> </text>
-			<text>==</text>
+			<text>in</text>
 			<text> </text>
-			<var>{Beta Kyon Emitter}</var>
+			<text>array</text>
+			<text>:</text>
 			<text> </text>
-			<text>OR</text>
-			<text> </text>
-			<var>$laser</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>{Gamma Kyon Emitter}</var>
+			<var>$OCVlasers</var>
 		</line>
-		<line linenr="038" indent="&#160;&#160;&#160;">
-			<comment>* OCV weapons can be recycled but the recycling factor is 1/100 as much, effectively 0.5% recycling factor on easy/normal/hard or 0.4% on insane.</comment>
+		<line linenr="043" indent="&#160;&#160;&#160;">
+			<comment>* OCV weapons can be recycled but the recycling factor is 1/100 as much, effectively 0.4% recycling factor on easy/normal/hard or 0.32% on insane.</comment>
 		</line>
-		<line linenr="039" indent="&#160;&#160;">
+		<line linenr="044" indent="&#160;&#160;">
 			<var>$ware.cost</var>
 			<text> </text>
 			<text>=</text>
@@ -382,21 +404,13 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="040" indent="&#160;">
+		<line linenr="045" indent="&#160;">
 			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$laser</var>
-			<text> </text>
-			<text>!=</text>
-			<text> </text>
-			<var>{Plasma Beam Cannon}</var>
 		</line>
-		<line linenr="041" indent="&#160;">
+		<line linenr="046" indent="&#160;">
 			<comment>* All other lasers</comment>
 		</line>
-		<line linenr="042" indent="&#160;">
+		<line linenr="047" indent="&#160;">
 			<var>$ware.cost</var>
 			<text> </text>
 			<text>=</text>
@@ -407,14 +421,14 @@
 			<text> </text>
 			<var>6</var>
 		</line>
-		<line linenr="043" indent="">
+		<line linenr="048" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="044" indent="">
+		<line linenr="049" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="045" indent="" />
-		<line linenr="046" indent="">
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -431,11 +445,11 @@
 			<text> </text>
 			<var>$ware.cost</var>
 		</line>
-		<line linenr="047" indent="">
+		<line linenr="052" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="048" indent="" />
-		<line linenr="049" indent="">
+		<line linenr="053" indent="" />
+		<line linenr="054" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$costs</var>
@@ -446,9 +460,9 @@
 			<sval type="string" val="Mayhem.Costs.Laser" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="15" />
+			<sval type="int" val="17" />
 			<sval type="int" val="0" />
-			<sval type="array" size="17">
+			<sval type="array" size="18">
 				<sval type="string" val="outpost" />
 				<sval type="string" val="laser" />
 				<sval type="string" val="qty" />
@@ -466,6 +480,7 @@
 				<sval type="string" val="limit" />
 				<sval type="string" val="discount" />
 				<sval type="string" val="ware.cost" />
+				<sval type="string" val="OCVlasers" />
 			</sval>
 			<sval type="array" size="33">
 				<sval type="array" size="4">
@@ -741,44 +756,25 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="37">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605565" />
-					<sval type="int" val="11" />
+				<sval type="array" size="10">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetLaser.Race" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1406" />
+					<sval type="int" val="-1610605309" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="524321" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="524322" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="524323" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="15" />
-					<sval type="int" val="10" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-5" />
-					<sval type="int" val="10" />
-					<sval type="int" val="-8" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-9" />
+					<sval type="int" val="17" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -798,21 +794,6 @@
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
 					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605051" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-					<sval type="int" val="9" />
-					<sval type="int" val="524313" />
-					<sval type="int" val="15" />
-					<sval type="int" val="1" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-2" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -866,7 +847,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="18">
+			<sval type="array" size="23">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -913,12 +894,34 @@
 				<sval type="array" size="3">
 					<sval type="int" val="24" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Dividing the cost by 1/6 when recycling is effectively 1/6 of the recycling factor. Plasma Beam Cannon untouched because Kha'ak ships cannot be crafted." />
+					<sval type="string" val="Dividing the cost by 1/6 when recycling is effectively 1/6 of the recycling factor." />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="26" />
+					<sval type="int" val="24" />
 					<sval type="int" val="1" />
-					<sval type="string" val="OCV weapons can be recycled but the recycling factor is 1/100 as much, effectively 0.5% recycling factor on easy/normal/hard or 0.4% on insane." />
+					<sval type="string" val="Expanded 2.2.1: Plasma Beam Cannon exemption removed." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="25" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Better: Check the race." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="OCV weapons can be recycled but the recycling factor is 1/100 as much, effectively 0.4% recycling factor on easy/normal/hard or 0.32% on insane." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="29" />
+					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="29" />
