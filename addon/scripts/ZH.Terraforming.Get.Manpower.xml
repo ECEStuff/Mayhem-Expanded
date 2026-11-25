@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Terraforming.Get.Manpower</name>
-	<version>14</version>
+	<version>17</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -14,9 +14,12 @@
 			<comment>* Returns the terraforming manpower of an outpost equal to 2x local current population + 0.5x adjacent population. </comment>
 		</line>
 		<line linenr="002" indent="">
-			<comment>* 2x if terraforming specialist perk is unlocked. 2x or 1.2x if terraforming efficiency 1 is unlocked, stacking multiplicatively with terraforming specialist.</comment>
+			<comment>* 2x if Terraforming Specialist perk is unlocked. 2x or 1.2x if Efficient Terraforming is unlocked, stacking multiplicatively with Terraforming Specialist.</comment>
 		</line>
-		<line linenr="003" indent="" interruptable="@">
+		<line linenr="003" indent="">
+			<comment>* Expanded 2.2.1: Combined TE1-3 into Efficient Terraforming.</comment>
+		</line>
+		<line linenr="004" indent="" interruptable="@">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -32,17 +35,17 @@
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>station</text>
+			<text>stationOrType</text>
 			<text>=</text>
 			<var>$sanctuary</var>
 		</line>
-		<line linenr="004" indent="&#160;">
+		<line linenr="005" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="005" indent="" />
-		<line linenr="006" indent="">
+		<line linenr="006" indent="" />
+		<line linenr="007" indent="">
 			<var>$thisSector</var>
 			<text> </text>
 			<text>=</text>
@@ -54,7 +57,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="007" indent="">
+		<line linenr="008" indent="">
 			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
@@ -73,14 +76,14 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="008" indent="">
+		<line linenr="009" indent="">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="009" indent="" interruptable="@">
+		<line linenr="010" indent="" interruptable="@">
 			<var>$adjacentSectors</var>
 			<text> </text>
 			<text>=</text>
@@ -104,7 +107,7 @@
 			<text>=</text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="010" indent="">
+		<line linenr="011" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -117,17 +120,17 @@
 			<text> </text>
 			<var>$adjacentSectors</var>
 		</line>
-		<line linenr="011" indent="&#160;">
+		<line linenr="012" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="012" indent="&#160;">
+		<line linenr="013" indent="&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="013" indent="&#160;&#160;">
+		<line linenr="014" indent="&#160;&#160;">
 			<var>$sector</var>
 			<text> </text>
 			<text>=</text>
@@ -137,7 +140,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="014" indent="&#160;" interruptable="@">
+		<line linenr="015" indent="&#160;" interruptable="@">
 			<var>$outpost.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -161,21 +164,21 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="015" indent="&#160;">
+		<line linenr="016" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$outpost.adjacent</var>
 		</line>
-		<line linenr="016" indent="&#160;">
+		<line linenr="017" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="017" indent="&#160;" />
-		<line linenr="018" indent="&#160;&#160;">
+		<line linenr="018" indent="&#160;" />
+		<line linenr="019" indent="&#160;&#160;">
 			<comment>* Add-Ons 2.0: The reworked TE3 now provides 100% more manpower (i.e., 100% of its pops instead of 50%) to adjacent sectors.</comment>
 		</line>
-		<line linenr="019" indent="&#160;">
+		<line linenr="020" indent="&#160;">
 			<var>$manpower.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -194,7 +197,7 @@
 			<text>=</text>
 			<text>'mayhem_people'</text>
 		</line>
-		<line linenr="020" indent="&#160;" interruptable="@">
+		<line linenr="021" indent="&#160;" interruptable="@">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -212,9 +215,9 @@
 			<text> </text>
 			<text>perk</text>
 			<text>=</text>
-			<text>'Terraforming efficiency 3'</text>
+			<text>'Efficient Terraforming'</text>
 		</line>
-		<line linenr="021" indent="">
+		<line linenr="022" indent="">
 			<var>$manpower.adjacent</var>
 			<text> </text>
 			<text>=</text>
@@ -225,8 +228,8 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="022" indent="" />
-		<line linenr="023" indent="">
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
@@ -237,14 +240,14 @@
 			<text> </text>
 			<var>$manpower.adjacent</var>
 		</line>
-		<line linenr="024" indent="">
+		<line linenr="025" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="025" indent="&#160;" />
-		<line linenr="026" indent="&#160;">
+		<line linenr="026" indent="&#160;" />
+		<line linenr="027" indent="&#160;">
 			<comment>* Due to precision, we double the local and adjacent manpower first. After that, we sum.</comment>
 		</line>
-		<line linenr="027" indent="" interruptable="@">
+		<line linenr="028" indent="" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$sanctuary</var>
@@ -260,38 +263,38 @@
 			<text> </text>
 			<text>perk</text>
 			<text>=</text>
-			<text>'Terraforming specialist'</text>
-		</line>
-		<line linenr="028" indent="">
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>2</var>
+			<text>'Terraforming Specialist'</text>
 		</line>
 		<line linenr="029" indent="">
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
 			<var>2</var>
 		</line>
 		<line linenr="030" indent="">
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="031" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="031" indent="&#160;" />
-		<line linenr="032" indent="&#160;">
-			<comment>* Add-Ons 1.2: Check if terraforming efficiency 1 is unlocked. If so, 2x if player joined OCV, 1.2x otherwise.</comment>
+		<line linenr="032" indent="&#160;" />
+		<line linenr="033" indent="&#160;">
+			<comment>* Add-Ons 1.2: Check if Efficient Terraforming is unlocked. If so, 2x if player joined OCV, 1.2x otherwise.</comment>
 		</line>
-		<line linenr="033" indent="&#160;&#160;" interruptable="@">
+		<line linenr="034" indent="&#160;&#160;" interruptable="@">
 			<text>if</text>
 			<text> </text>
 			<var>$sanctuary</var>
@@ -307,9 +310,9 @@
 			<text> </text>
 			<text>perk</text>
 			<text>=</text>
-			<text>'Terraforming efficiency 1'</text>
+			<text>'Efficient Terraforming'</text>
 		</line>
-		<line linenr="034" indent="&#160;&#160;">
+		<line linenr="035" indent="&#160;&#160;">
 			<var>$OCVplotstage</var>
 			<text> </text>
 			<text>=</text>
@@ -325,7 +328,7 @@
 			<text>=</text>
 			<text>'OCVplotstage'</text>
 		</line>
-		<line linenr="035" indent="&#160;">
+		<line linenr="036" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -334,18 +337,18 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="036" indent="&#160;&#160;">
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>2</var>
-		</line>
 		<line linenr="037" indent="&#160;&#160;">
+			<var>$manpower.local</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$manpower.local</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="038" indent="&#160;&#160;">
 			<var>$manpower.adjacentSum</var>
 			<text> </text>
 			<text>=</text>
@@ -356,33 +359,16 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="038" indent="&#160;">
+		<line linenr="039" indent="&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="039" indent="">
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>(</text>
-			<var>$manpower.local</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>6</var>
-			<text>)</text>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>5</var>
-		</line>
 		<line linenr="040" indent="">
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<text>(</text>
-			<var>$manpower.adjacentSum</var>
+			<var>$manpower.local</var>
 			<text> </text>
 			<text>*</text>
 			<text> </text>
@@ -394,13 +380,30 @@
 			<var>5</var>
 		</line>
 		<line linenr="041" indent="">
-			<text>end</text>
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$manpower.adjacentSum</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>6</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>5</var>
 		</line>
 		<line linenr="042" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="043" indent="" />
-		<line linenr="044" indent="">
+		<line linenr="043" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="044" indent="" />
+		<line linenr="045" indent="">
 			<var>$manpower.final</var>
 			<text> </text>
 			<text>=</text>
@@ -423,20 +426,20 @@
 			<var>2</var>
 			<text>)</text>
 		</line>
-		<line linenr="045" indent="" />
-		<line linenr="046" indent="">
+		<line linenr="046" indent="" />
+		<line linenr="047" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$manpower.final</var>
 		</line>
-		<line linenr="047" indent="" />
+		<line linenr="048" indent="" />
 	</sourcetext>
 	<codearray>
 		<sval type="array" size="10">
 			<sval type="string" val="ZH.Terraforming.Get.Manpower" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="14" />
+			<sval type="int" val="17" />
 			<sval type="int" val="0" />
 			<sval type="array" size="11">
 				<sval type="string" val="sanctuary" />
@@ -570,7 +573,7 @@
 					<sval type="int" val="7" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Terraforming efficiency 3" />
+					<sval type="string" val="Efficient Terraforming" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -614,7 +617,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Terraforming specialist" />
+					<sval type="string" val="Terraforming Specialist" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -654,7 +657,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
 					<sval type="int" val="5" />
-					<sval type="string" val="Terraforming efficiency 1" />
+					<sval type="string" val="Efficient Terraforming" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
@@ -800,7 +803,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="19">
+			<sval type="array" size="20">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -809,7 +812,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="2x if terraforming specialist perk is unlocked. 2x or 1.2x if terraforming efficiency 1 is unlocked, stacking multiplicatively with terraforming specialist." />
+					<sval type="string" val="2x if Terraforming Specialist perk is unlocked. 2x or 1.2x if Efficient Terraforming is unlocked, stacking multiplicatively with Terraforming Specialist." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Combined TE1-3 into Efficient Terraforming." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="2" />
@@ -856,7 +864,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="21" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.2: Check if terraforming efficiency 1 is unlocked. If so, 2x if player joined OCV, 1.2x otherwise." />
+					<sval type="string" val="Add-Ons 1.2: Check if Efficient Terraforming is unlocked. If so, 2x if player joined OCV, 1.2x otherwise." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="27" />

@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Terraform</name>
-	<version>44</version>
+	<version>45</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -1242,7 +1242,10 @@
 		<line linenr="167" indent="">
 			<comment>* Mastery improves your global limit. It reduces the number of planets by 1. For example, if it took 4 planets to support 1 additional project across your empire, it will now take 3 planets.</comment>
 		</line>
-		<line linenr="168" indent="&#160;" interruptable="@">
+		<line linenr="168" indent="">
+			<comment>* Expanded 2.2.1: Now checked at 12+ planets instead of 18 planets.</comment>
+		</line>
+		<line linenr="169" indent="" interruptable="@">
 			<var>$terraformed</var>
 			<text> </text>
 			<text>=</text>
@@ -1262,16 +1265,37 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="169" indent="&#160;">
+		<line linenr="170" indent="&#160;">
+			<var>$masterySent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_terraformMaster'</text>
+		</line>
+		<line linenr="171" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$terraformed</var>
 			<text> </text>
-			<text>==</text>
+			<text>&gt;=</text>
 			<text> </text>
-			<var>18</var>
+			<var>12</var>
+			<text> </text>
+			<text>AND</text>
+			<text> </text>
+			<text>!</text>
+			<var>$masterySent</var>
 		</line>
-		<line linenr="170" indent="&#160;" interruptable="@">
+		<line linenr="172" indent="&#160;" interruptable="@">
 			<var>$divider</var>
 			<text> </text>
 			<text>=</text>
@@ -1287,7 +1311,7 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="171" indent="">
+		<line linenr="173" indent="&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -1318,7 +1342,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="172" indent="" interruptable="@">
+		<line linenr="174" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1352,32 +1376,48 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="173" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="174" indent="" />
 		<line linenr="175" indent="">
-			<comment>* Add-Ons 2.1: Kha'ak Hive Quest - quest progresses from 'found' to 'terraformed'</comment>
+			<text>set</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_terraformMaster'</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>[TRUE]</var>
 		</line>
 		<line linenr="176" indent="">
-			<comment>* Again, the stages are:</comment>
+			<text>end</text>
 		</line>
-		<line linenr="177" indent="">
-			<comment>* - NULL (not yet started)</comment>
-		</line>
+		<line linenr="177" indent="" />
 		<line linenr="178" indent="">
-			<comment>* - Found (ship recycled; player's curiosity leads to the hive sector. See Mayhem.Recycle)</comment>
+			<comment>* Add-Ons 2.1: Kha'ak Hive Quest - quest progresses from 'found' to 'terraformed'</comment>
 		</line>
 		<line linenr="179" indent="">
-			<comment>* - Terraformed (hive planet terraformed; a large Kha'ak raid will spawn)</comment>
+			<comment>* Again, the stages are:</comment>
 		</line>
 		<line linenr="180" indent="">
-			<comment>* - Completed (raid defeated; player has completed the quest)</comment>
+			<comment>* - NULL (not yet started)</comment>
 		</line>
 		<line linenr="181" indent="">
+			<comment>* - Found (ship recycled; player's curiosity leads to the hive sector. See Mayhem.Recycle)</comment>
+		</line>
+		<line linenr="182" indent="">
+			<comment>* - Terraformed (hive planet terraformed; a large Kha'ak raid will spawn)</comment>
+		</line>
+		<line linenr="183" indent="">
+			<comment>* - Completed (raid defeated; player has completed the quest)</comment>
+		</line>
+		<line linenr="184" indent="">
 			<comment>* - Failed (raid killed player's Outpost)</comment>
 		</line>
-		<line linenr="182" indent="&#160;">
+		<line linenr="185" indent="&#160;">
 			<var>$khaakPlotStage</var>
 			<text> </text>
 			<text>=</text>
@@ -1393,7 +1433,7 @@
 			<text>=</text>
 			<text>'khaakPlotStage'</text>
 		</line>
-		<line linenr="183" indent="&#160;">
+		<line linenr="186" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$planetEffect</var>
@@ -1410,7 +1450,7 @@
 			<text> </text>
 			<text>'found'</text>
 		</line>
-		<line linenr="184" indent="&#160;">
+		<line linenr="187" indent="&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1426,7 +1466,7 @@
 			<text>=</text>
 			<text>'terraformed'</text>
 		</line>
-		<line linenr="185" indent="&#160;">
+		<line linenr="188" indent="&#160;">
 			<var>$khaakHiveSector</var>
 			<text> </text>
 			<text>=</text>
@@ -1442,11 +1482,11 @@
 			<text>=</text>
 			<text>'mayhem_khaakHiveSector'</text>
 		</line>
-		<line linenr="186" indent="&#160;" />
-		<line linenr="187" indent="&#160;">
+		<line linenr="189" indent="&#160;" />
+		<line linenr="190" indent="&#160;">
 			<comment>* Terraforming completed quest message.</comment>
 		</line>
-		<line linenr="188" indent="&#160;">
+		<line linenr="191" indent="&#160;">
 			<var>$msg</var>
 			<text> </text>
 			<text>=</text>
@@ -1477,7 +1517,7 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="189" indent="&#160;" interruptable="@">
+		<line linenr="192" indent="&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1511,8 +1551,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="190" indent="&#160;" />
-		<line linenr="191" indent="&#160;&#160;" interruptable="@">
+		<line linenr="193" indent="&#160;" />
+		<line linenr="194" indent="&#160;&#160;" interruptable="@">
 			<var>$khaakRaid</var>
 			<text> </text>
 			<text>=</text>
@@ -1532,12 +1572,12 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="192" indent="&#160;&#160;">
+		<line linenr="195" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$khaakRaid</var>
 		</line>
-		<line linenr="193" indent="&#160;&#160;">
+		<line linenr="196" indent="&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1553,8 +1593,8 @@
 			<text>=</text>
 			<var>$khaakRaid</var>
 		</line>
-		<line linenr="194" indent="&#160;&#160;" />
-		<line linenr="195" indent="&#160;&#160;" interruptable="@">
+		<line linenr="197" indent="&#160;&#160;" />
+		<line linenr="198" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1563,8 +1603,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="196" indent="&#160;&#160;" />
-		<line linenr="197" indent="&#160;">
+		<line linenr="199" indent="&#160;&#160;" />
+		<line linenr="200" indent="&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -1579,7 +1619,7 @@
 			<text> </text>
 			<text>'.'</text>
 		</line>
-		<line linenr="198" indent="" interruptable="@">
+		<line linenr="201" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1601,27 +1641,27 @@
 			<text>=</text>
 			<var>$t</var>
 		</line>
-		<line linenr="199" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="200" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="201" indent="" />
 		<line linenr="202" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="203" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="204" indent="" />
+		<line linenr="205" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="203" indent="&#160;" />
-		<line linenr="204" indent="&#160;">
+		<line linenr="206" indent="&#160;" />
+		<line linenr="207" indent="&#160;">
 			<var>ApplyGenericTerraformBonus</var>
 			<text>:</text>
 		</line>
-		<line linenr="205" indent="&#160;">
+		<line linenr="208" indent="&#160;">
 			<comment>* Load the remainder left by previous terraforming projects.</comment>
 		</line>
-		<line linenr="206" indent="&#160;&#160;">
+		<line linenr="209" indent="&#160;&#160;">
 			<var>$remainder</var>
 			<text> </text>
 			<text>=</text>
@@ -1640,7 +1680,7 @@
 			<text>=</text>
 			<var>$remainderVariable</var>
 		</line>
-		<line linenr="207" indent="&#160;">
+		<line linenr="210" indent="&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1651,18 +1691,18 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="208" indent="&#160;">
+		<line linenr="211" indent="&#160;">
 			<var>$remainder</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="209" indent="&#160;" />
-		<line linenr="210" indent="&#160;">
+		<line linenr="212" indent="&#160;" />
+		<line linenr="213" indent="&#160;">
 			<comment>* Calculate the whole bonus and preserve fractional hundredths.</comment>
 		</line>
-		<line linenr="211" indent="&#160;">
+		<line linenr="214" indent="&#160;">
 			<var>$numerator</var>
 			<text> </text>
 			<text>=</text>
@@ -1679,7 +1719,7 @@
 			<text> </text>
 			<var>$remainder</var>
 		</line>
-		<line linenr="212" indent="&#160;">
+		<line linenr="215" indent="&#160;">
 			<var>$added</var>
 			<text> </text>
 			<text>=</text>
@@ -1690,7 +1730,7 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="213" indent="&#160;">
+		<line linenr="216" indent="&#160;">
 			<var>$remainder</var>
 			<text> </text>
 			<text>=</text>
@@ -1701,8 +1741,8 @@
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="214" indent="&#160;" />
-		<line linenr="215" indent="&#160;">
+		<line linenr="217" indent="&#160;" />
+		<line linenr="218" indent="&#160;">
 			<var>$terraformStat</var>
 			<text> </text>
 			<text>=</text>
@@ -1713,11 +1753,11 @@
 			<text> </text>
 			<var>$added</var>
 		</line>
-		<line linenr="216" indent="&#160;" />
-		<line linenr="217" indent="">
+		<line linenr="219" indent="&#160;" />
+		<line linenr="220" indent="">
 			<comment>* Persist the remaining fraction for future projects.</comment>
 		</line>
-		<line linenr="218" indent="">
+		<line linenr="221" indent="">
 			<var>$sector</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -1736,7 +1776,7 @@
 			<text>=</text>
 			<var>$remainder</var>
 		</line>
-		<line linenr="219" indent="">
+		<line linenr="222" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -1745,9 +1785,9 @@
 			<sval type="string" val="Mayhem.Terraform" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="44" />
+			<sval type="int" val="45" />
 			<sval type="int" val="0" />
-			<sval type="array" size="37">
+			<sval type="array" size="38">
 				<sval type="string" val="sector" />
 				<sval type="string" val="planetIndex" />
 				<sval type="string" val="terraformedPlanets" />
@@ -1777,6 +1817,7 @@
 				<sval type="string" val="terraforming.f" />
 				<sval type="string" val="t" />
 				<sval type="string" val="terraformed" />
+				<sval type="string" val="masterySent" />
 				<sval type="string" val="divider" />
 				<sval type="string" val="msg" />
 				<sval type="string" val="khaakPlotStage" />
@@ -1786,7 +1827,7 @@
 				<sval type="string" val="numerator" />
 				<sval type="string" val="added" />
 			</sval>
-			<sval type="array" size="124">
+			<sval type="array" size="126">
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
@@ -2568,7 +2609,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="114" />
+					<sval type="int" val="116" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2599,7 +2640,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="114" />
+					<sval type="int" val="116" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2630,7 +2671,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="114" />
+					<sval type="int" val="116" />
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
@@ -2804,38 +2845,53 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
-				<sval type="array" size="13">
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_terraformMaster" />
+					<sval type="int" val="29" />
+				</sval>
+				<sval type="array" size="22">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610586877" />
-					<sval type="int" val="3" />
+					<sval type="int" val="-1610586365" />
+					<sval type="int" val="6" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="28" />
 					<sval type="int" val="4" />
-					<sval type="int" val="18" />
+					<sval type="int" val="12" />
 					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="29" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="15" />
+					<sval type="int" val="9" />
+					<sval type="int" val="6" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
+					<sval type="int" val="4" />
 					<sval type="int" val="-2" />
+					<sval type="int" val="9" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="ZH.Terraforming.Get.Limit.Divider" />
-					<sval type="int" val="29" />
+					<sval type="int" val="30" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="0" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="30" />
+					<sval type="int" val="31" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
 					<sval type="int" val="40" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="29" />
+					<sval type="int" val="30" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
@@ -2853,7 +2909,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
+					<sval type="int" val="31" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -2863,15 +2919,22 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="5">
+					<sval type="int" val="157" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_terraformMaster" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="khaakPlotStage" />
-					<sval type="int" val="31" />
+					<sval type="int" val="32" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610583805" />
+					<sval type="int" val="-1610583293" />
 					<sval type="int" val="7" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
@@ -2880,7 +2943,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="31" />
+					<sval type="int" val="32" />
 					<sval type="int" val="5" />
 					<sval type="string" val="found" />
 					<sval type="int" val="15" />
@@ -2907,11 +2970,11 @@
 					<sval type="int" val="158" />
 					<sval type="int" val="5" />
 					<sval type="string" val="mayhem_khaakHiveSector" />
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 				</sval>
 				<sval type="array" size="16">
 					<sval type="int" val="150" />
-					<sval type="int" val="30" />
+					<sval type="int" val="31" />
 					<sval type="int" val="4" />
 					<sval type="int" val="9980" />
 					<sval type="int" val="4" />
@@ -2935,7 +2998,7 @@
 					<sval type="int" val="12" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="30" />
+					<sval type="int" val="31" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="10" />
 					<sval type="int" val="131075" />
@@ -2948,7 +3011,7 @@
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.SpawnKhaakRaid" />
-					<sval type="int" val="33" />
+					<sval type="int" val="34" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
 					<sval type="int" val="1" />
@@ -2957,10 +3020,10 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610583805" />
+					<sval type="int" val="-1610583293" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
+					<sval type="int" val="34" />
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
@@ -2969,7 +3032,7 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="khaakPlotRaid" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="33" />
+					<sval type="int" val="34" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="105" />
@@ -2984,7 +3047,7 @@
 					<sval type="int" val="5" />
 					<sval type="string" val="Defend the Outpost and defeat the Kha'ak forces emerging from the Ancient Kha'ak Hive in " />
 					<sval type="int" val="131074" />
-					<sval type="int" val="32" />
+					<sval type="int" val="33" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="5" />
@@ -3025,14 +3088,14 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="24" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610582520" />
+					<sval type="int" val="-1610582008" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 					<sval type="int" val="0" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
@@ -3044,7 +3107,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
@@ -3053,7 +3116,7 @@
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="5" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
@@ -3062,7 +3125,7 @@
 					<sval type="int" val="15" />
 					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="7" />
@@ -3076,10 +3139,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="36" />
+					<sval type="int" val="37" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="15" />
@@ -3091,10 +3154,10 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="35" />
+					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
 					<sval type="int" val="15" />
@@ -3111,7 +3174,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="23" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="36" />
+					<sval type="int" val="37" />
 					<sval type="int" val="15" />
 					<sval type="int" val="11" />
 					<sval type="int" val="3" />
@@ -3126,7 +3189,7 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="24" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="34" />
+					<sval type="int" val="35" />
 				</sval>
 				<sval type="array" size="1">
 					<sval type="int" val="1168" />
@@ -3142,7 +3205,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="107">
+			<sval type="array" size="108">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -3524,110 +3587,115 @@
 					<sval type="int" val="1" />
 					<sval type="string" val="Mastery improves your global limit. It reduces the number of planets by 1. For example, if it took 4 planets to support 1 additional project across your empire, it will now take 3 planets." />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="96" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Now checked at 12+ planets instead of 18 planets." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Add-Ons 2.1: Kha'ak Hive Quest - quest progresses from 'found' to 'terraformed'" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Again, the stages are:" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="- NULL (not yet started)" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="- Found (ship recycled; player's curiosity leads to the hive sector. See Mayhem.Recycle)" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="- Terraformed (hive planet terraformed; a large Kha'ak raid will spawn)" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="- Completed (raid defeated; player has completed the quest)" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="101" />
+					<sval type="int" val="103" />
 					<sval type="int" val="1" />
 					<sval type="string" val="- Failed (raid killed player's Outpost)" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="105" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="105" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Terraforming completed quest message." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="107" />
 					<sval type="int" val="2" />
 				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="107" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Terraforming completed quest message." />
+				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="110" />
+					<sval type="int" val="109" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="111" />
+					<sval type="int" val="112" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="113" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="115" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="113" />
+					<sval type="int" val="115" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="113" />
+					<sval type="int" val="115" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="114" />
+					<sval type="int" val="116" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="115" />
+					<sval type="int" val="117" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Load the remainder left by previous terraforming projects." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="118" />
+					<sval type="int" val="120" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="118" />
+					<sval type="int" val="120" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Calculate the whole bonus and preserve fractional hundredths." />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="121" />
+					<sval type="int" val="123" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="122" />
+					<sval type="int" val="124" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="3">
-					<sval type="int" val="122" />
+					<sval type="int" val="124" />
 					<sval type="int" val="1" />
 					<sval type="string" val="Persist the remaining fraction for future projects." />
 				</sval>
