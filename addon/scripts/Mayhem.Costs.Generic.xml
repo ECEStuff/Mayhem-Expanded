@@ -1,0 +1,1779 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.Costs.Generic</name>
+	<version>6</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="outpost" type="Var/Station" desc="" />
+		<argument index="2" name="productPrice" type="Var/Number" desc="" />
+		<argument index="3" name="wares" type="Var/Array" desc="" />
+		<argument index="4" name="divider" type="Var/Number" desc="" />
+		<argument index="5" name="specialization" type="Var/Number" desc="" />
+		<argument index="6" name="qty" type="Var/Number" desc="" />
+		<argument index="7" name="isRecycling" type="Var/Boolean" desc="" />
+		<argument index="8" name="recycleDivisor" type="Var/Number" desc="" />
+		<argument index="9" name="modifiers" type="Value" desc="optional table." />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="002" indent="">
+			<comment>* SCRIPT NAME: Mayhem.Costs.Generic</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* DESCRIPTION: Generic helper that scales the cost and recycle value of wares.</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* DO NOT USE THIS FOR EQUIPMENT OR OUTPOST ITEMS. They have fixed costs.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Arguments:</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* - $outpost: the $outpost paying the costs.</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>* - $productPrice: the cost of the item. Item is a ship, station, shield, laser, or missile.</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* - $wares: the wares used to craft the item or returned by salvaging.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* - $divider: crafting divider.</comment>
+		</line>
+		<line linenr="011" indent="">
+			<comment>* - $specialization: specialization of an item type. Used only for manufacturing.</comment>
+		</line>
+		<line linenr="012" indent="">
+			<comment>* - $qty: how many items to make or recycle.</comment>
+		</line>
+		<line linenr="013" indent="">
+			<comment>* - $isRecycling: if [TRUE], returns recycle value. if [FALSE], returns production costs.</comment>
+		</line>
+		<line linenr="014" indent="">
+			<comment>* - $recycleDivisor: 1, 5, or 100. Ships and stations use 1; missiles and most lasers use 5; shields and OCV lasers use 100.</comment>
+		</line>
+		<line linenr="015" indent="">
+			<comment>* - $modifiers: optional table, used by ships:</comment>
+		</line>
+		<line linenr="016" indent="">
+			<comment>*   - $unitPercent: Applied before quantity.</comment>
+		</line>
+		<line linenr="017" indent="">
+			<comment>*   - $postQtyPercent: Applied after quantity.</comment>
+		</line>
+		<line linenr="018" indent="">
+			<comment>*   - $wareFactors: Table of per-ware numerator/denominator arrays.</comment>
+		</line>
+		<line linenr="019" indent="">
+			<comment>*   - $finalDiscountPercent: Applied last, manufacturing only.</comment>
+		</line>
+		<line linenr="020" indent="" />
+		<line linenr="021" indent="">
+			<comment>* AUTHOR:           DATE: 26 November 2026</comment>
+		</line>
+		<line linenr="022" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="023" indent="" />
+		<line linenr="024" indent="">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$specialization</var>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$specialization</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* Recycling ignores manufacturing specialization.</comment>
+		</line>
+		<line linenr="028" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$isRecycling</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<var>$specialization</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
+			<comment>* Add-Ons 1.1: Diminishing specialization returns.</comment>
+		</line>
+		<line linenr="032" indent="">
+			<var>$discount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>10000</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<text>(</text>
+			<var>100</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$specialization</var>
+			<text>)</text>
+		</line>
+		<line linenr="033" indent="" />
+		<line linenr="034" indent="">
+			<comment>* Add-Ons 1.2: Prevent manufacturing discounts from falling below the highest current recycling factor.</comment>
+		</line>
+		<line linenr="035" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$discount</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="036" indent="&#160;" interruptable="@">
+			<var>$limit</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetMaxRecycleFactor</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="037" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$discount</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>$limit</var>
+		</line>
+		<line linenr="038" indent="&#160;&#160;">
+			<var>$discount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$limit</var>
+		</line>
+		<line linenr="039" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="040" indent="" />
+		<line linenr="041" indent="">
+			<comment>* Expanded 2.2.1: Resolve the actual Outpost factor once.</comment>
+		</line>
+		<line linenr="042" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$isRecycling</var>
+		</line>
+		<line linenr="043" indent="&#160;" interruptable="@">
+			<var>$recycleFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetRecycleFactor</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>outpost</text>
+			<text>=</text>
+			<var>$outpost</var>
+		</line>
+		<line linenr="044" indent="&#160;" />
+		<line linenr="045" indent="&#160;">
+			<text>skip</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$recycleDivisor</var>
+		</line>
+		<line linenr="046" indent="&#160;&#160;">
+			<var>$recycleDivisor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="047" indent="&#160;" />
+		<line linenr="048" indent="&#160;">
+			<var>$denominator</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$recycleDivisor</var>
+		</line>
+		<line linenr="049" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="050" indent="" />
+		<line linenr="051" indent="">
+			<var>$wares.size</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$wares</var>
+		</line>
+		<line linenr="052" indent="">
+			<var>$costs</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>alloc</text>
+		</line>
+		<line linenr="053" indent="" />
+		<line linenr="054" indent="">
+			<var>$XS.Iterator1</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>size</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>array</text>
+			<text> </text>
+			<var>$wares</var>
+		</line>
+		<line linenr="055" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="056" indent="&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$XS.Iterator1</var>
+		</line>
+		<line linenr="057" indent="&#160;">
+			<var>$ware</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$wares</var>
+			<text>[</text>
+			<var>$XS.Iterator1</var>
+			<text>]</text>
+		</line>
+		<line linenr="058" indent="&#160;">
+			<var>$ware.price</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>average</text>
+			<text> </text>
+			<text>price</text>
+			<text> </text>
+			<text>of</text>
+			<text> </text>
+			<text>ware</text>
+			<text> </text>
+			<var>$ware</var>
+		</line>
+		<line linenr="059" indent="&#160;" />
+		<line linenr="060" indent="&#160;">
+			<comment>* Preserve the original whole-resource manufacturing base.</comment>
+		</line>
+		<line linenr="061" indent="&#160;&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$discount</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$productPrice</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$ware.price</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$divider</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$wares.size</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="062" indent="&#160;&#160;" />
+		<line linenr="063" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$modifiers</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="064" indent="&#160;&#160;&#160;">
+			<comment>* Optional ordered modifiers, used by ship construction.</comment>
+		</line>
+		<line linenr="065" indent="&#160;&#160;">
+			<var>$unitPercent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$modifiers</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'unitPercent'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="066" indent="&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$unitPercent</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="067" indent="&#160;&#160;">
+			<var>$unitPercent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="068" indent="&#160;&#160;" />
+		<line linenr="069" indent="&#160;&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$unitPercent</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="070" indent="&#160;&#160;" />
+		<line linenr="071" indent="&#160;&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$qty</var>
+		</line>
+		<line linenr="072" indent="&#160;&#160;&#160;" />
+		<line linenr="073" indent="&#160;&#160;">
+			<var>$postQtyPercent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$modifiers</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'postQtyPercent'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="074" indent="&#160;&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$postQtyPercent</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="075" indent="&#160;&#160;">
+			<var>$postQtyPercent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="076" indent="&#160;&#160;" />
+		<line linenr="077" indent="&#160;&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$postQtyPercent</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="078" indent="&#160;&#160;" />
+		<line linenr="079" indent="&#160;&#160;">
+			<comment>* Apply any resource-specific multiplier.</comment>
+		</line>
+		<line linenr="080" indent="&#160;&#160;&#160;">
+			<var>$wareFactors</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$modifiers</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'wareFactors'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="081" indent="&#160;&#160;&#160;">
+			<var>$wareFactor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$wareFactors</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>$ware</var>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="082" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$wareFactor</var>
+			<text> </text>
+			<text>!=</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="083" indent="&#160;&#160;">
+			<var>$factorNumerator</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$wareFactor</var>
+			<text>[</text>
+			<var>0</var>
+			<text>]</text>
+		</line>
+		<line linenr="084" indent="&#160;&#160;">
+			<var>$factorDenominator</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$wareFactor</var>
+			<text>[</text>
+			<var>1</var>
+			<text>]</text>
+		</line>
+		<line linenr="085" indent="&#160;&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$factorNumerator</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$factorDenominator</var>
+		</line>
+		<line linenr="086" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="087" indent="&#160;&#160;" />
+		<line linenr="088" indent="&#160;&#160;&#160;">
+			<comment>* Optional final manufacturing discount.</comment>
+		</line>
+		<line linenr="089" indent="&#160;&#160;&#160;">
+			<comment>* Recycling must ignore this discount.</comment>
+		</line>
+		<line linenr="090" indent="&#160;&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>!</text>
+			<var>$isRecycling</var>
+		</line>
+		<line linenr="091" indent="&#160;&#160;&#160;&#160;">
+			<var>$finalDiscountPercent</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>table</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<var>$modifiers</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<text>'finalDiscountPercent'</text>
+			<text> </text>
+			<text>)</text>
+		</line>
+		<line linenr="092" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$finalDiscountPercent</var>
+		</line>
+		<line linenr="093" indent="&#160;&#160;">
+			<var>$discountAmount</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$finalDiscountPercent</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="094" indent="&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$discountAmount</var>
+		</line>
+		<line linenr="095" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="096" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="097" indent="&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="098" indent="&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$qty</var>
+		</line>
+		<line linenr="099" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="100" indent="&#160;" />
+		<line linenr="101" indent="&#160;&#160;">
+			<comment>* Recycling: Apply the factor and category penalty after quantity and resource-specific modifiers.</comment>
+		</line>
+		<line linenr="102" indent="&#160;&#160;">
+			<comment>* Truncate the final recycling yield to whole resources.</comment>
+		</line>
+		<line linenr="103" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$isRecycling</var>
+		</line>
+		<line linenr="104" indent="&#160;&#160;">
+			<comment>* Quotient/remainder avoids multiplying the entire material cost by the recycling factor.</comment>
+		</line>
+		<line linenr="105" indent="&#160;&#160;">
+			<var>$whole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="106" indent="&#160;">
+			<var>$remainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="107" indent="&#160;" />
+		<line linenr="108" indent="&#160;">
+			<var>$ware.cost</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>(</text>
+			<var>$whole</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$recycleFactor</var>
+			<text>)</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>(</text>
+			<text>(</text>
+			<var>$remainder</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$recycleFactor</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text>)</text>
+		</line>
+		<line linenr="109" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="110" indent="" />
+		<line linenr="111" indent="">
+			<text>table</text>
+			<text> </text>
+			<text>set</text>
+			<text> </text>
+			<var>$costs</var>
+			<text> </text>
+			<text>(</text>
+			<text> </text>
+			<var>$ware</var>
+			<text> </text>
+			<text>)</text>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$ware.cost</var>
+		</line>
+		<line linenr="112" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="113" indent="" />
+		<line linenr="114" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$costs</var>
+		</line>
+		<line linenr="115" indent="" />
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.Costs.Generic" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="6" />
+			<sval type="int" val="0" />
+			<sval type="array" size="29">
+				<sval type="string" val="outpost" />
+				<sval type="string" val="productPrice" />
+				<sval type="string" val="wares" />
+				<sval type="string" val="divider" />
+				<sval type="string" val="specialization" />
+				<sval type="string" val="qty" />
+				<sval type="string" val="isRecycling" />
+				<sval type="string" val="recycleDivisor" />
+				<sval type="string" val="modifiers" />
+				<sval type="string" val="discount" />
+				<sval type="string" val="limit" />
+				<sval type="string" val="recycleFactor" />
+				<sval type="string" val="denominator" />
+				<sval type="string" val="wares.size" />
+				<sval type="string" val="costs" />
+				<sval type="string" val="ware" />
+				<sval type="string" val="XS.Iterator1" />
+				<sval type="string" val="ware.price" />
+				<sval type="string" val="ware.cost" />
+				<sval type="string" val="unitPercent" />
+				<sval type="string" val="postQtyPercent" />
+				<sval type="string" val="wareFactors" />
+				<sval type="string" val="wareFactor" />
+				<sval type="string" val="factorNumerator" />
+				<sval type="string" val="factorDenominator" />
+				<sval type="string" val="finalDiscountPercent" />
+				<sval type="string" val="discountAmount" />
+				<sval type="string" val="whole" />
+				<sval type="string" val="remainder" />
+			</sval>
+			<sval type="array" size="52">
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536870393" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611704" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10000" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-3" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610429" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetMaxRecycleFactor" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610424" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609149" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetRecycleFactor" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-536867577" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1706" />
+					<sval type="int" val="14" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="131" />
+					<sval type="int" val="16" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599671" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="629" />
+					<sval type="int" val="17" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="39">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="13" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-8" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-10" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610601469" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="19" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="string" val="unitPercent" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610606072" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="19" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="19" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="20" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="string" val="postQtyPercent" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610604792" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="20" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="string" val="wareFactors" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="22" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="21" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610603005" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="23" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="129" />
+					<sval type="int" val="24" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="22" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="23" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="24" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610601725" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="1709" />
+					<sval type="int" val="25" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="5" />
+					<sval type="string" val="finalDiscountPercent" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610601725" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="25" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="26" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="25" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="26" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="45" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610600189" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="27" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="28" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="37">
+					<sval type="int" val="104" />
+					<sval type="int" val="18" />
+					<sval type="int" val="9" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="27" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="28" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="11" />
+					<sval type="int" val="16" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-5" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-7" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="1708" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="18" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+				</sval>
+			</sval>
+			<sval type="array" size="9">
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="string" val="optional table." />
+				</sval>
+			</sval>
+			<sval type="array" size="65">
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Mayhem.Costs.Generic" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Generic helper that scales the cost and recycle value of wares." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DO NOT USE THIS FOR EQUIPMENT OR OUTPOST ITEMS. They have fixed costs." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Arguments:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $outpost: the $outpost paying the costs." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $productPrice: the cost of the item. Item is a ship, station, shield, laser, or missile." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $wares: the wares used to craft the item or returned by salvaging." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $divider: crafting divider." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $specialization: specialization of an item type. Used only for manufacturing." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $qty: how many items to make or recycle." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $isRecycling: if [TRUE], returns recycle value. if [FALSE], returns production costs." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $recycleDivisor: 1, 5, or 100. Ships and stations use 1; missiles and most lasers use 5; shields and OCV lasers use 100." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $modifiers: optional table, used by ships:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - $unitPercent: Applied before quantity." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - $postQtyPercent: Applied after quantity." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - $wareFactors: Table of per-ware numerator/denominator arrays." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  - $finalDiscountPercent: Applied last, manufacturing only." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="AUTHOR:           DATE: 26 November 2026" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Recycling ignores manufacturing specialization." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.1: Diminishing specialization returns." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add-Ons 1.2: Prevent manufacturing discounts from falling below the highest current recycling factor." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Resolve the actual Outpost factor once." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Preserve the original whole-resource manufacturing base." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="23" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Optional ordered modifiers, used by ship construction." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="26" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="28" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="31" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="32" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Apply any resource-specific multiplier." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="38" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="38" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Optional final manufacturing discount." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="38" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Recycling must ignore this discount." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="43" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="44" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="45" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Recycling: Apply the factor and category penalty after quantity and resource-specific modifiers." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="45" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Truncate the final recycling yield to whole resources." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="46" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Quotient/remainder avoids multiplying the entire material cost by the recycling factor." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="48" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="52" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>
