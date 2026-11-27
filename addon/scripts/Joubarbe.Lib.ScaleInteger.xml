@@ -1,0 +1,1861 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Joubarbe.Lib.ScaleInteger</name>
+	<version>6</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="value" type="Var/Number" desc="" />
+		<argument index="2" name="numerator" type="Var/Number" desc="" />
+		<argument index="3" name="denominator" type="Var/Number" desc="" />
+		<argument index="4" name="round" type="Var/Boolean" desc="" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="" />
+		<line linenr="002" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* SCRIPT NAME: Joubarbe.Lib.ScaleInteger</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* DESCRIPTION: Scales a signed integer using quotient/remainder arithmetic to reduce intermediate overflow.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Arguments:</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* - $value: Signed integer to scale.</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>* - $numerator: Signed scaling numerator.</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* - $denominator: Signed, nonzero scaling denominator.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* - $round: TRUE rounds to nearest (ties away from zero).  FALSE truncates toward zero. Defaults to FALSE.</comment>
+		</line>
+		<line linenr="011" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="012" indent="">
+			<comment>* Returns null for division by zero.</comment>
+		</line>
+		<line linenr="013" indent="">
+			<comment>* Intermediate and final values must fit the integer range.</comment>
+		</line>
+		<line linenr="014" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="">
+			<comment>* Division by zero is invalid.</comment>
+		</line>
+		<line linenr="017" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="018" indent="&#160;">
+			<var>$t</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'Critical error in Joubarbe.Lib.ScaleInteger. Division by zero. Value: '</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>', Numerator: '</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$numerator</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>', Denominator: '</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'.'</text>
+		</line>
+		<line linenr="019" indent="&#160;" interruptable="@">
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.SendMessage</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>message</text>
+			<text>=</text>
+			<var>$t</var>
+			<text> </text>
+			<text>log</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>forceDisplay</text>
+			<text>=</text>
+			<var>[TRUE]</var>
+			<text> </text>
+			<text>delayMs</text>
+			<text>=</text>
+			<var>0</var>
+			<text> </text>
+			<text>author</text>
+			<text>=</text>
+			<var>null</var>
+		</line>
+		<line linenr="020" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="021" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
+			<comment>* Truncate by default.</comment>
+		</line>
+		<line linenr="024" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$round</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$round</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* Zero always scales to zero.</comment>
+		</line>
+		<line linenr="028" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+			<text> </text>
+			<text>OR</text>
+			<text> </text>
+			<var>$numerator</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="029" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
+			<comment>* Track the sign separately.</comment>
+		</line>
+		<line linenr="032" indent="">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="033" indent="" />
+		<line linenr="034" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="035" indent="&#160;">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>!</text>
+			<var>$negative</var>
+		</line>
+		<line linenr="036" indent="&#160;">
+			<var>$value</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="037" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="038" indent="" />
+		<line linenr="039" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$numerator</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="040" indent="&#160;">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>!</text>
+			<var>$negative</var>
+		</line>
+		<line linenr="041" indent="&#160;">
+			<var>$numerator</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$numerator</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="042" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="043" indent="" />
+		<line linenr="044" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="045" indent="&#160;">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>!</text>
+			<var>$negative</var>
+		</line>
+		<line linenr="046" indent="&#160;">
+			<var>$denominator</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="047" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="048" indent="" />
+		<line linenr="049" indent="">
+			<comment>* Split the value to reduce intermediate overflow.</comment>
+		</line>
+		<line linenr="050" indent="">
+			<var>$whole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="051" indent="">
+			<var>$remainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="052" indent="" />
+		<line linenr="053" indent="">
+			<comment>* The whole contribution is safe if the final result fits.</comment>
+		</line>
+		<line linenr="054" indent="">
+			<var>$result</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$whole</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$numerator</var>
+		</line>
+		<line linenr="055" indent="" />
+		<line linenr="056" indent="">
+			<comment>* Fast path: multiply directly when the remainder product fits.</comment>
+		</line>
+		<line linenr="057" indent="">
+			<var>$maxSafeRemainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>2147483647</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$numerator</var>
+		</line>
+		<line linenr="058" indent="" />
+		<line linenr="059" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$remainder</var>
+			<text> </text>
+			<text>&lt;=</text>
+			<text> </text>
+			<var>$maxSafeRemainder</var>
+		</line>
+		<line linenr="060" indent="&#160;">
+			<var>$remainderScaled</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$remainder</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$numerator</var>
+		</line>
+		<line linenr="061" indent="&#160;">
+			<var>$extraWhole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$remainderScaled</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="062" indent="&#160;">
+			<var>$fraction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$remainderScaled</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>$denominator</var>
+		</line>
+		<line linenr="063" indent="">
+			<text>else</text>
+		</line>
+		<line linenr="064" indent="&#160;">
+			<comment>* Overflow-safe fallback.</comment>
+		</line>
+		<line linenr="065" indent="&#160;">
+			<comment>* Compute remainder * numerator / denominator using binary doubling while tracking quotient and remainder.</comment>
+		</line>
+		<line linenr="066" indent="&#160;">
+			<var>$bits</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$numerator</var>
+		</line>
+		<line linenr="067" indent="&#160;">
+			<var>$partWhole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="068" indent="&#160;">
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$remainder</var>
+		</line>
+		<line linenr="069" indent="&#160;">
+			<var>$extraWhole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="070" indent="&#160;">
+			<var>$fraction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="071" indent="&#160;" />
+		<line linenr="072" indent="&#160;">
+			<text>while</text>
+			<text> </text>
+			<var>$bits</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="073" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<text>(</text>
+			<var>$bits</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>2</var>
+			<text>)</text>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="074" indent="&#160;&#160;&#160;">
+			<comment>* Add the current partial contribution.</comment>
+		</line>
+		<line linenr="075" indent="&#160;&#160;&#160;">
+			<var>$extraWhole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$extraWhole</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$partWhole</var>
+		</line>
+		<line linenr="076" indent="&#160;&#160;&#160;">
+			<var>$gap</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$partRemainder</var>
+		</line>
+		<line linenr="077" indent="&#160;&#160;&#160;" />
+		<line linenr="078" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$fraction</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>$gap</var>
+		</line>
+		<line linenr="079" indent="&#160;&#160;&#160;&#160;">
+			<var>$fraction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$fraction</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$gap</var>
+		</line>
+		<line linenr="080" indent="&#160;&#160;&#160;&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$extraWhole</var>
+		</line>
+		<line linenr="081" indent="&#160;&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="082" indent="&#160;&#160;&#160;&#160;">
+			<var>$fraction</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$fraction</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$partRemainder</var>
+		</line>
+		<line linenr="083" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="084" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="085" indent="&#160;&#160;" />
+		<line linenr="086" indent="&#160;&#160;">
+			<var>$bits</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$bits</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="087" indent="&#160;&#160;" />
+		<line linenr="088" indent="&#160;&#160;">
+			<comment>* Double the partial contribution for the next bit.</comment>
+		</line>
+		<line linenr="089" indent="&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$bits</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="090" indent="&#160;&#160;&#160;">
+			<var>$gap</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$partRemainder</var>
+		</line>
+		<line linenr="091" indent="&#160;&#160;&#160;">
+			<var>$partWhole</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$partWhole</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="092" indent="&#160;&#160;&#160;" />
+		<line linenr="093" indent="&#160;&#160;&#160;">
+			<text>if</text>
+			<text> </text>
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>$gap</var>
+		</line>
+		<line linenr="094" indent="&#160;&#160;&#160;&#160;">
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>-</text>
+			<text> </text>
+			<var>$gap</var>
+		</line>
+		<line linenr="095" indent="&#160;&#160;&#160;&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$partWhole</var>
+		</line>
+		<line linenr="096" indent="&#160;&#160;&#160;">
+			<text>else</text>
+		</line>
+		<line linenr="097" indent="&#160;&#160;&#160;&#160;">
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$partRemainder</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="098" indent="&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="099" indent="&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="100" indent="&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="101" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="102" indent="" />
+		<line linenr="103" indent="">
+			<var>$result</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$result</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$extraWhole</var>
+		</line>
+		<line linenr="104" indent="" />
+		<line linenr="105" indent="">
+			<comment>* Optional rounding to nearest, ties away from zero.</comment>
+		</line>
+		<line linenr="106" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$round</var>
+		</line>
+		<line linenr="107" indent="&#160;">
+			<var>$half</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>2</var>
+		</line>
+		<line linenr="108" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<text>(</text>
+			<var>$denominator</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>2</var>
+			<text>)</text>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="109" indent="&#160;&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$half</var>
+		</line>
+		<line linenr="110" indent="&#160;" />
+		<line linenr="111" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$fraction</var>
+			<text> </text>
+			<text>&gt;=</text>
+			<text> </text>
+			<var>$half</var>
+		</line>
+		<line linenr="112" indent="&#160;&#160;">
+			<text>inc</text>
+			<text> </text>
+			<var>$result</var>
+		</line>
+		<line linenr="113" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="114" indent="" />
+		<line linenr="115" indent="">
+			<comment>* Restore the original sign.</comment>
+		</line>
+		<line linenr="116" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$negative</var>
+		</line>
+		<line linenr="117" indent="&#160;">
+			<var>$result</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$result</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="118" indent="" />
+		<line linenr="119" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$result</var>
+		</line>
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="6" />
+			<sval type="int" val="0" />
+			<sval type="array" size="18">
+				<sval type="string" val="value" />
+				<sval type="string" val="numerator" />
+				<sval type="string" val="denominator" />
+				<sval type="string" val="round" />
+				<sval type="string" val="t" />
+				<sval type="string" val="negative" />
+				<sval type="string" val="whole" />
+				<sval type="string" val="remainder" />
+				<sval type="string" val="result" />
+				<sval type="string" val="maxSafeRemainder" />
+				<sval type="string" val="remainderScaled" />
+				<sval type="string" val="extraWhole" />
+				<sval type="string" val="fraction" />
+				<sval type="string" val="bits" />
+				<sval type="string" val="partWhole" />
+				<sval type="string" val="partRemainder" />
+				<sval type="string" val="gap" />
+				<sval type="string" val="half" />
+			</sval>
+			<sval type="array" size="61">
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611709" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="43">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="13" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Critical error in Joubarbe.Lib.ScaleInteger. Division by zero. Value: " />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=", Numerator: " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val=", Denominator: " />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-6" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-8" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-10" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-12" />
+				</sval>
+				<sval type="array" size="16">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.SendMessage" />
+					<sval type="int" val="-2147483647" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611192" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610680" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="10" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="10" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609661" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608893" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608125" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="10">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="2" />
+					<sval type="int" val="65556" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="7" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="9" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2147483647" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610605821" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="9" />
+					<sval type="int" val="15" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="10" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="10" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="51" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="14" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="15" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599671" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602237" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="16" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610602493" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="11" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="41" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610599933" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="16" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="14" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610600189" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="16" />
+					<sval type="int" val="15" />
+					<sval type="int" val="12" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="12" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="14" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="50" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="112" />
+					<sval type="int" val="32" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="11" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597885" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="17" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="21">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610598392" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="17" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597880" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="12" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="17" />
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="142" />
+					<sval type="int" val="8" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610597368" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="8" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="8" />
+				</sval>
+			</sval>
+			<sval type="array" size="4">
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="63" />
+					<sval type="string" val="" />
+				</sval>
+			</sval>
+			<sval type="array" size="62">
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Joubarbe.Lib.ScaleInteger" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Scales a signed integer using quotient/remainder arithmetic to reduce intermediate overflow." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Arguments:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $value: Signed integer to scale." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $numerator: Signed scaling numerator." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $denominator: Signed, nonzero scaling denominator." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $round: TRUE rounds to nearest (ties away from zero).  FALSE truncates toward zero. Defaults to FALSE." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Returns null for division by zero." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Intermediate and final values must fit the integer range." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Division by zero is invalid." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Truncate by default." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="6" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Zero always scales to zero." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="8" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="8" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Track the sign separately." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="18" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="18" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Split the value to reduce intermediate overflow." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="20" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="20" />
+					<sval type="int" val="1" />
+					<sval type="string" val="The whole contribution is safe if the final result fits." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="21" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="21" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Fast path: multiply directly when the remainder product fits." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="22" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="27" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Overflow-safe fallback." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="27" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Compute remainder * numerator / denominator using binary doubling while tracking quotient and remainder." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="32" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="34" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Add the current partial contribution." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="36" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="40" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="41" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="41" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="41" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="42" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="42" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Double the partial contribution for the next bit." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="45" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="49" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="50" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="51" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="52" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="52" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Optional rounding to nearest, ties away from zero." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="56" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="58" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="58" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="58" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Restore the original sign." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="60" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>

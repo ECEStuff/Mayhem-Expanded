@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.GetResearchStationRate</name>
-	<version>20</version>
+	<version>21</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -866,7 +866,7 @@
 			<var>0</var>
 		</line>
 		<line linenr="120" indent="&#160;&#160;" />
-		<line linenr="121" indent="&#160;&#160;">
+		<line linenr="121" indent="&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$projects.global</var>
@@ -875,8 +875,8 @@
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="122" indent="&#160;&#160;" interruptable="@">
-			<var>$penalty.local</var>
+		<line linenr="122" indent="" interruptable="@">
+			<var>$penalty.total</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -887,16 +887,20 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>ZH.Terraforming.Get.Penalty.Local</call>
+			<call>ZH.Terraforming.Get.Penalty.Total</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
 			<text>sector</text>
 			<text>=</text>
 			<var>$sector</var>
+			<text> </text>
+			<text>outpost</text>
+			<text>=</text>
+			<var>$outpost</var>
 		</line>
-		<line linenr="123" indent="&#160;&#160;" interruptable="@">
-			<var>$penalty.global</var>
+		<line linenr="123" indent="" interruptable="@">
+			<var>$researchRate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
@@ -907,77 +911,44 @@
 			<text> </text>
 			<text>script</text>
 			<text> </text>
-			<call>ZH.Terraforming.Get.Penalty.Global</call>
+			<call>Joubarbe.Lib.ScaleInteger</call>
 			<text> </text>
 			<text>:</text>
 			<text> </text>
-			<text>outpost</text>
+			<text>value</text>
 			<text>=</text>
-			<var>$outpost</var>
-		</line>
-		<line linenr="124" indent="&#160;&#160;" />
-		<line linenr="125" indent="&#160;&#160;">
-			<comment>* Overflow if we do all the multiplication at once. Need to convert the stacked penalties into percentage (no decimal points) ranging from 0 to 100%. </comment>
-		</line>
-		<line linenr="126" indent="&#160;">
-			<comment>* Then, convert that percentage to a decimal and multiply accordingly.</comment>
-		</line>
-		<line linenr="127" indent="">
-			<var>$penalty.total</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<text>(</text>
-			<var>$penalty.local</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
-			<var>$penalty.global</var>
-			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>5000</var>
-			<text>)</text>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
-			<var>10000</var>
-		</line>
-		<line linenr="128" indent="">
 			<var>$researchRate</var>
 			<text> </text>
+			<text>numerator</text>
 			<text>=</text>
-			<text> </text>
-			<text>(</text>
-			<var>$researchRate</var>
-			<text> </text>
-			<text>*</text>
-			<text> </text>
 			<var>$penalty.total</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>10000</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="129" indent="">
+		<line linenr="124" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="130" indent="">
+		<line linenr="125" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="131" indent="" />
-		<line linenr="132" indent="&#160;">
+		<line linenr="126" indent="" />
+		<line linenr="127" indent="&#160;">
 			<text>return</text>
 			<text> </text>
 			<var>$researchRate</var>
 		</line>
-		<line linenr="133" indent="" />
-		<line linenr="134" indent="">
+		<line linenr="128" indent="" />
+		<line linenr="129" indent="">
 			<var>StackResearchRate</var>
 			<text>:</text>
 		</line>
-		<line linenr="135" indent="">
+		<line linenr="130" indent="">
 			<var>$bonus.percent.total</var>
 			<text> </text>
 			<text>=</text>
@@ -988,7 +959,7 @@
 			<text> </text>
 			<var>$bonus.percent</var>
 		</line>
-		<line linenr="136" indent="">
+		<line linenr="131" indent="">
 			<text>endsub</text>
 		</line>
 	</sourcetext>
@@ -997,9 +968,9 @@
 			<sval type="string" val="Mayhem.GetResearchStationRate" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="20" />
+			<sval type="int" val="21" />
 			<sval type="int" val="0" />
-			<sval type="array" size="23">
+			<sval type="array" size="21">
 				<sval type="string" val="researchStation" />
 				<sval type="string" val="sector" />
 				<sval type="string" val="baseResearchRate" />
@@ -1020,11 +991,9 @@
 				<sval type="string" val="researchRateBonus" />
 				<sval type="string" val="difficulty" />
 				<sval type="string" val="projects.global" />
-				<sval type="string" val="penalty.local" />
-				<sval type="string" val="penalty.global" />
 				<sval type="string" val="penalty.total" />
 			</sval>
-			<sval type="array" size="73">
+			<sval type="array" size="71">
 				<sval type="array" size="4">
 					<sval type="int" val="703" />
 					<sval type="int" val="131074" />
@@ -1067,7 +1036,7 @@
 				</sval>
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610595069" />
+					<sval type="int" val="-1610595581" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="5" />
@@ -1140,7 +1109,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1165,7 +1134,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="4">
 					<sval type="int" val="1008" />
@@ -1241,7 +1210,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -1301,7 +1270,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1326,7 +1295,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="102" />
@@ -1351,7 +1320,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -1411,7 +1380,7 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="1167" />
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 				</sval>
 				<sval type="array" size="29">
 					<sval type="int" val="104" />
@@ -1648,7 +1617,7 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610595069" />
+					<sval type="int" val="-1610595581" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
@@ -1661,77 +1630,33 @@
 					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="8">
+				<sval type="array" size="10">
 					<sval type="int" val="102" />
-					<sval type="string" val="ZH.Terraforming.Get.Penalty.Local" />
+					<sval type="string" val="ZH.Terraforming.Get.Penalty.Total" />
 					<sval type="int" val="20" />
 					<sval type="int" val="131075" />
 					<sval type="int" val="12" />
-					<sval type="int" val="1" />
+					<sval type="int" val="2" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="1" />
-				</sval>
-				<sval type="array" size="8">
-					<sval type="int" val="102" />
-					<sval type="string" val="ZH.Terraforming.Get.Penalty.Global" />
-					<sval type="int" val="21" />
-					<sval type="int" val="131075" />
-					<sval type="int" val="12" />
 					<sval type="int" val="1" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="16" />
 				</sval>
-				<sval type="array" size="27">
-					<sval type="int" val="104" />
-					<sval type="int" val="22" />
-					<sval type="int" val="7" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="20" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="21" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5000" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 					<sval type="int" val="10000" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
+					<sval type="int" val="131075" />
 					<sval type="int" val="9" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-6" />
-				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
-					<sval type="int" val="3" />
-					<sval type="int" val="5" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="22" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -1767,7 +1692,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="68">
+			<sval type="array" size="65">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -2040,32 +1965,18 @@
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="67" />
-					<sval type="int" val="2" />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="67" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Overflow if we do all the multiplication at once. Need to convert the stacked penalties into percentage (no decimal points) ranging from 0 to 100%. " />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="67" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Then, convert that percentage to a decimal and multiply accordingly." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="69" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="69" />
+					<sval type="int" val="67" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="69" />
+					<sval type="int" val="67" />
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="70" />
+					<sval type="int" val="68" />
 					<sval type="int" val="2" />
 				</sval>
 			</sval>

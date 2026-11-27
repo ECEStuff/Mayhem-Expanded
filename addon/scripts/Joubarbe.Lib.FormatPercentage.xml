@@ -1,0 +1,558 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Joubarbe.Lib.FormatPercentage</name>
+	<version>2</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="value" type="Var/Number" desc="" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="" />
+		<line linenr="002" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* SCRIPT NAME: Joubarbe.Lib.FormatPercentage</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* DESCRIPTION: Formats a percentage stored in hundredths into a string with two decimal places.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Arguments:</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* - $value: Percentage multiplied by 100.</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>*   Example: 10000 = 100.00%, 625 = 6.25%.</comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* Returns a formatted string including '%'.</comment>
+		</line>
+		<line linenr="011" indent="">
+			<comment>* Does not change or round the underlying value.</comment>
+		</line>
+		<line linenr="012" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>null</var>
+		</line>
+		<line linenr="015" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<text>'N/A'</text>
+		</line>
+		<line linenr="016" indent="" />
+		<line linenr="017" indent="">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="018" indent="">
+			<text>if</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="019" indent="&#160;">
+			<var>$negative</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[TRUE]</var>
+		</line>
+		<line linenr="020" indent="&#160;">
+			<var>$value</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>-1</var>
+		</line>
+		<line linenr="021" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="022" indent="" />
+		<line linenr="023" indent="">
+			<var>$integer</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="024" indent="">
+			<var>$fractional</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$value</var>
+			<text> </text>
+			<text>mod</text>
+			<text> </text>
+			<var>100</var>
+		</line>
+		<line linenr="025" indent="" />
+		<line linenr="026" indent="">
+			<var>$integer.f</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>convert</text>
+			<text> </text>
+			<text>number</text>
+			<text> </text>
+			<var>$integer</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>string</text>
+		</line>
+		<line linenr="027" indent="">
+			<var>$fractional.f</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>convert</text>
+			<text> </text>
+			<text>number</text>
+			<text> </text>
+			<var>$fractional</var>
+			<text> </text>
+			<text>to</text>
+			<text> </text>
+			<text>string</text>
+		</line>
+		<line linenr="028" indent="" />
+		<line linenr="029" indent="">
+			<comment>* Always display exactly two fractional digits.</comment>
+		</line>
+		<line linenr="030" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$fractional</var>
+			<text> </text>
+			<text>&lt;</text>
+			<text> </text>
+			<var>10</var>
+		</line>
+		<line linenr="031" indent="&#160;">
+			<var>$fractional.f</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'0'</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$fractional.f</var>
+		</line>
+		<line linenr="032" indent="" />
+		<line linenr="033" indent="">
+			<var>$result</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$integer.f</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'.'</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$fractional.f</var>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<text>'%'</text>
+		</line>
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$negative</var>
+		</line>
+		<line linenr="036" indent="&#160;">
+			<var>$result</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>'-'</text>
+			<text> </text>
+			<text>+</text>
+			<text> </text>
+			<var>$result</var>
+		</line>
+		<line linenr="037" indent="" />
+		<line linenr="038" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$result</var>
+		</line>
+		<line linenr="039" indent="" />
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Joubarbe.Lib.FormatPercentage" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="2" />
+			<sval type="int" val="0" />
+			<sval type="array" size="7">
+				<sval type="string" val="value" />
+				<sval type="string" val="negative" />
+				<sval type="string" val="integer" />
+				<sval type="string" val="fractional" />
+				<sval type="string" val="integer.f" />
+				<sval type="string" val="fractional.f" />
+				<sval type="string" val="result" />
+			</sval>
+			<sval type="array" size="16">
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610612216" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="5" />
+					<sval type="string" val="N/A" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611197" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="1474" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="1474" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610609656" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="10" />
+					<sval type="int" val="15" />
+					<sval type="int" val="3" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="5" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="0" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="25">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="string" val="." />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="5" />
+					<sval type="string" val="%" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="7" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-4" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-6" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610608888" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="3" />
+					<sval type="int" val="5" />
+					<sval type="string" val="-" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="15" />
+					<sval type="int" val="11" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="11" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+				</sval>
+			</sval>
+			<sval type="array" size="1">
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="string" val="" />
+				</sval>
+			</sval>
+			<sval type="array" size="23">
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Joubarbe.Lib.FormatPercentage" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Formats a percentage stored in hundredths into a string with two decimal places." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Arguments:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $value: Percentage multiplied by 100." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="  Example: 10000 = 100.00%, 625 = 6.25%." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Returns a formatted string including '%'." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Does not change or round the underlying value." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="8" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="10" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Always display exactly two fractional digits." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="16" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>

@@ -1,0 +1,535 @@
+<?xml version="1.0" standalone="yes"?>
+<?xml-stylesheet href="x2script.xsl" type="text/xsl"?>
+<!-- Generated using X-Studio -->
+<script>
+	<name>Mayhem.GetOutpostSupply</name>
+	<version>4</version>
+	<engineversion>50</engineversion>
+	<description></description>
+	<arguments>
+		<argument index="1" name="outpost" type="Var/Station" desc="" />
+	</arguments>
+	<sourcetext>
+		<line linenr="001" indent="" />
+		<line linenr="002" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="003" indent="">
+			<comment>* SCRIPT NAME: Mayhem.GetOutpostSupply</comment>
+		</line>
+		<line linenr="004" indent="">
+			<comment>* DESCRIPTION: Returns the supply capacity provided by an Outpost, including difficulty, galaxy rules, and the Supply Depot perk.</comment>
+		</line>
+		<line linenr="005" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="006" indent="">
+			<comment>* Arguments:</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* - $outpost: Outpost providing supply.</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>* </comment>
+		</line>
+		<line linenr="009" indent="">
+			<comment>* Returns 0 if the Outpost does not exist.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* ************************************************</comment>
+		</line>
+		<line linenr="011" indent="" />
+		<line linenr="012" indent="">
+			<text>if</text>
+			<text> </text>
+			<text>not</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>exists</text>
+		</line>
+		<line linenr="013" indent="&#160;">
+			<text>return</text>
+			<text> </text>
+			<var>0</var>
+		</line>
+		<line linenr="014" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="015" indent="" />
+		<line linenr="016" indent="" interruptable="@">
+			<var>$multiplier</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.GetSupplyMultiplier</call>
+			<text> </text>
+			<text>:</text>
+		</line>
+		<line linenr="017" indent="">
+			<var>$sector</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>sector</text>
+		</line>
+		<line linenr="018" indent="" interruptable="@">
+			<var>$manpower</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.SectorManpower</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>sector</text>
+			<text>=</text>
+			<var>$sector</var>
+		</line>
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
+			<comment>* Every manpower provides 5 Supply by default.</comment>
+		</line>
+		<line linenr="021" indent="">
+			<comment>* Extra Stats Mode reduces this to 4 (-20%).</comment>
+		</line>
+		<line linenr="022" indent="">
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="023" indent="">
+			<var>$statModifier</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<text>get</text>
+			<text> </text>
+			<text>global</text>
+			<text> </text>
+			<text>variable</text>
+			<text>:</text>
+			<text> </text>
+			<text>name</text>
+			<text>=</text>
+			<text>'mayhem_galaxy.stat_modifier'</text>
+		</line>
+		<line linenr="024" indent="">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$statModifier</var>
+			<text> </text>
+			<text>==</text>
+			<text> </text>
+			<var>1</var>
+		</line>
+		<line linenr="025" indent="&#160;">
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>4</var>
+		</line>
+		<line linenr="026" indent="" />
+		<line linenr="027" indent="">
+			<comment>* Apply the global supply multiplier.</comment>
+		</line>
+		<line linenr="028" indent="">
+			<var>$factor</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>$supplyPerPop</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>$multiplier</var>
+		</line>
+		<line linenr="029" indent="" interruptable="@">
+			<var>$localSupply</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$manpower</var>
+			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
+			<var>$factor</var>
+			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
+			<var>100</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="030" indent="" />
+		<line linenr="031" indent="">
+			<comment>* Supply Depot increases local Supply by 50%.</comment>
+		</line>
+		<line linenr="032" indent="" interruptable="@">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$outpost</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Mayhem.IsPerkUnlocked</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>perk</text>
+			<text>=</text>
+			<text>'Supply Depot'</text>
+		</line>
+		<line linenr="033" indent="&#160;" interruptable="@">
+			<var>$localSupply</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
+			<var>$localSupply</var>
+			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
+			<var>3</var>
+			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
+			<var>2</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
+		</line>
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
+			<text>return</text>
+			<text> </text>
+			<var>$localSupply</var>
+		</line>
+		<line linenr="036" indent="" />
+	</sourcetext>
+	<codearray>
+		<sval type="array" size="10">
+			<sval type="string" val="Mayhem.GetOutpostSupply" />
+			<sval type="int" val="50" />
+			<sval type="string" val="" />
+			<sval type="int" val="4" />
+			<sval type="int" val="0" />
+			<sval type="array" size="8">
+				<sval type="string" val="outpost" />
+				<sval type="string" val="multiplier" />
+				<sval type="string" val="sector" />
+				<sval type="string" val="manpower" />
+				<sval type="string" val="supplyPerPop" />
+				<sval type="string" val="statModifier" />
+				<sval type="string" val="factor" />
+				<sval type="string" val="localSupply" />
+			</sval>
+			<sval type="array" size="14">
+				<sval type="array" size="4">
+					<sval type="int" val="706" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-536870396" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="4" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="6">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.GetSupplyMultiplier" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="0" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="703" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.SectorManpower" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="1" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="4">
+					<sval type="int" val="158" />
+					<sval type="int" val="5" />
+					<sval type="string" val="mayhem_galaxy.stat_modifier" />
+					<sval type="int" val="5" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610424" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="5" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="0" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="0" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="4" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="6" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="1" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="6" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="8">
+					<sval type="int" val="102" />
+					<sval type="string" val="Mayhem.IsPerkUnlocked" />
+					<sval type="int" val="-1610609400" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="string" val="Supply Depot" />
+				</sval>
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
+					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+					<sval type="int" val="4" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="103" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="7" />
+				</sval>
+			</sval>
+			<sval type="array" size="1">
+				<sval type="array" size="2">
+					<sval type="int" val="12" />
+					<sval type="string" val="" />
+				</sval>
+			</sval>
+			<sval type="array" size="22">
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="SCRIPT NAME: Mayhem.GetOutpostSupply" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DESCRIPTION: Returns the supply capacity provided by an Outpost, including difficulty, galaxy rules, and the Supply Depot perk." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Arguments:" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="- $outpost: Outpost providing supply." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Returns 0 if the Outpost does not exist." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="************************************************" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="2" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Every manpower provides 5 Supply by default." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Extra Stats Mode reduces this to 4 (-20%)." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="9" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="9" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Apply the global supply multiplier." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="11" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Supply Depot increases local Supply by 50%." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="14" />
+					<sval type="int" val="2" />
+				</sval>
+			</sval>
+			<sval type="int" val="0" />
+		</sval>
+	</codearray>
+</script>

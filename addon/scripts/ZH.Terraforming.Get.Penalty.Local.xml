@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Terraforming.Get.Penalty.Local</name>
-	<version>34</version>
+	<version>35</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -20,10 +20,10 @@
 			<comment>* DESCRIPTION: Returns the local production penalty multiplier as a percentage with 2 decimal places (e.g. 625 for 6.25%) applied to a local outpost that is doing terraforming. </comment>
 		</line>
 		<line linenr="004" indent="">
-			<comment>* There are 0-5 planets per sector.</comment>
+			<comment>* Expanded 2.2.1: Replaced lookup with loop-based calculation.</comment>
 		</line>
 		<line linenr="005" indent="">
-			<comment>* Local penalty multiplier = 0.5^(number of projects); (1.4.11) Fixed on insane - it's 0.4^(number of projects) instead.</comment>
+			<comment>* </comment>
 		</line>
 		<line linenr="006" indent="">
 			<comment>* AUTHOR:           DATE: 6 November 2025</comment>
@@ -31,14 +31,25 @@
 		<line linenr="007" indent="">
 			<comment>* ************************************************</comment>
 		</line>
-		<line linenr="008" indent="">
+		<line linenr="008" indent="" />
+		<line linenr="009" indent="">
+			<comment>* Local terraforming multiplier.</comment>
+		</line>
+		<line linenr="010" indent="">
+			<comment>* Normal: 0.5 per project.</comment>
+		</line>
+		<line linenr="011" indent="">
+			<comment>* Insane: 0.4 per project.</comment>
+		</line>
+		<line linenr="012" indent="">
 			<var>$production.rate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>10000</var>
 		</line>
-		<line linenr="009" indent="">
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$sector</var>
@@ -55,7 +66,7 @@
 			<text>=</text>
 			<text>'ZH_TerraformingInProgress'</text>
 		</line>
-		<line linenr="010" indent="&#160;" interruptable="@">
+		<line linenr="015" indent="&#160;" interruptable="@">
 			<var>$projects.progressing</var>
 			<text> </text>
 			<text>=</text>
@@ -75,7 +86,30 @@
 			<text>=</text>
 			<var>$sector</var>
 		</line>
-		<line linenr="011" indent="&#160;" interruptable="@">
+		<line linenr="016" indent="&#160;" />
+		<line linenr="017" indent="&#160;">
+			<comment>* There are at most five planets per sector.</comment>
+		</line>
+		<line linenr="018" indent="&#160;">
+			<text>do</text>
+			<text> </text>
+			<text>if</text>
+			<text> </text>
+			<var>$projects.progressing</var>
+			<text> </text>
+			<text>&gt;</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="019" indent="&#160;&#160;">
+			<var>$projects.progressing</var>
+			<text> </text>
+			<text>=</text>
+			<text> </text>
+			<var>5</var>
+		</line>
+		<line linenr="020" indent="&#160;" />
+		<line linenr="021" indent="&#160;" interruptable="@">
 			<var>$difficulty</var>
 			<text> </text>
 			<text>=</text>
@@ -91,115 +125,17 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="012" indent="&#160;">
-			<text>if</text>
+		<line linenr="022" indent="&#160;" />
+		<line linenr="023" indent="&#160;">
+			<text>while</text>
 			<text> </text>
 			<var>$projects.progressing</var>
 			<text> </text>
-			<text>==</text>
+			<text>&gt;</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="013" indent="&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>10000</var>
-		</line>
-		<line linenr="014" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$projects.progressing</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>1</var>
-		</line>
-		<line linenr="015" indent="&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>5000</var>
-		</line>
-		<line linenr="016" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="017" indent="&#160;&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>4000</var>
-		</line>
-		<line linenr="018" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$projects.progressing</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="019" indent="&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>2500</var>
-		</line>
-		<line linenr="020" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="021" indent="&#160;&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1600</var>
-		</line>
-		<line linenr="022" indent="&#160;">
-			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$projects.progressing</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>3</var>
-		</line>
-		<line linenr="023" indent="&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>1250</var>
-		</line>
 		<line linenr="024" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -213,79 +149,49 @@
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>640</var>
+			<text>(</text>
+			<var>$production.rate</var>
+			<text> </text>
+			<text>*</text>
+			<text> </text>
+			<var>40</var>
+			<text>)</text>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>100</var>
 		</line>
-		<line linenr="026" indent="&#160;">
+		<line linenr="026" indent="&#160;&#160;">
 			<text>else</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$projects.progressing</var>
-			<text> </text>
-			<text>==</text>
-			<text> </text>
-			<var>4</var>
 		</line>
-		<line linenr="027" indent="&#160;&#160;">
+		<line linenr="027" indent="&#160;&#160;&#160;">
 			<var>$production.rate</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<var>625</var>
+			<var>$production.rate</var>
+			<text> </text>
+			<text>/</text>
+			<text> </text>
+			<var>2</var>
 		</line>
 		<line linenr="028" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="029" indent="&#160;&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>256</var>
-		</line>
-		<line linenr="030" indent="&#160;">
-			<text>else</text>
-		</line>
-		<line linenr="031" indent="&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>312</var>
-		</line>
-		<line linenr="032" indent="&#160;&#160;">
-			<text>do</text>
-			<text> </text>
-			<text>if</text>
-			<text> </text>
-			<var>$difficulty</var>
-			<text> </text>
-			<text>&gt;</text>
-			<text> </text>
-			<var>2</var>
-		</line>
-		<line linenr="033" indent="&#160;&#160;&#160;">
-			<var>$production.rate</var>
-			<text> </text>
-			<text>=</text>
-			<text> </text>
-			<var>102</var>
-		</line>
-		<line linenr="034" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="035" indent="">
+		<line linenr="029" indent="&#160;&#160;" />
+		<line linenr="030" indent="&#160;&#160;">
+			<text>dec</text>
+			<text> </text>
+			<var>$projects.progressing</var>
+		</line>
+		<line linenr="031" indent="&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="036" indent="">
+		<line linenr="032" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="033" indent="" />
+		<line linenr="034" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$production.rate</var>
@@ -296,7 +202,7 @@
 			<sval type="string" val="ZH.Terraforming.Get.Penalty.Local" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="34" />
+			<sval type="int" val="35" />
 			<sval type="int" val="0" />
 			<sval type="array" size="4">
 				<sval type="string" val="sector" />
@@ -304,7 +210,7 @@
 				<sval type="string" val="projects.progressing" />
 				<sval type="string" val="difficulty" />
 			</sval>
-			<sval type="array" size="31">
+			<sval type="array" size="14">
 				<sval type="array" size="7">
 					<sval type="int" val="104" />
 					<sval type="int" val="1" />
@@ -320,7 +226,7 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="5" />
 					<sval type="string" val="ZH_TerraformingInProgress" />
-					<sval type="int" val="-1610605053" />
+					<sval type="int" val="-1610609405" />
 				</sval>
 				<sval type="array" size="8">
 					<sval type="int" val="102" />
@@ -332,6 +238,30 @@
 					<sval type="int" val="131074" />
 					<sval type="int" val="0" />
 				</sval>
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610611448" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="2" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="7">
+					<sval type="int" val="104" />
+					<sval type="int" val="2" />
+					<sval type="int" val="1" />
+					<sval type="int" val="4" />
+					<sval type="int" val="5" />
+					<sval type="int" val="1" />
+					<sval type="int" val="-1" />
+				</sval>
 				<sval type="array" size="6">
 					<sval type="int" val="102" />
 					<sval type="string" val="Mayhem.GetDifficulty" />
@@ -342,272 +272,83 @@
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610610941" />
+					<sval type="int" val="-1610609399" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="2" />
 					<sval type="int" val="4" />
 					<sval type="int" val="0" />
 					<sval type="int" val="15" />
-					<sval type="int" val="0" />
+					<sval type="int" val="2" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
+					<sval type="int" val="2" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="7">
+				<sval type="array" size="13">
+					<sval type="int" val="104" />
+					<sval type="int" val="-1610610173" />
+					<sval type="int" val="3" />
+					<sval type="int" val="131074" />
+					<sval type="int" val="3" />
+					<sval type="int" val="4" />
+					<sval type="int" val="2" />
+					<sval type="int" val="15" />
+					<sval type="int" val="2" />
+					<sval type="int" val="3" />
+					<sval type="int" val="-1" />
+					<sval type="int" val="2" />
+					<sval type="int" val="-2" />
+				</sval>
+				<sval type="array" size="21">
 					<sval type="int" val="104" />
 					<sval type="int" val="1" />
+					<sval type="int" val="5" />
+					<sval type="int" val="131074" />
 					<sval type="int" val="1" />
 					<sval type="int" val="4" />
-					<sval type="int" val="10000" />
-					<sval type="int" val="1" />
+					<sval type="int" val="40" />
+					<sval type="int" val="15" />
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+					<sval type="int" val="100" />
+					<sval type="int" val="15" />
+					<sval type="int" val="14" />
+					<sval type="int" val="7" />
+					<sval type="int" val="16" />
 					<sval type="int" val="-1" />
+					<sval type="int" val="13" />
+					<sval type="int" val="-2" />
+					<sval type="int" val="17" />
+					<sval type="int" val="14" />
+					<sval type="int" val="-4" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="30" />
+					<sval type="int" val="11" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
-					<sval type="int" val="-1610609659" />
+					<sval type="int" val="1" />
 					<sval type="int" val="3" />
 					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
 					<sval type="int" val="1" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="5000" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610609912" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
 					<sval type="int" val="4" />
 					<sval type="int" val="2" />
 					<sval type="int" val="15" />
-					<sval type="int" val="2" />
+					<sval type="int" val="14" />
 					<sval type="int" val="3" />
 					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
+					<sval type="int" val="14" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="4000" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+				<sval type="array" size="2">
+					<sval type="int" val="143" />
+					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610608379" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2500" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610608632" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1600" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610607099" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="3" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="1250" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610607352" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="640" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605819" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="2" />
-					<sval type="int" val="4" />
-					<sval type="int" val="4" />
-					<sval type="int" val="15" />
-					<sval type="int" val="0" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="0" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="625" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610606072" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="256" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="112" />
-					<sval type="int" val="30" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="312" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
-				</sval>
-				<sval type="array" size="13">
-					<sval type="int" val="104" />
-					<sval type="int" val="-1610605048" />
-					<sval type="int" val="3" />
-					<sval type="int" val="131074" />
-					<sval type="int" val="3" />
-					<sval type="int" val="4" />
-					<sval type="int" val="2" />
-					<sval type="int" val="15" />
-					<sval type="int" val="2" />
-					<sval type="int" val="3" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="2" />
-					<sval type="int" val="-2" />
-				</sval>
-				<sval type="array" size="7">
-					<sval type="int" val="104" />
-					<sval type="int" val="1" />
-					<sval type="int" val="1" />
-					<sval type="int" val="4" />
-					<sval type="int" val="102" />
-					<sval type="int" val="1" />
-					<sval type="int" val="-1" />
+					<sval type="int" val="6" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="103" />
@@ -621,7 +362,7 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="10">
+			<sval type="array" size="22">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
@@ -640,12 +381,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="There are 0-5 planets per sector." />
+					<sval type="string" val="Expanded 2.2.1: Replaced lookup with loop-based calculation." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Local penalty multiplier = 0.5^(number of projects); (1.4.11) Fixed on insane - it's 0.4^(number of projects) instead." />
+					<sval type="string" val="" />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
@@ -658,16 +399,68 @@
 					<sval type="string" val="************************************************" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="27" />
+					<sval type="int" val="0" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Local terraforming multiplier." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Normal: 0.5 per project." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Insane: 0.4 per project." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="1" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="3" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="3" />
+					<sval type="int" val="1" />
+					<sval type="string" val="There are at most five planets per sector." />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="5" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="6" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="10" />
 					<sval type="int" val="5" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="30" />
+					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 				</sval>
 				<sval type="array" size="2">
-					<sval type="int" val="30" />
+					<sval type="int" val="11" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
 					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="4" />
+				</sval>
+				<sval type="array" size="2">
+					<sval type="int" val="13" />
+					<sval type="int" val="2" />
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
