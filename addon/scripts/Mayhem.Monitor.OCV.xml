@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>Mayhem.Monitor.OCV</name>
-	<version>69</version>
+	<version>71</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments />
@@ -902,7 +902,7 @@
 		</line>
 		<line linenr="119" indent="&#160;&#160;" />
 		<line linenr="120" indent="&#160;&#160;">
-			<comment>* Add-Ons 1.7: NPC scaling based on player's suppy usage. </comment>
+			<comment>* Add-Ons 1.7: NPC scaling based on player's supply usage. </comment>
 		</line>
 		<line linenr="121" indent="&#160;&#160;">
 			<comment>* This is calculated in ZH.Calculate.Scaling, called once per hour in ZH.Monitor.</comment>
@@ -981,11 +981,11 @@
 			<text>!</text>
 			<var>$currentlyBuilding.class</var>
 		</line>
-		<line linenr="133" indent="&#160;&#160;&#160;" />
-		<line linenr="134" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="133" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="134" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Check what we have and what we need.</comment>
 		</line>
-		<line linenr="135" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="135" indent="&#160;&#160;&#160;">
 			<var>$OCVgrinding</var>
 			<text> </text>
 			<text>=</text>
@@ -1001,7 +1001,7 @@
 			<text>=</text>
 			<text>'ZH_OCVgrinding'</text>
 		</line>
-		<line linenr="136" indent="&#160;&#160;&#160;">
+		<line linenr="136" indent="&#160;&#160;&#160;&#160;">
 			<var>$invaderReady</var>
 			<text> </text>
 			<text>=</text>
@@ -1009,10 +1009,10 @@
 			<var>[TRUE]</var>
 		</line>
 		<line linenr="137" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="138" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="138" indent="&#160;&#160;&#160;">
 			<comment>* Store shortages so production priority can be selected after checking all classes.</comment>
 		</line>
-		<line linenr="139" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="139" indent="&#160;&#160;&#160;">
 			<var>$deficits</var>
 			<text> </text>
 			<text>=</text>
@@ -1044,7 +1044,7 @@
 			<text> </text>
 			<var>$classes</var>
 		</line>
-		<line linenr="143" indent="&#160;&#160;&#160;">
+		<line linenr="143" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
@@ -1054,7 +1054,7 @@
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="145" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="145" indent="&#160;&#160;&#160;">
 			<var>$class</var>
 			<text> </text>
 			<text>=</text>
@@ -1074,7 +1074,7 @@
 			<text>ms</text>
 		</line>
 		<line linenr="147" indent="&#160;&#160;&#160;" />
-		<line linenr="148" indent="&#160;&#160;&#160;">
+		<line linenr="148" indent="&#160;&#160;&#160;&#160;">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
@@ -1091,14 +1091,11 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="149" indent="&#160;&#160;&#160;" />
-		<line linenr="150" indent="&#160;&#160;&#160;&#160;">
-			<comment>* M1/M2 retain their special pre-alignment difficulty quotas.</comment>
+		<line linenr="149" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="150" indent="&#160;&#160;&#160;&#160;&#160;">
+			<comment>* M1/M2 retain their special difficulty quotas.</comment>
 		</line>
-		<line linenr="151" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Easy/Normal = 2, Hard/Insane = 3.</comment>
-		</line>
-		<line linenr="152" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="151" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$class</var>
@@ -1115,7 +1112,7 @@
 			<text> </text>
 			<var>[M2]</var>
 		</line>
-		<line linenr="153" indent="&#160;&#160;&#160;">
+		<line linenr="152" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1126,56 +1123,62 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="154" indent="&#160;&#160;&#160;">
+		<line linenr="153" indent="&#160;&#160;&#160;">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>3</var>
 		</line>
-		<line linenr="155" indent="&#160;&#160;&#160;">
+		<line linenr="154" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="156" indent="&#160;&#160;&#160;">
-			<comment>* Apply general difficulty scaling.</comment>
+		<line linenr="155" indent="&#160;&#160;&#160;&#160;">
+			<comment>* Apply difficulty scaling, rounding to the nearest integer.</comment>
 		</line>
-		<line linenr="157" indent="&#160;&#160;&#160;&#160;">
-			<comment>* Add 50 before division to round to the nearest integer.</comment>
-		</line>
-		<line linenr="158" indent="&#160;&#160;&#160;">
+		<line linenr="156" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$required</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>$difficultyScale</var>
-			<text>)</text>
 			<text> </text>
-			<text>+</text>
-			<text> </text>
-			<var>50</var>
-			<text>)</text>
-			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>100</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[TRUE]</var>
 		</line>
-		<line linenr="159" indent="&#160;&#160;&#160;">
+		<line linenr="157" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="160" indent="&#160;&#160;&#160;" />
-		<line linenr="161" indent="&#160;&#160;&#160;">
-			<comment>* Add-Ons 1.7: Scale quotas with player supply usage.</comment>
+		<line linenr="158" indent="&#160;&#160;&#160;" />
+		<line linenr="159" indent="&#160;&#160;&#160;">
+			<comment>* Scale quotas with player supply usage.</comment>
 		</line>
-		<line linenr="162" indent="&#160;&#160;&#160;">
+		<line linenr="160" indent="&#160;&#160;&#160;">
 			<comment>* No additional scaling if the player is allied with the OCV.</comment>
 		</line>
-		<line linenr="163" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="161" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -1184,31 +1187,46 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="164" indent="&#160;&#160;&#160;">
+		<line linenr="162" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$required</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>$npcScaleFactor</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>100</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="165" indent="&#160;&#160;&#160;">
+		<line linenr="163" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="166" indent="&#160;&#160;&#160;" />
-		<line linenr="167" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="164" indent="&#160;&#160;&#160;" />
+		<line linenr="165" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.8.1: Halved OCV forces if the player allied with the OCV.</comment>
 		</line>
-		<line linenr="168" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="166" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -1225,7 +1243,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="169" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="167" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
@@ -1236,7 +1254,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="170" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="168" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1247,28 +1265,28 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="171" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="169" indent="&#160;&#160;&#160;&#160;">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="172" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="170" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="173" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="174" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="171" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="172" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Grind larger reserves before invading again.</comment>
 		</line>
-		<line linenr="175" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="173" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$OCVgrinding</var>
 		</line>
-		<line linenr="176" indent="&#160;&#160;&#160;">
+		<line linenr="174" indent="&#160;&#160;&#160;">
 			<var>$required</var>
 			<text> </text>
 			<text>=</text>
@@ -1279,14 +1297,14 @@
 			<text> </text>
 			<var>4</var>
 		</line>
-		<line linenr="177" indent="&#160;&#160;&#160;" />
-		<line linenr="178" indent="&#160;&#160;&#160;">
+		<line linenr="175" indent="&#160;&#160;&#160;" />
+		<line linenr="176" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: Count all waiting OCV ships in the portal sector except active portal invaders.</comment>
 		</line>
-		<line linenr="179" indent="&#160;&#160;&#160;">
+		<line linenr="177" indent="&#160;&#160;&#160;">
 			<comment>* Persistent portal defense is handled by the Xenon.</comment>
 		</line>
-		<line linenr="180" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="178" indent="&#160;&#160;&#160;&#160;">
 			<var>$ownedShips</var>
 			<text> </text>
 			<text>=</text>
@@ -1332,14 +1350,14 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="181" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="179" indent="&#160;&#160;&#160;&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
 			<text> </text>
 			<var>$ownedShips</var>
 		</line>
-		<line linenr="182" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="180" indent="&#160;&#160;&#160;&#160;">
 			<var>$ownedShips</var>
 			<text> </text>
 			<text>=</text>
@@ -1353,11 +1371,11 @@
 			<text>=</text>
 			<var>0</var>
 		</line>
-		<line linenr="183" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="184" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="181" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="182" indent="&#160;&#160;&#160;&#160;">
 			<comment>* A ship must not be an invader, and it must be a produced ship to qualify for the invasion.</comment>
 		</line>
-		<line linenr="185" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="183" indent="&#160;&#160;&#160;&#160;">
 			<var>$index</var>
 			<text> </text>
 			<text>=</text>
@@ -1370,17 +1388,17 @@
 			<text> </text>
 			<var>$ownedShips</var>
 		</line>
-		<line linenr="186" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="184" indent="&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="187" indent="&#160;&#160;&#160;">
+		<line linenr="185" indent="&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="188" indent="&#160;&#160;">
+		<line linenr="186" indent="&#160;&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -1390,7 +1408,7 @@
 			<var>$index</var>
 			<text>]</text>
 		</line>
-		<line linenr="189" indent="&#160;&#160;" interruptable="@">
+		<line linenr="187" indent="&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -1399,7 +1417,7 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="190" indent="&#160;&#160;">
+		<line linenr="188" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -1416,7 +1434,7 @@
 			<text>=</text>
 			<text>'OCVPortalInvader'</text>
 		</line>
-		<line linenr="191" indent="&#160;&#160;&#160;">
+		<line linenr="189" indent="&#160;&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -1433,14 +1451,14 @@
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="192" indent="&#160;&#160;&#160;">
+		<line linenr="190" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="193" indent="&#160;&#160;&#160;">
+		<line linenr="191" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="194" indent="&#160;&#160;&#160;" />
-		<line linenr="195" indent="&#160;&#160;&#160;">
+		<line linenr="192" indent="&#160;&#160;&#160;" />
+		<line linenr="193" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -1459,7 +1477,7 @@
 			<text>=</text>
 			<text>'OCVPrimaryProduction'</text>
 		</line>
-		<line linenr="196" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="194" indent="&#160;&#160;&#160;&#160;">
 			<text>remove</text>
 			<text> </text>
 			<text>element</text>
@@ -1476,14 +1494,14 @@
 			<text> </text>
 			<var>$index</var>
 		</line>
-		<line linenr="197" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="195" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
+		<line linenr="196" indent="&#160;&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="197" indent="&#160;&#160;&#160;&#160;" />
 		<line linenr="198" indent="&#160;&#160;&#160;&#160;">
-			<text>end</text>
-		</line>
-		<line linenr="199" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="200" indent="&#160;&#160;&#160;&#160;">
 			<var>$ownedCount</var>
 			<text> </text>
 			<text>=</text>
@@ -1496,7 +1514,7 @@
 			<text> </text>
 			<var>$ownedShips</var>
 		</line>
-		<line linenr="201" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="199" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$ownedCount</var>
@@ -1505,15 +1523,15 @@
 			<text> </text>
 			<var>$required</var>
 		</line>
-		<line linenr="202" indent="&#160;&#160;&#160;">
+		<line linenr="200" indent="&#160;&#160;&#160;">
 			<var>$invaderReady</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>[FALSE]</var>
 		</line>
-		<line linenr="203" indent="&#160;&#160;&#160;" />
-		<line linenr="204" indent="&#160;&#160;">
+		<line linenr="201" indent="&#160;&#160;&#160;" />
+		<line linenr="202" indent="&#160;&#160;">
 			<var>$deficit</var>
 			<text> </text>
 			<text>=</text>
@@ -1524,7 +1542,7 @@
 			<text> </text>
 			<var>$ownedCount</var>
 		</line>
-		<line linenr="205" indent="&#160;&#160;&#160;">
+		<line linenr="203" indent="&#160;&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1541,11 +1559,11 @@
 			<text> </text>
 			<var>$deficit</var>
 		</line>
-		<line linenr="206" indent="&#160;&#160;&#160;" />
-		<line linenr="207" indent="&#160;&#160;&#160;">
+		<line linenr="204" indent="&#160;&#160;&#160;" />
+		<line linenr="205" indent="&#160;&#160;&#160;">
 			<comment>* Maximum batch size for this production cycle.</comment>
 		</line>
-		<line linenr="208" indent="&#160;&#160;&#160;">
+		<line linenr="206" indent="&#160;&#160;&#160;">
 			<text>table</text>
 			<text> </text>
 			<text>set</text>
@@ -1562,25 +1580,25 @@
 			<text> </text>
 			<var>$required</var>
 		</line>
-		<line linenr="209" indent="&#160;&#160;&#160;">
+		<line linenr="207" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="210" indent="&#160;&#160;&#160;">
+		<line linenr="208" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="211" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="212" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="209" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="210" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$invaderReady</var>
 		</line>
-		<line linenr="213" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="211" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* We have everything required. Reform the waiting OCV ships into invasion fleets.</comment>
 		</line>
-		<line linenr="214" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="212" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Mayhem.ReformTerraformer handles carrier restocking and calls Mayhem.OCV.CreateInvaders.</comment>
 		</line>
-		<line linenr="215" indent="&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="213" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1610,8 +1628,8 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="216" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="217" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="214" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="215" indent="&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>not</text>
@@ -1627,14 +1645,14 @@
 			<text>=</text>
 			<text>'disableOCVsound'</text>
 		</line>
-		<line linenr="218" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="216" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>play</text>
 			<text> </text>
 			<text>sample</text>
 			<text> </text>
 			<var>1218</var>
 		</line>
-		<line linenr="219" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="217" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>set</text>
 			<text> </text>
 			<text>global</text>
@@ -1650,8 +1668,8 @@
 			<text>=</text>
 			<var>1</var>
 		</line>
-		<line linenr="220" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="221" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="218" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="219" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$ocv.f</var>
 			<text> </text>
 			<text>=</text>
@@ -1675,7 +1693,7 @@
 			<text>=</text>
 			<text>'red'</text>
 		</line>
-		<line linenr="222" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="220" indent="&#160;&#160;&#160;&#160;">
 			<var>$t</var>
 			<text> </text>
 			<text>=</text>
@@ -1694,7 +1712,7 @@
 			<text> </text>
 			<text>'!'</text>
 		</line>
-		<line linenr="223" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
+		<line linenr="221" indent="&#160;&#160;&#160;&#160;&#160;" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -1720,27 +1738,27 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="224" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="222" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="225" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="226" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="223" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="224" indent="&#160;&#160;&#160;&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="227" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="225" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Select the next deficient class to produce.</comment>
 		</line>
-		<line linenr="228" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="226" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* M3/M4/M6 are fast bulk-production classes and are replenished first.</comment>
 		</line>
-		<line linenr="229" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="227" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* M7s are produced 2 at a time.</comment>
 		</line>
-		<line linenr="230" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="228" indent="&#160;&#160;&#160;&#160;">
 			<comment>* M1/M2 are produced individually.</comment>
 		</line>
-		<line linenr="231" indent="&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="232" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="229" indent="&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="230" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$XS.Iterator2</var>
 			<text> </text>
 			<text>=</text>
@@ -1753,17 +1771,17 @@
 			<text> </text>
 			<var>$productionPriority</var>
 		</line>
-		<line linenr="233" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="231" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="234" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="232" indent="&#160;&#160;&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator2</var>
 		</line>
-		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="233" indent="&#160;&#160;&#160;&#160;">
 			<var>$class</var>
 			<text> </text>
 			<text>=</text>
@@ -1773,7 +1791,7 @@
 			<var>$XS.Iterator2</var>
 			<text>]</text>
 		</line>
-		<line linenr="236" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="234" indent="&#160;&#160;&#160;&#160;">
 			<var>$deficit</var>
 			<text> </text>
 			<text>=</text>
@@ -1790,7 +1808,7 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="237" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="235" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1809,19 +1827,19 @@
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="238" indent="&#160;&#160;&#160;">
+		<line linenr="236" indent="&#160;&#160;&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="239" indent="&#160;&#160;&#160;" />
-		<line linenr="240" indent="&#160;&#160;&#160;">
+		<line linenr="237" indent="&#160;&#160;&#160;" />
+		<line linenr="238" indent="&#160;&#160;&#160;">
 			<var>$currentlyBuilding.class</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$class</var>
 		</line>
-		<line linenr="241" indent="&#160;&#160;" />
-		<line linenr="242" indent="&#160;&#160;">
+		<line linenr="239" indent="&#160;&#160;" />
+		<line linenr="240" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$class</var>
@@ -1838,25 +1856,25 @@
 			<text> </text>
 			<var>[M2]</var>
 		</line>
-		<line linenr="243" indent="&#160;">
+		<line linenr="241" indent="&#160;">
 			<comment>* M1/M2 build individually.</comment>
 		</line>
-		<line linenr="244" indent="&#160;&#160;">
+		<line linenr="242" indent="&#160;&#160;">
 			<var>$currentlyBuilding.amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="245" indent="&#160;&#160;">
+		<line linenr="243" indent="&#160;&#160;">
 			<var>$currentlyBuilding.maxAmount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="246" indent="&#160;&#160;" />
-		<line linenr="247" indent="&#160;&#160;">
+		<line linenr="244" indent="&#160;&#160;" />
+		<line linenr="245" indent="&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -1867,17 +1885,17 @@
 			<text> </text>
 			<var>[M7]</var>
 		</line>
-		<line linenr="248" indent="&#160;&#160;">
+		<line linenr="246" indent="&#160;&#160;">
 			<comment>* M7s build up to 2 at a time.</comment>
 		</line>
-		<line linenr="249" indent="&#160;&#160;">
+		<line linenr="247" indent="&#160;&#160;">
 			<var>$currentlyBuilding.amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$deficit</var>
 		</line>
-		<line linenr="250" indent="&#160;&#160;">
+		<line linenr="248" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -1888,36 +1906,36 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="251" indent="&#160;&#160;">
+		<line linenr="249" indent="&#160;&#160;">
 			<var>$currentlyBuilding.amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="252" indent="&#160;&#160;&#160;" />
-		<line linenr="253" indent="&#160;&#160;">
+		<line linenr="250" indent="&#160;&#160;&#160;" />
+		<line linenr="251" indent="&#160;&#160;">
 			<var>$currentlyBuilding.maxAmount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="254" indent="&#160;&#160;" />
-		<line linenr="255" indent="&#160;&#160;">
+		<line linenr="252" indent="&#160;&#160;" />
+		<line linenr="253" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="256" indent="&#160;&#160;">
+		<line linenr="254" indent="&#160;&#160;">
 			<comment>* M3/M4/M6 replenish their full deficit.</comment>
 		</line>
-		<line linenr="257" indent="&#160;&#160;">
+		<line linenr="255" indent="&#160;&#160;">
 			<var>$currentlyBuilding.amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$deficit</var>
 		</line>
-		<line linenr="258" indent="&#160;&#160;">
+		<line linenr="256" indent="&#160;&#160;">
 			<var>$currentlyBuilding.maxAmount</var>
 			<text> </text>
 			<text>=</text>
@@ -1934,40 +1952,40 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="259" indent="&#160;&#160;&#160;">
+		<line linenr="257" indent="&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="260" indent="&#160;&#160;" />
-		<line linenr="261" indent="&#160;&#160;">
+		<line linenr="258" indent="&#160;&#160;" />
+		<line linenr="259" indent="&#160;&#160;">
 			<var>$currentlyBuilding.startTime</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$playtime</var>
 		</line>
-		<line linenr="262" indent="&#160;&#160;">
+		<line linenr="260" indent="&#160;&#160;">
 			<text>break</text>
 		</line>
-		<line linenr="263" indent="&#160;&#160;">
+		<line linenr="261" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="264" indent="&#160;&#160;" />
-		<line linenr="265" indent="&#160;&#160;">
+		<line linenr="262" indent="&#160;&#160;" />
+		<line linenr="263" indent="&#160;&#160;">
 			<comment>* Close invasion ready</comment>
 		</line>
-		<line linenr="266" indent="&#160;&#160;">
+		<line linenr="264" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="267" indent="&#160;&#160;" />
-		<line linenr="268" indent="&#160;&#160;">
+		<line linenr="265" indent="&#160;&#160;" />
+		<line linenr="266" indent="&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="269" indent="&#160;&#160;" />
-		<line linenr="270" indent="&#160;&#160;&#160;">
+		<line linenr="267" indent="&#160;&#160;" />
+		<line linenr="268" indent="&#160;&#160;&#160;">
 			<comment>* === Continue current production. ===</comment>
 		</line>
-		<line linenr="271" indent="&#160;&#160;&#160;" />
-		<line linenr="272" indent="&#160;&#160;&#160;">
+		<line linenr="269" indent="&#160;&#160;&#160;" />
+		<line linenr="270" indent="&#160;&#160;&#160;">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
@@ -1984,11 +2002,11 @@
 			<text> </text>
 			<text>)</text>
 		</line>
-		<line linenr="273" indent="&#160;&#160;&#160;" />
-		<line linenr="274" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="271" indent="&#160;&#160;&#160;" />
+		<line linenr="272" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Reset every 8h by ZH.Core.</comment>
 		</line>
-		<line linenr="275" indent="&#160;&#160;">
+		<line linenr="273" indent="&#160;&#160;">
 			<var>$scalingMultiplier</var>
 			<text> </text>
 			<text>=</text>
@@ -2004,7 +2022,7 @@
 			<text>=</text>
 			<text>'ZH_OCV_ScalingMultiplier'</text>
 		</line>
-		<line linenr="276" indent="&#160;&#160;">
+		<line linenr="274" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$scalingMultiplier</var>
@@ -2021,39 +2039,54 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="277" indent="&#160;&#160;">
+		<line linenr="275" indent="&#160;&#160;">
 			<var>$scalingMultiplier</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="278" indent="&#160;&#160;">
+		<line linenr="276" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="279" indent="&#160;&#160;" />
-		<line linenr="280" indent="&#160;&#160;">
+		<line linenr="277" indent="&#160;&#160;" />
+		<line linenr="278" indent="&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>$scalingMultiplier</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>100</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="281" indent="&#160;&#160;" />
-		<line linenr="282" indent="&#160;&#160;&#160;">
+		<line linenr="279" indent="&#160;&#160;" />
+		<line linenr="280" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 1.7.1: Exceeding the supply factor speeds up OCV production.</comment>
 		</line>
-		<line linenr="283" indent="&#160;&#160;">
+		<line linenr="281" indent="&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -2062,37 +2095,52 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="284" indent="&#160;&#160;&#160;">
+		<line linenr="282" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>100</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>$npcScaleFactor</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="285" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="283" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="286" indent="&#160;&#160;&#160;" />
-		<line linenr="287" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="284" indent="&#160;&#160;&#160;" />
+		<line linenr="285" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.0.2: Cycle is reduced depending on the number of gates. </comment>
 		</line>
-		<line linenr="288" indent="&#160;&#160;&#160;">
+		<line linenr="286" indent="&#160;&#160;&#160;">
 			<comment>* Maelstrom counts as a gate, so 2 gates is the baseline: 100%.</comment>
 		</line>
-		<line linenr="289" indent="&#160;&#160;">
+		<line linenr="287" indent="&#160;&#160;">
 			<comment>* Each additional gate increases the rate by 25%, up to 200% if in a 4-way sector with a jump hole.</comment>
 		</line>
-		<line linenr="290" indent="&#160;&#160;">
+		<line linenr="288" indent="&#160;&#160;">
 			<var>$gates</var>
 			<text> </text>
 			<text>=</text>
@@ -2123,7 +2171,7 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="291" indent="&#160;&#160;">
+		<line linenr="289" indent="&#160;&#160;">
 			<var>$numgates</var>
 			<text> </text>
 			<text>=</text>
@@ -2136,15 +2184,15 @@
 			<text> </text>
 			<var>$gates</var>
 		</line>
-		<line linenr="292" indent="&#160;&#160;">
+		<line linenr="290" indent="&#160;&#160;">
 			<var>$cycleRate.gates</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>100</var>
 		</line>
-		<line linenr="293" indent="&#160;&#160;" />
-		<line linenr="294" indent="&#160;&#160;&#160;">
+		<line linenr="291" indent="&#160;&#160;" />
+		<line linenr="292" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$numgates</var>
@@ -2153,7 +2201,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="295" indent="&#160;&#160;">
+		<line linenr="293" indent="&#160;&#160;">
 			<var>$extraGates</var>
 			<text> </text>
 			<text>=</text>
@@ -2164,7 +2212,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="296" indent="&#160;&#160;">
+		<line linenr="294" indent="&#160;&#160;">
 			<var>$cycleRate.gates</var>
 			<text> </text>
 			<text>=</text>
@@ -2181,8 +2229,8 @@
 			<var>25</var>
 			<text>)</text>
 		</line>
-		<line linenr="297" indent="&#160;&#160;" />
-		<line linenr="298" indent="&#160;&#160;">
+		<line linenr="295" indent="&#160;&#160;" />
+		<line linenr="296" indent="&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2193,42 +2241,57 @@
 			<text> </text>
 			<var>200</var>
 		</line>
-		<line linenr="299" indent="&#160;&#160;&#160;">
+		<line linenr="297" indent="&#160;&#160;&#160;">
 			<var>$cycleRate.gates</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>200</var>
 		</line>
-		<line linenr="300" indent="&#160;&#160;">
+		<line linenr="298" indent="&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="301" indent="&#160;&#160;" />
-		<line linenr="302" indent="&#160;&#160;">
+		<line linenr="299" indent="&#160;&#160;" />
+		<line linenr="300" indent="&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>100</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>$cycleRate.gates</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="303" indent="&#160;&#160;&#160;" />
+		<line linenr="301" indent="&#160;&#160;&#160;" />
+		<line linenr="302" indent="&#160;&#160;&#160;">
+			<comment>* Add-Ons 2.0.2: Production is 50% faster on Hard and 100% faster on hostile Insane.</comment>
+		</line>
+		<line linenr="303" indent="&#160;&#160;&#160;">
+			<comment>* OCV-aligned Insane increases production duration by 50%, normalizing the timer back to ~11 hours.</comment>
+		</line>
 		<line linenr="304" indent="&#160;&#160;&#160;">
-			<comment>* Add-Ons 2.0.2: Production is 50% faster on hard and 100% faster on insane.</comment>
-		</line>
-		<line linenr="305" indent="&#160;&#160;&#160;">
-			<comment>* If the player joined the OCV, the OCV produce 33% slower (cycle time increased by 50%), normalizing the timer back to ~11 hours.</comment>
-		</line>
-		<line linenr="306" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$difficulty</var>
@@ -2237,24 +2300,39 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="307" indent="&#160;&#160;&#160;">
+		<line linenr="305" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>100</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>150</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="308" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="306" indent="&#160;&#160;&#160;&#160;">
 			<text>else</text>
 			<text> </text>
 			<text>if</text>
@@ -2265,7 +2343,7 @@
 			<text> </text>
 			<var>2</var>
 		</line>
-		<line linenr="309" indent="&#160;&#160;&#160;">
+		<line linenr="307" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$OCVplotstage</var>
@@ -2274,58 +2352,87 @@
 			<text> </text>
 			<text>'playerJoinedOCV'</text>
 		</line>
-		<line linenr="310" indent="&#160;&#160;&#160;">
+		<line linenr="308" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>100</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>200</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="311" indent="&#160;&#160;&#160;">
+		<line linenr="309" indent="&#160;&#160;&#160;">
 			<text>else</text>
 		</line>
-		<line linenr="312" indent="&#160;&#160;&#160;">
+		<line linenr="310" indent="&#160;&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>150</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>100</var>
-		</line>
-		<line linenr="313" indent="&#160;&#160;&#160;&#160;">
-			<text>end</text>
 			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="314" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="311" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="315" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="316" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="312" indent="&#160;&#160;&#160;&#160;">
+			<text>end</text>
+		</line>
+		<line linenr="313" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="314" indent="&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: In origin galaxies, OCV production operates at 25% speed during the first 24 hours.</comment>
 		</line>
-		<line linenr="317" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="315" indent="&#160;&#160;&#160;&#160;">
 			<comment>* A 75% reduction in production rate quadruples the production cycle.</comment>
 		</line>
-		<line linenr="318" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="316" indent="&#160;&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2340,7 +2447,7 @@
 			<text> </text>
 			<var>86400</var>
 		</line>
-		<line linenr="319" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="317" indent="&#160;&#160;&#160;&#160;&#160;">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
@@ -2351,14 +2458,14 @@
 			<text> </text>
 			<var>4</var>
 		</line>
-		<line linenr="320" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
-		<line linenr="321" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="318" indent="&#160;&#160;&#160;&#160;&#160;&#160;" />
+		<line linenr="319" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: Smaller batches complete proportionally faster.</comment>
 		</line>
-		<line linenr="322" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="320" indent="&#160;&#160;&#160;&#160;&#160;">
 			<comment>* Example: Building 10 ships from a maximum batch of 15 takes 10/15 of the normal cycle.</comment>
 		</line>
-		<line linenr="323" indent="&#160;&#160;&#160;&#160;&#160;">
+		<line linenr="321" indent="&#160;&#160;&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<var>$currentlyBuilding.maxAmount</var>
@@ -2375,28 +2482,43 @@
 			<text> </text>
 			<var>$currentlyBuilding.maxAmount</var>
 		</line>
-		<line linenr="324" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="322" indent="&#160;&#160;&#160;&#160;" interruptable="@">
 			<var>$cycle</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
-			<text>(</text>
+			<var>[NULL]</var>
+			<text>-&gt;</text>
+			<text> </text>
+			<text>call</text>
+			<text> </text>
+			<text>script</text>
+			<text> </text>
+			<call>Joubarbe.Lib.ScaleInteger</call>
+			<text> </text>
+			<text>:</text>
+			<text> </text>
+			<text>value</text>
+			<text>=</text>
 			<var>$cycle</var>
 			<text> </text>
-			<text>*</text>
-			<text> </text>
+			<text>numerator</text>
+			<text>=</text>
 			<var>$currentlyBuilding.amount</var>
-			<text>)</text>
 			<text> </text>
-			<text>/</text>
-			<text> </text>
+			<text>denominator</text>
+			<text>=</text>
 			<var>$currentlyBuilding.maxAmount</var>
+			<text> </text>
+			<text>round</text>
+			<text>=</text>
+			<var>[FALSE]</var>
 		</line>
-		<line linenr="325" indent="&#160;&#160;&#160;&#160;">
+		<line linenr="323" indent="&#160;&#160;&#160;&#160;">
 			<text>end</text>
 		</line>
-		<line linenr="326" indent="&#160;&#160;&#160;&#160;" />
-		<line linenr="327" indent="&#160;&#160;&#160;">
+		<line linenr="324" indent="&#160;&#160;&#160;&#160;" />
+		<line linenr="325" indent="&#160;&#160;&#160;">
 			<text>if</text>
 			<text> </text>
 			<text>(</text>
@@ -2411,21 +2533,21 @@
 			<text> </text>
 			<var>$cycle</var>
 		</line>
-		<line linenr="328" indent="&#160;&#160;&#160;">
+		<line linenr="326" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.0.2: Fighters and M6 build in batches. </comment>
 		</line>
-		<line linenr="329" indent="&#160;&#160;&#160;">
+		<line linenr="327" indent="&#160;&#160;&#160;">
 			<comment>* Add-Ons 2.2: M7s build two at a time. M1/M2 build individually.</comment>
 		</line>
-		<line linenr="330" indent="&#160;&#160;&#160;" />
-		<line linenr="331" indent="&#160;&#160;&#160;">
+		<line linenr="328" indent="&#160;&#160;&#160;" />
+		<line linenr="329" indent="&#160;&#160;&#160;">
 			<var>$amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>$currentlyBuilding.amount</var>
 		</line>
-		<line linenr="332" indent="&#160;&#160;&#160;">
+		<line linenr="330" indent="&#160;&#160;&#160;">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2436,23 +2558,23 @@
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="333" indent="&#160;&#160;&#160;">
+		<line linenr="331" indent="&#160;&#160;&#160;">
 			<var>$amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>1</var>
 		</line>
-		<line linenr="334" indent="&#160;&#160;&#160;" />
-		<line linenr="335" indent="&#160;&#160;" />
-		<line linenr="336" indent="&#160;">
+		<line linenr="332" indent="&#160;&#160;&#160;" />
+		<line linenr="333" indent="&#160;&#160;" />
+		<line linenr="334" indent="&#160;">
 			<var>$i</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="337" indent="">
+		<line linenr="335" indent="">
 			<text>while</text>
 			<text> </text>
 			<var>$i</var>
@@ -2461,7 +2583,7 @@
 			<text> </text>
 			<var>$amount</var>
 		</line>
-		<line linenr="338" indent="" interruptable="@">
+		<line linenr="336" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<text>wait</text>
@@ -2470,8 +2592,8 @@
 			<text> </text>
 			<text>ms</text>
 		</line>
-		<line linenr="339" indent="" />
-		<line linenr="340" indent="" interruptable="@">
+		<line linenr="337" indent="" />
+		<line linenr="338" indent="" interruptable="@">
 			<var>$shipType</var>
 			<text> </text>
 			<text>=</text>
@@ -2495,7 +2617,7 @@
 			<text>=</text>
 			<var>[OCV]</var>
 		</line>
-		<line linenr="341" indent="" interruptable="@">
+		<line linenr="339" indent="" interruptable="@">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -2531,8 +2653,8 @@
 			<text>=</text>
 			<var>6</var>
 		</line>
-		<line linenr="342" indent="" />
-		<line linenr="343" indent="">
+		<line linenr="340" indent="" />
+		<line linenr="341" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$ship</var>
@@ -2540,7 +2662,7 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="344" indent="">
+		<line linenr="342" indent="">
 			<text>do</text>
 			<text> </text>
 			<text>if</text>
@@ -2556,7 +2678,7 @@
 			<text> </text>
 			<text>sector</text>
 		</line>
-		<line linenr="345" indent="">
+		<line linenr="343" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2570,7 +2692,7 @@
 			<text> </text>
 			<var>46</var>
 		</line>
-		<line linenr="346" indent="">
+		<line linenr="344" indent="">
 			<var>$ship</var>
 			<text>-&gt;</text>
 			<text> </text>
@@ -2589,7 +2711,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="347" indent="" interruptable="@">
+		<line linenr="345" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2611,7 +2733,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="348" indent="" interruptable="@">
+		<line linenr="346" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2633,23 +2755,23 @@
 			<text>=</text>
 			<var>$supportTypes</var>
 		</line>
-		<line linenr="349" indent="">
+		<line linenr="347" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="350" indent="" />
-		<line linenr="351" indent="">
+		<line linenr="348" indent="" />
+		<line linenr="349" indent="">
 			<text>inc</text>
 			<text> </text>
 			<var>$i</var>
 		</line>
-		<line linenr="352" indent="">
+		<line linenr="350" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="353" indent="" />
-		<line linenr="354" indent="">
+		<line linenr="351" indent="" />
+		<line linenr="352" indent="">
 			<comment>* Integrate newly produced ships into the waiting OCV fleet.</comment>
 		</line>
-		<line linenr="355" indent="" interruptable="@">
+		<line linenr="353" indent="" interruptable="@">
 			<text>=</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2679,48 +2801,48 @@
 			<text>=</text>
 			<var>null</var>
 		</line>
-		<line linenr="356" indent="">
+		<line linenr="354" indent="">
 			<var>$currentlyBuilding.class</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="357" indent="">
+		<line linenr="355" indent="">
 			<var>$currentlyBuilding.amount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="358" indent="">
+		<line linenr="356" indent="">
 			<var>$currentlyBuilding.maxAmount</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
-		<line linenr="359" indent="">
+		<line linenr="357" indent="">
 			<var>$currentlyBuilding.startTime</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>null</var>
 		</line>
+		<line linenr="358" indent="">
+			<text>end</text>
+		</line>
+		<line linenr="359" indent="">
+			<text>end</text>
+		</line>
 		<line linenr="360" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="361" indent="">
-			<text>end</text>
-		</line>
+		<line linenr="361" indent="" />
 		<line linenr="362" indent="">
-			<text>end</text>
-		</line>
-		<line linenr="363" indent="" />
-		<line linenr="364" indent="">
 			<comment>* ZH 2.0 - Maelstrom shutdown</comment>
 		</line>
-		<line linenr="365" indent="" interruptable="@">
+		<line linenr="363" indent="" interruptable="@">
 			<text>START</text>
 			<text> </text>
 			<var>[NULL]</var>
@@ -2734,9 +2856,9 @@
 			<text> </text>
 			<text>:</text>
 		</line>
-		<line linenr="366" indent="" />
-		<line linenr="367" indent="" />
-		<line linenr="368" indent="">
+		<line linenr="364" indent="" />
+		<line linenr="365" indent="" />
+		<line linenr="366" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>null</var>
@@ -2747,7 +2869,7 @@
 			<sval type="string" val="Mayhem.Monitor.OCV" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="69" />
+			<sval type="int" val="71" />
 			<sval type="int" val="0" />
 			<sval type="array" size="45">
 				<sval type="string" val="portal" />
@@ -3566,36 +3688,21 @@
 					<sval type="int" val="112" />
 					<sval type="int" val="92" />
 				</sval>
-				<sval type="array" size="29">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="27" />
-					<sval type="int" val="7" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="27" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="9" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
-					<sval type="int" val="4" />
-					<sval type="int" val="50" />
-					<sval type="int" val="15" />
-					<sval type="int" val="11" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="11" />
-					<sval type="int" val="16" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="11" />
-					<sval type="int" val="-4" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-6" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="10" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -3612,28 +3719,21 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="27" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="27" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="25">
 					<sval type="int" val="104" />
@@ -4271,28 +4371,21 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="37" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -4309,28 +4402,21 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="19" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="10">
 					<sval type="int" val="1336" />
@@ -4436,28 +4522,21 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-1" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="40" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="13">
 					<sval type="int" val="104" />
@@ -4474,28 +4553,21 @@
 					<sval type="int" val="0" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="150" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
@@ -4531,55 +4603,41 @@
 					<sval type="int" val="1" />
 					<sval type="int" val="-2" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="200" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="112" />
 					<sval type="int" val="178" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="4" />
 					<sval type="int" val="150" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="4" />
 					<sval type="int" val="100" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="19">
 					<sval type="int" val="104" />
@@ -4644,28 +4702,21 @@
 					<sval type="int" val="3" />
 					<sval type="int" val="-5" />
 				</sval>
-				<sval type="array" size="21">
-					<sval type="int" val="104" />
+				<sval type="array" size="14">
+					<sval type="int" val="102" />
+					<sval type="string" val="Joubarbe.Lib.ScaleInteger" />
 					<sval type="int" val="36" />
-					<sval type="int" val="5" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="12" />
+					<sval type="int" val="4" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="36" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="14" />
-					<sval type="int" val="15" />
-					<sval type="int" val="13" />
 					<sval type="int" val="131074" />
 					<sval type="int" val="15" />
-					<sval type="int" val="15" />
-					<sval type="int" val="14" />
-					<sval type="int" val="7" />
-					<sval type="int" val="16" />
-					<sval type="int" val="-1" />
-					<sval type="int" val="13" />
-					<sval type="int" val="-2" />
-					<sval type="int" val="17" />
-					<sval type="int" val="14" />
-					<sval type="int" val="-4" />
+					<sval type="int" val="131075" />
+					<sval type="int" val="9" />
 				</sval>
 				<sval type="array" size="21">
 					<sval type="int" val="104" />
@@ -4914,7 +4965,7 @@
 				</sval>
 			</sval>
 			<sval type="int" val="0" />
-			<sval type="array" size="180">
+			<sval type="array" size="178">
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
@@ -5150,7 +5201,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="72" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.7: NPC scaling based on player's suppy usage. " />
+					<sval type="string" val="Add-Ons 1.7: NPC scaling based on player's supply usage. " />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="72" />
@@ -5216,12 +5267,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="87" />
 					<sval type="int" val="1" />
-					<sval type="string" val="M1/M2 retain their special pre-alignment difficulty quotas." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="87" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Easy/Normal = 2, Hard/Insane = 3." />
+					<sval type="string" val="M1/M2 retain their special difficulty quotas." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="91" />
@@ -5230,12 +5276,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="91" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Apply general difficulty scaling." />
-				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="91" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add 50 before division to round to the nearest integer." />
+					<sval type="string" val="Apply difficulty scaling, rounding to the nearest integer." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="92" />
@@ -5248,7 +5289,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="92" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.7: Scale quotas with player supply usage." />
+					<sval type="string" val="Scale quotas with player supply usage." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="92" />
@@ -5572,12 +5613,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="170" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 2.0.2: Production is 50% faster on hard and 100% faster on insane." />
+					<sval type="string" val="Add-Ons 2.0.2: Production is 50% faster on Hard and 100% faster on hostile Insane." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="170" />
 					<sval type="int" val="1" />
-					<sval type="string" val="If the player joined the OCV, the OCV produce 33% slower (cycle time increased by 50%), normalizing the timer back to ~11 hours." />
+					<sval type="string" val="OCV-aligned Insane increases production duration by 50%, normalizing the timer back to ~11 hours." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="177" />
