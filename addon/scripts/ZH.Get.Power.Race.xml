@@ -3,7 +3,7 @@
 <!-- Generated using X-Studio -->
 <script>
 	<name>ZH.Get.Power.Race</name>
-	<version>35</version>
+	<version>36</version>
 	<engineversion>50</engineversion>
 	<description></description>
 	<arguments>
@@ -12,19 +12,31 @@
 	</arguments>
 	<sourcetext>
 		<line linenr="001" indent="">
-			<comment>* returns total military score of a specific race</comment>
+			<comment>* Returns total military power or supply consumption of a race.</comment>
 		</line>
 		<line linenr="002" indent="">
-			<comment>* Add-Ons 1.6.1: If $calcSupply is true, returns the current supply taken by all ships.</comment>
+			<comment>* calcSupply = FALSE: military power.</comment>
 		</line>
 		<line linenr="003" indent="">
-			<comment>* DO NOT PUT WAIT STATEMENTS! This can create transients if used improperly! Also, use SafeJoinArrays instead of join arrays. Removed 10 ms wait statements between array fetching and joining.</comment>
+			<comment>* calcSupply = TRUE: supply consumption.</comment>
 		</line>
-		<line linenr="004" indent="" />
+		<line linenr="004" indent="">
+			<comment>* </comment>
+		</line>
 		<line linenr="005" indent="">
-			<comment>* Add-Ons 1.8: DO NOT get ship array of [Huge Ship]. [Big Ship] already includes Huge Ship.</comment>
+			<comment>* DO NOT PUT WAIT STATEMENTS!</comment>
 		</line>
 		<line linenr="006" indent="">
+			<comment>* Use SafeJoinArrays instead of join arrays.</comment>
+		</line>
+		<line linenr="007" indent="">
+			<comment>* Big Ship already includes Huge Ship.</comment>
+		</line>
+		<line linenr="008" indent="">
+			<comment>* Expanded 2.2.1: Cleaned up. </comment>
+		</line>
+		<line linenr="009" indent="" />
+		<line linenr="010" indent="">
 			<var>$fighters</var>
 			<text> </text>
 			<text>=</text>
@@ -48,7 +60,7 @@
 			<text>=</text>
 			<var>[Fighter]</var>
 		</line>
-		<line linenr="007" indent="">
+		<line linenr="011" indent="">
 			<var>$bigShips</var>
 			<text> </text>
 			<text>=</text>
@@ -72,7 +84,7 @@
 			<text>=</text>
 			<var>[Big Ship]</var>
 		</line>
-		<line linenr="008" indent="" interruptable="@">
+		<line linenr="012" indent="" interruptable="@">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -96,17 +108,16 @@
 			<text>=</text>
 			<var>$bigShips</var>
 		</line>
-		<line linenr="009" indent="" />
-		<line linenr="010" indent="" />
-		<line linenr="011" indent="">
-			<comment>* Add-Ons 1.6.1: If calculating the current supply, then take freighters into consideration.</comment>
+		<line linenr="013" indent="" />
+		<line linenr="014" indent="">
+			<comment>* Freighters consume supply but are not separately included in military fleet power calculations.</comment>
 		</line>
-		<line linenr="012" indent="">
+		<line linenr="015" indent="">
 			<text>if</text>
 			<text> </text>
 			<var>$calcSupply</var>
 		</line>
-		<line linenr="013" indent="&#160;">
+		<line linenr="016" indent="&#160;">
 			<var>$freighters</var>
 			<text> </text>
 			<text>=</text>
@@ -130,7 +141,7 @@
 			<text>=</text>
 			<var>[Freighter]</var>
 		</line>
-		<line linenr="014" indent="&#160;" interruptable="@">
+		<line linenr="017" indent="&#160;" interruptable="@">
 			<var>$ships</var>
 			<text> </text>
 			<text>=</text>
@@ -154,18 +165,19 @@
 			<text>=</text>
 			<var>$freighters</var>
 		</line>
-		<line linenr="015" indent="">
+		<line linenr="018" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="016" indent="" />
-		<line linenr="017" indent="">
+		<line linenr="019" indent="" />
+		<line linenr="020" indent="">
 			<var>$value</var>
 			<text> </text>
 			<text>=</text>
 			<text> </text>
 			<var>0</var>
 		</line>
-		<line linenr="018" indent="">
+		<line linenr="021" indent="" />
+		<line linenr="022" indent="">
 			<var>$XS.Iterator1</var>
 			<text> </text>
 			<text>=</text>
@@ -178,17 +190,17 @@
 			<text> </text>
 			<var>$ships</var>
 		</line>
-		<line linenr="019" indent="&#160;">
+		<line linenr="023" indent="&#160;">
 			<text>while</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="020" indent="&#160;&#160;">
+		<line linenr="024" indent="&#160;&#160;">
 			<text>dec</text>
 			<text> </text>
 			<var>$XS.Iterator1</var>
 		</line>
-		<line linenr="021" indent="&#160;">
+		<line linenr="025" indent="&#160;">
 			<var>$ship</var>
 			<text> </text>
 			<text>=</text>
@@ -198,7 +210,7 @@
 			<var>$XS.Iterator1</var>
 			<text>]</text>
 		</line>
-		<line linenr="022" indent="&#160;">
+		<line linenr="026" indent="&#160;">
 			<text>skip</text>
 			<text> </text>
 			<text>if</text>
@@ -208,14 +220,17 @@
 			<text> </text>
 			<text>exists</text>
 		</line>
-		<line linenr="023" indent="&#160;">
+		<line linenr="027" indent="&#160;">
 			<text>continue</text>
 		</line>
-		<line linenr="024" indent="&#160;" />
-		<line linenr="025" indent="">
-			<comment>* Because we get the total military power (or supply), $calcSupply is always set to TRUE. </comment>
+		<line linenr="028" indent="&#160;" />
+		<line linenr="029" indent="&#160;">
+			<comment>* Support ships are counted individually.</comment>
 		</line>
-		<line linenr="026" indent="" interruptable="@">
+		<line linenr="030" indent="">
+			<comment>* Do not include them again through their homebase.</comment>
+		</line>
+		<line linenr="031" indent="" interruptable="@">
 			<var>$ship.value</var>
 			<text> </text>
 			<text>=</text>
@@ -243,7 +258,7 @@
 			<text>=</text>
 			<var>[TRUE]</var>
 		</line>
-		<line linenr="027" indent="">
+		<line linenr="032" indent="">
 			<var>$value</var>
 			<text> </text>
 			<text>=</text>
@@ -254,11 +269,11 @@
 			<text> </text>
 			<var>$ship.value</var>
 		</line>
-		<line linenr="028" indent="">
+		<line linenr="033" indent="">
 			<text>end</text>
 		</line>
-		<line linenr="029" indent="" />
-		<line linenr="030" indent="">
+		<line linenr="034" indent="" />
+		<line linenr="035" indent="">
 			<text>return</text>
 			<text> </text>
 			<var>$value</var>
@@ -269,7 +284,7 @@
 			<sval type="string" val="ZH.Get.Power.Race" />
 			<sval type="int" val="50" />
 			<sval type="string" val="" />
-			<sval type="int" val="35" />
+			<sval type="int" val="36" />
 			<sval type="int" val="0" />
 			<sval type="array" size="10">
 				<sval type="string" val="race" />
@@ -436,35 +451,51 @@
 					<sval type="string" val="" />
 				</sval>
 			</sval>
-			<sval type="array" size="15">
+			<sval type="array" size="20">
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="returns total military score of a specific race" />
+					<sval type="string" val="Returns total military power or supply consumption of a race." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.6.1: If $calcSupply is true, returns the current supply taken by all ships." />
+					<sval type="string" val="calcSupply = FALSE: military power." />
 				</sval>
 				<sval type="array" size="3">
 					<sval type="int" val="0" />
 					<sval type="int" val="1" />
-					<sval type="string" val="DO NOT PUT WAIT STATEMENTS! This can create transients if used improperly! Also, use SafeJoinArrays instead of join arrays. Removed 10 ms wait statements between array fetching and joining." />
+					<sval type="string" val="calcSupply = TRUE: supply consumption." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="DO NOT PUT WAIT STATEMENTS!" />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Use SafeJoinArrays instead of join arrays." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Big Ship already includes Huge Ship." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="0" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Expanded 2.2.1: Cleaned up. " />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="0" />
 					<sval type="int" val="2" />
 				</sval>
-				<sval type="array" size="3">
-					<sval type="int" val="0" />
-					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.8: DO NOT get ship array of [Huge Ship]. [Big Ship] already includes Huge Ship." />
-				</sval>
-				<sval type="array" size="2">
-					<sval type="int" val="3" />
-					<sval type="int" val="2" />
-				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="3" />
 					<sval type="int" val="2" />
@@ -472,7 +503,7 @@
 				<sval type="array" size="3">
 					<sval type="int" val="3" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Add-Ons 1.6.1: If calculating the current supply, then take freighters into consideration." />
+					<sval type="string" val="Freighters consume supply but are not separately included in military fleet power calculations." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="6" />
@@ -483,6 +514,10 @@
 					<sval type="int" val="2" />
 				</sval>
 				<sval type="array" size="2">
+					<sval type="int" val="7" />
+					<sval type="int" val="2" />
+				</sval>
+				<sval type="array" size="2">
 					<sval type="int" val="13" />
 					<sval type="int" val="6" />
 				</sval>
@@ -493,7 +528,12 @@
 				<sval type="array" size="3">
 					<sval type="int" val="13" />
 					<sval type="int" val="1" />
-					<sval type="string" val="Because we get the total military power (or supply), $calcSupply is always set to TRUE. " />
+					<sval type="string" val="Support ships are counted individually." />
+				</sval>
+				<sval type="array" size="3">
+					<sval type="int" val="13" />
+					<sval type="int" val="1" />
+					<sval type="string" val="Do not include them again through their homebase." />
 				</sval>
 				<sval type="array" size="2">
 					<sval type="int" val="16" />
